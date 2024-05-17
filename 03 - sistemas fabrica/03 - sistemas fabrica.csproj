@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{347C8A5C-B3BC-4912-91FF-010CD82B67EC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>_03___sistemas_fabrica</RootNamespace>
+    <AssemblyName>03 - sistemas fabrica</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cls_actualizador_de_precios_insumos.cs" />
+    <Compile Include="cls_administracion_de_equipos.cs" />
+    <Compile Include="cls_analisis_de_produccion.cs" />
+    <Compile Include="cls_objetivo_de_produccion.cs" />
+    <Compile Include="cls_analisis_de_ventas.cs" />
+    <Compile Include="cls_cargar_orden_de_compra.cs" />
+    <Compile Include="cls_crear_orden_de_compras.cs" />
+    <Compile Include="cls_crear_proveedor.cs" />
+    <Compile Include="cls_crear_sub_producto.cs" />
+    <Compile Include="cls_cuentas_por_pagar.cs" />
+    <Compile Include="cls_dia_de_entrega.cs" />
+    <Compile Include="cls_entrega_de_insumos.cs" />
+    <Compile Include="cls_estadisticas_de_entrega.cs" />
+    <Compile Include="cls_estadisticas_de_pedidos.cs" />
+    <Compile Include="cls_historial_de_pedido_de_insumos.cs" />
+    <Compile Include="cls_historial_de_precios_fabrica.cs" />
+    <Compile Include="cls_historial_de_produccion.cs" />
+    <Compile Include="cls_historial_merma_y_desperdicio.cs" />
+    <Compile Include="cls_historial_orden_de_compras.cs" />
+    <Compile Include="cls_historial_orden_de_pedidos.cs" />
+    <Compile Include="cls_landing_page.cs" />
+    <Compile Include="cls_linkear_insumos_a_proveedor_de_fabrica.cs" />
+    <Compile Include="cls_merma_y_desperdicio.cs" />
+    <Compile Include="cls_movimientos_stock_insumos.cs" />
+    <Compile Include="cls_movimientos_stock_producto.cs" />
+    <Compile Include="cls_orden_de_pedido.cs" />
+    <Compile Include="cls_panificados.cs" />
+    <Compile Include="cls_pedir_insumos.cs" />
+    <Compile Include="cls_plantillas.cs" />
+    <Compile Include="cls_proveedores_fabrica.cs" />
+    <Compile Include="cls_recepcion_de_insumos.cs" />
+    <Compile Include="cls_recepcion_de_produccion.cs" />
+    <Compile Include="cls_produccion.cs" />
+    <Compile Include="cls_recetario.cs" />
+    <Compile Include="cls_remitos_de_carga.cs" />
+    <Compile Include="cls_resumen_deuda_proveedores.cs" />
+    <Compile Include="cls_sistema_actualizador_precios_vegetales.cs" />
+    <Compile Include="cls_sistema_cuentas_por_cobrar.cs" />
+    <Compile Include="cls_sistema_pedidos_fabrica.cs" />
+    <Compile Include="cls_sistema_rendiciones.cs" />
+    <Compile Include="cls_stock.cs" />
+    <Compile Include="cls_stock_insumos.cs" />
+    <Compile Include="cls_temperatura_de_equipos.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\01 - modulos\01 - modulos.csproj">
+      <Project>{4f441403-c852-4c50-93da-33c46fce4e00}</Project>
+      <Name>01 - modulos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

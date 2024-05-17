@@ -1,0 +1,418 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="paginaMaestraFabrica.master.cs" Inherits="paginaWeb.paginasMaestras.paginaMaestraFabrica" %>
+
+<!DOCTYPE html>
+
+<html data-bs-theme="dark">
+<head runat="server">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21C4MLTPJS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-21C4MLTPJS');
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Favicon-->
+    <title>Shami | Sistema</title>
+    <meta property="og:image" content="/imagenes/logo-redondo.png" />
+    <link href="/imagenes/logo-redondo.png" rel=" shortcut icon" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="/CSS/sign-in.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script type="text/javascript">const tlJsHost = ((window.location.protocol == "https:") ? "https://secure.trust-provider.com/" : "http://www.trustlogo.com/"); document.write(unescape("<script src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript' %3E%3C/script%3E"));</script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/default.aspx">
+                <img width="170" src="/imagenes/logo-completo.png" alt="Alternate Text" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+                    <% // MENU SHAMI VEGETALES %>
+                    <% System.Data.DataTable proveedorBD = (System.Data.DataTable)Session["proveedorBD"];
+                        System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];
+                        int nivel_seguridad = int.Parse(Session["nivel_seguridad"].ToString());
+
+                        if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_shami_vegetales")
+                        {%>
+                    <li class="nav-item">
+                        <a class="nav-link  btn btn-primary" href="/paginasFabrica/sucursales.aspx">Pedidos de locales</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/actualizador_precio_vegetales.aspx">Ingresar precios de vegetales</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_de_precios.aspx">Historial de precios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/rendiciones.aspx">Rendiciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de pedido</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por cobrar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/plantillas.aspx">Plantillas</a>
+                    </li>
+                    <%}%>
+
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - PRODUCCION %>
+                    <% if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Produccion")//
+                        {%>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/produccion.aspx">Produccion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Produccion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de ordenes de compra</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/objetivo_de_produccion.aspx">Objetivo de Produccion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/pedir_insumos.aspx">Pedir Insumos a Expedicion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Historial Pedido de Insumos a Expedicion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido a Compras</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/plantillas.aspx">Plantillas</a>
+                    </li>
+                    <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - EXPEDICION  %>
+                    <% if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")//
+                        {%>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/landing_page_expedicion.aspx">Tareas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/sucursales.aspx">Pedidos de locales</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/dias_de_entrega.aspx">Calendario de Entrega</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/remitos_de_carga.aspx">Remitos de carga</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/produccion.aspx">Produccion</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Historiales
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+
+
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Historial Pedido de Insumos</a></li>
+
+
+
+
+
+
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de produccion</a></li>
+
+
+
+
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de compras</a></li>
+
+                        </ul>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de pedido</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Stock
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Productos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Stock</a></li>
+                        </ul>
+                    </li>
+
+
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido a Compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Historial de Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/plantillas.aspx">Plantillas</a>
+                    </li>
+                    <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - COMPRAS %>
+                    <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Compras")
+                        {%>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/proveedores_fabrica.aspx">Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Solicitudes de Insumos de Fabrica</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_compras.aspx">Crear Ordenes de compra a Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de compras a Proveedores</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por pagar a Proveedores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deuda a proveedores</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadísticas de Pedidos de Cliente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_entrega.aspx">Estadísticas de Enrega a Cliente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por cobrar</a>
+                    </li>
+
+                    <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - INSUMOS %>
+                    <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "insumos_fabrica" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Insumos")
+                        {%>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/sucursales.aspx">Pedidos de locales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizar precio/stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por cobrar</a>
+                    </li>
+                    <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - LIMPIEZA %>
+                    <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Limpieza")
+                        {%>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/temperatura_de_equipos.aspx">Control de Temperatura de Equipos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_pedido.aspx">Solicitud de Insumos a Compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Historial de Solicitud de Insumos a Compras</a>
+                    </li>
+                    <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - ADMINISTRATIVO %>
+                    <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Administrativo")
+                        {%>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por cobrar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/sucursales.aspx">Pedidos de locales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/dias_de_entrega.aspx">Calendario de Entrega</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/panificados.aspx">Stock de Panificados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pedido de insumos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/pedir_insumos.aspx">Pedir Insumos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Historial Pedido de Insumos</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Historial de Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por pagar a Proveedores</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Stock
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/stock.aspx">Analisis de Stock Producto</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/stock_insumos.aspx">Stock Insumos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Productos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Stock</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/plantillas.aspx">Plantillas</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink5" role="button" data-bs-toggle="dropdown" aria-expanded="false">Compra
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por pagar</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/orden_de_compras.aspx">Ordenes de compra</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de compras</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink6" role="button" data-bs-toggle="dropdown" aria-expanded="false">Produccion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/produccion.aspx">Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/objetivo_de_produccion.aspx">Objetivo de Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/recetario.aspx">Recetario</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/analisis_de_produccion.aspx">Analisis de produccion</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink7" role="button" data-bs-toggle="dropdown" aria-expanded="false">Expedicion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de pedido</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/remitos_de_carga.aspx">Remitos de carga</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadísticas de Pedidos de Cliente</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_entrega.aspx">Estadísticas de Enrega a Cliente</a>
+                    </li>
+                    <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - ADMIN %>
+                    <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin")
+                        {%>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink8" role="button" data-bs-toggle="dropdown" aria-expanded="false">Produccion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/produccion.aspx">Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de Ordenes de Compra</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/objetivo_de_produccion.aspx">Objetivo Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/pedir_insumos.aspx">Pedir Insumo a Expedicion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Historial de Pedido de Insumo a Expedicion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido a Compras</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/plantillas.aspx">Plantillas</a></li>
+                        </ul>
+                    </li>
+
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink9" role="button" data-bs-toggle="dropdown" aria-expanded="false">Compras
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/proveedores_fabrica.aspx">Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Solicitudes de Insumos de Fabrica</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/orden_de_compras.aspx">Crear Ordenes de Compra a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de Compras a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por Pagar a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deudas a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Entrega a Cliente</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por Cobrar</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink10" role="button" data-bs-toggle="dropdown" aria-expanded="false">Expedicion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/sucursales.aspx">Pedidos de Locales</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/remitos_de_carga.aspx">Remitos de carga</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Pedidos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdcio</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Producto</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial Stock</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Historial de Pedidos</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/dias_de_entrega.aspx">Calendario de Entrega</a>
+                    </li>
+                    <%}%>
+                </ul>
+
+                <h3>
+                    <asp:Label ID="label_proveedor" Text="text" runat="server" />
+                </h3>
+            </div>
+        </div>
+    </nav>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+    <footer>
+        <hr />
+        <script language="JavaScript" type="text/javascript">TrustLogo("https://micuenta.donweb.com/img/sectigo_positive_sm.png", "CL1", "none");</script>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

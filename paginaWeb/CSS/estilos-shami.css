@@ -1,0 +1,137 @@
+﻿body {
+}
+.section_title {
+    color: #b15f5f;
+    font-size: 44px;
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    position: relative;
+    margin: 35px 0;
+}
+
+@media (max-width: 767px) {
+    .section_title {
+        font-size: 36px;
+        margin: 10px 0;
+    }
+}
+.section_title_line {
+    height: 4px;
+    width: 150px;
+    background: linear-gradient( to right, #fff 0, #f1ae2b 50%, #207cca 50%, #2989d8 50%, #f1ae2b 50%, #f1ae2b 50%, #f1ae2b 50%, #fff 100% );
+}
+
+@media (max-width: 767px) {
+    .section_title_line {
+        height: 2px;
+        width: 100px;
+    }
+}
+.section_caption {
+    text-align: center;
+    padding: 0 20%;
+    font-size: 20px;
+    margin-bottom: 80px;
+}
+
+@media (max-width: 1199px) {
+    .section_caption {
+        margin-bottom: 60px;
+        padding: 0 10%;
+    }
+}
+
+@media (max-width: 767px) {
+    .section_caption {
+        font-size: 18px;
+        margin-bottom: 30px;
+        padding: 0 5%;
+    }
+}
+.section_menu {
+    padding-top: 50px;
+    padding-bottom: 100px;
+}
+
+.section_menu .section_title:before {
+    content: "Menu";
+    position: absolute;
+    line-height: 0.5em;
+    letter-spacing: 15px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: #e7e7e7;
+    font-size: 110px;
+    font-family: "Josefin Sans", sans-serif;
+    letter-spacing: 20px;
+    z-index: -999;
+}
+
+@media (max-width: 767px) {
+    .section_menu .section_title:before {
+        font-size: 60px;
+        top: 15%;
+    }
+}
+
+.menu_nav {
+    margin-bottom: 80px;
+}
+
+@media (max-width: 767px) {
+    .menu_nav {
+        margin-bottom: 20px;
+    }
+}
+
+.menu_nav > li {
+    width: 20%;
+}
+
+@media (max-width: 767px) {
+    .menu_nav > li {
+        width: 50%;
+        margin: 0 25%;
+    }
+}
+
+.menu_nav > li > a {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #b15f5f;
+}
+
+@media (max-width: 767px) {
+    .menu_nav > li > a {
+        font-size: 12px;
+    }
+}
+
+.menu_nav > li > a:hover {
+    color: #f1ae2b;
+    background-color: transparent;
+    transition: color 0.15s;
+}
+
+.menu_nav li.active:before {
+    content: "";
+    position: absolute;
+    top: 92%;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: #f1ae2b;
+}
+
+@media (max-width: 767px) {
+    .menu_nav li.active:before {
+        height: 2px;
+    }
+}

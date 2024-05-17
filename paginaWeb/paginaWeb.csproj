@@ -1,0 +1,874 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9B1C75BA-74C4-461E-9B9E-67B504753C23}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>paginaWeb</RootNamespace>
+    <AssemblyName>paginaWeb</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44349</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\favicon.ico" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="CSS\estilos-shami.css" />
+    <Content Include="CSS\sign-in.css" />
+    <Content Include="CSS\styles.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="imagenes\landing\check.png" />
+    <Content Include="imagenes\landing\controlar y confirmar.jpeg" />
+    <Content Include="imagenes\landing\despacho de mercaderia.jpg" />
+    <Content Include="imagenes\landing\entrega recepcion de mercaderia.jpg" />
+    <Content Include="imagenes\landing\organizar area.jpg" />
+    <Content Include="imagenes\landing\recepcion de mercaderia.jpg" />
+    <Content Include="imagenes\logo-redondo.png" />
+    <Content Include="imagenes\logo-completo.png" />
+    <Content Include="imagenes\logo-simple.png" />
+    <Content Include="imagenes\resena.jpg" />
+    <Content Include="paginasCarrefour\actualizador_de_precios.aspx" />
+    <Content Include="paginasCarrefour\analisis_movimientos.aspx" />
+    <Content Include="paginasCarrefour\detalle_de_movimientos.aspx" />
+    <Content Include="paginasCarrefour\historial_movimientos.aspx" />
+    <Content Include="paginasCarrefour\planilla_movimientos.aspx" />
+    <Content Include="paginasCarrefour\sucursales_carrefour.aspx" />
+    <Content Include="paginasFabricaFatay\analisis_de_produccion_fabrica_fatay.aspx" />
+    <Content Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx" />
+    <Content Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx" />
+    <Content Include="paginasFabricaFatay\orden_de_pedido_a_compras.aspx" />
+    <Content Include="paginasFabricaFatay\plantilla_fabrica_fatay.aspx" />
+    <Content Include="paginasFabricaFatay\produccion_fabrica_fatay.aspx" />
+    <Content Include="paginasFabricaFatay\stock_insumos_fabrica_fatay.aspx" />
+    <Content Include="paginasFabrica\actualizador_de_precios_insumos.aspx" />
+    <Content Include="paginasFabrica\actualizador_precio_vegetales.aspx" />
+    <Content Include="paginasFabrica\actualizar_precio_stock.aspx" />
+    <Content Include="paginasFabrica\administracion_de_equipos.aspx" />
+    <Content Include="paginasFabrica\analisis_de_produccion.aspx" />
+    <Content Include="paginasFabrica\objetivo_de_produccion.aspx" />
+    <Content Include="paginasFabrica\analisis_de_ventas.aspx" />
+    <Content Include="paginasFabrica\cargar_orden_de_compra.aspx" />
+    <Content Include="paginasFabrica\crear_orden_de_compra.aspx" />
+    <Content Include="paginasFabrica\crear_proveedor.aspx" />
+    <Content Include="paginasFabrica\cuentas_por_cobrar.aspx" />
+    <Content Include="paginasFabrica\cargar_pedido.aspx" />
+    <Content Include="paginasFabrica\cuentas_por_pagar.aspx" />
+    <Content Include="paginasFabrica\devolucion_de_productos.aspx" />
+    <Content Include="paginasFabrica\dias_de_entrega.aspx" />
+    <Content Include="paginasFabrica\entrega_de_insumos.aspx" />
+    <Content Include="paginasFabrica\estadisticas_de_entrega.aspx" />
+    <Content Include="paginasFabrica\estadisticas_de_pedidos.aspx" />
+    <Content Include="paginasFabrica\historial_de_produccion.aspx" />
+    <Content Include="paginasFabrica\historial_de_stock.aspx" />
+    <Content Include="paginasFabrica\historial_merma_y_desperdicio.aspx" />
+    <Content Include="paginasFabrica\historial_orden_de_compras.aspx" />
+    <Content Include="paginasFabrica\historial_orden_de_pedidos.aspx" />
+    <Content Include="paginasFabrica\historial_pedido_de_insumos.aspx" />
+    <Content Include="paginasFabrica\landing_page_expedicion.aspx" />
+    <Content Include="paginasFabrica\linkear_insumos_a_proveedor.aspx" />
+    <Content Include="paginasFabrica\merma_y_desperdicio.aspx" />
+    <Content Include="paginasFabrica\movimiento_stock_productos.aspx" />
+    <Content Include="paginasFabrica\orden_de_compras.aspx" />
+    <Content Include="paginasFabrica\orden_de_pedido.aspx" />
+    <Content Include="paginasFabrica\panificados.aspx" />
+    <Content Include="paginasFabrica\pedir_insumos.aspx" />
+    <Content Include="paginasFabrica\plantillas.aspx" />
+    <Content Include="paginasFabrica\proveedores_fabrica.aspx" />
+    <Content Include="paginasFabrica\recepcion_de_insumos.aspx" />
+    <Content Include="paginasFabrica\recepcion_de_produccion.aspx" />
+    <Content Include="paginasFabrica\pedidos.aspx" />
+    <Content Include="paginasFabrica\historial_de_precios.aspx" />
+    <Content Include="paginasFabrica\produccion.aspx" />
+    <Content Include="paginasFabrica\recetario.aspx" />
+    <Content Include="paginasFabrica\recetario_crear_sub_producto.aspx" />
+    <Content Include="paginasFabrica\recetario_linkear_sub_producto.aspx" />
+    <Content Include="paginasFabrica\remitos_de_carga.aspx" />
+    <Content Include="paginasFabrica\rendiciones.aspx" />
+    <Content Include="paginasFabrica\resumen_deuda_proveedores.aspx" />
+    <Content Include="paginasFabrica\resumen_de_pedido.aspx" />
+    <Content Include="paginasFabrica\stock.aspx" />
+    <Content Include="paginasFabrica\stock_insumos.aspx" />
+    <Content Include="paginasFabrica\sucursales.aspx" />
+    <Content Include="paginasFabrica\temperatura_de_equipos.aspx" />
+    <Content Include="paginasGerente\administrar_tipo_movimiento_caja_chica.aspx" />
+    <Content Include="paginasGerente\analisis_caja_chica.aspx" />
+    <Content Include="paginasGerente\caja_chica.aspx" />
+    <Content Include="paginasGerente\cuentas_por_cobrar_gerente.aspx" />
+    <Content Include="paginasGerente\cuentas_por_pagar_gerente.aspx" />
+    <Content Include="paginasGerente\proveedores_fabrica_gerente.aspx" />
+    <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
+    <Content Include="paginas\calendario_de_entrega.aspx" />
+    <Content Include="paginas\cuentas_por_pagar.aspx" />
+    <Content Include="paginas\estadisticas_de_pedido.aspx" />
+    <Content Include="paginas\historial_pedido.aspx" />
+    <Content Include="paginas\login.aspx" />
+    <Content Include="paginas\pedido.aspx" />
+    <Content Include="paginas\proveedores.aspx" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\scripts.js" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cls_funciones.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="paginasCarrefour\actualizador_de_precios.aspx.cs">
+      <DependentUpon>actualizador_de_precios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasCarrefour\actualizador_de_precios.aspx.designer.cs">
+      <DependentUpon>actualizador_de_precios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasCarrefour\analisis_movimientos.aspx.cs">
+      <DependentUpon>analisis_movimientos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasCarrefour\analisis_movimientos.aspx.designer.cs">
+      <DependentUpon>analisis_movimientos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasCarrefour\detalle_de_movimientos.aspx.cs">
+      <DependentUpon>detalle_de_movimientos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasCarrefour\detalle_de_movimientos.aspx.designer.cs">
+      <DependentUpon>detalle_de_movimientos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasCarrefour\historial_movimientos.aspx.cs">
+      <DependentUpon>historial_movimientos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasCarrefour\historial_movimientos.aspx.designer.cs">
+      <DependentUpon>historial_movimientos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasCarrefour\planilla_movimientos.aspx.cs">
+      <DependentUpon>planilla_movimientos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasCarrefour\planilla_movimientos.aspx.designer.cs">
+      <DependentUpon>planilla_movimientos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasCarrefour\sucursales_carrefour.aspx.cs">
+      <DependentUpon>sucursales_carrefour.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasCarrefour\sucursales_carrefour.aspx.designer.cs">
+      <DependentUpon>sucursales_carrefour.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\analisis_de_produccion_fabrica_fatay.aspx.cs">
+      <DependentUpon>analisis_de_produccion_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\analisis_de_produccion_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>analisis_de_produccion_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx.cs">
+      <DependentUpon>historial_de_produccion_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>historial_de_produccion_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx.cs">
+      <DependentUpon>historial_orden_de_pedidos_a_compras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx.designer.cs">
+      <DependentUpon>historial_orden_de_pedidos_a_compras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\orden_de_pedido_a_compras.aspx.cs">
+      <DependentUpon>orden_de_pedido_a_compras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\orden_de_pedido_a_compras.aspx.designer.cs">
+      <DependentUpon>orden_de_pedido_a_compras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\plantilla_fabrica_fatay.aspx.cs">
+      <DependentUpon>plantilla_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\plantilla_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>plantilla_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\produccion_fabrica_fatay.aspx.cs">
+      <DependentUpon>produccion_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\produccion_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>produccion_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\stock_insumos_fabrica_fatay.aspx.cs">
+      <DependentUpon>stock_insumos_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\stock_insumos_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>stock_insumos_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\actualizador_de_precios_insumos.aspx.cs">
+      <DependentUpon>actualizador_de_precios_insumos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\actualizador_de_precios_insumos.aspx.designer.cs">
+      <DependentUpon>actualizador_de_precios_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\actualizador_precio_vegetales.aspx.cs">
+      <DependentUpon>actualizador_precio_vegetales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\actualizador_precio_vegetales.aspx.designer.cs">
+      <DependentUpon>actualizador_precio_vegetales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\actualizar_precio_stock.aspx.cs">
+      <DependentUpon>actualizar_precio_stock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\actualizar_precio_stock.aspx.designer.cs">
+      <DependentUpon>actualizar_precio_stock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\administracion_de_equipos.aspx.cs">
+      <DependentUpon>administracion_de_equipos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\administracion_de_equipos.aspx.designer.cs">
+      <DependentUpon>administracion_de_equipos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\analisis_de_produccion.aspx.cs">
+      <DependentUpon>analisis_de_produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\analisis_de_produccion.aspx.designer.cs">
+      <DependentUpon>analisis_de_produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\objetivo_de_produccion.aspx.cs">
+      <DependentUpon>objetivo_de_produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\objetivo_de_produccion.aspx.designer.cs">
+      <DependentUpon>objetivo_de_produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\analisis_de_ventas.aspx.cs">
+      <DependentUpon>analisis_de_ventas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\analisis_de_ventas.aspx.designer.cs">
+      <DependentUpon>analisis_de_ventas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\cargar_orden_de_compra.aspx.cs">
+      <DependentUpon>cargar_orden_de_compra.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\cargar_orden_de_compra.aspx.designer.cs">
+      <DependentUpon>cargar_orden_de_compra.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_orden_de_compra.aspx.cs">
+      <DependentUpon>crear_orden_de_compra.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_orden_de_compra.aspx.designer.cs">
+      <DependentUpon>crear_orden_de_compra.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_proveedor.aspx.cs">
+      <DependentUpon>crear_proveedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_proveedor.aspx.designer.cs">
+      <DependentUpon>crear_proveedor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\cuentas_por_cobrar.aspx.cs">
+      <DependentUpon>cuentas_por_cobrar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\cuentas_por_cobrar.aspx.designer.cs">
+      <DependentUpon>cuentas_por_cobrar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\cargar_pedido.aspx.cs">
+      <DependentUpon>cargar_pedido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\cargar_pedido.aspx.designer.cs">
+      <DependentUpon>cargar_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\cuentas_por_pagar.aspx.cs">
+      <DependentUpon>cuentas_por_pagar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\cuentas_por_pagar.aspx.designer.cs">
+      <DependentUpon>cuentas_por_pagar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\devolucion_de_productos.aspx.cs">
+      <DependentUpon>devolucion_de_productos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\devolucion_de_productos.aspx.designer.cs">
+      <DependentUpon>devolucion_de_productos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\dias_de_entrega.aspx.cs">
+      <DependentUpon>dias_de_entrega.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\dias_de_entrega.aspx.designer.cs">
+      <DependentUpon>dias_de_entrega.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\entrega_de_insumos.aspx.cs">
+      <DependentUpon>entrega_de_insumos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\entrega_de_insumos.aspx.designer.cs">
+      <DependentUpon>entrega_de_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\estadisticas_de_entrega.aspx.cs">
+      <DependentUpon>estadisticas_de_entrega.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\estadisticas_de_entrega.aspx.designer.cs">
+      <DependentUpon>estadisticas_de_entrega.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\estadisticas_de_pedidos.aspx.cs">
+      <DependentUpon>estadisticas_de_pedidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\estadisticas_de_pedidos.aspx.designer.cs">
+      <DependentUpon>estadisticas_de_pedidos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_produccion.aspx.cs">
+      <DependentUpon>historial_de_produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_produccion.aspx.designer.cs">
+      <DependentUpon>historial_de_produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_stock.aspx.cs">
+      <DependentUpon>historial_de_stock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_stock.aspx.designer.cs">
+      <DependentUpon>historial_de_stock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_merma_y_desperdicio.aspx.cs">
+      <DependentUpon>historial_merma_y_desperdicio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_merma_y_desperdicio.aspx.designer.cs">
+      <DependentUpon>historial_merma_y_desperdicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_orden_de_compras.aspx.cs">
+      <DependentUpon>historial_orden_de_compras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_orden_de_compras.aspx.designer.cs">
+      <DependentUpon>historial_orden_de_compras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_orden_de_pedidos.aspx.cs">
+      <DependentUpon>historial_orden_de_pedidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_orden_de_pedidos.aspx.designer.cs">
+      <DependentUpon>historial_orden_de_pedidos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_pedido_de_insumos.aspx.cs">
+      <DependentUpon>historial_pedido_de_insumos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_pedido_de_insumos.aspx.designer.cs">
+      <DependentUpon>historial_pedido_de_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\landing_page_expedicion.aspx.cs">
+      <DependentUpon>landing_page_expedicion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\landing_page_expedicion.aspx.designer.cs">
+      <DependentUpon>landing_page_expedicion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\linkear_insumos_a_proveedor.aspx.cs">
+      <DependentUpon>linkear_insumos_a_proveedor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\linkear_insumos_a_proveedor.aspx.designer.cs">
+      <DependentUpon>linkear_insumos_a_proveedor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\merma_y_desperdicio.aspx.cs">
+      <DependentUpon>merma_y_desperdicio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\merma_y_desperdicio.aspx.designer.cs">
+      <DependentUpon>merma_y_desperdicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\movimiento_stock_productos.aspx.cs">
+      <DependentUpon>movimiento_stock_productos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\movimiento_stock_productos.aspx.designer.cs">
+      <DependentUpon>movimiento_stock_productos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\orden_de_compras.aspx.cs">
+      <DependentUpon>orden_de_compras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\orden_de_compras.aspx.designer.cs">
+      <DependentUpon>orden_de_compras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\orden_de_pedido.aspx.cs">
+      <DependentUpon>orden_de_pedido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\orden_de_pedido.aspx.designer.cs">
+      <DependentUpon>orden_de_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\panificados.aspx.cs">
+      <DependentUpon>panificados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\panificados.aspx.designer.cs">
+      <DependentUpon>panificados.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\pedir_insumos.aspx.cs">
+      <DependentUpon>pedir_insumos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\pedir_insumos.aspx.designer.cs">
+      <DependentUpon>pedir_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\plantillas.aspx.cs">
+      <DependentUpon>plantillas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\plantillas.aspx.designer.cs">
+      <DependentUpon>plantillas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\proveedores_fabrica.aspx.cs">
+      <DependentUpon>proveedores_fabrica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\proveedores_fabrica.aspx.designer.cs">
+      <DependentUpon>proveedores_fabrica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_insumos.aspx.cs">
+      <DependentUpon>recepcion_de_insumos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_insumos.aspx.designer.cs">
+      <DependentUpon>recepcion_de_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_produccion.aspx.cs">
+      <DependentUpon>recepcion_de_produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_produccion.aspx.designer.cs">
+      <DependentUpon>recepcion_de_produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\pedidos.aspx.cs">
+      <DependentUpon>pedidos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\pedidos.aspx.designer.cs">
+      <DependentUpon>pedidos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_precios.aspx.cs">
+      <DependentUpon>historial_de_precios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_precios.aspx.designer.cs">
+      <DependentUpon>historial_de_precios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\produccion.aspx.cs">
+      <DependentUpon>produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\produccion.aspx.designer.cs">
+      <DependentUpon>produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\recetario.aspx.cs">
+      <DependentUpon>recetario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\recetario.aspx.designer.cs">
+      <DependentUpon>recetario.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\recetario_crear_sub_producto.aspx.cs">
+      <DependentUpon>recetario_crear_sub_producto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\recetario_crear_sub_producto.aspx.designer.cs">
+      <DependentUpon>recetario_crear_sub_producto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\recetario_linkear_sub_producto.aspx.cs">
+      <DependentUpon>recetario_linkear_sub_producto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\recetario_linkear_sub_producto.aspx.designer.cs">
+      <DependentUpon>recetario_linkear_sub_producto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\remitos_de_carga.aspx.cs">
+      <DependentUpon>remitos_de_carga.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\remitos_de_carga.aspx.designer.cs">
+      <DependentUpon>remitos_de_carga.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\rendiciones.aspx.cs">
+      <DependentUpon>rendiciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\rendiciones.aspx.designer.cs">
+      <DependentUpon>rendiciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\resumen_deuda_proveedores.aspx.cs">
+      <DependentUpon>resumen_deuda_proveedores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\resumen_deuda_proveedores.aspx.designer.cs">
+      <DependentUpon>resumen_deuda_proveedores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\resumen_de_pedido.aspx.cs">
+      <DependentUpon>resumen_de_pedido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\resumen_de_pedido.aspx.designer.cs">
+      <DependentUpon>resumen_de_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\stock.aspx.cs">
+      <DependentUpon>stock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\stock.aspx.designer.cs">
+      <DependentUpon>stock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\stock_insumos.aspx.cs">
+      <DependentUpon>stock_insumos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\stock_insumos.aspx.designer.cs">
+      <DependentUpon>stock_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\sucursales.aspx.cs">
+      <DependentUpon>sucursales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\sucursales.aspx.designer.cs">
+      <DependentUpon>sucursales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\temperatura_de_equipos.aspx.cs">
+      <DependentUpon>temperatura_de_equipos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\temperatura_de_equipos.aspx.designer.cs">
+      <DependentUpon>temperatura_de_equipos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\administrar_tipo_movimiento_caja_chica.aspx.cs">
+      <DependentUpon>administrar_tipo_movimiento_caja_chica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\administrar_tipo_movimiento_caja_chica.aspx.designer.cs">
+      <DependentUpon>administrar_tipo_movimiento_caja_chica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\analisis_caja_chica.aspx.cs">
+      <DependentUpon>analisis_caja_chica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\analisis_caja_chica.aspx.designer.cs">
+      <DependentUpon>analisis_caja_chica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\caja_chica.aspx.cs">
+      <DependentUpon>caja_chica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\caja_chica.aspx.designer.cs">
+      <DependentUpon>caja_chica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\cuentas_por_cobrar_gerente.aspx.cs">
+      <DependentUpon>cuentas_por_cobrar_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\cuentas_por_cobrar_gerente.aspx.designer.cs">
+      <DependentUpon>cuentas_por_cobrar_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\cuentas_por_pagar_gerente.aspx.cs">
+      <DependentUpon>cuentas_por_pagar_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\cuentas_por_pagar_gerente.aspx.designer.cs">
+      <DependentUpon>cuentas_por_pagar_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\proveedores_fabrica_gerente.aspx.cs">
+      <DependentUpon>proveedores_fabrica_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\proveedores_fabrica_gerente.aspx.designer.cs">
+      <DependentUpon>proveedores_fabrica_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx.cs">
+      <DependentUpon>resumen_deuda_proveedores_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx.designer.cs">
+      <DependentUpon>resumen_deuda_proveedores_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestra.Master.cs">
+      <DependentUpon>paginaMaestra.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestra.Master.designer.cs">
+      <DependentUpon>paginaMaestra.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraCarrefour.Master.cs">
+      <DependentUpon>paginaMaestraCarrefour.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraCarrefour.Master.designer.cs">
+      <DependentUpon>paginaMaestraCarrefour.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraFabrica.Master.cs">
+      <DependentUpon>paginaMaestraFabrica.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraFabrica.Master.designer.cs">
+      <DependentUpon>paginaMaestraFabrica.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraGerente.Master.cs">
+      <DependentUpon>paginaMaestraGerente.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraGerente.Master.designer.cs">
+      <DependentUpon>paginaMaestraGerente.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraSistema.Master.cs">
+      <DependentUpon>paginaMaestraSistema.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraSistema.Master.designer.cs">
+      <DependentUpon>paginaMaestraSistema.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraLogin.Master.cs">
+      <DependentUpon>paginaMaestraLogin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraLogin.Master.designer.cs">
+      <DependentUpon>paginaMaestraLogin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\calendario_de_entrega.aspx.cs">
+      <DependentUpon>calendario_de_entrega.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\calendario_de_entrega.aspx.designer.cs">
+      <DependentUpon>calendario_de_entrega.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\cuentas_por_pagar.aspx.cs">
+      <DependentUpon>cuentas_por_pagar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\cuentas_por_pagar.aspx.designer.cs">
+      <DependentUpon>cuentas_por_pagar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\estadisticas_de_pedido.aspx.cs">
+      <DependentUpon>estadisticas_de_pedido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\estadisticas_de_pedido.aspx.designer.cs">
+      <DependentUpon>estadisticas_de_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\historial_pedido.aspx.cs">
+      <DependentUpon>historial_pedido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\historial_pedido.aspx.designer.cs">
+      <DependentUpon>historial_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\pedido.aspx.cs">
+      <DependentUpon>pedido.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\pedido.aspx.designer.cs">
+      <DependentUpon>pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\proveedores.aspx.cs">
+      <DependentUpon>proveedores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\proveedores.aspx.designer.cs">
+      <DependentUpon>proveedores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="paginasMaestras\paginaMaestra.Master" />
+    <Content Include="paginasMaestras\paginaMaestraLogin.Master" />
+    <Content Include="paginasMaestras\paginaMaestraSistema.Master" />
+    <Content Include="paginasMaestras\paginaMaestraFabrica.Master" />
+    <Content Include="paginasMaestras\paginaMaestraCarrefour.Master" />
+    <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <None Include="packages.config" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="paginasMaestras\paginaMaestraGerente.Master" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+    <Folder Include="paginasFabrica\pdf\" />
+    <Folder Include="paginas\pdf\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\02 - sistemas\02 - sistemas.csproj">
+      <Project>{a3931f22-b085-403f-ac8d-25855bc140b4}</Project>
+      <Name>02 - sistemas</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\03 - sistemas fabrica\03 - sistemas fabrica.csproj">
+      <Project>{347c8a5c-b3bc-4912-91ff-010cd82b67ec}</Project>
+      <Name>03 - sistemas fabrica</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\04 - sistemas carrefour\04 - sistemas carrefour.csproj">
+      <Project>{bd5f68cf-166a-4c58-beae-502998fbed1b}</Project>
+      <Name>04 - sistemas carrefour</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\05 - sistemas fabrica fatay\05 - sistemas fabrica fatay.csproj">
+      <Project>{aa690abd-c013-454a-a1a4-53e331b6cd03}</Project>
+      <Name>05 - sistemas fabrica fatay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\06 - sistemas gerente\06 - sistemas gerente.csproj">
+      <Project>{436922f1-24da-4274-96e4-257e5ffde747}</Project>
+      <Name>06 - sistemas gerente</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49754</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44349/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
