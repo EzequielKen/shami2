@@ -38,6 +38,32 @@ namespace _03___sistemas_fabrica
             string actualizar = "`nota` = '" + nota + "' ";
             consultas.actualizar_tabla(base_de_datos, "imputaciones_fabrica", actualizar, id_orden);
         }
+        public void cargar_nota_credito(string proveedor, string nota, string valor_remito, string fecha_nota)
+        {
+            
+            string columnas = "";
+            string valores = "";
+            //fabrica
+            columnas = funciones.armar_query_columna(columnas, "fabrica", false);
+            valores = funciones.armar_query_valores(valores, "Fabrica villa maipu", false);
+            //num_orden
+            columnas = funciones.armar_query_columna(columnas, "num_orden", false);
+            valores = funciones.armar_query_valores(valores, nota, false);
+            //valor_orden
+            columnas = funciones.armar_query_columna(columnas, "valor_orden", false);
+            valores = funciones.armar_query_valores(valores, valor_remito, false);
+            //fecha_remito
+            columnas = funciones.armar_query_columna(columnas, "fecha_remito", false);
+            valores = funciones.armar_query_valores(valores, fecha_nota, false);
+            //proveedor
+            columnas = funciones.armar_query_columna(columnas, "proveedor", false);
+            valores = funciones.armar_query_valores(valores, proveedor, false);
+            //id_proveedor
+            columnas = funciones.armar_query_columna(columnas, "id_proveedor", true);
+            valores = funciones.armar_query_valores(valores, get_id_proveedor(proveedor), true);
+
+            consultas.insertar_en_tabla(base_de_datos, "cuenta_por_pagar_fabrica", columnas, valores);
+        }
         #endregion
         #region PDF
         public void crear_PDF_orden_de_compra_con_precio(string ruta_archivo, byte[] logo, string id_orden, string id_factura)//

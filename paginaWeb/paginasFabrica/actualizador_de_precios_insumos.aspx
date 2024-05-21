@@ -7,7 +7,7 @@
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <div class="container">
-        <h2>Actualizador de Precios de Insumos</h2>
+                <h2>Actualizador de Precios de Insumos</h2>
 
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
@@ -34,23 +34,20 @@
                             <div class="input-group mb-3 ">
 
                                 <asp:Label Visible="false" ID="label_cartel" CssClass="form-control" Text="Ingrese porcentaje de aumento:" runat="server" />
-                                <asp:TextBox Visible="false" runat="server" CssClass="form-control form-control" ID="textbox_porcentaje_aumento" />
-
-
-                                <asp:Button Visible="false" Text="cargar" CssClass="btn btn-outline-secondary" runat="server" ID="boton_aumentar_porcentaje" OnClick="boton_aumentar_porcentaje_Click" />
 
                             </div>
                         </div>
 
                         <div class=" alert alert-light">
                             <div class="input-group">
-                                <asp:TextBox runat="server" CssClass="form-control" ID="textbox_busqueda" OnTextChanged="textbox_busqueda_TextChanged" AutoPostBack="true" />
+                                <asp:TextBox runat="server" placeholder="Buscar" CssClass="form-control" ID="textbox_busqueda" OnTextChanged="textbox_busqueda_TextChanged" AutoPostBack="true" />
                                 <asp:Button Text="buscar" CssClass="btn btn-outline-secondary" runat="server" />
                                 <div>
                                     <asp:DropDownList runat="server" CssClass="form-select" ID="dropDown_tipo" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                                     </asp:DropDownList>
                                 </div>
-
+                                <asp:TextBox runat="server" placeholder="Ingrese porcentaje de ganancia" CssClass="form-control form-control" ID="textbox_porcentaje_aumento" />
+                                <asp:Button Text="cargar" CssClass="btn btn-outline-secondary" runat="server" ID="boton_aumentar_porcentaje" OnClick="boton_aumentar_porcentaje_Click" />
                             </div>
                         </div>
 

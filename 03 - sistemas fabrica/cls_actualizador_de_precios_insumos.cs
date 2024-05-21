@@ -232,6 +232,7 @@ namespace _03___sistemas_fabrica
                     if (precios_compra_insumos.Rows[fila][columna].ToString() != "N/A")
                     {
                         id = funciones.obtener_dato(precios_compra_insumos.Rows[fila][columna].ToString(), 1);
+                        
                         fila_insumo = funciones.buscar_fila_por_id(id, insumos);
                         if (fila_insumo != -1)
                         {

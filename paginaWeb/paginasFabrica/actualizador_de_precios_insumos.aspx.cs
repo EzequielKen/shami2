@@ -19,36 +19,38 @@ namespace paginaWeb.paginasFabrica
             insumoBD = (DataTable)Session["insumoBD"];
 
             double porcenaje, multiplicador, precio_venta_nuevo_por_unidad;
-            double precio_compra, x_porciento, precio_venta, precio_venta_actual,porcentaje_Actual,diferencia_actual;
+            double precio_compra, x_porciento, precio_venta, precio_venta_actual, porcentaje_Actual, diferencia_actual;
             if (double.TryParse(porcentaje_dato, out porcenaje))
             {
                 for (int fila = 0; fila <= insumoBD.Rows.Count - 1; fila++)
                 {
-                    precio_compra = double.Parse(insumoBD.Rows[fila]["precio_compra"].ToString());
-                    precio_venta_actual = double.Parse(insumoBD.Rows[fila]["precio_venta_actual"].ToString());
-                    diferencia_actual = precio_venta_actual - precio_compra;
-                    porcentaje_Actual = (diferencia_actual * 100)/precio_venta_actual;
-
-                    x_porciento = (porcenaje * precio_compra) / 100;
-                    precio_venta = precio_compra + x_porciento;
-                    multiplicador = double.Parse(insumoBD.Rows[fila]["multiplicador"].ToString());
-                    precio_venta_nuevo_por_unidad = precio_venta/ multiplicador;
-                    if (porcentaje_Actual <= porcenaje)
+                    if (dropDown_tipo.SelectedItem.Text== insumoBD.Rows[fila]["tipo_producto"].ToString())
                     {
-                        insumoBD.Rows[fila]["precio_venta_nuevo"] = precio_venta;
-                        insumoBD.Rows[fila]["diferencia"] = x_porciento;
-                        insumoBD.Rows[fila]["porcentaje_aumento"] = porcenaje + "%";
-                        insumoBD.Rows[fila]["precio_venta_nuevo_por_unidad"] = precio_venta_nuevo_por_unidad;
-                    }
-                    else 
-                    {
-                        insumoBD.Rows[fila]["precio_venta_nuevo"] = "N/A";
-                        insumoBD.Rows[fila]["diferencia"] = "N/A";
-                        insumoBD.Rows[fila]["porcentaje_aumento"] = "N/A";
-                        insumoBD.Rows[fila]["precio_venta_nuevo_por_unidad"] = "N/A";
-                    }
-                    
+                        
+                        precio_compra = double.Parse(insumoBD.Rows[fila]["precio_compra"].ToString());
+                        precio_venta_actual = double.Parse(insumoBD.Rows[fila]["precio_venta_actual"].ToString());
+                        diferencia_actual = precio_venta_actual - precio_compra;
+                        porcentaje_Actual = (diferencia_actual * 100) / precio_venta_actual;
 
+                        x_porciento = (porcenaje * precio_compra) / 100;
+                        precio_venta = precio_compra + x_porciento;
+                        multiplicador = double.Parse(insumoBD.Rows[fila]["multiplicador"].ToString());
+                        precio_venta_nuevo_por_unidad = precio_venta / multiplicador;
+                        if (porcentaje_Actual <= porcenaje)
+                        {
+                            insumoBD.Rows[fila]["precio_venta_nuevo"] = precio_venta;
+                            insumoBD.Rows[fila]["diferencia"] = x_porciento;
+                            insumoBD.Rows[fila]["porcentaje_aumento"] = porcenaje + "%";
+                            insumoBD.Rows[fila]["precio_venta_nuevo_por_unidad"] = precio_venta_nuevo_por_unidad;
+                        }
+                        else
+                        {
+                            insumoBD.Rows[fila]["precio_venta_nuevo"] = "N/A";
+                            insumoBD.Rows[fila]["diferencia"] = "N/A";
+                            insumoBD.Rows[fila]["porcentaje_aumento"] = "N/A";
+                            insumoBD.Rows[fila]["precio_venta_nuevo_por_unidad"] = "N/A";
+                        }
+                    }
                 }
                 Session.Add("insumoBD", insumoBD);
             }
@@ -61,8 +63,8 @@ namespace paginaWeb.paginasFabrica
             insumo.Columns.Add("id", typeof(string));
             insumo.Columns.Add("producto", typeof(string));
             insumo.Columns.Add("unidad_medida", typeof(string));
-            insumo.Columns.Add("precio_compra", typeof(string)); 
-            insumo.Columns.Add("porcentaje_ganancia_actual", typeof(string)); 
+            insumo.Columns.Add("precio_compra", typeof(string));
+            insumo.Columns.Add("porcentaje_ganancia_actual", typeof(string));
             insumo.Columns.Add("precio_venta_actual", typeof(string));
             insumo.Columns.Add("diferencia", typeof(string));
             insumo.Columns.Add("porcentaje_aumento", typeof(string));
@@ -85,9 +87,9 @@ namespace paginaWeb.paginasFabrica
                     insumo.Rows[fila_insumo]["producto"] = insumoBD.Rows[fila]["producto"].ToString();
                     insumo.Rows[fila_insumo]["unidad_medida"] = insumoBD.Rows[fila]["unidad_medida"].ToString();
                     insumo.Rows[fila_insumo]["precio_compra"] = funciones.formatCurrency(double.Parse(insumoBD.Rows[fila]["precio_compra"].ToString()));
-                    insumo.Rows[fila_insumo]["precio_venta_actual"] = funciones.formatCurrency(double.Parse(insumoBD.Rows[fila]["precio_venta_actual"].ToString())); 
-                    insumo.Rows[fila_insumo]["porcentaje_ganancia_actual"] = insumoBD.Rows[fila]["porcentaje_ganancia_actual"].ToString(); 
-                    insumo.Rows[fila_insumo]["presentacion"] = insumoBD.Rows[fila]["presentacion"].ToString(); 
+                    insumo.Rows[fila_insumo]["precio_venta_actual"] = funciones.formatCurrency(double.Parse(insumoBD.Rows[fila]["precio_venta_actual"].ToString()));
+                    insumo.Rows[fila_insumo]["porcentaje_ganancia_actual"] = insumoBD.Rows[fila]["porcentaje_ganancia_actual"].ToString();
+                    insumo.Rows[fila_insumo]["presentacion"] = insumoBD.Rows[fila]["presentacion"].ToString();
                     if (insumoBD.Rows[fila]["precio_venta_nuevo"].ToString() != "N/A")
                     {
                         insumo.Rows[fila_insumo]["precio_venta_nuevo"] = funciones.formatCurrency(double.Parse(insumoBD.Rows[fila]["precio_venta_nuevo"].ToString()));
@@ -96,7 +98,7 @@ namespace paginaWeb.paginasFabrica
                     {
                         insumo.Rows[fila_insumo]["precio_venta_nuevo"] = insumoBD.Rows[fila]["precio_venta_nuevo"].ToString();
                     }
-                    if (insumoBD.Rows[fila]["diferencia"].ToString() != "N/A") 
+                    if (insumoBD.Rows[fila]["diferencia"].ToString() != "N/A")
                     {
                         insumo.Rows[fila_insumo]["diferencia"] = funciones.formatCurrency(double.Parse(insumoBD.Rows[fila]["diferencia"].ToString()));
                     }
@@ -104,7 +106,7 @@ namespace paginaWeb.paginasFabrica
                     {
                         insumo.Rows[fila_insumo]["diferencia"] = insumoBD.Rows[fila]["diferencia"].ToString();
                     }
-                    if (insumoBD.Rows[fila]["precio_venta_personalizado"].ToString() != "N/A") 
+                    if (insumoBD.Rows[fila]["precio_venta_personalizado"].ToString() != "N/A")
                     {
                         insumo.Rows[fila_insumo]["precio_venta_personalizado"] = funciones.formatCurrency(double.Parse(insumoBD.Rows[fila]["precio_venta_personalizado"].ToString()));
                     }
@@ -220,17 +222,17 @@ namespace paginaWeb.paginasFabrica
 
         protected void gridview_productos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-/*            insumoBD = (DataTable)Session["insumoBD"];
-            string id_insumo;
-            int fila_insumo;
-            for (int fila = 0; fila <= gridview_productos.Rows.Count - 1; fila++)
-            {
-                id_insumo = gridview_productos.Rows[fila].Cells[0].Text;
-                fila_insumo = funciones.buscar_fila_por_id(id_insumo,insumoBD);
-                DropDownList dropdown_tipo_paquete = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_tipo_paquete") as DropDownList);
-                dropdown_tipo_paquete.SelectedValue = insumoBD.Rows[fila_insumo]["tipo_paquete"].ToString();
+            /*            insumoBD = (DataTable)Session["insumoBD"];
+                        string id_insumo;
+                        int fila_insumo;
+                        for (int fila = 0; fila <= gridview_productos.Rows.Count - 1; fila++)
+                        {
+                            id_insumo = gridview_productos.Rows[fila].Cells[0].Text;
+                            fila_insumo = funciones.buscar_fila_por_id(id_insumo,insumoBD);
+                            DropDownList dropdown_tipo_paquete = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_tipo_paquete") as DropDownList);
+                            dropdown_tipo_paquete.SelectedValue = insumoBD.Rows[fila_insumo]["tipo_paquete"].ToString();
 
-            }*/
+                        }*/
         }
 
         protected void texbox_precio_TextChanged(object sender, EventArgs e)
@@ -243,13 +245,13 @@ namespace paginaWeb.paginasFabrica
             int fila_tabla = funciones.buscar_fila_por_id(gridview_productos.Rows[fila].Cells[0].Text, insumoBD);
 
             TextBox texbox_precio = (gridview_productos.Rows[fila].Cells[7].FindControl("texbox_precio") as TextBox);
-            double cantidad,multiplicador;
+            double cantidad, multiplicador;
             if (double.TryParse(texbox_precio.Text, out cantidad))
             {
                 insumoBD.Rows[fila_tabla]["precio_venta_personalizado"] = cantidad.ToString();
 
                 multiplicador = double.Parse(insumoBD.Rows[fila_tabla]["multiplicador"].ToString());
-                cantidad = cantidad/multiplicador;
+                cantidad = cantidad / multiplicador;
                 insumoBD.Rows[fila_tabla]["precio_venta_personalizado_por_unidad"] = cantidad.ToString();
             }
             else

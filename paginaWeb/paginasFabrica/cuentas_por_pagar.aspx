@@ -149,7 +149,7 @@
                                     <asp:Label ID="label_compra_mes" Text="Total compra del mes:" CssClass="badge bg-secondary" runat="server" />
                                 </h2>
 
-                                <asp:GridView ID="gridView_remitos" runat="server" Caption="REMITOS" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped" OnRowDataBound="gridView_remitos_RowDataBound" >
+                                <asp:GridView ID="gridView_remitos" runat="server" Caption="REMITOS" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped" OnRowDataBound="gridView_remitos_RowDataBound">
                                     <Columns>
                                         <asp:BoundField HeaderText="id" DataField="id" />
                                         <asp:BoundField HeaderText="N° pedido" DataField="num_orden" />
@@ -216,7 +216,43 @@
 
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6"></div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="row alert alert-light">
+                            <h3>carga de notas de credito</h3>
+                            <div class="row">
+                                <div class="col">
+                                    <asp:Label Text="Dia" CssClass=" form-label" runat="server" />
+                                    <asp:DropDownList ID="DropDow_nota_dia" runat="server" CssClass="form-select">
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="col">
+                                    <asp:Label Text="Mes" CssClass=" form-label" runat="server" />
+                                    <asp:DropDownList ID="DropDow_nota_mes" runat="server" CssClass="form-select">
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="col">
+                                    <asp:Label Text="Año" CssClass=" form-label" runat="server" />
+                                    <asp:DropDownList ID="DropDow_nota_año" runat="server" CssClass="form-select">
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <asp:Label Text="Detalle" CssClass=" form-label" runat="server" />
+                                    <asp:TextBox ID="textBox_detalle" CssClass="form-control" AutoPostBack="true" runat="server" />
+                                </div>
+                            </div>
+                            <div class="col">
+                                <asp:Label Text="Monto" CssClass=" form-label" runat="server" />
+                                <asp:TextBox ID="textBox_monto" CssClass="form-control" OnTextChanged="textBox_monto_TextChanged" TextMode="Number" AutoPostBack="true" runat="server" />
+                            </div>
+                            <div class="col">
+                                <asp:Label ID="label_monto" CssClass="form-label" Text="Total: $0.00" runat="server" />
+                                <br />
+                                <asp:Button ID="boton_carga_nota_credido" CssClass="btn btn-primary" OnClick="boton_carga_nota_credido_Click" Text="Cargar" runat="server" />
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <div class="container-fluid">
                             <div class="row alert alert-light">
