@@ -57,11 +57,6 @@ namespace paginaWeb.paginasFabrica
             Response.Redirect("~/paginasFabrica/administracion_de_equipos.aspx", false);
         }
 
-        protected void textbox_temperatura_diaria_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         protected void boton_cargar_Click(object sender, EventArgs e)
         {
 
@@ -89,6 +84,21 @@ namespace paginaWeb.paginasFabrica
         protected void dropdown_ubicaciones_SelectedIndexChanged(object sender, EventArgs e)
         {
             cargar_equipos();
+        }
+
+        protected void textbox_temperatura_diaria_1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void textbox_temperatura_diaria_2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void textbox_temperatura_diaria_3_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

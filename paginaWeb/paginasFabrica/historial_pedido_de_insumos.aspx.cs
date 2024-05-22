@@ -239,6 +239,14 @@ namespace paginaWeb.paginasFabrica
                 {
                     Response.Redirect("/paginasFabrica/recepcion_de_insumos.aspx", false);
                 }
+                
+            }
+            else if (e.CommandName == "eliminar")
+            {
+                string gridview_pedidos_index = e.CommandArgument.ToString();
+                historial_pedido_insumos.desactivar_pedido(gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[0].Text);
+                orden_de_pedidoBD = historial_pedido_insumos.get_orden_de_pedido();
+                cargar_pedido();
             }
         }
 
@@ -259,6 +267,7 @@ namespace paginaWeb.paginasFabrica
                 else 
                 {
                     gridView_pedidos.Rows[fila].Cells[5].Controls[0].Visible = false;
+                    gridView_pedidos.Rows[fila].Cells[6].Controls[0].Visible = false;
                 }
             }
         }

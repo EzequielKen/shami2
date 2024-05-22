@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,7 +35,13 @@ namespace _03___sistemas_fabrica
         }
 
 
-
+        #region desactivar pedido
+        public void desactivar_pedido(string id)
+        {
+            string actualizar = "`activa` = '0' ";
+            consultas.actualizar_tabla(base_de_datos, "pedido_de_insumos",actualizar, id);
+        }
+        #endregion
         #region atributos
         cls_consultas_Mysql consultas;
         cls_funciones funciones = new cls_funciones();

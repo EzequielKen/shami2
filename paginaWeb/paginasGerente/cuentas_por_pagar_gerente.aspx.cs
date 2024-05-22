@@ -273,6 +273,49 @@ namespace paginaWeb.paginasGerente
 
             dropDown_año.SelectedIndex = dropDown_año.Items.Count - 1;
         }
+        private void configurar_controles_nota_credito()
+        {
+            cargar_dias_nota();
+            cargar_mes_nota();
+            cargar_año_nota();
+        }
+        private void cargar_dias_nota()
+        {
+            int num_item = 1;
+            System.Web.UI.WebControls.ListItem item;
+            for (int mes = 1; mes <= 31; mes++)
+            {
+                item = new System.Web.UI.WebControls.ListItem(mes.ToString(), num_item.ToString());
+                DropDow_nota_dia.Items.Add(item);
+                num_item++;
+            }
+            DropDow_nota_dia.SelectedValue = DateTime.Now.Day.ToString();
+        }
+        private void cargar_año_nota()
+        {
+            int num_item = 1;
+            System.Web.UI.WebControls.ListItem item;
+            for (int año = 2022; año <= DateTime.Now.Year; año++)
+            {
+                item = new System.Web.UI.WebControls.ListItem(año.ToString(), num_item.ToString());
+                DropDow_nota_año.Items.Add(item);
+                num_item++;
+            }
+
+            DropDow_nota_año.SelectedIndex = dropDown_año.Items.Count - 1;
+        }
+        private void cargar_mes_nota()
+        {
+            int num_item = 1;
+            System.Web.UI.WebControls.ListItem item;
+            for (int mes = 1; mes <= 12; mes++)
+            {
+                item = new System.Web.UI.WebControls.ListItem(mes.ToString(), num_item.ToString());
+                DropDow_nota_mes.Items.Add(item);
+                num_item++;
+            }
+            DropDow_nota_mes.SelectedValue = DateTime.Now.Month.ToString();
+        }
         #endregion
         /// <summary>
         /// ////////////////////////////////////////////////////////////////////////////
@@ -309,6 +352,7 @@ namespace paginaWeb.paginasGerente
                 ordenes_de_compraBD = cuentas_Por_Pagar.get_cuenta_por_pagar_fabrica(dropDown_proveedores.SelectedItem.Text);
                 Session.Add("ordenes_de_compraBD", ordenes_de_compraBD);
                 cargar_ordenes_de_compra();
+                configurar_controles_nota_credito();
             }
         }
 
@@ -424,6 +468,14 @@ namespace paginaWeb.paginasGerente
                 {
                     gridView_remitos.Rows[fila].CssClass = "table-danger";
                 }
+                int dato;
+                if (!int.TryParse(gridView_remitos.Rows[fila].Cells[1].Text, out dato))
+                {
+                    Button boton_PDF = gridView_remitos.Rows[fila].Cells[7].FindControl("boton_PDF") as Button;
+                    Button boton_pagar = gridView_remitos.Rows[fila].Cells[8].FindControl("boton_pagar") as Button;
+                    boton_PDF.Visible = false;
+                    boton_pagar.Visible = false;
+                }
             }
         }
 
@@ -462,6 +514,46 @@ namespace paginaWeb.paginasGerente
             string id_de_factura = ordenes_de_compraBD.Rows[fila_orden]["num_orden"].ToString();
 
             crear_pdf_con_precio(id_orden, id_de_factura);
+        }
+        protected void textBox_monto_TextChanged(object sender, EventArgs e)
+        {
+            double cantidad = 0;
+            if (double.TryParse(textBox_monto.Text, out cantidad))
+            {
+                if (cantidad < 0)
+                {
+                    textBox_monto.Text = string.Empty;
+                }
+                else
+                {
+                    label_monto.Text = funciones.formatCurrency(cantidad);
+                }
+            }
+        }
+        protected void boton_carga_nota_credido_Click(object sender, EventArgs e)
+        {
+            double cantidad = 0;
+            if (double.TryParse(textBox_monto.Text, out cantidad) &&
+                textBox_detalle.Text != string.Empty)
+            {
+                if (cantidad < 0)
+                {
+                    textBox_monto.Text = string.Empty;
+                }
+                else
+                {
+                    string fecha_nota = DropDow_nota_año.SelectedItem.Text + "-" + DropDow_nota_mes.SelectedItem.Text + "-" + DropDow_nota_dia.SelectedItem.Text;
+                    fecha_nota = fecha_nota + " " + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString();
+                    string cantidad_a_cargar = "-" + cantidad.ToString();
+                    cuentas_Por_Pagar.cargar_nota_credito(dropDown_proveedores.SelectedItem.Text, textBox_detalle.Text, cantidad_a_cargar, fecha_nota);
+                    textBox_monto.Text = string.Empty;
+                    textBox_detalle.Text = string.Empty;
+                    label_monto.Text = "Total: $0.00";
+                    ordenes_de_compraBD = cuentas_Por_Pagar.get_cuenta_por_pagar_fabrica(dropDown_proveedores.SelectedItem.Text);
+                    Session.Add("ordenes_de_compraBD", ordenes_de_compraBD);
+                    cargar_ordenes_de_compra();
+                }
+            }
         }
     }
 }

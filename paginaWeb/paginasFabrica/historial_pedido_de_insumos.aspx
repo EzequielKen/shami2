@@ -62,6 +62,7 @@
                                         <asp:BoundField HeaderText="Fecha de Pedido " DataField="fecha" />
                                         <asp:ButtonField HeaderText="Abrir Pedido" Text="Abrir" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="abrir_pedido" />
                                         <asp:ButtonField HeaderText="Cargar Entrega" Text="Cargar" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="cargar_entrega" />
+                                        <asp:ButtonField HeaderText="Eliminar" Text="Eliminar" ControlStyle-CssClass="btn btn-danger btn-sm" CommandName="eliminar" />
                                     </Columns>
                                 </asp:GridView>
                             </div>
