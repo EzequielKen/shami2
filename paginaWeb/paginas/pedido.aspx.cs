@@ -253,14 +253,18 @@ namespace paginaWeb
                 {
                     productosPDF.Rows.Add();
                     productosPDF.Rows[fila_producto]["id"] = productos_proveedor.Rows[fila]["id"].ToString();
+                    if (productos_proveedor.Rows[fila]["id"].ToString()=="1")
+                    {
+                        string stop = productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
+                    }
                     productosPDF.Rows[fila_producto]["producto"] = productos_proveedor.Rows[fila]["producto"].ToString();
                     productosPDF.Rows[fila_producto]["unidad_medida"] = productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
                     precio = double.Parse(productos_proveedor.Rows[fila]["precio"].ToString());
                     multiplicador = double.Parse(productos_proveedor.Rows[fila]["multiplicador"].ToString());
                     precio = precio * multiplicador;
-                    if (Session["nombre_proveedor"].ToString() == "Shami Insumos")
+                    if (productos_proveedor.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                     {
-                        productosPDF.Rows[fila_producto]["precio"] = formatCurrency(precio);
+                        productosPDF.Rows[fila_producto]["precio"] = formatCurrency(precio) + " x"+ productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
                     }
                     else
                     {
