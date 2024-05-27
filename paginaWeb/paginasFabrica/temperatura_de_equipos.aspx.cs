@@ -26,6 +26,31 @@ namespace paginaWeb.paginasFabrica
                 dropdown_ubicaciones.Items.Add(ubicaciones.Rows[fila]["ubicacion"].ToString());
             }
         }
+        private string verificar_horario()
+        {
+            string retorno = "fuera de rango";
+            DateTime miFecha = DateTime.Now;
+            // Definir los límites de tiempo
+            DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 8, 0, 0); // 8:00 AM
+            DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 12, 0, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
+            {
+                retorno = "rango 1";
+            }
+            DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 8, 0, 0); // 8:00 AM
+            DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 12, 0, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2)
+            {
+                retorno = "rango 2";
+            }
+            DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 8, 0, 0); // 8:00 AM
+            DateTime horaFin_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 12, 0, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
+            {
+                retorno = "rango 3";
+            }
+            return retorno;
+        }
         /// <summary>
         /// //////////////////////////////////////////////////////////////////
         /// </summary>
@@ -59,14 +84,44 @@ namespace paginaWeb.paginasFabrica
 
         protected void boton_cargar_Click(object sender, EventArgs e)
         {
-
+            if (textbox_nombre.Text != string.Empty)
+            {
+                Button boton_cargar = (Button)sender;
+                GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
+                int fila = row.RowIndex;
+                TextBox textbox_temperatura_diaria_1 = (gridview_equipos.Rows[fila].Cells[6].FindControl("textbox_temperatura_diaria_1") as TextBox);
+                TextBox textbox_temperatura_diaria_2 = (gridview_equipos.Rows[fila].Cells[7].FindControl("textbox_temperatura_diaria_2") as TextBox);
+                TextBox textbox_temperatura_diaria_3 = (gridview_equipos.Rows[fila].Cells[8].FindControl("textbox_temperatura_diaria_3") as TextBox);
+                if (textbox_temperatura_diaria_1.Text != string.Empty ||
+                    textbox_temperatura_diaria_2.Text != string.Empty ||
+                    textbox_temperatura_diaria_3.Text != string.Empty)
+                {
+                    string temperatura = "";
+                    if (textbox_temperatura_diaria_1.Text != string.Empty)
+                    {
+                        temperatura = textbox_temperatura_diaria_1.Text;
+                    }
+                    else if (textbox_temperatura_diaria_2.Text != string.Empty)
+                    {
+                        temperatura = textbox_temperatura_diaria_2.Text;
+                    }
+                    else if (textbox_temperatura_diaria_3.Text != string.Empty)
+                    {
+                        temperatura = textbox_temperatura_diaria_3.Text;
+                    }
+                    temperaturas.registrar_temperatura(textbox_nombre.Text, gridview_equipos.Rows[fila].Cells[0].Text, gridview_equipos.Rows[fila].Cells[2].Text, temperatura);
+                    textbox_temperatura_diaria_1.Text = string.Empty;
+                    textbox_temperatura_diaria_2.Text = string.Empty;
+                    textbox_temperatura_diaria_3.Text = string.Empty;
+                }
+            }
         }
 
         protected void gridview_equipos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            for (int fila = 0; fila <=gridview_equipos.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= gridview_equipos.Rows.Count - 1; fila++)
             {
-                if (gridview_equipos.Rows[fila].Cells[3].Text== "Congelacion")
+                if (gridview_equipos.Rows[fila].Cells[3].Text == "Congelacion")
                 {
                     gridview_equipos.Rows[fila].CssClass = "table-primary";
                 }

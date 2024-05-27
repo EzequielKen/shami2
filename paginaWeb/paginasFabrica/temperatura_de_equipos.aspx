@@ -21,7 +21,7 @@
                             <div class="input-group">
                             <asp:DropDownList ID="dropdown_ubicaciones" CssClass=" form-control dropdown" OnSelectedIndexChanged="dropdown_ubicaciones_SelectedIndexChanged" AutoPostBack="true" runat="server">
                             </asp:DropDownList>
-                            <asp:TextBox ID="textbox_nombre" placeholder="Ingrese su nombre++" CssClass="form-control" runat="server" />
+                            <asp:TextBox ID="textbox_nombre" placeholder="Ingrese su nombre" CssClass="form-control" runat="server" />
                             </div>
                             
                             <asp:GridView Caption="LISTA DE EQUIPOS" CaptionAlign="Top" runat="server" ID="gridview_equipos" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_equipos_RowDataBound">
@@ -32,17 +32,17 @@
                                     <asp:BoundField HeaderText="categoria" DataField="categoria" />
                                     <asp:BoundField HeaderText="observaciones" DataField="observaciones" />
                                     <asp:BoundField HeaderText="temperatura optima" DataField="temperatura" />
-                                    <asp:TemplateField HeaderText="Temperatura diaria">
+                                    <asp:TemplateField HeaderText="Turno 1: 08:00Hs a 12:00Hs">
                                         <ItemTemplate>
                                             <asp:TextBox ID="textbox_temperatura_diaria_1" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_1_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Temperatura diaria">
+                                    <asp:TemplateField HeaderText="Turno 2: 16:00Hs a 18:00Hs">
                                         <ItemTemplate>
                                             <asp:TextBox ID="textbox_temperatura_diaria_2" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_2_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Temperatura diaria">
+                                    <asp:TemplateField HeaderText="Turno 3: 21:00Hs a 23:00Hs">
                                         <ItemTemplate>
                                             <asp:TextBox ID="textbox_temperatura_diaria_3" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_3_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>

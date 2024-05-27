@@ -41,7 +41,29 @@ namespace _03___sistemas_fabrica
         DataTable equipos;
         DataTable equipos_ordenados;
         #endregion
-
+        #region carga a base de datos
+        public void registrar_temperatura(string nombre, string id_equipo,string equipo, string temperatura)
+        {
+            string columna="";
+            string valores="";
+            //nombre
+            columna = funciones.armar_query_columna(columna, "nombre",false);
+            valores = funciones.armar_query_valores(valores, nombre,false);
+            //fecha
+            columna = funciones.armar_query_columna(columna, "fecha", false);
+            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
+            //id_equipo
+            columna = funciones.armar_query_columna(columna, "id_equipo", false);
+            valores = funciones.armar_query_valores(valores, id_equipo, false);
+            //equipo
+            columna = funciones.armar_query_columna(columna, "equipo", false);
+            valores = funciones.armar_query_valores(valores, equipo, false);
+            //temperatura
+            columna = funciones.armar_query_columna(columna, "temperatura", true);
+            valores = funciones.armar_query_valores(valores, temperatura, true);
+            consultas.insertar_en_tabla(base_de_datos, "temperatura_de_equipos",columna,valores);
+        }
+        #endregion
         #region metodos privados
         private void crear_tabla_equipos()
         {

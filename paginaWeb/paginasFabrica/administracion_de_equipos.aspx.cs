@@ -12,11 +12,14 @@ namespace paginaWeb.paginasFabrica
             ubicacion = administrador.get_ubicaciones();
             gridview_ubicacion.DataSource = ubicacion;
             gridview_ubicacion.DataBind();
-            dropdown_ubicaciones.Items.Clear();
-            for (int fila = 0; fila <= ubicacion.Rows.Count - 1; fila++)
+            if (dropdown_ubicaciones.Items.Count==0)
             {
-                dropdown_ubicaciones.Items.Add(ubicacion.Rows[fila]["ubicacion"].ToString());
+                for (int fila = 0; fila <= ubicacion.Rows.Count - 1; fila++)
+                {
+                    dropdown_ubicaciones.Items.Add(ubicacion.Rows[fila]["ubicacion"].ToString());
+                }
             }
+
         }
         private void cargar_datos_equipos()
         {
@@ -56,8 +59,10 @@ namespace paginaWeb.paginasFabrica
             }
             administrador = (cls_administracion_de_equipos)Session["administrador"];
             cargar_datos_ubicacion();
+
             if (!IsPostBack)
             {
+
                 cargar_datos_equipos();
             }
         }
@@ -121,6 +126,7 @@ namespace paginaWeb.paginasFabrica
             {
                 administrador.cargar_equipo(Session["tipo_equipo"].ToString(), dropdown_ubicaciones.SelectedItem.Text, textbox_equipo.Text, textbox_temperatura.Text, textbox_observacion.Text);
                 textbox_equipo.Text = string.Empty;
+                textbox_observacion.Text = string.Empty;
                 cargar_datos_equipos();
             }
         }
@@ -239,6 +245,12 @@ namespace paginaWeb.paginasFabrica
             {
                 textbox_temperatura.Text = "0 °C A -18 °C";//Congelacion
             }
+        }
+
+
+        protected void dropdown_ubicaciones_SelectedIndexChanged1(object sender, EventArgs e)
+        {
+            Session.Add("ubicacion_seleccionada", dropdown_ubicaciones.SelectedItem.Text);
         }
     }
 }

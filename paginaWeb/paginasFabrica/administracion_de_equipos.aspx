@@ -50,7 +50,7 @@
                                 <asp:TextBox ID="textbox_equipo" placeholder="Ingrese el nombre del equipo." CssClass="form-control" runat="server" />
                             </div>
                             <h3>Seleccione ubicacion del equipo:</h3>
-                            <asp:DropDownList ID="dropdown_ubicaciones" CssClass="btn btn-dark dropdown-toggle" runat="server">
+                            <asp:DropDownList ID="dropdown_ubicaciones" CssClass="btn btn-dark dropdown-toggle" runat="server" >
                             </asp:DropDownList>
 
                             <h3>Observaciones.</h3>
