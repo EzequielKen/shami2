@@ -135,7 +135,7 @@ namespace _03___sistemas_fabrica
             actualizar = "`fecha_entrega` = '" + funciones.get_fecha() + "'";
             consultas.actualizar_tabla(base_de_datos, "ordenes_de_compra", actualizar, id_orden);
 
-            actualizar = "`estado` = 'Entrega Parcial'";
+            actualizar = "`estado` = 'Recibido'";
             consultas.actualizar_tabla(base_de_datos, "ordenes_de_compra", actualizar, id_orden);
 
             int index = 1;
@@ -180,6 +180,25 @@ namespace _03___sistemas_fabrica
             {
                 actualizar_acuerdo_de_precio(id_orden, id_proveedor, orden_de_compra);
             }*/
+        }
+        private void crear_nueva_orden_de_compra(DataTable orden_de_compra)
+        {
+            string columna = "";
+            string valores = "";
+            //id_proveedor
+            //proveedor
+            //acuerdo_de_precios
+            //estado
+            //fecha
+            //fecha_entrega_estimada
+            //nota
+            //tipo_de_pago
+            //condicion_pago
+            //cantidad_a_pagar
+            for (int fila = 0; fila <= orden_de_compraBD.Rows.Count-1; fila++)
+            {
+                
+            }
         }
         private void actualizar_valor_de_orden_de_compra(string num_orden, string id_proveedor, string valor_orden, string nombre_fabrica, string nombre_proveedor, string total_impuestos, string condicion_pago, string fecha_entrega,string estado_entrega)
         {

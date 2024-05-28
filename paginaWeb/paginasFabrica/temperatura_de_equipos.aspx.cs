@@ -13,7 +13,8 @@ namespace paginaWeb.paginasFabrica
     {
         private void cargar_equipos()
         {
-            equipos = temperaturas.get_equipos(dropdown_ubicaciones.SelectedItem.Text);
+            DateTime fecha = DateTime.Now;
+            equipos = temperaturas.get_equipos(dropdown_ubicaciones.SelectedItem.Text, fecha);
             gridview_equipos.DataSource = equipos;
             gridview_equipos.DataBind();
         }
@@ -89,30 +90,15 @@ namespace paginaWeb.paginasFabrica
                 Button boton_cargar = (Button)sender;
                 GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
                 int fila = row.RowIndex;
-                TextBox textbox_temperatura_diaria_1 = (gridview_equipos.Rows[fila].Cells[6].FindControl("textbox_temperatura_diaria_1") as TextBox);
-                TextBox textbox_temperatura_diaria_2 = (gridview_equipos.Rows[fila].Cells[7].FindControl("textbox_temperatura_diaria_2") as TextBox);
-                TextBox textbox_temperatura_diaria_3 = (gridview_equipos.Rows[fila].Cells[8].FindControl("textbox_temperatura_diaria_3") as TextBox);
-                if (textbox_temperatura_diaria_1.Text != string.Empty ||
-                    textbox_temperatura_diaria_2.Text != string.Empty ||
-                    textbox_temperatura_diaria_3.Text != string.Empty)
+                TextBox textbox_temperatura_diaria = (gridview_equipos.Rows[fila].Cells[6].FindControl("textbox_temperatura_diaria") as TextBox);
                 {
                     string temperatura = "";
-                    if (textbox_temperatura_diaria_1.Text != string.Empty)
+                    if (textbox_temperatura_diaria.Text != string.Empty)
                     {
-                        temperatura = textbox_temperatura_diaria_1.Text;
-                    }
-                    else if (textbox_temperatura_diaria_2.Text != string.Empty)
-                    {
-                        temperatura = textbox_temperatura_diaria_2.Text;
-                    }
-                    else if (textbox_temperatura_diaria_3.Text != string.Empty)
-                    {
-                        temperatura = textbox_temperatura_diaria_3.Text;
+                        temperatura = textbox_temperatura_diaria.Text;
                     }
                     temperaturas.registrar_temperatura(textbox_nombre.Text, gridview_equipos.Rows[fila].Cells[0].Text, gridview_equipos.Rows[fila].Cells[2].Text, temperatura);
-                    textbox_temperatura_diaria_1.Text = string.Empty;
-                    textbox_temperatura_diaria_2.Text = string.Empty;
-                    textbox_temperatura_diaria_3.Text = string.Empty;
+                    textbox_temperatura_diaria.Text = string.Empty;
                 }
             }
         }

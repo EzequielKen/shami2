@@ -32,19 +32,13 @@
                                     <asp:BoundField HeaderText="categoria" DataField="categoria" />
                                     <asp:BoundField HeaderText="observaciones" DataField="observaciones" />
                                     <asp:BoundField HeaderText="temperatura optima" DataField="temperatura" />
-                                    <asp:TemplateField HeaderText="Turno 1: 08:00Hs a 12:00Hs">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="textbox_temperatura_diaria_1" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_1_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Turno 2: 16:00Hs a 18:00Hs">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="textbox_temperatura_diaria_2" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_2_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
+                                    <asp:BoundField HeaderText="Turno 3: 08:00Hs a 12:00Hs" DataField="turno_1" />
+                                    <asp:BoundField HeaderText="Turno 3: 16:00Hs a 18:00Hs" DataField="turno_2" />
+                                    <asp:BoundField HeaderText="Turno 3: 21:00Hs a 23:00Hs" DataField="turno_3" />
+                                   
                                     <asp:TemplateField HeaderText="Turno 3: 21:00Hs a 23:00Hs">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_temperatura_diaria_3" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_3_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_temperatura_diaria" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_3_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Cargar">

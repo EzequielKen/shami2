@@ -29,7 +29,7 @@ namespace paginaWeb.paginasGerente
                 {
                      saldo_inicial = double.Parse(movimientosBD.Rows[0]["final"].ToString());
                 }
-                double movimiento = double.Parse(textbox_cantidad.Text);
+                double movimiento = double.Parse(textbox_cantidad.Text.Replace(",", "."));
                 if (tipo_movimiento == "Ingreso")
                 {
                     final = saldo_inicial + movimiento;
@@ -91,7 +91,7 @@ namespace paginaWeb.paginasGerente
         private void verificar_cantidad()
         {
             double cantidad;
-            if (double.TryParse(textbox_cantidad.Text, out cantidad))
+            if (double.TryParse(textbox_cantidad.Text.Replace(",","."), out cantidad))
             {
                 label_cantidad.Text = funciones.formatCurrency(cantidad);
             }
