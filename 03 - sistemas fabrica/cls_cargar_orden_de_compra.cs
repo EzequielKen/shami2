@@ -51,7 +51,7 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region carga a base de datos
-        public void actualizar_orden_de_compra(string id_orden, DataTable orden_de_compra, string id_proveedor, string valor_orden, string nombre_fabrica, string nombre_proveedor, string total_impuestos, string rol_usuario, string estado_pedido, string condicion_pago, string fecha_factura,string estado_entrega)
+        public void actualizar_orden_de_compra(string id_orden, DataTable orden_de_compra, string id_proveedor, string valor_orden, string nombre_fabrica, string nombre_proveedor, string total_impuestos, string rol_usuario, string estado_pedido, string condicion_pago, string fecha_factura, string estado_entrega)
         {
             actualizar_valor_de_orden_de_compra(id_orden, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedor, total_impuestos, condicion_pago, fecha_factura, estado_entrega);
             consultar_orden_de_compra(id_orden);
@@ -128,6 +128,8 @@ namespace _03___sistemas_fabrica
         {
             actualizar_valor_de_orden_de_compra(id_orden, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedor, total_impuestos, condicion_pago, "N/A", estado_entrega);
             consultar_orden_de_compra(id_orden);
+            crear_nueva_orden_de_compra(orden_de_compra);
+
             consultar_insumos_fabrica();
             DataTable insumos_fabrica_copia = insumos_fabrica;
             string actualizar;
@@ -181,26 +183,93 @@ namespace _03___sistemas_fabrica
                 actualizar_acuerdo_de_precio(id_orden, id_proveedor, orden_de_compra);
             }*/
         }
+        private int buscar_pedido_en_columna(string id, DataTable orden_de_compra)
+        {
+            int retorno = -1;
+            string id_dato;
+            for (int columna = orden_de_compra.Columns["producto_1"].Ordinal; columna <= orden_de_compra.Columns.Count - 1; columna++)
+            {
+                id_dato = funciones.obtener_dato(orden_de_compra.Rows[0][columna].ToString(), 1);
+                if (id == id_dato)
+                {
+                    retorno = columna;
+                    break;
+                }
+            }
+            return retorno;
+        }
         private void crear_nueva_orden_de_compra(DataTable orden_de_compra)
         {
+            string id, nombre_producto, precio, tipo_unidad, unidad, unidad_medida, dato;
+            double cantidad_original, cantidad_recibida, diferencia;
+            int fila_pedido;
             string columna = "";
             string valores = "";
             //id_proveedor
+            columna = funciones.armar_query_columna(columna, "id_proveedor", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["id_proveedor"].ToString(), false);
             //proveedor
+            columna = funciones.armar_query_columna(columna, "proveedor", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["proveedor"].ToString(), false);
             //acuerdo_de_precios
+            columna = funciones.armar_query_columna(columna, "acuerdo_de_precios", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["acuerdo_de_precios"].ToString(), false);
             //estado
+            columna = funciones.armar_query_columna(columna, "estado", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["estado"].ToString(), false);
             //fecha
+            columna = funciones.armar_query_columna(columna, "fecha", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["fecha"].ToString(), false);
             //fecha_entrega_estimada
+            columna = funciones.armar_query_columna(columna, "fecha_entrega_estimada", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["fecha_entrega_estimada"].ToString(), false);
             //nota
+            columna = funciones.armar_query_columna(columna, "nota", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["nota"].ToString(), false);
             //tipo_de_pago
+            columna = funciones.armar_query_columna(columna, "tipo_de_pago", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["tipo_de_pago"].ToString(), false);
             //condicion_pago
+            columna = funciones.armar_query_columna(columna, "condicion_pago", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["condicion_pago"].ToString(), false);
             //cantidad_a_pagar
-            for (int fila = 0; fila <= orden_de_compraBD.Rows.Count-1; fila++)
+            columna = funciones.armar_query_columna(columna, "cantidad_a_pagar", false);
+            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["cantidad_a_pagar"].ToString(), false);
+            for (int colum = orden_de_compraBD.Columns["producto_1"].Ordinal; colum <= orden_de_compraBD.Columns.Count - 1; colum++)
             {
-                
+                if (orden_de_compraBD.Rows[0][colum].ToString()=="N/A")
+                {
+                    id = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 1);
+                    fila_pedido = funciones.buscar_fila_por_id(id, orden_de_compra);
+                    if (fila_pedido != -1)
+                    {
+                        cantidad_recibida = double.Parse(orden_de_compra.Rows[fila_pedido]["nuevo_stock"].ToString());
+                        cantidad_original = double.Parse(funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 7));
+                        diferencia = cantidad_original - cantidad_recibida;
+                        if (diferencia > 0)
+                        {
+                            id = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 1);
+                            nombre_producto = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 2);
+                            precio = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 3);
+                            tipo_unidad = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 4);
+                            unidad = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 5);
+                            unidad_medida = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 6);
+                            dato = id + "-" + nombre_producto + "-" + precio + "-" + tipo_unidad + "-" + unidad + "-" + unidad_medida + "-" + diferencia + "-N/A";
+                            columna = funciones.armar_query_columna(columna, orden_de_compraBD.Columns[colum].ColumnName.ToString(), false);
+                            valores = funciones.armar_query_valores(valores, dato, false);
+                        }
+                    }
+                }
+                else
+                {
+                    columna = funciones.armar_query_columna(columna, orden_de_compraBD.Columns[colum].ColumnName.ToString(), true);
+                    valores = funciones.armar_query_valores(valores, "N/A", true);
+                    break;
+                }
             }
+            consultas.insertar_en_tabla(base_de_datos, "ordenes_de_compra", columna, valores);
         }
-        private void actualizar_valor_de_orden_de_compra(string num_orden, string id_proveedor, string valor_orden, string nombre_fabrica, string nombre_proveedor, string total_impuestos, string condicion_pago, string fecha_entrega,string estado_entrega)
+        private void actualizar_valor_de_orden_de_compra(string num_orden, string id_proveedor, string valor_orden, string nombre_fabrica, string nombre_proveedor, string total_impuestos, string condicion_pago, string fecha_entrega, string estado_entrega)
         {
             consultar_cuenta_por_pagar_fabrica();
             if (verificar_si_existe_cuenta_por_pagar_fabrica(num_orden, id_proveedor))
