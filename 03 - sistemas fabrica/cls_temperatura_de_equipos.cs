@@ -44,13 +44,13 @@ namespace _03___sistemas_fabrica
         DataTable temperaturas;
         #endregion
         #region carga a base de datos
-        public void registrar_temperatura(string nombre, string id_equipo,string equipo, string temperatura)
+        public void registrar_temperatura(string nombre, string id_equipo, string equipo, string temperatura)
         {
-            string columna="";
-            string valores="";
+            string columna = "";
+            string valores = "";
             //nombre
-            columna = funciones.armar_query_columna(columna, "nombre",false);
-            valores = funciones.armar_query_valores(valores, nombre,false);
+            columna = funciones.armar_query_columna(columna, "nombre", false);
+            valores = funciones.armar_query_valores(valores, nombre, false);
             //fecha
             columna = funciones.armar_query_columna(columna, "fecha", false);
             valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
@@ -63,14 +63,14 @@ namespace _03___sistemas_fabrica
             //temperatura
             columna = funciones.armar_query_columna(columna, "temperatura", true);
             valores = funciones.armar_query_valores(valores, temperatura, true);
-            consultas.insertar_en_tabla(base_de_datos, "temperatura_de_equipos",columna,valores);
+            consultas.insertar_en_tabla(base_de_datos, "temperatura_de_equipos", columna, valores);
         }
         #endregion
         #region metodos privados
         private string verificar_horario(DateTime miFecha)
         {
             string retorno = "fuera de rango";
-            
+
             // Definir los límites de tiempo
             DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 8, 0, 0); // 8:00 AM
             DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 12, 0, 0); // 12:00 PM
@@ -95,7 +95,7 @@ namespace _03___sistemas_fabrica
         private void crear_tabla_temperatura()
         {
             temperaturas = new DataTable();
-            temperaturas.Columns.Add("id",typeof(string));
+            temperaturas.Columns.Add("id", typeof(string));
             temperaturas.Columns.Add("ubicacion", typeof(string));
             temperaturas.Columns.Add("nombre", typeof(string));
             temperaturas.Columns.Add("categoria", typeof(string));
@@ -123,29 +123,33 @@ namespace _03___sistemas_fabrica
         private void ordenar_temperatura()
         {
             crear_tabla_temperatura();
-            int ult_fila,fila_temperatura;
-            string rango="",id_equipo;
-            for (int fila = 0; fila <= equipos.Rows.Count-1; fila++)
+            int ult_fila, fila_temperatura;
+            string rango = "", id_equipo;
+            for (int fila = 0; fila <= equipos.Rows.Count - 1; fila++)
             {
                 temperaturas.Rows.Add();
-                ult_fila = temperaturas.Rows.Count-1;
+                ult_fila = temperaturas.Rows.Count - 1;
                 id_equipo = equipos.Rows[fila]["id"].ToString();
-                fila_temperatura = buscar_fila_temperatura(id_equipo,temperaturas_del_dia);
+                fila_temperatura = buscar_fila_temperatura(id_equipo, temperaturas_del_dia);
                 temperaturas.Rows[ult_fila]["id"] = equipos.Rows[fila]["id"].ToString();
                 temperaturas.Rows[ult_fila]["ubicacion"] = equipos.Rows[fila]["ubicacion"].ToString();
                 temperaturas.Rows[ult_fila]["nombre"] = equipos.Rows[fila]["nombre"].ToString();
                 temperaturas.Rows[ult_fila]["categoria"] = equipos.Rows[fila]["categoria"].ToString();
                 temperaturas.Rows[ult_fila]["observaciones"] = equipos.Rows[fila]["observaciones"].ToString();
                 temperaturas.Rows[ult_fila]["temperatura"] = equipos.Rows[fila]["temperatura"].ToString();
-                if (fila_temperatura!=-1)
+                if (fila_temperatura != -1)
                 {
                     rango = verificar_horario(DateTime.Parse(temperaturas_del_dia.Rows[fila_temperatura]["fecha"].ToString()));
+                }
+                else
+                {
+                    rango = "";
                 }
                 if (rango == "rango 1")
                 {
                     temperaturas.Rows[ult_fila]["turno_1"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString();
                 }
-                else 
+                else
                 {
                     temperaturas.Rows[ult_fila]["turno_1"] = "N/A";
                 }
@@ -170,7 +174,7 @@ namespace _03___sistemas_fabrica
         private void crear_tabla_equipos()
         {
             equipos_ordenados = new DataTable();
-            equipos_ordenados.Columns.Add("id",typeof(string));
+            equipos_ordenados.Columns.Add("id", typeof(string));
             equipos_ordenados.Columns.Add("nombre", typeof(string));
             equipos_ordenados.Columns.Add("categoria", typeof(string));
             equipos_ordenados.Columns.Add("ubicacion", typeof(string));
@@ -187,12 +191,12 @@ namespace _03___sistemas_fabrica
             int ultima_fila;
             temperaturas.DefaultView.Sort = "categoria ASC";
             temperaturas = temperaturas.DefaultView.ToTable();
-            for (int fila = 0; fila <= ubicaciones.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= ubicaciones.Rows.Count - 1; fila++)
             {
                 ubicacion = ubicaciones.Rows[fila]["ubicacion"].ToString();
-                for (int fila_equipo = 0; fila_equipo <= temperaturas.Rows.Count-1; fila_equipo++)
+                for (int fila_equipo = 0; fila_equipo <= temperaturas.Rows.Count - 1; fila_equipo++)
                 {
-                    if (ubicacion== temperaturas.Rows[fila_equipo]["ubicacion"].ToString())
+                    if (ubicacion == temperaturas.Rows[fila_equipo]["ubicacion"].ToString())
                     {
                         equipos_ordenados.Rows.Add();
                         ultima_fila = equipos_ordenados.Rows.Count - 1;
@@ -213,7 +217,7 @@ namespace _03___sistemas_fabrica
         #region metodos consultas
         private void consultar_temperatura(DateTime fecha)
         {
-            temperaturas_del_dia = consultas.consultar_temperatura_segun_fecha(fecha.Year.ToString(),fecha.Month.ToString(),fecha.Day.ToString());
+            temperaturas_del_dia = consultas.consultar_temperatura_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString());
         }
         private void consultar_ubicaciones()
         {
@@ -221,7 +225,7 @@ namespace _03___sistemas_fabrica
         }
         private void consultar_equipos(string ubicacion)
         {
-            if (ubicacion=="todos")
+            if (ubicacion == "todos")
             {
                 equipos = consultas.consultar_tabla(base_de_datos, "equipos");
             }
@@ -235,7 +239,7 @@ namespace _03___sistemas_fabrica
         }
         #endregion
         #region metodos get/set
-   
+
         public DataTable get_equipos(string ubicacion, DateTime fecha)
         {
             consultar_equipos(ubicacion);

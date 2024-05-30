@@ -128,7 +128,7 @@ namespace _03___sistemas_fabrica
         {
             actualizar_valor_de_orden_de_compra(id_orden, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedor, total_impuestos, condicion_pago, "N/A", estado_entrega);
             consultar_orden_de_compra(id_orden);
-            crear_nueva_orden_de_compra(orden_de_compra);
+            crear_nueva_orden_de_compra(orden_de_compraBD,orden_de_compra);
 
             consultar_insumos_fabrica();
             DataTable insumos_fabrica_copia = insumos_fabrica;
@@ -198,7 +198,7 @@ namespace _03___sistemas_fabrica
             }
             return retorno;
         }
-        private void crear_nueva_orden_de_compra(DataTable orden_de_compra)
+        private void crear_nueva_orden_de_compra(DataTable orden_de_compra_original, DataTable orden_de_compra)
         {
             string id, nombre_producto, precio, tipo_unidad, unidad, unidad_medida, dato;
             double cantidad_original, cantidad_recibida, diferencia;
@@ -207,62 +207,64 @@ namespace _03___sistemas_fabrica
             string valores = "";
             //id_proveedor
             columna = funciones.armar_query_columna(columna, "id_proveedor", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["id_proveedor"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["id_proveedor"].ToString(), false);
             //proveedor
             columna = funciones.armar_query_columna(columna, "proveedor", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["proveedor"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["proveedor"].ToString(), false);
             //acuerdo_de_precios
             columna = funciones.armar_query_columna(columna, "acuerdo_de_precios", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["acuerdo_de_precios"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["acuerdo_de_precios"].ToString(), false);
             //estado
             columna = funciones.armar_query_columna(columna, "estado", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["estado"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["estado"].ToString(), false);
             //fecha
+            DateTime fecha = DateTime.Parse(orden_de_compra_original.Rows[0]["fecha"].ToString());
             columna = funciones.armar_query_columna(columna, "fecha", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["fecha"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, fecha.ToString("yyyy-MM-dd"), false);
             //fecha_entrega_estimada
+            DateTime fecha_entrega_estimada = DateTime.Parse(orden_de_compra_original.Rows[0]["fecha_entrega_estimada"].ToString());
             columna = funciones.armar_query_columna(columna, "fecha_entrega_estimada", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["fecha_entrega_estimada"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, fecha_entrega_estimada.ToString("yyyy-MM-dd"), false);
             //nota
             columna = funciones.armar_query_columna(columna, "nota", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["nota"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["nota"].ToString(), false);
             //tipo_de_pago
             columna = funciones.armar_query_columna(columna, "tipo_de_pago", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["tipo_de_pago"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["tipo_de_pago"].ToString(), false);
             //condicion_pago
             columna = funciones.armar_query_columna(columna, "condicion_pago", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["condicion_pago"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["condicion_pago"].ToString(), false);
             //cantidad_a_pagar
             columna = funciones.armar_query_columna(columna, "cantidad_a_pagar", false);
-            valores = funciones.armar_query_valores(valores, orden_de_compraBD.Rows[0]["cantidad_a_pagar"].ToString(), false);
-            for (int colum = orden_de_compraBD.Columns["producto_1"].Ordinal; colum <= orden_de_compraBD.Columns.Count - 1; colum++)
+            valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["cantidad_a_pagar"].ToString(), false);
+            for (int colum = orden_de_compra_original.Columns["producto_1"].Ordinal; colum <= orden_de_compra_original.Columns.Count - 1; colum++)
             {
-                if (orden_de_compraBD.Rows[0][colum].ToString()=="N/A")
+                if (orden_de_compra_original.Rows[0][colum].ToString()!="N/A")
                 {
-                    id = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 1);
+                    id = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 1);
                     fila_pedido = funciones.buscar_fila_por_id(id, orden_de_compra);
                     if (fila_pedido != -1)
                     {
-                        cantidad_recibida = double.Parse(orden_de_compra.Rows[fila_pedido]["nuevo_stock"].ToString());
-                        cantidad_original = double.Parse(funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 7));
+                        cantidad_recibida = double.Parse(orden_de_compra.Rows[fila_pedido]["total_entrega"].ToString());
+                        cantidad_original = double.Parse(funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 7));
                         diferencia = cantidad_original - cantidad_recibida;
                         if (diferencia > 0)
                         {
-                            id = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 1);
-                            nombre_producto = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 2);
-                            precio = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 3);
-                            tipo_unidad = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 4);
-                            unidad = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 5);
-                            unidad_medida = funciones.obtener_dato(orden_de_compraBD.Rows[0][colum].ToString(), 6);
+                            id = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 1);
+                            nombre_producto = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 2);
+                            precio = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 3);
+                            tipo_unidad = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 4);
+                            unidad = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 5);
+                            unidad_medida = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 6);
                             dato = id + "-" + nombre_producto + "-" + precio + "-" + tipo_unidad + "-" + unidad + "-" + unidad_medida + "-" + diferencia + "-N/A";
-                            columna = funciones.armar_query_columna(columna, orden_de_compraBD.Columns[colum].ColumnName.ToString(), false);
+                            columna = funciones.armar_query_columna(columna, orden_de_compra_original.Columns[colum].ColumnName.ToString(), false);
                             valores = funciones.armar_query_valores(valores, dato, false);
                         }
                     }
                 }
                 else
                 {
-                    columna = funciones.armar_query_columna(columna, orden_de_compraBD.Columns[colum].ColumnName.ToString(), true);
+                    columna = funciones.armar_query_columna(columna, orden_de_compra_original.Columns[colum].ColumnName.ToString(), true);
                     valores = funciones.armar_query_valores(valores, "N/A", true);
                     break;
                 }

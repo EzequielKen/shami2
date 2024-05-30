@@ -87,6 +87,7 @@ namespace paginaWeb.paginasFabrica
         {
             if (textbox_nombre.Text != string.Empty)
             {
+                label_cartel_advertencia.Visible = false;
                 Button boton_cargar = (Button)sender;
                 GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
                 int fila = row.RowIndex;
@@ -99,7 +100,13 @@ namespace paginaWeb.paginasFabrica
                     }
                     temperaturas.registrar_temperatura(textbox_nombre.Text, gridview_equipos.Rows[fila].Cells[0].Text, gridview_equipos.Rows[fila].Cells[2].Text, temperatura);
                     textbox_temperatura_diaria.Text = string.Empty;
+                    cargar_equipos();
+
                 }
+            }
+            else
+            {
+                label_cartel_advertencia.Visible = true;
             }
         }
 
