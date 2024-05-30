@@ -111,6 +111,7 @@
     <Content Include="paginasFabrica\actualizar_precio_stock.aspx" />
     <Content Include="paginasFabrica\administracion_de_equipos.aspx" />
     <Content Include="paginasFabrica\analisis_de_produccion.aspx" />
+    <Content Include="paginasFabrica\historial_temperatura.aspx" />
     <Content Include="paginasFabrica\objetivo_de_produccion.aspx" />
     <Content Include="paginasFabrica\analisis_de_ventas.aspx" />
     <Content Include="paginasFabrica\cargar_orden_de_compra.aspx" />
@@ -316,6 +317,13 @@
     </Compile>
     <Compile Include="paginasFabrica\analisis_de_produccion.aspx.designer.cs">
       <DependentUpon>analisis_de_produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_temperatura.aspx.cs">
+      <DependentUpon>historial_temperatura.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_temperatura.aspx.designer.cs">
+      <DependentUpon>historial_temperatura.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\objetivo_de_produccion.aspx.cs">
       <DependentUpon>objetivo_de_produccion.aspx</DependentUpon>
