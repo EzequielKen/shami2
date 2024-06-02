@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
-    public class cls_temperatura_de_equipos
+    public class cls_historial_temperatura
     {
-        public cls_temperatura_de_equipos(DataTable usuario_BD)
+        public cls_historial_temperatura(DataTable usuario_BD)
         {
             usuarioBD = usuario_BD;
             servidor = usuarioBD.Rows[0]["servidor"].ToString();
@@ -147,7 +147,7 @@ namespace _03___sistemas_fabrica
                 }
                 if (rango == "rango 1")
                 {
-                    temperaturas.Rows[ult_fila]["turno_1"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C";
+                    temperaturas.Rows[ult_fila]["turno_1"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C-"+ temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString();
                 }
                 else
                 {
@@ -155,7 +155,7 @@ namespace _03___sistemas_fabrica
                 }
                 if (rango == "rango 2")
                 {
-                    temperaturas.Rows[ult_fila]["turno_2"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C";
+                    temperaturas.Rows[ult_fila]["turno_2"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString();
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace _03___sistemas_fabrica
                 }
                 if (rango == "rango 3")
                 {
-                    temperaturas.Rows[ult_fila]["turno_3"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C";
+                    temperaturas.Rows[ult_fila]["turno_3"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString();
                 }
                 else
                 {
