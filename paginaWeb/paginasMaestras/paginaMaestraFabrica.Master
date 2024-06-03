@@ -400,10 +400,13 @@
                     <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Operaciones")
                         {%>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/temperatura_de_equipos.aspx">Registrar temperatura</a>
+    <a class="nav-link btn btn-primary" href="/paginasFabrica/administracion_de_equipos.aspx">Administracion de equipos para toma de temperaturas</a>
+</li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/temperatura_de_equipos.aspx">Regristro diario de temperatura</a>
                     </li>
-                                        <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_temperatura.aspx">Historial temperatura</a>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_temperatura.aspx">Historial de temperatura</a>
                     </li>
                     <%}%>
                 </ul>

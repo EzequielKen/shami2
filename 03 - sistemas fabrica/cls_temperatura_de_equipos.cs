@@ -44,7 +44,7 @@ namespace _03___sistemas_fabrica
         DataTable temperaturas;
         #endregion
         #region carga a base de datos
-        public void registrar_temperatura(string nombre, string id_equipo, string equipo, string temperatura)
+        public void registrar_temperatura(string nombre, string id_equipo, string equipo, string temperatura,string nota)
         {
             string columna = "";
             string valores = "";
@@ -60,6 +60,9 @@ namespace _03___sistemas_fabrica
             //equipo
             columna = funciones.armar_query_columna(columna, "equipo", false);
             valores = funciones.armar_query_valores(valores, equipo, false);
+            //nota
+            columna = funciones.armar_query_columna(columna, "nota", false);
+            valores = funciones.armar_query_valores(valores, nota, false);
             //temperatura
             columna = funciones.armar_query_columna(columna, "temperatura", true);
             valores = funciones.armar_query_valores(valores, temperatura, true);

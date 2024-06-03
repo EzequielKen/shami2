@@ -6,12 +6,8 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            <div class="container">
-                <div class="row">
-                    <asp:Button ID="boton_administrar" CssClass="btn btn-primary" Text="Administrar" runat="server" OnClick="boton_administrar_Click" />
-                </div>
-
-            </div>
+            <h1>Registro diario de temperaturas</h1>
+            
 
             <div class="container-fluid">
                 <div class="row">
@@ -45,11 +41,22 @@
                                             <asp:TextBox ID="textbox_temperatura_diaria" placeholder="Ingrese temperatura registrada" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_temperatura_diaria_3_TextChanged" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Observaciones">
+                                        <ItemTemplate>
+                                            <asp:DropDownList ID="dropdown_nota" CssClass="  form-control" runat="server">
+                                                <asp:ListItem Text="N/A" />
+                                                <asp:ListItem Text="Equipo desconectado" />
+                                                <asp:ListItem Text="Equipo averiado" />
+                                                <asp:ListItem Text="Puerta dañada" />
+                                            </asp:DropDownList>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Cargar">
                                         <ItemTemplate>
                                             <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" OnClick="boton_cargar_Click" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
+
                                 </Columns>
                             </asp:GridView>
                         </div>

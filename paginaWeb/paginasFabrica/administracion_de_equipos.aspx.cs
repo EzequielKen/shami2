@@ -252,5 +252,14 @@ namespace paginaWeb.paginasFabrica
         {
             Session.Add("ubicacion_seleccionada", dropdown_ubicaciones.SelectedItem.Text);
         }
+
+        protected void boton_eliminar_Click(object sender, EventArgs e)
+        {
+            Button boton_eliminar = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_eliminar.NamingContainer;
+            int rowIndex = row.RowIndex;
+
+
+        }
     }
 }

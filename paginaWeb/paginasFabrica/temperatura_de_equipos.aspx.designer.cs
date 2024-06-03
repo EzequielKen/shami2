@@ -15,15 +15,6 @@ namespace paginaWeb.paginasFabrica
     {
 
         /// <summary>
-        /// Control boton_administrar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_administrar;
-
-        /// <summary>
         /// Control label_cartel_advertencia.
         /// </summary>
         /// <remarks>

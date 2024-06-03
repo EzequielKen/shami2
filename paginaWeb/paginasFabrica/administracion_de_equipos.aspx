@@ -6,6 +6,7 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+            <h1>Administracion de equipos para toma de temperaturas</h1>
             <div class="container">
                 <div class="row">
 
@@ -50,14 +51,14 @@
                                 <asp:TextBox ID="textbox_equipo" placeholder="Ingrese el nombre del equipo." CssClass="form-control" runat="server" />
                             </div>
                             <h3>Seleccione ubicacion del equipo:</h3>
-                            <asp:DropDownList ID="dropdown_ubicaciones" CssClass="btn btn-dark dropdown-toggle" runat="server" >
+                            <asp:DropDownList ID="dropdown_ubicaciones" CssClass="btn btn-dark dropdown-toggle" runat="server">
                             </asp:DropDownList>
 
                             <h3>Observaciones.</h3>
                             <div class="input-group">
                                 <asp:TextBox ID="textbox_observacion" placeholder="Ingrese Observacion" CssClass="form-control" runat="server" />
                             </div>
-                                <asp:Button ID="boton_equipo" OnClick="boton_equipo_Click" CssClass="form-control btn btn-primary" Text="Cargar" runat="server" />
+                            <asp:Button ID="boton_equipo" OnClick="boton_equipo_Click" CssClass="form-control btn btn-primary" Text="Cargar" runat="server" />
 
                         </div>
                         <div id="div_equipos" class="alert alert-light">
@@ -93,6 +94,11 @@
                                     <asp:TemplateField HeaderText="Observaciones">
                                         <ItemTemplate>
                                             <asp:TextBox ID="textbox_observacion_equipo" CssClass="form-control-lg" OnTextChanged="textbox_observacion_equipo_TextChanged" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Observaciones">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_eliminar" CssClass="btn btn-danger" Text="Habilitar/Deshabilitar" runat="server" OnClick="boton_eliminar_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

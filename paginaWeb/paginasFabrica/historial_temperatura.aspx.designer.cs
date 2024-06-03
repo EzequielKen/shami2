@@ -15,13 +15,22 @@ namespace paginaWeb.paginasFabrica
     {
 
         /// <summary>
-        /// Control label_cartel_advertencia.
+        /// Control calendario.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_cartel_advertencia;
+        protected global::System.Web.UI.WebControls.Calendar calendario;
+
+        /// <summary>
+        /// Control label_fecha.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_fecha;
 
         /// <summary>
         /// Control dropdown_ubicaciones.

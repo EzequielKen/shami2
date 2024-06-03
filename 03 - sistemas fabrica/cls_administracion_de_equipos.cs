@@ -42,6 +42,13 @@ namespace _03___sistemas_fabrica
         DataTable equipos;
         #endregion
         #region carga a base de datos
+        public void habilitar_deshabilitar_equipo(string id, string estado)
+        {
+            string actualizar = "";
+            //nombre
+            actualizar = "`activa` = '" + estado + "'";
+            consultas.actualizar_tabla(base_de_datos, "equipos", actualizar, id);
+        }
         public void modificar_equipo_observaciones(string id, string observaciones)
         {
             string actualizar = "";

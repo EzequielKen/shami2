@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
@@ -67,24 +68,75 @@ namespace _03___sistemas_fabrica
         }
         #endregion
         #region metodos privados
+        static string ExtraerNumeros(string input)
+        {
+            // Expresión regular para extraer los números
+            string pattern = @"(-?\d+)\s*°C\s*A\s*(-?\d+)\s*°C";
+
+            // Intentar hacer coincidir la cadena de entrada con el patrón
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                // Extraer los dos grupos de números capturados
+                string numero1 = match.Groups[1].Value;
+                string numero2 = match.Groups[2].Value;
+
+                // Formatear y retornar los números
+                return $"{numero1}-{numero2}";
+            }
+            else
+            {
+                throw new FormatException("La cadena no tiene el formato correcto.");
+            }
+        }
         private string verificar_horario(DateTime miFecha)
         {
             string retorno = "fuera de rango";
 
             // Definir los límites de tiempo
             DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 8, 0, 0); // 8:00 AM
-            DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 12, 0, 0); // 12:00 PM
+            DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 16, 0, 0); // 12:00 PM
             if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
             {
                 retorno = "rango 1";
             }
-            DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 12, 0, 0); // 8:00 AM
-            DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 18, 0, 0); // 12:00 PM
+            DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 16, 0, 0); // 8:00 AM
+            DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 21, 0, 0); // 12:00 PM
             if (miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2)
             {
                 retorno = "rango 2";
             }
-            DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 18, 0, 0); // 8:00 AM
+            DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 21, 0, 0); // 8:00 AM
+            DateTime horaFin_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 0, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
+            {
+                retorno = "rango 3";
+            }
+            return retorno;
+        }
+        private string verificar_horario_en_rango(DateTime miFecha, string rango)
+        {
+            string retorno = "fuera de rango";
+
+            if (rango == "rango 1")
+            {
+                // Definir los límites de tiempo
+                DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 8, 0, 0); // 8:00 AM
+                DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 12, 0, 0); // 12:00 PM
+                if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
+                {
+                    retorno = "rango 1";
+                }
+            }
+
+            DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 16, 0, 0); // 8:00 AM
+            DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 21, 0, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2)
+            {
+                retorno = "rango 2";
+            }
+            DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 21, 0, 0); // 8:00 AM
             DateTime horaFin_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 0, 0); // 12:00 PM
             if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
             {
@@ -123,6 +175,7 @@ namespace _03___sistemas_fabrica
         private void ordenar_temperatura()
         {
             crear_tabla_temperatura();
+            DateTime fecha = DateTime.Now;
             int ult_fila, fila_temperatura;
             string rango = "", id_equipo;
             for (int fila = 0; fila <= equipos.Rows.Count - 1; fila++)
@@ -140,6 +193,7 @@ namespace _03___sistemas_fabrica
                 if (fila_temperatura != -1)
                 {
                     rango = verificar_horario(DateTime.Parse(temperaturas_del_dia.Rows[fila_temperatura]["fecha"].ToString()));
+                    fecha = DateTime.Parse(temperaturas_del_dia.Rows[fila_temperatura]["fecha"].ToString());
                 }
                 else
                 {
@@ -147,7 +201,14 @@ namespace _03___sistemas_fabrica
                 }
                 if (rango == "rango 1")
                 {
-                    temperaturas.Rows[ult_fila]["turno_1"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C-"+ temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString();
+                    if (temperaturas_del_dia.Rows[fila_temperatura]["nota"].ToString()!="N/A")
+                    {
+                        temperaturas.Rows[ult_fila]["turno_1"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString() + "-" + fecha.ToString("HH:mm:ss")+"-"+ temperaturas_del_dia.Rows[fila_temperatura]["nota"].ToString();
+                    }
+                    else
+                    {
+                        temperaturas.Rows[ult_fila]["turno_1"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString() + "-" + fecha.ToString("HH:mm:ss");
+                    }
                 }
                 else
                 {
@@ -155,7 +216,14 @@ namespace _03___sistemas_fabrica
                 }
                 if (rango == "rango 2")
                 {
-                    temperaturas.Rows[ult_fila]["turno_2"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString();
+                    if (temperaturas_del_dia.Rows[fila_temperatura]["nota"].ToString() != "N/A")
+                    {
+                        temperaturas.Rows[ult_fila]["turno_2"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString() + "-" + fecha.ToString("HH:mm:ss") + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nota"].ToString();
+                    }
+                    else
+                    {
+                        temperaturas.Rows[ult_fila]["turno_2"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString() + "-" + fecha.ToString("HH:mm:ss");
+                    }
                 }
                 else
                 {
@@ -163,7 +231,14 @@ namespace _03___sistemas_fabrica
                 }
                 if (rango == "rango 3")
                 {
-                    temperaturas.Rows[ult_fila]["turno_3"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "°C-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString();
+                    if (temperaturas_del_dia.Rows[fila_temperatura]["nota"].ToString() != "N/A")
+                    {
+                        temperaturas.Rows[ult_fila]["turno_3"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString() + "-" + fecha.ToString("HH:mm:ss") + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nota"].ToString();
+                    }
+                    else
+                    {
+                        temperaturas.Rows[ult_fila]["turno_3"] = temperaturas_del_dia.Rows[fila_temperatura]["temperatura"].ToString() + "-" + temperaturas_del_dia.Rows[fila_temperatura]["nombre"].ToString() + "-" + fecha.ToString("HH:mm:ss");
+                    }
                 }
                 else
                 {

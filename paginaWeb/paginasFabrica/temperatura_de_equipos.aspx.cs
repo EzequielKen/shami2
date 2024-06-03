@@ -92,13 +92,14 @@ namespace paginaWeb.paginasFabrica
                 GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
                 int fila = row.RowIndex;
                 TextBox textbox_temperatura_diaria = (gridview_equipos.Rows[fila].Cells[6].FindControl("textbox_temperatura_diaria") as TextBox);
+                DropDownList dropdown_nota = (gridview_equipos.Rows[fila].Cells[7].FindControl("dropdown_nota") as DropDownList);
                 {
                     string temperatura = "";
                     if (textbox_temperatura_diaria.Text != string.Empty)
                     {
                         temperatura = textbox_temperatura_diaria.Text;
                     }
-                    temperaturas.registrar_temperatura(textbox_nombre.Text, gridview_equipos.Rows[fila].Cells[0].Text, gridview_equipos.Rows[fila].Cells[2].Text, temperatura);
+                    temperaturas.registrar_temperatura(textbox_nombre.Text, gridview_equipos.Rows[fila].Cells[0].Text, gridview_equipos.Rows[fila].Cells[2].Text, temperatura, dropdown_nota.SelectedItem.Text);
                     textbox_temperatura_diaria.Text = string.Empty;
                     cargar_equipos();
 
