@@ -84,6 +84,10 @@ namespace paginaWeb
                             {
                                 Response.Redirect("~/paginasFabrica/produccion.aspx", false);
                             }
+                            else if (tipo_usuario.Rows[0]["rol"].ToString() == "Amir")
+                            {
+                                Response.Redirect("~/paginasFabrica/cuentas_por_cobrar.aspx", false);
+                            }
                             else
                             {
                                 Response.Redirect("~/paginasFabrica/sucursales.aspx", false); 

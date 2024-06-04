@@ -124,7 +124,7 @@ namespace _03___sistemas_fabrica
         }
         private void consultar_equipos()
         {
-            equipos = consultas.consultar_tabla(base_de_datos, "equipos");
+            equipos = consultas.consultar_tabla_completa(base_de_datos, "equipos");
         }
         #endregion
         #region metodos get/set

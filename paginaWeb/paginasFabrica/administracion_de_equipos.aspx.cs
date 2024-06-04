@@ -168,6 +168,10 @@ namespace paginaWeb.paginasFabrica
                     dropdown_Categoria_equipo.CssClass = "btn btn-danger dropdown-toggle";
 
                 }
+                if (gridview_equipos.Rows[fila].Cells[7].Text == "0")
+                {
+                    gridview_equipos.Rows[fila].CssClass = "table-danger";
+                }
             }
         }
         protected void textbox_nombre_ubicacion_TextChanged(object sender, EventArgs e)
@@ -259,6 +263,17 @@ namespace paginaWeb.paginasFabrica
             GridViewRow row = (GridViewRow)boton_eliminar.NamingContainer;
             int rowIndex = row.RowIndex;
 
+            string id = gridview_equipos.Rows[rowIndex].Cells[0].Text;
+            string estado = gridview_equipos.Rows[rowIndex].Cells[7].Text;
+            if (estado=="1")
+            {
+                administrador.habilitar_deshabilitar_equipo(id,"0");
+            }
+            else
+            {
+                administrador.habilitar_deshabilitar_equipo(id,"1");
+            }
+            cargar_datos_equipos();
 
         }
     }

@@ -101,6 +101,7 @@
                                             <asp:Button ID="boton_eliminar" CssClass="btn btn-danger" Text="Habilitar/Deshabilitar" runat="server" OnClick="boton_eliminar_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:BoundField HeaderText="activo" DataField="activa" />
                                 </Columns>
                             </asp:GridView>
                         </div>
