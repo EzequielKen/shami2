@@ -24,6 +24,24 @@ namespace paginaWeb.paginas
         protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
 
         /// <summary>
+        /// Control dropDown_categoria.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropDown_categoria;
+
+        /// <summary>
+        /// Control boton_guardar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_guardar;
+
+        /// <summary>
         /// Control gridview_chequeos.
         /// </summary>
         /// <remarks>

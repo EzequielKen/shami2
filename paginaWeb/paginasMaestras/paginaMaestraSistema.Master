@@ -99,6 +99,9 @@
                         <a class="nav-link btn btn-primary" href="/paginas/cuentas_por_pagar.aspx">Cuentas por pagar</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/administrador_de_empleados.aspx">Administrar empleados</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/administrar_lista_de_chequeo.aspx">Administrar lista de chequeo</a>
                     </li>
                 </ul>

@@ -164,6 +164,7 @@
     <Content Include="paginasGerente\cuentas_por_pagar_gerente.aspx" />
     <Content Include="paginasGerente\proveedores_fabrica_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
+    <Content Include="paginas\administrador_de_empleados.aspx" />
     <Content Include="paginas\administrar_lista_de_chequeo.aspx" />
     <Content Include="paginas\calendario_de_entrega.aspx" />
     <Content Include="paginas\cuentas_por_pagar.aspx" />
@@ -731,6 +732,13 @@
     </Compile>
     <Compile Include="paginasMaestras\paginaMaestraLogin.Master.designer.cs">
       <DependentUpon>paginaMaestraLogin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\administrador_de_empleados.aspx.cs">
+      <DependentUpon>administrador_de_empleados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\administrador_de_empleados.aspx.designer.cs">
+      <DependentUpon>administrador_de_empleados.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\administrar_lista_de_chequeo.aspx.cs">
       <DependentUpon>administrar_lista_de_chequeo.aspx</DependentUpon>

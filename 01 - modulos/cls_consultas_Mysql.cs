@@ -1383,6 +1383,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_configuracion_chequeo(string id_usuario)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".configuracion_de_chequeo WHERE activa=1 and id_usuario='" + id_usuario + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region consultas fabrica a proveedor
