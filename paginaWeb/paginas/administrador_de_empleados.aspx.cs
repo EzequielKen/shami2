@@ -45,6 +45,7 @@ namespace paginaWeb.paginas
         }
         private void cargar_lista_empleados()
         {
+            configurar_controles();
             llenar_tabla_empleado();
             gridview_empleados.DataSource = lista_de_empleado;
             gridview_empleados.DataBind();
@@ -113,7 +114,10 @@ namespace paginaWeb.paginas
         #region configurar controles
         private void configurar_controles()
         {
-            llenar_dropDownList(lista_de_empleadoBD);
+            if (lista_de_empleadoBD.Rows.Count>0)
+            {
+                llenar_dropDownList(lista_de_empleadoBD);
+            }
         }
         
         private void llenar_dropDownList(DataTable dt)
@@ -169,7 +173,6 @@ namespace paginaWeb.paginas
             lista_de_empleadoBD = administrador.get_lista_de_empleado();
             if (!IsPostBack)
             {
-                configurar_controles();
                 cargar_lista_empleados();
             }
         }
@@ -177,6 +180,7 @@ namespace paginaWeb.paginas
         protected void boton_cargar_Click(object sender, EventArgs e)
         {
             cargar_datos_empleado();
+            cargar_lista_empleados();
         }
 
         protected void textbox_nombre_empleado_TextChanged(object sender, EventArgs e)

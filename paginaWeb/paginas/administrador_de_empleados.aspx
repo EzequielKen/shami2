@@ -7,20 +7,31 @@
         <div class="row">
             <div class="col">
                 <div class="alert alert-light">
-                    <div class="input-group">
-                        <asp:Label CssClass="form-control" Text="nombre" runat="server" />
+                    <div >
+                        <h4>
+                            <asp:Label CssClass=" form-label" Text="Nombre" runat="server" />
+                        </h4>
                         <asp:TextBox placeholder="Ingrese nombre" ID="textbox_nombre" CssClass="form-control" runat="server" />
-                        <asp:Label CssClass="form-control" Text="apellido" runat="server" />
+                        <h4>
+                            <asp:Label CssClass="form-label" Text="Apellido" runat="server" />
+                        </h4>
                         <asp:TextBox placeholder="Ingrese apellido" ID="textbox_apellido" CssClass="form-control" runat="server" />
                     </div>
-                    <div class="input-group">
-                        <asp:Label CssClass="form-control" Text="DNI" runat="server" />
+                    <div >
+                        <h4>
+                            <asp:Label CssClass="form-label" Text="DNI" runat="server" />
+                        </h4>
                         <asp:TextBox placeholder="Ingrese DNI" ID="textbox_dni" CssClass="form-control" runat="server" />
-                        <asp:Label CssClass="form-control" Text="Telefono" runat="server" />
+                        <h4>
+                            <asp:Label CssClass="form-label" Text="Telefono" runat="server" />
+                        </h4>
                         <asp:TextBox placeholder="Ingrese telefono" ID="textbox_telefono" CssClass="form-control" runat="server" />
                     </div>
-                    <div class="input-group">
-                        <asp:Label CssClass="form-control" Text="cargo" runat="server" />
+                    <div >
+                        <h4>
+                        <asp:Label CssClass="form-label" Text="cargo" runat="server" />
+                        </h4>
+
                         <asp:DropDownList ID="dropdown_cargo" CssClass="form-control" runat="server">
                             <asp:ListItem Text="Cajero" />
                             <asp:ListItem Text="Empleado" />
