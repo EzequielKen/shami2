@@ -5,16 +5,14 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _02___sistemas
+namespace _03___sistemas_fabrica
 {
-    public class cls_administrar_lista_de_chequeo
+    public class cls_administrador_actividades
     {
-        public cls_administrar_lista_de_chequeo(DataTable usuario_BD)
+        public cls_administrador_actividades(DataTable usuario_BD)
         {
             usuarioBD = usuario_BD;
             servidor = usuarioBD.Rows[0]["servidor"].ToString();
@@ -44,18 +42,12 @@ namespace _02___sistemas
         DataTable resumen;
         #endregion
         #region carga a base de datos
-        public void registrar_chequeo(DataTable sucursal, DataTable resumen, string perfil)
+        public void registrar_chequeo( DataTable resumen, string perfil)
         {
-            string id_sucursal = sucursal.Rows[0]["id"].ToString();
-            desactivar_configuracion_activa(get_id_chequeo_activo(id_sucursal, perfil));
+            desactivar_configuracion_activa(get_id_chequeo_activo( perfil));
             string columna = "";
             string valores = "";
-            //id_usuario
-            columna = funciones.armar_query_columna(columna, "id_sucursal", false);
-            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["id"].ToString(), false);
-            //usuario
-            columna = funciones.armar_query_columna(columna, "sucursal", false);
-            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["sucursal"].ToString(), false);
+            
             //perfil
             columna = funciones.armar_query_columna(columna, "perfil", false);
             valores = funciones.armar_query_valores(valores, perfil, false);
@@ -133,7 +125,7 @@ namespace _02___sistemas
         }
         #endregion
         #region metodos consultas
-        private void consultar_configuracion_de_chequeo(string id_sucursal, string perfil)
+        private void consultar_configuracion_de_chequeo( string perfil)
         {
             configuracion_de_chequeo = consultas.consultar_configuracion_chequeo( perfil);
         }
@@ -144,19 +136,19 @@ namespace _02___sistemas
         #endregion
 
         #region metodos get/set
-        public string get_id_chequeo_activo(string id_sucursal, string perfil)
+        public string get_id_chequeo_activo( string perfil)
         {
             string retorno = "N/A";
-            consultar_configuracion_de_chequeo(id_sucursal, perfil);
+            consultar_configuracion_de_chequeo( perfil);
             if (configuracion_de_chequeo.Rows.Count > 0)
             {
                 retorno = configuracion_de_chequeo.Rows[0]["id"].ToString();
             }
             return retorno;
         }
-        public DataTable get_configuracion_de_chequeo(string id_sucursal, string perfil)
+        public DataTable get_configuracion_de_chequeo( string perfil)
         {
-            consultar_configuracion_de_chequeo(id_sucursal, perfil);
+            consultar_configuracion_de_chequeo( perfil);
             llenar_resumen();
             return resumen;
         }

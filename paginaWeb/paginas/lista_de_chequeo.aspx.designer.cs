@@ -11,17 +11,35 @@ namespace paginaWeb.paginas
 {
 
 
-    public partial class administrar_lista_de_chequeo
+    public partial class lista_de_chequeo
     {
 
         /// <summary>
-        /// Control dropdown_perfil.
+        /// Control label_nombre.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropdown_perfil;
+        protected global::System.Web.UI.WebControls.Label label_nombre;
+
+        /// <summary>
+        /// Control label_cargo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_cargo;
+
+        /// <summary>
+        /// Control label_fecha.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_fecha;
 
         /// <summary>
         /// Control dropDown_tipo.
@@ -40,24 +58,6 @@ namespace paginaWeb.paginas
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropDown_categoria;
-
-        /// <summary>
-        /// Control boton_guardar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_guardar;
-
-        /// <summary>
-        /// Control boton_cargar_todo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_cargar_todo;
 
         /// <summary>
         /// Control gridview_chequeos.

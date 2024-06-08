@@ -1,6 +1,5 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
-using paginaWeb.paginasFabrica;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,12 +8,12 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace paginaWeb.paginas
+namespace paginaWeb.paginasFabrica
 {
-    public partial class administrar_lista_de_chequeo : System.Web.UI.Page
+    public partial class administrador_de_actividades : System.Web.UI.Page
     {
         #region resumen
-        
+
         private void crear_tabla_resumen()
         {
             resumen = new DataTable();
@@ -83,10 +82,9 @@ namespace paginaWeb.paginas
         private void llenar_resumen_con_configuracion()
         {
             string id_actividad;
-            string id_sucursal = sucursal.Rows[0]["id"].ToString();
             string perfil = dropdown_perfil.SelectedItem.Text;
-            configuracion = administrador.get_configuracion_de_chequeo(id_sucursal,perfil);
-            for (int fila = 0; fila <= configuracion.Rows.Count-1; fila++)
+            configuracion = administrador.get_configuracion_de_chequeo( perfil);
+            for (int fila = 0; fila <= configuracion.Rows.Count - 1; fila++)
             {
                 id_actividad = configuracion.Rows[fila]["id"].ToString();
                 cargar_actividad_en_resumen(id_actividad);
@@ -118,7 +116,7 @@ namespace paginaWeb.paginas
         private void cargar_lista_chequeo()
         {
             llenar_tabla_chequeo();
-            
+
             gridview_chequeos.DataSource = lista_de_chequeo;
             gridview_chequeos.DataBind();
         }
@@ -208,10 +206,9 @@ namespace paginaWeb.paginas
         /// //////////////////////////////////////////////////////////////////
         /// </summary>
         #region atributos
-        cls_administrar_lista_de_chequeo administrador;
+        cls_administrador_actividades administrador;
         cls_funciones funciones = new cls_funciones();
-        DataTable usuariosBD; 
-        DataTable sucursal;
+        DataTable usuariosBD;
         DataTable lista_de_chequeoBD;
         DataTable lista_de_chequeo;
         DataTable configuracion;
@@ -222,12 +219,11 @@ namespace paginaWeb.paginas
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            sucursal = (DataTable)Session["sucursal"];
-            if (Session["administracion_de_chequeo"] == null)
+            if (Session["administracion_de_actividades"] == null)
             {
-                Session.Add("administracion_de_chequeo", new cls_administrar_lista_de_chequeo(usuariosBD));
+                Session.Add("administracion_de_actividades", new cls_administrador_actividades(usuariosBD));
             }
-            administrador = (cls_administrar_lista_de_chequeo)Session["administracion_de_chequeo"];
+            administrador = (cls_administrador_actividades)Session["administracion_de_actividades"];
             lista_de_chequeoBD = administrador.get_lista_de_chequeo();
             if (!IsPostBack)
             {
@@ -286,7 +282,7 @@ namespace paginaWeb.paginas
 
         protected void boton_guardar_Click(object sender, EventArgs e)
         {
-            administrador.registrar_chequeo(sucursal, (DataTable)Session["resumen_chequeo"],dropdown_perfil.SelectedItem.Text);
+            administrador.registrar_chequeo( (DataTable)Session["resumen_chequeo"], dropdown_perfil.SelectedItem.Text);
         }
 
         protected void boton_cargar_todo_Click(object sender, EventArgs e)

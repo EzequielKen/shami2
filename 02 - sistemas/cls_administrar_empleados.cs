@@ -41,6 +41,16 @@ namespace _02___sistemas
         #endregion
 
         #region carga a base de datos
+        public void actualizar_dato_empleado(string id,string campo,string dato)
+        {
+            string actualizar = "`"+campo+"` = '"+dato+"' ";
+            consultas.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id);
+        }
+        public void eliminar_empleado(string id)
+        {
+            string actualizar = "`activa` = '0'";
+            consultas.actualizar_tabla(base_de_datos, "lista_de_empleado",actualizar,id);
+        }
         public void registrar_empleado(DataTable empleado)
         {
             string columna="";
@@ -69,15 +79,15 @@ namespace _02___sistemas
         }
         #endregion
         #region metodos consultas
-        private void consultar_lista_de_empleado()
+        private void consultar_lista_de_empleado(string id_sucursal)
         {
-            lista_de_empleado = consultas.consultar_tabla_completa(base_de_datos, "lista_de_empleado");
+            lista_de_empleado = consultas.consultar_empleados(id_sucursal);
         }
         #endregion
         #region metodos get/set
-        public DataTable get_lista_de_empleado()
+        public DataTable get_lista_de_empleado(string id_sucursal)
         {
-            consultar_lista_de_empleado();
+            consultar_lista_de_empleado( id_sucursal);
             return lista_de_empleado;
         }
         #endregion

@@ -48,7 +48,24 @@ namespace modulos
 
             return usuarios;
         }
+        public DataTable login_empleado(string usuario_query, string contraseña)
+        {
+            DataTable usuarios;
+            string query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado where activa=1 and nombre = '" + usuario_query + "' and dni ='" + contraseña + "';";
+            cls_conexion login = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            try
+            {
+                usuarios = login.READ(query);
+            }
+            catch (Exception ex)
+            {
 
+                throw ex;
+            }
+
+
+            return usuarios;
+        }
         public DataTable login_admin(string usuario_query, string contraseña)
         {
             DataTable usuarios;
@@ -1383,7 +1400,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_configuracion_chequeo(string id_usuario)
+        public DataTable consultar_configuracion_chequeo( string perfil)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1391,7 +1408,70 @@ namespace modulos
 
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".configuracion_de_chequeo WHERE activa=1 and id_usuario='" + id_usuario + "';";
+                query = "SELECT * FROM " + base_de_datos + ".configuracion_de_chequeo WHERE activa=1 and  perfil='" + perfil + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_empleados(string id_sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado WHERE activa=1 and id_sucursal='" + id_sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_usuario_segun_sucural(string id_sucursal)
+        {   
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".usuario WHERE activa=1 and sucursal='" + id_sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia,string id_empleado)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+                
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".historial_lista_chequeo WHERE activa=1 and id_empleado='" + id_empleado + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "';";
 
 
                 retorno = base_datos.READ(query);

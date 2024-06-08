@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="administrar_lista_de_chequeo.aspx.cs" Inherits="paginaWeb.paginas.administrar_lista_de_chequeo" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="administrar_lista_chequeo_perfiles.aspx.cs" Inherits="paginaWeb.paginasFabrica.administrador_de_actividades" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -13,6 +13,7 @@
                             <div class="input-group">
                                 <asp:Label CssClass="form-control" Text="Perfil" runat="server" />
                                 <asp:DropDownList ID="dropdown_perfil" OnSelectedIndexChanged="dropdown_perfil_SelectedIndexChanged" AutoPostBack="true" CssClass="form-control" runat="server">
+                                    <asp:ListItem Text="Encargado" />
                                     <asp:ListItem Text="Cajero" />
                                     <asp:ListItem Text="Shawarmero" />
                                     <asp:ListItem Text="Atencion al Cliente" />
@@ -36,7 +37,7 @@
                 <div class="row">
                     <div class="col">
                         <asp:Button ID="boton_guardar" Text="Guardar" CssClass="btn btn-primary" runat="server" OnClick="boton_guardar_Click" />
-                        <asp:Button ID="boton_cargar_todo" Text="Cargar Todo" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_todo_Click" style="float: right;" />
+                        <asp:Button ID="boton_cargar_todo" Text="Cargar Todo" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_todo_Click" Style="float: right;" />
                         <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark  table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />

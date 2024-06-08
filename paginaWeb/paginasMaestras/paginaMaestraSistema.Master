@@ -77,7 +77,15 @@
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/plantilla_fabrica_fatay.aspx">Plantilla de Stock</a>
                     </li>
                 </ul>
+                <% }
 
+                    else if (tipo_usuario.Rows[0]["rol"].ToString() == "shami empleado")
+                    {%>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/lista_de_chequeo.aspx">Lista de Chequeo</a>
+                    </li>
+                </ul>
                 <%}
                     else
                     {%>
@@ -100,9 +108,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/administrador_de_empleados.aspx">Administrar empleados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/administrar_lista_de_chequeo.aspx">Administrar lista de chequeo</a>
                     </li>
                 </ul>
                 <% }%>

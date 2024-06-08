@@ -395,6 +395,12 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/dias_de_entrega.aspx">Calendario de Entrega</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/administrar_actividades_lista_chequeo_locales.aspx">Administrar Actividades de Lista de Chequeo de Locales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/administrar_lista_chequeo_perfiles.aspx">Administrar Lista de Chequeo de Perfiles</a>
+                    </li>
                     <%}%>
                     <% // MENU PROVEEDOR VILLA MAIPU - OPERACIONES %>
                     <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Operaciones")
@@ -408,6 +414,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_temperatura.aspx">Historial de temperatura</a>
                     </li>
+
                     <%}%>
 
                     <% // MENU PROVEEDOR VILLA MAIPU - AMIR %>
@@ -419,7 +426,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por pagar a Proveedores</a>
                     </li>
-                   
+
                     <%}%>
                 </ul>
 

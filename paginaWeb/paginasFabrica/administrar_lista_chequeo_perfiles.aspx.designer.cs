@@ -7,11 +7,11 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace paginaWeb.paginas
+namespace paginaWeb.paginasFabrica
 {
 
 
-    public partial class administrar_lista_de_chequeo
+    public partial class administrador_de_actividades
     {
 
         /// <summary>

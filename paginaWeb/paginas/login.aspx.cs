@@ -7,12 +7,25 @@ namespace paginaWeb
 {
     public partial class login : System.Web.UI.Page
     {
+        private void crear_tipo_usuario()
+        {
+            tipo_usuario = new DataTable();
+            tipo_usuario.Columns.Add("tipo",typeof(string));
+            tipo_usuario.Columns.Add("seguridad", typeof(string));
+            tipo_usuario.Columns.Add("rol", typeof(string));
+
+            tipo_usuario.Rows.Add();
+            tipo_usuario.Rows[0]["tipo"] = "empleado";
+            tipo_usuario.Rows[0]["seguridad"] = "1";
+            tipo_usuario.Rows[0]["rol"] = "shami empleado";
+        }
         cls_sistema_login login_sistema = new cls_sistema_login();
         cls_estadisticas_de_pedidos estadisticas;
         cls_stock_insumos stock_insumo;
 
         DataTable usuarioBD;
         DataTable proveedorBD;
+        DataTable tipo_usuario;
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -31,7 +44,7 @@ namespace paginaWeb
 
                 Session.Add("sucursal", login_sistema.get_sucursal());
                 Session.Add("usuariosBD", usuarioBD);
-                DataTable tipo_usuario = login_sistema.get_tipo_usuario();
+                 tipo_usuario = login_sistema.get_tipo_usuario();
                 Session.Add("tipo_usuario", tipo_usuario);
                 Session.Add("nivel_seguridad", tipo_usuario.Rows[0]["seguridad"].ToString());
                 if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Gerente")
@@ -104,6 +117,18 @@ namespace paginaWeb
                         Response.Redirect("~/paginas/proveedores.aspx", false);
                     }
                 }
+            }
+            else if (login_sistema.login_empleado(textbox_usuario.Text, textbox_contraseña.Text))
+            {
+                usuarioBD = login_sistema.get_usuarios();
+
+                Session.Add("sucursal", login_sistema.get_sucursal());
+                Session.Add("empleado", login_sistema.get_empleado());
+                Session.Add("usuariosBD", usuarioBD);
+                crear_tipo_usuario();
+                Session.Add("tipo_usuario", tipo_usuario);
+                Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
+
             }
             textbox_usuario.Attributes.Add("placeholder", "ingrese su usuario");
             textbox_contraseña.Attributes.Add("placeholder", "ingrese contraseña");

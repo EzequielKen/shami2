@@ -110,6 +110,8 @@
     <Content Include="paginasFabrica\actualizador_precio_vegetales.aspx" />
     <Content Include="paginasFabrica\actualizar_precio_stock.aspx" />
     <Content Include="paginasFabrica\administracion_de_equipos.aspx" />
+    <Content Include="paginasFabrica\administrar_lista_chequeo_perfiles.aspx" />
+    <Content Include="paginasFabrica\administrar_actividades_lista_chequeo_locales.aspx" />
     <Content Include="paginasFabrica\analisis_de_produccion.aspx" />
     <Content Include="paginasFabrica\historial_temperatura.aspx" />
     <Content Include="paginasFabrica\objetivo_de_produccion.aspx" />
@@ -170,6 +172,7 @@
     <Content Include="paginas\cuentas_por_pagar.aspx" />
     <Content Include="paginas\estadisticas_de_pedido.aspx" />
     <Content Include="paginas\historial_pedido.aspx" />
+    <Content Include="paginas\lista_de_chequeo.aspx" />
     <Content Include="paginas\login.aspx" />
     <Content Include="paginas\pedido.aspx" />
     <Content Include="paginas\proveedores.aspx" />
@@ -312,6 +315,20 @@
     </Compile>
     <Compile Include="paginasFabrica\administracion_de_equipos.aspx.designer.cs">
       <DependentUpon>administracion_de_equipos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\administrar_lista_chequeo_perfiles.aspx.cs">
+      <DependentUpon>administrar_lista_chequeo_perfiles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\administrar_lista_chequeo_perfiles.aspx.designer.cs">
+      <DependentUpon>administrar_lista_chequeo_perfiles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\administrar_actividades_lista_chequeo_locales.aspx.cs">
+      <DependentUpon>administrar_actividades_lista_chequeo_locales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\administrar_actividades_lista_chequeo_locales.aspx.designer.cs">
+      <DependentUpon>administrar_actividades_lista_chequeo_locales.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\analisis_de_produccion.aspx.cs">
       <DependentUpon>analisis_de_produccion.aspx</DependentUpon>
@@ -774,6 +791,13 @@
     </Compile>
     <Compile Include="paginas\historial_pedido.aspx.designer.cs">
       <DependentUpon>historial_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\lista_de_chequeo.aspx.cs">
+      <DependentUpon>lista_de_chequeo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\lista_de_chequeo.aspx.designer.cs">
+      <DependentUpon>lista_de_chequeo.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\login.aspx.cs">
       <DependentUpon>login.aspx</DependentUpon>
