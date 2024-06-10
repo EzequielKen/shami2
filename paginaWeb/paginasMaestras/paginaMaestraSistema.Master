@@ -109,6 +109,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/administrador_de_empleados.aspx">Administrar empleados</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/historial_lista_chequeo.aspx">Historial de Lista de Chequeo</a>
+                    </li>
                 </ul>
                 <% }%>
                 <h1>

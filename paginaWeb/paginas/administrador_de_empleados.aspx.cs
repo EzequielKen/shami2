@@ -55,20 +55,20 @@ namespace paginaWeb.paginas
         {
             int total = 0;
             int encargado = 0;
-            int cajeros=0;
+            int cajeros = 0;
             int Shawarmero = 0;
             int atencion_cliente = 0;
             int cocina = 0;
             int limpieza = 0;
-            for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count - 1; fila++)
             {
                 if (lista_de_empleadoBD.Rows[fila]["cargo"].ToString() == "Encargado")
                 {
                     encargado++;
                 }
-                else if (lista_de_empleadoBD.Rows[fila]["cargo"].ToString()=="Cajero")
+                else if (lista_de_empleadoBD.Rows[fila]["cargo"].ToString() == "Cajero")
                 {
-                    cajeros ++;
+                    cajeros++;
                 }
                 else if (lista_de_empleadoBD.Rows[fila]["cargo"].ToString() == "Shawarmero")
                 {
@@ -93,9 +93,9 @@ namespace paginaWeb.paginas
             label_total_atencion_al_cliente.Text = "Total Atencion Cliente: " + atencion_cliente.ToString();
             label_total_cocina.Text = "Total Empleados Cocina: " + cocina.ToString();
             label_total_limpieza.Text = "Total Empleados Limpieza: " + limpieza.ToString();
-            total = encargado+ cajeros + Shawarmero+atencion_cliente+cocina+limpieza;    
-            label_total.Text = "Total Plantilla de Personal: "+total.ToString();
-            
+            total = encargado + cajeros + Shawarmero + atencion_cliente + cocina + limpieza;
+            label_total.Text = "Total Plantilla de Personal: " + total.ToString();
+
         }
         #endregion
         #region crear empleado
@@ -121,11 +121,21 @@ namespace paginaWeb.paginas
                 empleado.Rows[0]["dni"] = textbox_dni.Text;
                 empleado.Rows[0]["telefono"] = textbox_telefono.Text;
                 empleado.Rows[0]["cargo"] = dropdown_cargo.SelectedItem.Text;
-                administrador.registrar_empleado(empleado);
-                textbox_nombre.Text = string.Empty;
-                textbox_apellido.Text = string.Empty;
-                textbox_dni.Text = string.Empty;
-                textbox_telefono.Text = string.Empty;
+                if (administrador.verificar_si_empleado_existe(empleado))
+                {
+                    label_advertencia.Text = "El DNI ya esta registrado";
+                    label_advertencia.Visible = true;
+                }
+                else
+                {
+                    label_advertencia.Visible = false;
+                    administrador.registrar_empleado(empleado);
+                    textbox_nombre.Text = string.Empty;
+                    textbox_apellido.Text = string.Empty;
+                    textbox_dni.Text = string.Empty;
+                    textbox_telefono.Text = string.Empty;
+                }
+
             }
         }
         private bool verificar_carga()
@@ -215,6 +225,7 @@ namespace paginaWeb.paginas
         DataTable empleado;
         DataTable lista_de_empleadoBD;
         DataTable lista_de_empleado;
+        DateTime fecha_de_hoy = DateTime.Now;
 
         string tipo_seleccionado;
         #endregion
@@ -226,7 +237,7 @@ namespace paginaWeb.paginas
                 Session.Add("administracion_de_empleados", new cls_administrar_empleados(usuariosBD));
             }
             administrador = (cls_administrar_empleados)Session["administracion_de_empleados"];
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(),fecha_de_hoy);
             if (!IsPostBack)
             {
                 configurar_controles();
@@ -237,7 +248,7 @@ namespace paginaWeb.paginas
         protected void boton_cargar_Click(object sender, EventArgs e)
         {
             cargar_datos_empleado();
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(),fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
         }
@@ -251,7 +262,7 @@ namespace paginaWeb.paginas
             string campo = "nombre";
             string dato = textbox_nombre_empleado.Text;
             administrador.actualizar_dato_empleado(id, campo, dato);
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(),fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
         }
@@ -265,7 +276,7 @@ namespace paginaWeb.paginas
             string campo = "apellido";
             string dato = textbox_apellido_empleado.Text;
             administrador.actualizar_dato_empleado(id, campo, dato);
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(),fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
         }
@@ -279,7 +290,7 @@ namespace paginaWeb.paginas
             string campo = "dni";
             string dato = textbox_dni_empleado.Text;
             administrador.actualizar_dato_empleado(id, campo, dato);
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
         }
@@ -293,7 +304,7 @@ namespace paginaWeb.paginas
             string campo = "telefono";
             string dato = textbox_telefono_empleado.Text;
             administrador.actualizar_dato_empleado(id, campo, dato);
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
         }
@@ -307,7 +318,7 @@ namespace paginaWeb.paginas
             string campo = "cargo";
             string dato = dropdown_cargo.SelectedItem.Text;
             administrador.actualizar_dato_empleado(id, campo, dato);
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
         }
@@ -347,7 +358,7 @@ namespace paginaWeb.paginas
             GridViewRow row = (GridViewRow)boton_eliminar.NamingContainer;
             int rowIndex = row.RowIndex;
             administrador.eliminar_empleado(gridview_empleados.Rows[rowIndex].Cells[0].Text);
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
 

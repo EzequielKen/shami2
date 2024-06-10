@@ -171,6 +171,7 @@
     <Content Include="paginas\calendario_de_entrega.aspx" />
     <Content Include="paginas\cuentas_por_pagar.aspx" />
     <Content Include="paginas\estadisticas_de_pedido.aspx" />
+    <Content Include="paginas\historial_lista_chequeo.aspx" />
     <Content Include="paginas\historial_pedido.aspx" />
     <Content Include="paginas\lista_de_chequeo.aspx" />
     <Content Include="paginas\login.aspx" />
@@ -784,6 +785,13 @@
     </Compile>
     <Compile Include="paginas\estadisticas_de_pedido.aspx.designer.cs">
       <DependentUpon>estadisticas_de_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\historial_lista_chequeo.aspx.cs">
+      <DependentUpon>historial_lista_chequeo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\historial_lista_chequeo.aspx.designer.cs">
+      <DependentUpon>historial_lista_chequeo.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\historial_pedido.aspx.cs">
       <DependentUpon>historial_pedido.aspx</DependentUpon>

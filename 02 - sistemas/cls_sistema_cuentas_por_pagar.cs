@@ -457,7 +457,10 @@ namespace _02___sistemas
         {
             administracion.actualizar_lectura_de_pedido(id_pedido);
         }
-
+        public  void eliminar_imputacion(string id_imputacion)
+        {
+            administracion.eliminar_imputacion(id_imputacion);
+        }
         #endregion
 
         #region metogos get/set

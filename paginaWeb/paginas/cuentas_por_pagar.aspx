@@ -127,7 +127,7 @@
                                 <h2>
                                     <asp:Label ID="label_pagado_mes" Text="Total pagado del mes:" CssClass="badge bg-secondary" runat="server" />
                                 </h2>
-                                <asp:GridView ID="gridView_imputaciones" runat="server" Caption="IMPUTACIONES" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped" OnSelectedIndexChanged="gridView_remitos_SelectedIndexChanged">
+                                <asp:GridView ID="gridView_imputaciones" runat="server" Caption="IMPUTACIONES" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped"  OnSelectedIndexChanged="gridView_imputaciones_SelectedIndexChanged" OnRowDataBound="gridView_imputaciones_RowDataBound" >
                                     <Columns>
                                         <asp:BoundField HeaderText="id" DataField="id" />
                                         <asp:BoundField HeaderText="Efectivo" DataField="Efectivo" />
@@ -135,7 +135,8 @@
                                         <asp:BoundField HeaderText="Mercado Pago" DataField="Mercado_Pago" />
                                         <asp:BoundField HeaderText="Total" DataField="Total" />
                                         <asp:BoundField HeaderText="Fecha" DataField="Fecha" />
-                                        <asp:CheckBoxField HeaderText="Autorizado" DataField="Autorizado" ControlStyle-CssClass="form-check" />
+                                        <asp:BoundField HeaderText="Autvorizado" DataField="autorizado" />
+                                        <asp:CommandField HeaderText="PDF" ShowSelectButton="true" SelectText="Eliminar" ControlStyle-CssClass="btn btn-danger btn-sm" />
                                     </Columns>
                                 </asp:GridView>
                             </div>

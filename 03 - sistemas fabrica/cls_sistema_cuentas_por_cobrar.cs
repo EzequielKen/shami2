@@ -53,6 +53,10 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region cargar nota
+        public void eliminar_imputacion(string id_imputacion)
+        {
+            administracion.eliminar_imputacion(id_imputacion);
+        }
         public void cargar_nota(string id_orden, string nota)
         {
             administracion.cargar_nota(id_orden, nota);

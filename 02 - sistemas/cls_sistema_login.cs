@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using modulos;
+using paginaWeb;
 namespace _02___sistemas
 {
     public class cls_sistema_login
@@ -32,6 +33,7 @@ namespace _02___sistemas
         }
         #region atributos
         cls_consultas_Mysql consultas_Mysql;
+        cls_funciones funciones = new cls_funciones();
         string ip, puerto, user, userPasword, base_de_datos;
         DataTable usuario;
         DataTable empleado;
@@ -76,7 +78,7 @@ namespace _02___sistemas
 
             try
             {
-                this.empleado = consultas_Mysql.login_empleado(usuario, contraseña);
+                this.empleado = consultas_Mysql.login_empleado(contraseña);
             }
             catch (Exception ex)
             {
@@ -87,13 +89,25 @@ namespace _02___sistemas
 
             if (this.empleado.Rows.Count > 0)
             {
+                DataTable sucursal_consultada = consultas_Mysql.login_consultar_sucursal(usuario);
+                if (sucursal_consultada.Rows.Count > 0)
+                {
+                    string id_empleado = this.empleado.Rows[0]["id"].ToString();
+                    int id_sucursal = int.Parse(sucursal_consultada.Rows[0]["id"].ToString());
+                    string actualizar = "`id_sucursal` = '" + id_sucursal.ToString() + "'";
+                    consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
+                    actualizar = "`fecha_logueo` = '" + funciones.get_fecha()  + "'";
+                    consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
 
-                retorno = true;
-                int id_sucursal = int.Parse(this.empleado.Rows[0]["id_sucursal"].ToString());
-                consultar_sucursal(id_sucursal);
-                consultar_usuario_segun_sucursal(id_sucursal.ToString());
-                string id_usuario = this.usuario.Rows[0]["id"].ToString();
 
+                    this.empleado = consultas_Mysql.login_empleado(contraseña);
+                    id_sucursal = int.Parse(this.empleado.Rows[0]["id_sucursal"].ToString());
+                    consultar_sucursal(id_sucursal);
+                    consultar_usuario_segun_sucursal(id_sucursal.ToString());
+                    string id_usuario = this.usuario.Rows[0]["id"].ToString();
+
+                    retorno = true;
+                }
             }
             return retorno;
         }

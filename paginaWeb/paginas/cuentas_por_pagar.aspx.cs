@@ -97,7 +97,7 @@ namespace paginaWeb.paginas
             imputaciones.Columns.Add("Mercado_Pago", typeof(string));
             imputaciones.Columns.Add("Total", typeof(string));
             imputaciones.Columns.Add("Fecha", typeof(string));
-            imputaciones.Columns.Add("Autorizado", typeof(bool));
+            imputaciones.Columns.Add("Autorizado", typeof(string));
         }
         private void llenar_dataTable()
         {
@@ -150,14 +150,9 @@ namespace paginaWeb.paginas
                     imputaciones.Rows[fila_dt]["Mercado_Pago"] = formatCurrency(mercadoPago);
                     imputaciones.Rows[fila_dt]["Total"] = formatCurrency(total);
                     imputaciones.Rows[fila_dt]["Fecha"] = formatDate(imputacionesBD.Rows[fila]["fecha"].ToString());
-                    if (imputacionesBD.Rows[fila]["autorizado"].ToString() == "Si")
-                    {
-                        imputaciones.Rows[fila_dt]["Autorizado"] = true;
-                    }
-                    else
-                    {
-                        imputaciones.Rows[fila_dt]["Autorizado"] = false;
-                    }
+                    imputaciones.Rows[fila_dt]["autorizado"] = imputacionesBD.Rows[fila]["autorizado"].ToString();
+
+                    
                     fila_dt++;
                 }
             }
@@ -411,6 +406,26 @@ namespace paginaWeb.paginas
                     gridView_remitos.Rows[fila].Cells[4].Controls[0].Visible = false;
                 }
             }
+        }
+
+        protected void gridView_imputaciones_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            string autorizado;
+            for (int fila = 0; fila<= gridView_imputaciones.Rows.Count-1; fila++)
+            {
+                autorizado = gridView_imputaciones.Rows[fila].Cells[6].Text;
+                if (autorizado=="Si")
+                {
+                    gridView_imputaciones.Rows[fila].Cells[7].Controls[0].Visible = false;
+                }
+            }
+        }
+        protected void gridView_imputaciones_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string id = gridView_imputaciones.SelectedRow.Cells[0].Text;
+            sistema_Administracion.eliminar_imputacion(id);
+            imputacionesBD = sistema_Administracion.get_imputaciones();
+            cargar_remitos();
         }
     }
 }

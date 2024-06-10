@@ -1,4 +1,5 @@
 ﻿using _03___sistemas_fabrica;
+using paginaWeb.paginas;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,6 +12,10 @@ namespace paginaWeb.paginasGerente
 {
     public partial class cuentas_por_cobrar_gerente : System.Web.UI.Page
     {
+        private void eliminar_imputacion(string id_imputacion)
+        {
+            sistema_Administracion.eliminar_imputacion(id_imputacion);
+        }
         private void cargar_nota(string id_orden, string nota)
         {
             if (nota != string.Empty)
@@ -471,6 +476,18 @@ namespace paginaWeb.paginasGerente
                 TextBox textbox_nota = (gridView_imputaciones.Rows[int.Parse(index)].Cells[8].FindControl("textbox_nota") as TextBox);
 
                 cargar_nota(id, textbox_nota.Text);
+                imputacionesBD = sistema_Administracion.get_imputaciones();
+                Session.Add("imputacionesBD", imputacionesBD);
+                cargar_remitos();
+
+            }
+            else if (e.CommandName == "eliminar")
+            {
+                string index = e.CommandArgument.ToString();
+
+                string id = gridView_imputaciones.Rows[int.Parse(index)].Cells[0].Text;
+
+                eliminar_imputacion(id);
                 imputacionesBD = sistema_Administracion.get_imputaciones();
                 Session.Add("imputacionesBD", imputacionesBD);
                 cargar_remitos();

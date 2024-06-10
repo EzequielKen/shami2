@@ -140,6 +140,11 @@ namespace modulos
         }
         #endregion
 
+        public void eliminar_imputacion(string id_imputacion)
+        {
+            string actualizar= "`activa` = '0'";
+            consultas.actualizar_tabla(base_de_datos, "imputaciones", actualizar,id_imputacion);
+        }
         public string cancelar_pedido(string id_pedido, string num_pedido, string proveedor, DataTable usuariosBD, DataTable sucursalBD)
         {
             consultas.actualizar_tabla(base_de_datos, "pedidos", "`estado` = 'Cancelado'", id_pedido);

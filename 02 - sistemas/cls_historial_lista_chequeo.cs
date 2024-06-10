@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace _02___sistemas
 {
-    public class cls_administrar_empleados
+    public class cls_historial_lista_chequeo
     {
-        public cls_administrar_empleados(DataTable usuario_BD)
+        public cls_historial_lista_chequeo(DataTable usuario_BD)
         {
             usuarioBD = usuario_BD;
             servidor = usuarioBD.Rows[0]["servidor"].ToString();
@@ -37,59 +37,36 @@ namespace _02___sistemas
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
-        DataTable lista_de_empleado;
+        DataTable lista_de_empleado; 
+        DataTable lista_de_chequeo; 
+        DataTable configuracion_de_chequeo;
+        DataTable empleado;
+        DataTable resumen;
         #endregion
-
         #region carga a base de datos
-        public void actualizar_dato_empleado(string id, string campo, string dato)
-        {
-            string actualizar = "`" + campo + "` = '" + dato + "' ";
-            consultas.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id);
-        }
         public void eliminar_empleado(string id)
         {
             string actualizar = "`id_sucursal` = 'N/A'";
             consultas.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id);
         }
-        public void registrar_empleado(DataTable empleado)
-        {
-            string columna = "";
-            string valores = "";
-
-            //id_sucursal
-            columna = funciones.armar_query_columna(columna, "id_sucursal", false);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["id_sucursal"].ToString(), false);
-            //nombre
-            columna = funciones.armar_query_columna(columna, "nombre", false);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["nombre"].ToString(), false);
-            //apellido
-            columna = funciones.armar_query_columna(columna, "apellido", false);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["apellido"].ToString(), false);
-            //dni
-            columna = funciones.armar_query_columna(columna, "dni", false);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["dni"].ToString(), false);
-            //telefono
-            columna = funciones.armar_query_columna(columna, "telefono", false);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["telefono"].ToString(), false);
-            //cargo
-            columna = funciones.armar_query_columna(columna, "cargo", true);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["cargo"].ToString(), true);
-
-            consultas.insertar_en_tabla(base_de_datos, "lista_de_empleado", columna, valores);
-        }
-        public bool verificar_si_empleado_existe(DataTable empleado)
-        {
-            bool retorno = false;
-            string dni = empleado.Rows[0]["dni"].ToString();
-            DataTable empleado_registrado = consultas.login_empleado(dni);
-            if (empleado_registrado.Rows.Count > 0)
-            {
-                retorno = true;
-            }
-            return retorno;
-        }
         #endregion
         #region metodos privados
+        private void limpiar_lista_empleados(DateTime fecha)
+        {
+            string turno_fecha, turno_registro, id_empleado;
+            DateTime fecha_registro;
+            for (int fila = 0; fila <= lista_de_empleado.Rows.Count - 1; fila++)
+            {
+                fecha_registro = (DateTime)lista_de_empleado.Rows[fila]["fecha_logueo"];
+                turno_fecha = verificar_horario_turno2(fecha);
+                turno_registro = verificar_horario_turno2(fecha_registro);
+                if (turno_fecha != turno_registro)
+                {
+                    id_empleado = lista_de_empleado.Rows[fila]["id"].ToString();
+                    eliminar_empleado(id_empleado);
+                }
+            }
+        }
         private string verificar_horario_turno2(DateTime miFecha)
         {
             string retorno = "fuera de rango";
@@ -115,35 +92,79 @@ namespace _02___sistemas
             }
             return retorno;
         }
-        private void limpiar_lista_empleados(DateTime fecha)
+        private void crear_tabla_resumen()
         {
-            string turno_fecha, turno_registro,id_empleado;
-            DateTime fecha_registro;
-            for (int fila = 0; fila <= lista_de_empleado.Rows.Count - 1; fila++)
+            resumen = new DataTable();
+            resumen.Columns.Add("id", typeof(string));
+            resumen.Columns.Add("actividad", typeof(string));
+            resumen.Columns.Add("categoria", typeof(string));
+            resumen.Columns.Add("area", typeof(string));
+        }
+        private void llenar_resumen()
+        {
+            crear_tabla_resumen();
+            string id, actividad, categoria, area;
+            int ultima_fila;
+            for (int columna = configuracion_de_chequeo.Columns["producto_1"].Ordinal; columna <= configuracion_de_chequeo.Columns.Count - 1; columna++)
             {
-                fecha_registro = (DateTime)lista_de_empleado.Rows[fila]["fecha_logueo"];
-                turno_fecha = verificar_horario_turno2(fecha);
-                turno_registro = verificar_horario_turno2(fecha_registro);
-                if (turno_fecha != turno_registro)
+                if (configuracion_de_chequeo.Rows[0][columna].ToString() != "N/A")
                 {
-                    id_empleado = lista_de_empleado.Rows[fila]["id"].ToString();
-                    eliminar_empleado(id_empleado);
+                    id = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 1);
+                    actividad = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 2);
+                    categoria = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 3);
+                    area = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 4);
+
+                    resumen.Rows.Add();
+                    ultima_fila = resumen.Rows.Count - 1;
+
+                    resumen.Rows[ultima_fila]["id"] = id;
+                    resumen.Rows[ultima_fila]["actividad"] = actividad;
+                    resumen.Rows[ultima_fila]["categoria"] = categoria;
+                    resumen.Rows[ultima_fila]["area"] = area;
                 }
             }
         }
         #endregion
         #region metodos consultas
+        private void consultar_empleado(string id_empleado)
+        {
+            empleado = consultas.consultar_empleado(id_empleado);
+        }
         private void consultar_lista_de_empleado(string id_sucursal)
         {
             lista_de_empleado = consultas.consultar_empleados(id_sucursal);
         }
+        private void consultar_configuracion_de_chequeo(string perfil)
+        {
+            configuracion_de_chequeo = consultas.consultar_configuracion_chequeo(perfil);
+        }
+        private void consultar_lista_de_chequeo()
+        {
+            lista_de_chequeo = consultas.consultar_tabla_completa(base_de_datos, "lista_de_chequeo");
+        }
         #endregion
         #region metodos get/set
+        public DataTable get_empleado(string id_empleado)
+        {
+            consultar_empleado(id_empleado);
+            return empleado;
+        }
         public DataTable get_lista_de_empleado(string id_sucursal, DateTime fecha)
         {
             consultar_lista_de_empleado(id_sucursal);
             limpiar_lista_empleados(fecha);
             return lista_de_empleado;
+        }
+        public DataTable get_configuracion_de_chequeo(string perfil)
+        {
+            consultar_configuracion_de_chequeo(perfil);
+            llenar_resumen();
+            return resumen;
+        }
+        public DataTable get_lista_de_chequeo()
+        {
+            consultar_lista_de_chequeo();
+            return lista_de_chequeo;
         }
         #endregion
     }

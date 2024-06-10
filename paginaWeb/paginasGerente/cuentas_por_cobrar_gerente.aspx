@@ -139,6 +139,7 @@
                                     <asp:ButtonField HeaderText="Cargar Notas" Text="Cargar Nota" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="cargar_nota" />
 
                                     <asp:BoundField HeaderText="nota" DataField="nota" />
+                                    <asp:ButtonField HeaderText="Eliminar" Text="Eliminar" ControlStyle-CssClass="btn btn-danger btn-sm" CommandName="eliminar" />
                                 </Columns>
                             </asp:GridView>
                         </div>

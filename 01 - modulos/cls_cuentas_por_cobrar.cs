@@ -60,6 +60,12 @@ namespace _01___modulos
         #endregion
 
         #region cargar nota
+        public void eliminar_imputacion(string id_imputacion)
+        {
+            string actualizar = "`activa` = '0'";
+            consultas.actualizar_tabla(base_de_datos, "imputaciones", actualizar, id_imputacion);
+
+        }
         public void cargar_nota(string id_orden, string nota)
         {
             string actualizar = "`nota` = '" + nota + "' ";
