@@ -45,7 +45,7 @@ namespace _02___sistemas
         #endregion
 
         #region carga a base de datos
-        public void registrar_chequeo(DataTable empleado, string actividad)
+        public void registrar_chequeo(DataTable empleado, string actividad,string nota)
         {
             string columnas = string.Empty;
             string valores = string.Empty;
@@ -65,8 +65,11 @@ namespace _02___sistemas
             columnas = funciones.armar_query_columna(columnas, "fecha", false);
             valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
             //actividad
-            columnas = funciones.armar_query_columna(columnas, "actividad", true);
-            valores = funciones.armar_query_valores(valores, actividad, true);
+            columnas = funciones.armar_query_columna(columnas, "actividad", false);
+            valores = funciones.armar_query_valores(valores, actividad, false);
+            //nota
+            columnas = funciones.armar_query_columna(columnas, "nota", true);
+            valores = funciones.armar_query_valores(valores, nota, true);
             consultas.insertar_en_tabla(base_de_datos, "historial_lista_chequeo", columnas, valores);
         }
         #endregion
@@ -77,6 +80,7 @@ namespace _02___sistemas
             resumen.Columns.Add("id", typeof(string));
             resumen.Columns.Add("actividad", typeof(string));
             resumen.Columns.Add("categoria", typeof(string));
+            resumen.Columns.Add("nota", typeof(string));
             resumen.Columns.Add("area", typeof(string));
         }
         private void crear_tabla_historial_resumen()
@@ -84,6 +88,7 @@ namespace _02___sistemas
             historial_resumen = new DataTable();
             historial_resumen.Columns.Add("id", typeof(string));
             historial_resumen.Columns.Add("actividad", typeof(string));
+            historial_resumen.Columns.Add("nota", typeof(string));
             historial_resumen.Columns.Add("fecha", typeof(string));
 
         }
@@ -126,6 +131,7 @@ namespace _02___sistemas
 
                 historial_resumen.Rows[ultima_fila]["id"] = id;
                 historial_resumen.Rows[ultima_fila]["actividad"] = actividad;
+                historial_resumen.Rows[ultima_fila]["nota"] = historial.Rows[fila]["nota"].ToString();
                 historial_resumen.Rows[ultima_fila]["fecha"] = historial.Rows[fila]["fecha"].ToString();
             }
         }

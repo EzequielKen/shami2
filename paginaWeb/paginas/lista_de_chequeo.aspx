@@ -22,7 +22,7 @@
                         <div class="alert alert-light">
                             <div class="input-group">
                                 <asp:Label CssClass="form-control" Text="Area" runat="server" />
-                                <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged"  AutoPostBack="true">
+                                <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
                             <div class="input-group">
@@ -36,10 +36,15 @@
                                     <asp:BoundField HeaderText="actividad" DataField="actividad" />
                                     <asp:TemplateField HeaderText="Cargar">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" CommandArgument='<%# Container.DataItemIndex %>'/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-
+                                    <asp:TemplateField HeaderText="Cargar">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>'/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:BoundField HeaderText="Nota" DataField="nota" />
                                 </Columns>
                             </asp:GridView>
                         </div>

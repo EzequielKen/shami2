@@ -58,6 +58,7 @@ namespace paginaWeb.paginas
             resumenBD.Columns.Add("actividad", typeof(string));
             resumenBD.Columns.Add("categoria", typeof(string));
             resumenBD.Columns.Add("area", typeof(string));
+            resumenBD.Columns.Add("nota", typeof(string));
             resumenBD.Columns.Add("fecha", typeof(string));
             Session.Add("resumen_chequeo", resumenBD);
         }
@@ -68,6 +69,7 @@ namespace paginaWeb.paginas
             resumen.Columns.Add("actividad", typeof(string));
             resumen.Columns.Add("categoria", typeof(string));
             resumen.Columns.Add("area", typeof(string));
+            resumen.Columns.Add("nota", typeof(string));
             resumen.Columns.Add("fecha", typeof(string));
             Session.Add("resumen_chequeo_local", resumen);
         }
@@ -320,7 +322,8 @@ namespace paginaWeb.paginas
                 if (fila_historial != -1)
                 {
                     gridview_chequeos.Rows[fila].CssClass = "table-success";
-                    gridview_chequeos.Rows[fila].Cells[2].Text = historial.Rows[fila_historial]["fecha"].ToString();
+                    gridview_chequeos.Rows[fila].Cells[2].Text = historial.Rows[fila_historial]["nota"].ToString();
+                    gridview_chequeos.Rows[fila].Cells[3].Text = historial.Rows[fila_historial]["fecha"].ToString();
 
                 }
             }

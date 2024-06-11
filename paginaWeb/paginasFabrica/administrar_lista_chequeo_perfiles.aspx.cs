@@ -28,7 +28,7 @@ namespace paginaWeb.paginasFabrica
             resumen = (DataTable)Session["resumen_chequeo"];
             int fila_actividad = funciones.buscar_fila_por_id(id, lista_de_chequeoBD);
             int fila_resumen = funciones.buscar_fila_por_id(id, resumen);
-            if (fila_resumen == -1)
+            if (fila_resumen == -1 && fila_actividad != -1)
             {
                 resumen.Rows.Add();
                 int ultima_fila = resumen.Rows.Count - 1;
@@ -40,7 +40,7 @@ namespace paginaWeb.paginasFabrica
             }
             else
             {
-                resumen.Rows[fila_resumen].Delete();
+               // resumen.Rows[fila_resumen].Delete();
             }
 
             Session.Add("resumen_chequeo", resumen);

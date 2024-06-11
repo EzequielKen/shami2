@@ -21,6 +21,7 @@ namespace paginaWeb.paginas
             resumenBD.Columns.Add("id", typeof(string));
             resumenBD.Columns.Add("actividad", typeof(string));
             resumenBD.Columns.Add("categoria", typeof(string));
+            resumenBD.Columns.Add("nota", typeof(string));
             resumenBD.Columns.Add("area", typeof(string));
             Session.Add("resumen_chequeo", resumenBD);
         }
@@ -30,6 +31,7 @@ namespace paginaWeb.paginas
             resumen.Columns.Add("id", typeof(string));
             resumen.Columns.Add("actividad", typeof(string));
             resumen.Columns.Add("categoria", typeof(string));
+            resumen.Columns.Add("nota", typeof(string));
             resumen.Columns.Add("area", typeof(string));
             Session.Add("resumen_chequeo_local", resumen);
         }
@@ -219,10 +221,10 @@ namespace paginaWeb.paginas
 
 
         }
-        private void registrar_chequeo(string id_actividad, string actividad)
+        private void registrar_chequeo(string id_actividad, string actividad,string nota)
         {
             actividad = id_actividad + "-" + actividad;
-            lista_chequeo.registrar_chequeo(empleado, actividad);
+            lista_chequeo.registrar_chequeo(empleado, actividad,nota);
         }
         /// <summary>
         /// ////////////////////////////////////////////////////////////
@@ -273,6 +275,7 @@ namespace paginaWeb.paginas
                 if (fila_historial != -1)
                 {
                     gridview_chequeos.Rows[fila].CssClass= "table-success";
+                    gridview_chequeos.Rows[fila].Cells[4].Text = historial.Rows[fila_historial]["nota"].ToString();
                     Button boton_cargar = (gridview_chequeos.Rows[fila].Cells[0].FindControl("boton_cargar") as Button);
                     boton_cargar.Visible = false;
 
@@ -300,9 +303,20 @@ namespace paginaWeb.paginas
             Button boton_cargar = (Button)sender;
             GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
             int fila = row.RowIndex;
+            TextBox textbox_nota = (gridview_chequeos.Rows[fila].Cells[2].FindControl("textbox_nota") as TextBox);
+
             string id_actividad = gridview_chequeos.Rows[fila].Cells[0].Text;
             string actividad = gridview_chequeos.Rows[fila].Cells[1].Text;
-            registrar_chequeo(id_actividad, actividad);
+            string nota;
+            if (textbox_nota.Text == string.Empty)
+            {
+                nota = "N/A";
+            }
+            else
+            {
+                nota = textbox_nota.Text;
+            }
+            registrar_chequeo(id_actividad, actividad,nota);
 
             configuracion = lista_chequeo.get_configuracion_de_chequeo(empleado.Rows[0]["cargo"].ToString());
 

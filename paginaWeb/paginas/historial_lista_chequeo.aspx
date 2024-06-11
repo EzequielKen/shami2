@@ -40,8 +40,9 @@
                     <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
-                            <asp:BoundField HeaderText="actividad" DataField="actividad" />
-                            <asp:BoundField HeaderText="fecha" DataField="fecha" />
+                            <asp:BoundField HeaderText="Actividad" DataField="actividad" />
+                            <asp:BoundField HeaderText="Nota" DataField="nota" />
+                            <asp:BoundField HeaderText="Fecha" DataField="fecha" />
                           
 
                         </Columns>
