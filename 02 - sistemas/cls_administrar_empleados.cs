@@ -136,13 +136,38 @@ namespace _02___sistemas
         private void consultar_lista_de_empleado(string id_sucursal)
         {
             lista_de_empleado = consultas.consultar_empleados(id_sucursal);
+            lista_de_empleado.Columns.Add("Encargado", typeof(string));
+            lista_de_empleado.Columns.Add("Cajero", typeof(string));
+            lista_de_empleado.Columns.Add("Shawarmero", typeof(string));
+            lista_de_empleado.Columns.Add("Atencion al Cliente", typeof(string));
+            lista_de_empleado.Columns.Add("Cocina", typeof(string));
+            lista_de_empleado.Columns.Add("Limpieza", typeof(string));
+            int iteraciones,posicion;
+            string cargo;
+            for (int fila = 0; fila <=lista_de_empleado.Rows.Count-1; fila++)
+            {
+                lista_de_empleado.Rows[fila]["Encargado"] ="N/A";
+                lista_de_empleado.Rows[fila]["Cajero"] = "N/A";
+                lista_de_empleado.Rows[fila]["Shawarmero"] = "N/A";
+                lista_de_empleado.Rows[fila]["Atencion al Cliente"] = "N/A";
+                lista_de_empleado.Rows[fila]["Cocina"] = "N/A";
+                lista_de_empleado.Rows[fila]["Limpieza"] = "N/A";
+                iteraciones = int.Parse(funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(),1));
+                posicion=2;
+                for (int index = 0; index <= iteraciones; index++)
+                {
+                    cargo = funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(), posicion);
+                    lista_de_empleado.Rows[fila][cargo] = cargo;
+                    posicion++;
+                }
+            }
         }
         #endregion
         #region metodos get/set
         public DataTable get_lista_de_empleado(string id_sucursal, DateTime fecha)
         {
             consultar_lista_de_empleado(id_sucursal);
-            limpiar_lista_empleados(fecha);
+            //limpiar_lista_empleados(fecha);
             return lista_de_empleado;
         }
         #endregion

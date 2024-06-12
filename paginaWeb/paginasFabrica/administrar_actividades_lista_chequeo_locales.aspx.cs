@@ -20,15 +20,20 @@ namespace paginaWeb.paginasFabrica
                 string actividad = textbox_actividad_nueva.Text;
                 string area = dropDown_tipo.SelectedItem.Text;
                 string categoria;
+                int nuevo_orden = 1;
                 if (textbox_categoria_nueva.Text == string.Empty)
                 {
                     categoria = dropdown_categoria_nueva.SelectedItem.Text;
+                    int ultima_fila = gridview_chequeos.Rows.Count - 1;
+                    TextBox textbox_ultimo = (gridview_chequeos.Rows[ultima_fila].Cells[1].FindControl("textbox_orden") as TextBox);
+                    nuevo_orden = int.Parse(textbox_ultimo.Text) + 1;
                 }
                 else
                 {
                     categoria = textbox_categoria_nueva.Text;
                 }
-                administrador.crear_actividad(actividad, area, categoria);
+
+                administrador.crear_actividad(actividad, area, categoria, nuevo_orden.ToString());
                 textbox_actividad_nueva.Text = string.Empty;
                 textbox_categoria_nueva.Text = string.Empty;
             }
@@ -39,12 +44,15 @@ namespace paginaWeb.paginasFabrica
         {
             lista_de_chequeo = new DataTable();
             lista_de_chequeo.Columns.Add("id", typeof(string));
+            lista_de_chequeo.Columns.Add("orden", typeof(string));
             lista_de_chequeo.Columns.Add("actividad", typeof(string));
             lista_de_chequeo.Columns.Add("activa", typeof(string));
         }
         private void llenar_tabla_chequeo()
         {
             crear_tabla_chequeo();
+            lista_de_chequeoBD.DefaultView.Sort = "area asc, categoria asc, orden asc";
+            lista_de_chequeoBD = lista_de_chequeoBD.DefaultView.ToTable();
             int ultima_fila = 0;
             for (int fila = 0; fila <= lista_de_chequeoBD.Rows.Count - 1; fila++)
             {
@@ -53,10 +61,12 @@ namespace paginaWeb.paginasFabrica
                     lista_de_chequeo.Rows.Add();
                     ultima_fila = lista_de_chequeo.Rows.Count - 1;
                     lista_de_chequeo.Rows[ultima_fila]["id"] = lista_de_chequeoBD.Rows[fila]["id"].ToString();
+                    lista_de_chequeo.Rows[ultima_fila]["orden"] = lista_de_chequeoBD.Rows[fila]["orden"].ToString();
                     lista_de_chequeo.Rows[ultima_fila]["actividad"] = lista_de_chequeoBD.Rows[fila]["actividad"].ToString();
                     lista_de_chequeo.Rows[ultima_fila]["activa"] = lista_de_chequeoBD.Rows[fila]["activa"].ToString();
                 }
             }
+
         }
         private void cargar_lista_chequeo()
         {
@@ -215,8 +225,10 @@ namespace paginaWeb.paginasFabrica
             }
             administrador = (cls_administrar_lista_chequeo_locales)Session["administracion_de_chequeo_locales"];
             lista_de_chequeoBD = administrador.get_lista_de_chequeo();
+
             if (!IsPostBack)
             {
+
                 configurar_controles();
                 cargar_lista_chequeo();
 
@@ -229,8 +241,10 @@ namespace paginaWeb.paginasFabrica
             {
                 TextBox textbox_actividad = (gridview_chequeos.Rows[fila].Cells[0].FindControl("textbox_actividad") as TextBox);
                 textbox_actividad.Text = lista_de_chequeo.Rows[fila]["actividad"].ToString();
+                TextBox textbox_orden = (gridview_chequeos.Rows[fila].Cells[1].FindControl("textbox_orden") as TextBox);
+                textbox_orden.Text = lista_de_chequeo.Rows[fila]["orden"].ToString();
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
-                estado = gridview_chequeos.Rows[fila].Cells[3].Text;
+                estado = gridview_chequeos.Rows[fila].Cells[4].Text;
                 if (estado == "0")
                 {
                     gridview_chequeos.Rows[fila].CssClass = "table-danger";
@@ -280,7 +294,7 @@ namespace paginaWeb.paginasFabrica
             GridViewRow row = (GridViewRow)boton_eliminar.NamingContainer;
             int rowIndex = row.RowIndex;
             string id = gridview_chequeos.Rows[rowIndex].Cells[0].Text;
-            string estado = gridview_chequeos.Rows[rowIndex].Cells[3].Text;
+            string estado = gridview_chequeos.Rows[rowIndex].Cells[4].Text;
             if (estado == "1")
             {
                 estado = "0";
@@ -317,6 +331,29 @@ namespace paginaWeb.paginasFabrica
 
             }
             cargar_lista_chequeo();
+        }
+
+        protected void textbox_orden_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_orden = (TextBox)sender;
+            GridViewRow row = (GridViewRow)textbox_orden.NamingContainer;
+            int rowIndex = row.RowIndex;
+            string id = gridview_chequeos.Rows[rowIndex].Cells[0].Text;
+
+
+            TextBox textbox_primero = (gridview_chequeos.Rows[0].Cells[1].FindControl("textbox_orden") as TextBox);
+            int ultima_fila = gridview_chequeos.Rows.Count - 1;
+            TextBox textbox_ultimo = (gridview_chequeos.Rows[ultima_fila].Cells[1].FindControl("textbox_orden") as TextBox);
+
+            int nuevo_orden = int.Parse(textbox_orden.Text);
+            int primer_orden = int.Parse(textbox_primero.Text);
+            int ultimo_orden = int.Parse(textbox_ultimo.Text);
+            if (nuevo_orden >= primer_orden && nuevo_orden <= ultimo_orden)
+            {
+                administrador.set_orden_actividad(id, nuevo_orden.ToString());
+                lista_de_chequeoBD = administrador.get_lista_de_chequeo();
+                cargar_lista_chequeo();
+            }
         }
     }
 }

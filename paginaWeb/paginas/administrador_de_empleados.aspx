@@ -6,7 +6,7 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            <div class="container">
+            <div class=" container-fluid">
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-light">
@@ -34,17 +34,31 @@
                                 <h4>
                                     <asp:Label CssClass="form-label" Text="cargo" runat="server" />
                                 </h4>
+                                <div class="row">
+                                    <div class="col">
+                                        <asp:Button ID="boton_encargado" CssClass="btn btn-primary" Text="Encargado" runat="server" OnClick="boton_encargado_Click" />
+                                    </div>
+                                    <div class="col">
+                                        <asp:Button ID="boton_cajero" CssClass="btn btn-primary" Text="Cajero" runat="server" OnClick="boton_cajero_Click" />
+                                    </div>
+                                    <div class="col">
+                                        <asp:Button ID="boton_shawarmero" CssClass="btn btn-primary" Text="Shawarmero" runat="server" OnClick="boton_shawarmero_Click" />
+                                    </div>
+                                    <div class="col">
+                                        <asp:Button ID="boton_atencion" CssClass="btn btn-primary" Text="Atencion al Cliente" runat="server" OnClick="boton_atencion_Click" />
+                                    </div>
+                                    <div class="col">
+                                        <asp:Button ID="boton_cocina" CssClass="btn btn-primary" Text="Cocina" runat="server" OnClick="boton_cocina_Click" />
+                                    </div>
+                                    <div class="col">
+                                        <asp:Button ID="boton_limpieza" CssClass="btn btn-primary" Text="Limpieza" runat="server" OnClick="boton_limpieza_Click" />
+                                    </div>
+                                </div>
 
-                                <asp:DropDownList ID="dropdown_cargo" CssClass="form-control" runat="server">
-                                    <asp:ListItem Text="Encargado" />
-                                    <asp:ListItem Text="Cajero" />
-                                    <asp:ListItem Text="Shawarmero" />
-                                    <asp:ListItem Text="Atencion al Cliente" />
-                                    <asp:ListItem Text="Cocina" />
-                                    <asp:ListItem Text="Limpieza" />
-                                </asp:DropDownList>
                             </div>
-                            <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Cargar" runat="server" OnClick="boton_cargar_Click" />
+                            <div class="row pt-5">
+                                <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Cargar" runat="server" OnClick="boton_cargar_Click" />
+                            </div>
                         </div>
                     </div>
                     <div class="col">
@@ -74,9 +88,12 @@
                         <asp:Label Visible="false" ID="label_advertencia" CssClass=" pt-4 alert alert-danger" Text="text" runat="server" />
                     </h4>
                 </div>
-                <hr />
+            </div>
+
+            <hr />
+
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="col"></div>
                     <div class="col">
                         <div class="alert alert-light">
                             <div class="input-group">
@@ -89,38 +106,61 @@
                                     <asp:BoundField HeaderText="id" DataField="id" />
                                     <asp:TemplateField HeaderText="Nombre">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_nombre_empleado" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_nombre_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_nombre_empleado" CssClass=" form-control-sm" runat="server" OnTextChanged="textbox_nombre_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
                                     <asp:TemplateField HeaderText="Apellido">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_apellido_empleado" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_apellido_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_apellido_empleado" CssClass="form-control-sm" runat="server" OnTextChanged="textbox_apellido_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
                                     <asp:TemplateField HeaderText="DNI">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_dni_empleado" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_dni_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_dni_empleado" CssClass="form-control-sm" runat="server" OnTextChanged="textbox_dni_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
                                     <asp:TemplateField HeaderText="Telefono">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_telefono_empleado" CssClass="form-control-lg" runat="server" OnTextChanged="textbox_telefono_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_telefono_empleado" CssClass="form-control-sm" runat="server" OnTextChanged="textbox_telefono_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Cargo">
+                                    <asp:TemplateField HeaderText="Encargado">
                                         <ItemTemplate>
-                                            <asp:DropDownList ID="dropdown_cargo_empleado" CssClass="form-control-lg " runat="server" OnSelectedIndexChanged="dropdown_cargo_empleado_SelectedIndexChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'>
-                                                <asp:ListItem Text="Encargado" />
-                                                <asp:ListItem Text="Cajero" />
-                                                <asp:ListItem Text="Shawarmero" />
-                                                <asp:ListItem Text="Atencion al Cliente" />
-                                                <asp:ListItem Text="Cocina" />
-                                                <asp:ListItem Text="Limpieza" />
-                                            </asp:DropDownList>
+                                            <asp:Button ID="boton_encargado_empleado" CssClass="btn btn-primary" Text="Encargado" runat="server" OnClick="boton_encargado_empleado_Click"/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Cajero">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_cajero_empleado" CssClass="btn btn-primary" Text="Cajero" runat="server" OnClick="boton_cajero_empleado_Click"/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Shawarmero">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_shawarmero_empleado" CssClass="btn btn-primary" Text="Shawarmero" runat="server" OnClick="boton_shawarmero_empleado_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Atencion a cliente">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_atencion_empleado" CssClass="btn btn-primary" Text="Atencion a Cliente" runat="server" OnClick="boton_atencion_empleado_Click"/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Cocina">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_cocina_empleado" CssClass="btn btn-primary" Text="Cocina" runat="server" OnClick="boton_cocina_empleado_Click"/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Limpieza">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_limpieza_empleado" CssClass="btn btn-primary" Text="Limpieza" runat="server" OnClick="boton_limpieza_empleado_Click"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
@@ -133,7 +173,6 @@
                             </asp:GridView>
                         </div>
                     </div>
-                    <div class="col"></div>
                 </div>
             </div>
         </ContentTemplate>
