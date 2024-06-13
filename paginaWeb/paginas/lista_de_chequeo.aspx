@@ -13,13 +13,30 @@
                             <asp:Label ID="label_nombre" Text="text" runat="server" />
                         </h1>
                         <h2>
-                            <asp:Label ID="label_cargo" Text="text" runat="server" />
-                        </h2>
-                        <h2>
                             <asp:Label ID="label_fecha" Text="text" runat="server" />
                         </h2>
 
                         <div class="alert alert-light">
+                            <div class="row">
+                                <div class="col">
+                                    <asp:Button ID="boton_encargado" Visible="false" CssClass="btn btn-primary" Text="Encargado" runat="server" OnClick="boton_encargado_Click"/>
+                                </div>
+                                <div class="col">
+                                    <asp:Button ID="boton_cajero" Visible="false" CssClass="btn btn-primary" Text="Cajero" runat="server" OnClick="boton_cajero_Click" />
+                                </div>
+                                <div class="col">
+                                    <asp:Button ID="boton_shawarmero" Visible="false" CssClass="btn btn-primary" Text="Shawarmero" runat="server" OnClick="boton_shawarmero_Click" />
+                                </div>
+                                <div class="col">
+                                    <asp:Button ID="boton_atencion" Visible="false" CssClass="btn btn-primary" Text="Atencion al Cliente" runat="server" OnClick="boton_atencion_Click" />
+                                </div>
+                                <div class="col">
+                                    <asp:Button ID="boton_cocina" Visible="false" CssClass="btn btn-primary" Text="Cocina" runat="server" OnClick="boton_cocina_Click" />
+                                </div>
+                                <div class="col">
+                                    <asp:Button ID="boton_limpieza" Visible="false" CssClass="btn btn-primary" Text="Limpieza" runat="server" OnClick="boton_limpieza_Click" />
+                                </div>
+                            </div>
                             <div class="input-group">
                                 <asp:Label CssClass="form-control" Text="Area" runat="server" />
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
@@ -36,12 +53,12 @@
                                     <asp:BoundField HeaderText="actividad" DataField="actividad" />
                                     <asp:TemplateField HeaderText="Cargar">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" CommandArgument='<%# Container.DataItemIndex %>'/>
+                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Cargar">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>'/>
+                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField HeaderText="Nota" DataField="nota" />

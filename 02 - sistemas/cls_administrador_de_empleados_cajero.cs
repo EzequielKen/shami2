@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace _02___sistemas
 {
-    public class cls_administrar_empleados
+    public class cls_administrador_de_empleados_cajero
     {
-        public cls_administrar_empleados(DataTable usuario_BD)
+        public cls_administrador_de_empleados_cajero(DataTable usuario_BD)
         {
             usuarioBD = usuario_BD;
             servidor = usuarioBD.Rows[0]["servidor"].ToString();
@@ -41,18 +41,18 @@ namespace _02___sistemas
         #endregion
 
         #region carga a base de datos
-        public void actualizar_cargos_empleado(string id_empleado,DataTable empleados)
+        public void actualizar_cargos_empleado(string id_empleado, DataTable empleados)
         {
-            int fila_empleado = funciones.buscar_fila_por_id(id_empleado,empleados);
+            int fila_empleado = funciones.buscar_fila_por_id(id_empleado, empleados);
             string dato = configurar_cargo(empleados, fila_empleado);
-            actualizar_dato_empleado(id_empleado,"cargo",dato);
+            actualizar_dato_empleado(id_empleado, "cargo", dato);
         }
-        private string configurar_cargo(DataTable empleados,int fila_empleados)
+        private string configurar_cargo(DataTable empleados, int fila_empleados)
         {
             string retorno = string.Empty;
             int cantidad_cargos = 0;
             string cargos = string.Empty;
-            if (empleados.Rows[fila_empleados]["Encargado"].ToString()!="N/A")
+            if (empleados.Rows[fila_empleados]["Encargado"].ToString() != "N/A")
             {
                 cargos = cargos + "-Encargado";
                 cantidad_cargos++;
@@ -166,7 +166,7 @@ namespace _02___sistemas
         }
         private void limpiar_lista_empleados(DateTime fecha)
         {
-            string turno_fecha, turno_registro,id_empleado;
+            string turno_fecha, turno_registro, id_empleado;
             DateTime fecha_registro;
             for (int fila = 0; fila <= lista_de_empleado.Rows.Count - 1; fila++)
             {
@@ -191,18 +191,18 @@ namespace _02___sistemas
             lista_de_empleado.Columns.Add("Atencion al Cliente", typeof(string));
             lista_de_empleado.Columns.Add("Cocina", typeof(string));
             lista_de_empleado.Columns.Add("Limpieza", typeof(string));
-            int iteraciones,posicion;
+            int iteraciones, posicion;
             string cargo;
-            for (int fila = 0; fila <=lista_de_empleado.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= lista_de_empleado.Rows.Count - 1; fila++)
             {
-                lista_de_empleado.Rows[fila]["Encargado"] ="N/A";
+                lista_de_empleado.Rows[fila]["Encargado"] = "N/A";
                 lista_de_empleado.Rows[fila]["Cajero"] = "N/A";
                 lista_de_empleado.Rows[fila]["Shawarmero"] = "N/A";
                 lista_de_empleado.Rows[fila]["Atencion al Cliente"] = "N/A";
                 lista_de_empleado.Rows[fila]["Cocina"] = "N/A";
                 lista_de_empleado.Rows[fila]["Limpieza"] = "N/A";
-                iteraciones = int.Parse(funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(),1));
-                posicion=2;
+                iteraciones = int.Parse(funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(), 1));
+                posicion = 2;
                 for (int index = 0; index <= iteraciones; index++)
                 {
                     cargo = funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(), posicion);

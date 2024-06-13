@@ -1,5 +1,6 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
+using paginaWeb.paginas;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -40,7 +41,7 @@ namespace paginaWeb.paginasFabrica
             }
             else
             {
-               // resumen.Rows[fila_resumen].Delete();
+               resumen.Rows[fila_resumen].Delete();
             }
 
             Session.Add("resumen_chequeo", resumen);
@@ -97,6 +98,7 @@ namespace paginaWeb.paginasFabrica
             lista_de_chequeo = new DataTable();
             lista_de_chequeo.Columns.Add("id", typeof(string));
             lista_de_chequeo.Columns.Add("actividad", typeof(string));
+            lista_de_chequeo.Columns.Add("orden", typeof(int));
         }
         private void llenar_tabla_chequeo()
         {
@@ -110,13 +112,15 @@ namespace paginaWeb.paginasFabrica
                     ultima_fila = lista_de_chequeo.Rows.Count - 1;
                     lista_de_chequeo.Rows[ultima_fila]["id"] = lista_de_chequeoBD.Rows[fila]["id"].ToString();
                     lista_de_chequeo.Rows[ultima_fila]["actividad"] = lista_de_chequeoBD.Rows[fila]["actividad"].ToString();
+                    lista_de_chequeo.Rows[ultima_fila]["orden"] = int.Parse(lista_de_chequeoBD.Rows[fila]["orden"].ToString());
                 }
             }
         }
         private void cargar_lista_chequeo()
         {
             llenar_tabla_chequeo();
-
+            lista_de_chequeo.DefaultView.Sort = "orden asc";
+            lista_de_chequeoBD = lista_de_chequeo.DefaultView.ToTable();
             gridview_chequeos.DataSource = lista_de_chequeo;
             gridview_chequeos.DataBind();
         }

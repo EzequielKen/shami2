@@ -40,6 +40,7 @@
                 <%//MENU SUCURSAL %>
                 <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];
 
+
                     if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Fabrica Fatay")
                     {%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -80,7 +81,17 @@
                 <% }
 
                     else if (tipo_usuario.Rows[0]["rol"].ToString() == "shami empleado")
-                    {%>
+                    {
+                        System.Data.DataTable empleado = (System.Data.DataTable)Session["empleado"];
+                        string dato = empleado.Rows[0]["cargo"].ToString();
+                        if (dato.Contains("Encargado") || dato.Contains("Cajero"))
+                        {%>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary" href="/paginas/administrador_de_empleados_cajero.aspx">Administrar Empleados</a>
+                            </li>
+                        </ul>
+                      <%}%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/lista_de_chequeo.aspx">Lista de Chequeo</a>

@@ -146,11 +146,10 @@ namespace paginaWeb.paginas
                 }
             }
         }
-        private void llenar_resumen_con_configuracion()
+        private void llenar_resumen_con_configuracion(string perfil)
         {
             crear_tabla_resumenBD();
             string id_actividad;
-            string perfil = empleado.Rows[0]["cargo"].ToString();
             configuracion = historial.get_configuracion_de_chequeo(perfil);
             for (int fila = 0; fila <= configuracion.Rows.Count - 1; fila++)
             {
@@ -165,7 +164,7 @@ namespace paginaWeb.paginas
             string nombre = empleado.Rows[0]["nombre"].ToString();
             string apellido = empleado.Rows[0]["apellido"].ToString();
             string cargo = empleado.Rows[0]["cargo"].ToString();
-            
+
 
             llenar_dropDownList(resumenBD);
             llenar_dropDownList_categiria(resumenBD, dropDown_tipo.SelectedItem.Text);
@@ -269,9 +268,9 @@ namespace paginaWeb.paginas
         DataTable lista_de_empleadoBD;
         DataTable lista_de_empleado;
         DataTable lista_de_chequeoBD;
-        DataTable configuracion; 
-        DataTable resumenBD; 
-        DataTable resumen; 
+        DataTable configuracion;
+        DataTable resumenBD;
+        DataTable resumen;
         DateTime fecha_de_hoy = DateTime.Now;
 
         string tipo_seleccionado;
@@ -290,7 +289,7 @@ namespace paginaWeb.paginas
             }
             lista_chequeo = (cls_lista_de_chequeo)Session["lista_chequeo"];
             lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
-             if (!IsPostBack)
+            if (!IsPostBack)
             {
                 cargar_lista_empleados();
             }
@@ -333,25 +332,53 @@ namespace paginaWeb.paginas
             Button boton_cargar = (Button)sender;
             GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
             int fila = row.RowIndex;
+            DropDownList dropdown_cargo = (gridview_empleados.Rows[fila].Cells[3].FindControl("dropdown_cargo") as DropDownList);
+
             string id_empleado = gridview_empleados.Rows[fila].Cells[0].Text;
             string nombre = gridview_empleados.Rows[fila].Cells[1].Text;
             string apellido = gridview_empleados.Rows[fila].Cells[2].Text;
             empleado = historial.get_empleado(id_empleado);
-            Session.Add("empleado_historial",empleado);
-            configuracion = historial.get_configuracion_de_chequeo(empleado.Rows[0]["cargo"].ToString());
+            Session.Add("empleado_historial", empleado);
+            configuracion = historial.get_configuracion_de_chequeo(dropdown_cargo.SelectedItem.Text);
             lista_de_chequeoBD = historial.get_lista_de_chequeo();
             label_empleado.Text = "Empleado: " + nombre + " " + apellido;
             label_empleado.Visible = true;
             label_area.Visible = true;
             label_categoria.Visible = true;
-            dropDown_tipo.Visible = true; 
-            dropDown_categoria.Visible =true;
-            llenar_resumen_con_configuracion();
+            dropDown_tipo.Visible = true;
+            dropDown_categoria.Visible = true;
+            llenar_resumen_con_configuracion(dropdown_cargo.SelectedItem.Text);
 
             configurar_controles();
             cargar_lista_chequeo();
 
-            
+
+        }
+
+        protected void gridview_empleados_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            string dato, id_empleado;
+            int fila_empleado, iteraciones, posicion;
+            for (int fila = 0; fila <= gridview_empleados.Rows.Count - 1; fila++)
+            {
+                id_empleado = gridview_empleados.Rows[fila].Cells[0].Text;
+                fila_empleado = funciones.buscar_fila_por_id(id_empleado, lista_de_empleadoBD);
+
+                DropDownList dropdown_cargo = (gridview_empleados.Rows[fila].Cells[3].FindControl("dropdown_cargo") as DropDownList);
+
+                dropdown_cargo.Items.Clear();
+                iteraciones = int.Parse(funciones.obtener_dato(lista_de_empleadoBD.Rows[fila_empleado]["cargo"].ToString(), 1));
+                posicion = 2;
+                if (dropdown_cargo.Items.Count==0)
+                {
+                    for (int index = 0; index <= iteraciones; index++)
+                    {
+                        dato = funciones.obtener_dato(lista_de_empleadoBD.Rows[fila_empleado]["cargo"].ToString(), posicion);
+                        dropdown_cargo.Items.Add(dato);
+                        posicion++;
+                    }
+                }
+            }
         }
     }
 }

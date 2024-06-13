@@ -114,15 +114,6 @@ namespace paginaWeb.paginas
         protected global::System.Web.UI.WebControls.Button boton_cargar;
 
         /// <summary>
-        /// Control label_total.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_total;
-
-        /// <summary>
         /// Control label_total_encargado.
         /// </summary>
         /// <remarks>
@@ -193,6 +184,15 @@ namespace paginaWeb.paginas
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
+
+        /// <summary>
+        /// Control label_total.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_total;
 
         /// <summary>
         /// Control gridview_empleados.

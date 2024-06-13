@@ -7,12 +7,17 @@
         <div class="row">
             <div class="col">
                 <div class="alert alert-light">
-                    <asp:GridView Caption="LISTA DE EMPLEADOS" CaptionAlign="Top" runat="server" ID="gridview_empleados" AutoGenerateColumns="false" CssClass="table table-dark   table-striped">
+                    <asp:GridView Caption="LISTA DE EMPLEADOS" CaptionAlign="Top" runat="server" ID="gridview_empleados" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_empleados_RowDataBound">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
                             <asp:BoundField HeaderText="Nombre" DataField="nombre" />
                             <asp:BoundField HeaderText="Apellido" DataField="apellido" />
-                            <asp:BoundField HeaderText="Cargo" DataField="cargo" />
+                            <asp:TemplateField HeaderText="Cargo">
+                                <ItemTemplate>
+                                    <asp:DropDownList ID="dropdown_cargo" CssClass="form-control" runat="server">
+                                    </asp:DropDownList>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField HeaderText="Historial">
                                 <ItemTemplate>
                                     <asp:Button ID="boton_historial" CssClass="btn btn-primary" Text="Ver Detalle" runat="server" OnClick="boton_historial_Click" />
@@ -43,7 +48,7 @@
                             <asp:BoundField HeaderText="Actividad" DataField="actividad" />
                             <asp:BoundField HeaderText="Nota" DataField="nota" />
                             <asp:BoundField HeaderText="Fecha" DataField="fecha" />
-                          
+
 
                         </Columns>
                     </asp:GridView>

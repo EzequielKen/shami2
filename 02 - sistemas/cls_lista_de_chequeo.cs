@@ -42,6 +42,7 @@ namespace _02___sistemas
         DataTable resumen;
         DataTable historial;
         DataTable historial_resumen;
+        DataTable empleado;
         #endregion
 
         #region carga a base de datos
@@ -187,6 +188,10 @@ namespace _02___sistemas
         }
         #endregion
         #region metodos consultas
+        private void consultar_empleado(string id_empleado)
+        {
+            empleado = consultas.consultar_empleado(id_empleado);
+        }
         private void consultar_historial(DateTime fecha, string hora_inicio, string hora_fin, string id_empleado,string id_sucursal)
         {
             historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal);
@@ -258,7 +263,7 @@ namespace _02___sistemas
         }
         private void consultar_lista_de_chequeo()
         {
-            lista_de_chequeo = consultas.consultar_tabla_completa(base_de_datos, "lista_de_chequeo");
+            lista_de_chequeo = consultas.consultar_tabla(base_de_datos, "lista_de_chequeo");
         }
         #endregion
 
@@ -300,7 +305,13 @@ namespace _02___sistemas
         public DataTable get_lista_de_chequeo()
         {
             consultar_lista_de_chequeo();
+         
             return lista_de_chequeo;
+        }
+        public DataTable get_empleado(string id_empleado)
+        {
+            consultar_empleado(id_empleado);
+            return empleado;
         }
         #endregion
     }
