@@ -11,17 +11,71 @@ namespace paginaWeb.paginas
 {
 
 
-    public partial class historial_lista_chequeo
+    public partial class registro_venta_local
     {
 
         /// <summary>
-        /// Control calendario.
+        /// Control boton_torno_1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar calendario;
+        protected global::System.Web.UI.WebControls.Button boton_torno_1;
+
+        /// <summary>
+        /// Control boton_torno_2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_torno_2;
+
+        /// <summary>
+        /// Control label_turno.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_turno;
+
+        /// <summary>
+        /// Control textbox_venta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textbox_venta;
+
+        /// <summary>
+        /// Control textbox_nota.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textbox_nota;
+
+        /// <summary>
+        /// Control boton_cargar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_cargar;
+
+        /// <summary>
+        /// Control label_total.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_total;
 
         /// <summary>
         /// Control label_fecha.
@@ -33,138 +87,102 @@ namespace paginaWeb.paginas
         protected global::System.Web.UI.WebControls.Label label_fecha;
 
         /// <summary>
-        /// Control gridview_empleados.
+        /// Control calendario_fecha_registro.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_empleados;
+        protected global::System.Web.UI.WebControls.Calendar calendario_fecha_registro;
 
         /// <summary>
-        /// Control label_empleado.
+        /// Control label_alerta.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_empleado;
+        protected global::System.Web.UI.WebControls.Label label_alerta;
 
         /// <summary>
-        /// Control label_fecha_historial.
+        /// Control label_total_turno1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_fecha_historial;
+        protected global::System.Web.UI.WebControls.Label label_total_turno1;
 
         /// <summary>
-        /// Control boton_encargado.
+        /// Control label_total_turno2.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_encargado;
+        protected global::System.Web.UI.WebControls.Label label_total_turno2;
 
         /// <summary>
-        /// Control boton_cajero.
+        /// Control label_total_ventas.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_cajero;
+        protected global::System.Web.UI.WebControls.Label label_total_ventas;
 
         /// <summary>
-        /// Control boton_shawarmero.
+        /// Control label_fecha_historial_inicio.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_shawarmero;
+        protected global::System.Web.UI.WebControls.Label label_fecha_historial_inicio;
 
         /// <summary>
-        /// Control boton_atencion.
+        /// Control calendario_inicio.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_atencion;
+        protected global::System.Web.UI.WebControls.Calendar calendario_inicio;
 
         /// <summary>
-        /// Control boton_cocina.
+        /// Control label_fecha_historial_fin.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_cocina;
+        protected global::System.Web.UI.WebControls.Label label_fecha_historial_fin;
 
         /// <summary>
-        /// Control boton_limpieza.
+        /// Control calendario_fin.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_limpieza;
+        protected global::System.Web.UI.WebControls.Calendar calendario_fin;
 
         /// <summary>
-        /// Control label_area.
+        /// Control dropdown_turno.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_area;
+        protected global::System.Web.UI.WebControls.DropDownList dropdown_turno;
 
         /// <summary>
-        /// Control dropDown_tipo.
+        /// Control gridview_historial.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
-
-        /// <summary>
-        /// Control label_categoria.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_categoria;
-
-        /// <summary>
-        /// Control dropDown_categoria.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropDown_categoria;
-
-        /// <summary>
-        /// Control label_alerta_registro.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_alerta_registro;
-
-        /// <summary>
-        /// Control gridview_chequeos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_chequeos;
+        protected global::System.Web.UI.WebControls.GridView gridview_historial;
     }
 }

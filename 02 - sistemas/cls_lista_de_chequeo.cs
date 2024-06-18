@@ -62,6 +62,9 @@ namespace _02___sistemas
             //apellido
             columnas = funciones.armar_query_columna(columnas, "apellido", false);
             valores = funciones.armar_query_valores(valores, empleado.Rows[0]["apellido"].ToString(), false);
+            //cargo
+            columnas = funciones.armar_query_columna(columnas, "cargo", false);
+            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["cargo"].ToString(), false);
             //fecha
             columnas = funciones.armar_query_columna(columnas, "fecha", false);
             valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
@@ -91,6 +94,7 @@ namespace _02___sistemas
             historial_resumen.Columns.Add("actividad", typeof(string));
             historial_resumen.Columns.Add("nota", typeof(string));
             historial_resumen.Columns.Add("fecha", typeof(string));
+            historial_resumen.Columns.Add("cargo", typeof(string));
 
         }
         private void llenar_resumen()
@@ -134,6 +138,7 @@ namespace _02___sistemas
                 historial_resumen.Rows[ultima_fila]["actividad"] = actividad;
                 historial_resumen.Rows[ultima_fila]["nota"] = historial.Rows[fila]["nota"].ToString();
                 historial_resumen.Rows[ultima_fila]["fecha"] = historial.Rows[fila]["fecha"].ToString();
+                historial_resumen.Rows[ultima_fila]["cargo"] = historial.Rows[fila]["cargo"].ToString();
             }
         }
         private string verificar_horario(DateTime miFecha)

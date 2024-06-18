@@ -60,6 +60,7 @@ namespace paginaWeb.paginas
             resumenBD.Columns.Add("area", typeof(string));
             resumenBD.Columns.Add("nota", typeof(string));
             resumenBD.Columns.Add("fecha", typeof(string));
+            resumenBD.Columns.Add("orden", typeof(int));
             Session.Add("resumen_chequeo", resumenBD);
         }
         private void crear_tabla_resumen()
@@ -71,6 +72,7 @@ namespace paginaWeb.paginas
             resumen.Columns.Add("area", typeof(string));
             resumen.Columns.Add("nota", typeof(string));
             resumen.Columns.Add("fecha", typeof(string));
+            resumen.Columns.Add("orden", typeof(int));
             Session.Add("resumen_chequeo_local", resumen);
         }
         private void llenar_tabla_resumen_local()
@@ -87,6 +89,7 @@ namespace paginaWeb.paginas
                     ultima_fila = resumen.Rows.Count - 1;
                     resumen.Rows[ultima_fila]["id"] = resumenBD.Rows[fila]["id"].ToString();
                     resumen.Rows[ultima_fila]["actividad"] = resumenBD.Rows[fila]["actividad"].ToString();
+                    resumen.Rows[ultima_fila]["orden"] = int.Parse(resumenBD.Rows[fila]["orden"].ToString());
                 }
             }
         }
@@ -104,6 +107,7 @@ namespace paginaWeb.paginas
                 resumenBD.Rows[ultima_fila]["actividad"] = lista_de_chequeoBD.Rows[fila_actividad]["actividad"].ToString();
                 resumenBD.Rows[ultima_fila]["categoria"] = lista_de_chequeoBD.Rows[fila_actividad]["categoria"].ToString();
                 resumenBD.Rows[ultima_fila]["area"] = lista_de_chequeoBD.Rows[fila_actividad]["area"].ToString();
+                resumenBD.Rows[ultima_fila]["orden"] = int.Parse(lista_de_chequeoBD.Rows[fila_actividad]["orden"].ToString());
             }
             else
             {
@@ -161,6 +165,8 @@ namespace paginaWeb.paginas
         #region configurar controles
         private void configurar_controles()
         {
+            empleado = (DataTable)Session["empleado_historial"];
+
             string nombre = empleado.Rows[0]["nombre"].ToString();
             string apellido = empleado.Rows[0]["apellido"].ToString();
             string cargo = empleado.Rows[0]["cargo"].ToString();
@@ -243,6 +249,115 @@ namespace paginaWeb.paginas
                 }
             }
         }
+        private void configurar_botones_cargos(string cargos)
+        {
+            int iteraciones = int.Parse(funciones.obtener_dato(cargos, 1));
+            int posicion = 2;
+            string cargo;
+            boton_encargado.Visible = false;
+            boton_cajero.Visible = false;
+            boton_shawarmero.Visible = false;
+            boton_atencion.Visible = false;
+            boton_cocina.Visible = false;
+            boton_limpieza.Visible = false;
+
+            for (int index = 0; index <= iteraciones; index++)
+            {
+                cargo = funciones.obtener_dato(cargos, posicion);
+                if (cargo == "Encargado")
+                {
+                    boton_encargado.Visible = true;
+                }
+
+
+                if (cargo == "Cajero")
+                {
+                    boton_cajero.Visible = true;
+                }
+
+
+                if (cargo == "Shawarmero")
+                {
+                    boton_shawarmero.Visible = true;
+                }
+
+
+                if (cargo == "Atencion al Cliente")
+                {
+                    boton_atencion.Visible = true;
+                }
+
+
+                if (cargo == "Cocina")
+                {
+                    boton_cocina.Visible = true;
+                }
+
+
+                if (cargo == "Limpieza")
+                {
+                    boton_limpieza.Visible = true;
+                }
+
+                posicion++;
+            }
+        }
+        private void configurar_botones_cargos_activos(string cargo)
+        {
+            if (cargo == "Encargado")
+            {
+                boton_encargado.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_encargado.CssClass = "btn btn-primary";
+            }
+
+            if (cargo == "Cajero")
+            {
+                boton_cajero.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_cajero.CssClass = "btn btn-primary";
+            }
+
+            if (cargo == "Shawarmero")
+            {
+                boton_shawarmero.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_shawarmero.CssClass = "btn btn-primary";
+            }
+
+            if (cargo == "Atencion al Cliente")
+            {
+                boton_atencion.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_atencion.CssClass = "btn btn-primary";
+            }
+
+            if (cargo == "Cocina")
+            {
+                boton_cocina.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_cocina.CssClass = "btn btn-primary";
+            }
+
+            if (cargo == "Limpieza")
+            {
+                boton_limpieza.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_limpieza.CssClass = "btn btn-primary";
+            }
+        }
         #endregion
         private void cargar_lista_chequeo()
         {
@@ -250,7 +365,8 @@ namespace paginaWeb.paginas
 
             crear_tabla_resumen();
             llenar_tabla_resumen_local();
-
+            resumen.DefaultView.Sort = "orden asc";
+            resumen = resumen.DefaultView.ToTable();
             gridview_chequeos.DataSource = resumen;
             gridview_chequeos.DataBind();
 
@@ -271,6 +387,8 @@ namespace paginaWeb.paginas
         DataTable configuracion;
         DataTable resumenBD;
         DataTable resumen;
+        DataTable historial_chequeo;
+
         DateTime fecha_de_hoy = DateTime.Now;
 
         string tipo_seleccionado;
@@ -287,10 +405,18 @@ namespace paginaWeb.paginas
             {
                 Session.Add("lista_chequeo", new cls_lista_de_chequeo(usuariosBD));
             }
+            if (Session["perfil_seleccionado"] == null)
+            {
+                Session.Add("perfil_seleccionado", "N/A");
+            }
             lista_chequeo = (cls_lista_de_chequeo)Session["lista_chequeo"];
-            lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
+            lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
+            lista_de_chequeoBD = historial.get_lista_de_chequeo();
             if (!IsPostBack)
             {
+
+                label_fecha.Text = "fecha seleccionada: " + fecha_de_hoy.ToString("dd/MM/yyyy");
+                Session.Add("fecha_historial_chequeo", fecha_de_hoy);
                 cargar_lista_empleados();
             }
         }
@@ -313,16 +439,16 @@ namespace paginaWeb.paginas
             string id;
             int fila_historial;
             empleado = (DataTable)Session["empleado_historial"];
-            DataTable historial = lista_chequeo.get_historial(DateTime.Now, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+            historial_chequeo = (DataTable)Session["historial_chequeo"];
             for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
             {
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
-                fila_historial = funciones.buscar_fila_por_id(id, historial);
+                fila_historial = funciones.buscar_fila_por_id(id, historial_chequeo);
                 if (fila_historial != -1)
                 {
                     gridview_chequeos.Rows[fila].CssClass = "table-success";
-                    gridview_chequeos.Rows[fila].Cells[2].Text = historial.Rows[fila_historial]["nota"].ToString();
-                    gridview_chequeos.Rows[fila].Cells[3].Text = historial.Rows[fila_historial]["fecha"].ToString();
+                    gridview_chequeos.Rows[fila].Cells[2].Text = historial_chequeo.Rows[fila_historial]["nota"].ToString();
+                    gridview_chequeos.Rows[fila].Cells[3].Text = historial_chequeo.Rows[fila_historial]["fecha"].ToString();
 
                 }
             }
@@ -339,46 +465,130 @@ namespace paginaWeb.paginas
             string apellido = gridview_empleados.Rows[fila].Cells[2].Text;
             empleado = historial.get_empleado(id_empleado);
             Session.Add("empleado_historial", empleado);
-            configuracion = historial.get_configuracion_de_chequeo(dropdown_cargo.SelectedItem.Text);
-            lista_de_chequeoBD = historial.get_lista_de_chequeo();
-            label_empleado.Text = "Empleado: " + nombre + " " + apellido;
-            label_empleado.Visible = true;
-            label_area.Visible = true;
-            label_categoria.Visible = true;
-            dropDown_tipo.Visible = true;
-            dropDown_categoria.Visible = true;
-            llenar_resumen_con_configuracion(dropdown_cargo.SelectedItem.Text);
+            DateTime fecha = (DateTime)Session["fecha_historial_chequeo"];
+            historial_chequeo = lista_chequeo.get_historial(fecha, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+            Session.Add("historial_chequeo", historial_chequeo);
+            if (historial_chequeo.Rows.Count>0)
+            {
 
-            configurar_controles();
-            cargar_lista_chequeo();
+                lista_de_chequeoBD = historial.get_lista_de_chequeo();
+                label_empleado.Text = "Empleado: " + nombre + " " + apellido;
+                label_fecha_historial.Text = "Fecha: " + fecha.ToString("dd/MM/yyyy");
+                label_empleado.Visible = true;
+                label_fecha_historial.Visible = true;
+                label_area.Visible = true;
+                label_categoria.Visible = true;
+                dropDown_tipo.Visible = true;
+                dropDown_categoria.Visible = true;
 
+                label_alerta_registro.Visible = false;
 
+                configurar_botones_cargos(historial_chequeo.Rows[0]["cargo"].ToString());
+            }
+            else
+            {
+                label_empleado.Visible = false;
+                label_fecha_historial.Visible = false;
+                label_area.Visible = false;
+                label_categoria.Visible = false;
+                dropDown_tipo.Visible = false;
+                dropDown_categoria.Visible = false;
+
+                boton_encargado.Visible = false;
+                boton_cajero.Visible = false;
+                boton_shawarmero.Visible = false;
+                boton_atencion.Visible = false;
+                boton_cocina.Visible = false;
+                boton_limpieza.Visible = false;
+                DateTime fecha_seleccionada = (DateTime)Session["fecha_historial_chequeo"];
+                string nombre_empleado = empleado.Rows[0]["nombre"].ToString() + " " + empleado.Rows[0]["apellido"].ToString();
+                label_alerta_registro.Text = "No hay registros del empleado "+ nombre_empleado + " para la fecha " + fecha_seleccionada.ToString("dd/MM/yyyy");
+                label_alerta_registro.Visible = true;
+            }
         }
 
         protected void gridview_empleados_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            string dato, id_empleado;
-            int fila_empleado, iteraciones, posicion;
-            for (int fila = 0; fila <= gridview_empleados.Rows.Count - 1; fila++)
-            {
-                id_empleado = gridview_empleados.Rows[fila].Cells[0].Text;
-                fila_empleado = funciones.buscar_fila_por_id(id_empleado, lista_de_empleadoBD);
 
-                DropDownList dropdown_cargo = (gridview_empleados.Rows[fila].Cells[3].FindControl("dropdown_cargo") as DropDownList);
-
-                dropdown_cargo.Items.Clear();
-                iteraciones = int.Parse(funciones.obtener_dato(lista_de_empleadoBD.Rows[fila_empleado]["cargo"].ToString(), 1));
-                posicion = 2;
-                if (dropdown_cargo.Items.Count==0)
-                {
-                    for (int index = 0; index <= iteraciones; index++)
-                    {
-                        dato = funciones.obtener_dato(lista_de_empleadoBD.Rows[fila_empleado]["cargo"].ToString(), posicion);
-                        dropdown_cargo.Items.Add(dato);
-                        posicion++;
-                    }
-                }
-            }
         }
+
+        protected void calendario_SelectionChanged(object sender, EventArgs e)
+        {
+            DateTime fecha = calendario.SelectedDate.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second);
+            label_fecha.Text = "fecha seleccionada: " + fecha.ToString("dd/MM/yyyy");
+            Session.Add("fecha_historial_chequeo", fecha);
+        }
+        protected void boton_encargado_Click(object sender, EventArgs e)
+        {
+            string perfil = "Encargado";
+            Session.Add("perfil_seleccionado", perfil);
+            configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+            configurar_controles();
+            cargar_lista_chequeo();
+        }
+
+        protected void boton_cajero_Click(object sender, EventArgs e)
+        {
+            string perfil = "Cajero";
+            Session.Add("perfil_seleccionado", perfil);
+
+            configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+            configurar_controles();
+            cargar_lista_chequeo();
+        }
+
+        protected void boton_shawarmero_Click(object sender, EventArgs e)
+        {
+            string perfil = "Shawarmero";
+            Session.Add("perfil_seleccionado", perfil);
+
+            configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+            configurar_controles();
+            cargar_lista_chequeo();
+        }
+
+        protected void boton_atencion_Click(object sender, EventArgs e)
+        {
+            string perfil = "Atencion al Cliente";
+            Session.Add("perfil_seleccionado", perfil);
+
+            configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+            configurar_controles();
+            cargar_lista_chequeo();
+        }
+
+        protected void boton_cocina_Click(object sender, EventArgs e)
+        {
+            string perfil = "Cocina";
+            Session.Add("perfil_seleccionado", perfil);
+
+            configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+            configurar_controles();
+            cargar_lista_chequeo();
+        }
+
+        protected void boton_limpieza_Click(object sender, EventArgs e)
+        {
+            string perfil = "Limpieza";
+            Session.Add("perfil_seleccionado", perfil);
+
+            configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+            configurar_controles();
+            cargar_lista_chequeo();
+        }
+
+        
     }
 }

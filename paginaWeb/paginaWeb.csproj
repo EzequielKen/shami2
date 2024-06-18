@@ -178,6 +178,7 @@
     <Content Include="paginas\login.aspx" />
     <Content Include="paginas\pedido.aspx" />
     <Content Include="paginas\proveedores.aspx" />
+    <Content Include="paginas\registro_venta_local.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -835,6 +836,13 @@
     </Compile>
     <Compile Include="paginas\proveedores.aspx.designer.cs">
       <DependentUpon>proveedores.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\registro_venta_local.aspx.cs">
+      <DependentUpon>registro_venta_local.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\registro_venta_local.aspx.designer.cs">
+      <DependentUpon>registro_venta_local.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

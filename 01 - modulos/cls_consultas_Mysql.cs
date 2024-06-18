@@ -1523,6 +1523,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_registro_venta_local_segun_fecha(string id_sucursal,string fecha_inicio, string fecha_fin)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".registro_venta_local WHERE  activa ='1' and id_sucursal='" + id_sucursal + "' AND (fecha >= '" + fecha_inicio + "' AND fecha < DATE_ADD('" + fecha_fin + "', INTERVAL 1 DAY))";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region consultas fabrica a proveedor

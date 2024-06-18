@@ -149,7 +149,7 @@ namespace _02___sistemas
             consultar_empleado(id_empleado);
             return empleado;
         }
-        public DataTable get_lista_de_empleado(string id_sucursal, DateTime fecha)
+        public DataTable get_lista_de_empleado(string id_sucursal)
         {
             consultar_lista_de_empleado(id_sucursal);
           //  limpiar_lista_empleados(fecha);
