@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace paginaWeb.paginas
 {
-    public partial class registro_venta_local : System.Web.UI.Page
+    public partial class administrar_tabla_produccion : System.Web.UI.Page
     {
         #region historial
         private void crear_tabla_resumen()
@@ -78,62 +78,12 @@ namespace paginaWeb.paginas
                 porcentaje_turno_1 = (turno_1 * 100) / total;
                 porcentaje_turno_2 = (turno_2 * 100) / total;
             }
-            label_total_turno1.Text = "Total Ventas Turno 1: " + funciones.formatCurrency(turno_1) + " %" + Math.Round(porcentaje_turno_1,2).ToString();
-            label_total_turno2.Text = "Total Ventas Turno 2: " + funciones.formatCurrency(turno_2) + " %" + Math.Round(porcentaje_turno_2,2).ToString();
+            label_total_turno1.Text = "Total Ventas Turno 1: " + funciones.formatCurrency(turno_1) + " %" + Math.Round(porcentaje_turno_1, 2).ToString();
+            label_total_turno2.Text = "Total Ventas Turno 2: " + funciones.formatCurrency(turno_2) + " %" + Math.Round(porcentaje_turno_2, 2).ToString();
             label_total_ventas.Text = "Total Ventas: " + funciones.formatCurrency(total);
         }
         #endregion
-        #region carga a base de datos
-        private bool verificar_carga()
-        {
-            bool retorno = true;
-            string mensaje = string.Empty;
-            label_alerta.Visible = false;
-            if ("N/A" == Session["turno"].ToString())
-            {
-                mensaje = mensaje + "Falta seleccionar turno.";
-                label_alerta.Text = mensaje;
-                label_alerta.Visible = true;
-                retorno = false;
-            }
-
-            if (textbox_venta.Text == string.Empty)
-            {
-                mensaje = mensaje + " Falta ingresar venta del dia.";
-                label_alerta.Text = mensaje;
-                label_alerta.Visible = true;
-                retorno = false;
-            }
-            return retorno;
-        }
-        #endregion
-        #region configurar controles
-        private void configurar_controles()
-        {
-            string turno = Session["turno"].ToString();
-            label_turno.Text = "Turno seleccionado: N/A";
-
-            if (turno == "Turno 1")
-            {
-                boton_torno_1.CssClass = "btn btn-success";
-                label_turno.Text = "Turno seleccionado: Turno 1";
-            }
-            else
-            {
-                boton_torno_1.CssClass = "btn btn-primary ";
-            }
-
-            if (turno == "Turno 2")
-            {
-                boton_torno_2.CssClass = "btn btn-success";
-                label_turno.Text = "Turno seleccionado: Turno 2";
-            }
-            else
-            {
-                boton_torno_2.CssClass = "btn btn-primary ";
-            }
-        }
-        #endregion
+        
         /// <summary>
         /// ////////////////////////////////////////////////////////////
         /// </summary>
@@ -179,9 +129,7 @@ namespace paginaWeb.paginas
                 DateTime fecha_registro_seleccionada = (DateTime)Session["fecha_registro_seleccionada"];
                 label_fecha_historial_inicio.Text = "Fecha Inicio: " + fecha_inicio.ToString("dd/MM/yyyy");
                 label_fecha_historial_fin.Text = "Fecha Fin: " + fecha_fin.ToString("dd/MM/yyyy");
-                label_fecha.Text = "Fecha de registro: " + fecha_registro_seleccionada.ToString("dd/MM/yyyy");
             }
-            configurar_controles();
         }
 
 
@@ -190,63 +138,11 @@ namespace paginaWeb.paginas
 
         }
 
-        protected void textbox_venta_TextChanged(object sender, EventArgs e)
-        {
-            double monto = 0;
-            if (double.TryParse(textbox_venta.Text, out monto))
-            {
-                label_total.Text = "Total: " + funciones.formatCurrency(monto);
-            }
-            else
-            {
-                textbox_venta.Text = string.Empty;
-                label_total.Text = "Total: $0.00";
+       
 
-            }
-        }
+        
 
-        protected void boton_torno_1_Click(object sender, EventArgs e)
-        {
-            Session.Add("turno", "Turno 1");
-            configurar_controles();
-
-        }
-
-        protected void boton_torno_2_Click(object sender, EventArgs e)
-        {
-            Session.Add("turno", "Turno 2");
-            configurar_controles();
-        }
-
-        protected void boton_cargar_Click(object sender, EventArgs e)
-        {
-            if (verificar_carga())
-            {
-                string nota = "N/A";
-                if (textbox_nota.Text != string.Empty)
-                {
-                    nota = textbox_nota.Text;
-                }
-                if (tipo_usuario.Rows[0]["rol"].ToString() != "franquiciado")
-                {
-                    registro_venta.registrar_venta(sucursal, empleado, Session["turno"].ToString(), textbox_venta.Text, nota);
-                }
-                else if (tipo_usuario.Rows[0]["rol"].ToString() == "franquiciado")
-                {
-                    registro_venta.registrar_venta_franquiciado(sucursal, (DateTime)Session["fecha_registro_seleccionada"], Session["turno"].ToString(), textbox_venta.Text, nota);
-                }
-
-                Session.Add("turno", "N/A");
-                textbox_venta.Text = string.Empty;
-                textbox_nota.Text = string.Empty;
-                configurar_controles();
-                registro_venta_localBD = registro_venta.get_registro_venta_local(sucursal.Rows[0]["id"].ToString(), (DateTime)Session["fecha_registro_seleccionada_inicio"], (DateTime)Session["fecha_registro_seleccionada_fin"]);
-
-                Session.Add("registro_venta_localBD", registro_venta_localBD);
-                caragar_registro_venta_local();
-                label_total.Text = "Total: $0.00";
-            }
-        }
+        
 
         protected void boton_eliminar_Click(object sender, EventArgs e)
         {
@@ -335,12 +231,6 @@ namespace paginaWeb.paginas
             label_fecha_historial_fin.Text = "Fecha Fin: " + fecha_fin.ToString("dd/MM/yyyy");
         }
 
-        protected void calendario_fecha_registro_SelectionChanged(object sender, EventArgs e)
-        {
-            Session.Add("fecha_registro_seleccionada", calendario_fecha_registro.SelectedDate);
-            DateTime fecha_registro_seleccionada = (DateTime)Session["fecha_registro_seleccionada"];
-            label_fecha.Text = "Fecha de registro: " + fecha_registro_seleccionada.ToString("dd/MM/yyyy");
-
-        }
+      
     }
 }

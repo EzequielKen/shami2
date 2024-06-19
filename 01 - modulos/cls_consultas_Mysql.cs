@@ -718,6 +718,25 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_sucursal_por_nombre(string sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".sucursal where  activa=1 and sucursal='" + sucursal + "'";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_proveeedor_id(string id)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
@@ -1532,6 +1551,69 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + ".registro_venta_local WHERE  activa ='1' and id_sucursal='" + id_sucursal + "' AND (fecha >= '" + fecha_inicio + "' AND fecha < DATE_ADD('" + fecha_fin + "', INTERVAL 1 DAY))";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_deuda_mes_local(string id_sucursal, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".deudas_local_a_fabrica WHERE  activa ='1' and id_sucursal='" + id_sucursal + "' AND mes = '" + mes + "' AND año='" + año + "'";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_cuenta_por_pagar_segun_fecha(string sucursal, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".cuenta_por_pagar WHERE activa=1 and sucursal='" + sucursal + "' and YEAR(fecha_remito)='" + año + "' and MONTH(fecha_remito)='" + mes + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_imputaciones_segun_fecha(string sucursal, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".imputaciones WHERE activa=1 and sucursal='" + sucursal + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "';";
 
 
                 retorno = base_datos.READ(query);

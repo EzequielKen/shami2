@@ -401,7 +401,8 @@ namespace paginaWeb.paginasFabrica
             {
                 if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" &&
                     (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Compras" ||
-                    tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin"))
+                    tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin" ||
+                    tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Administrativo"))
                 {
                     string index = e.CommandArgument.ToString();
 

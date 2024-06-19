@@ -50,9 +50,15 @@ namespace _03___sistemas_fabrica
 
         DataTable todos_los_remitos_fabrica;
         DataTable todas_las_imputaciones_fabrica;
+        DataTable deuda_mes_anterior;
+        DataTable deuda_mes;
         #endregion
 
         #region cargar nota
+        public void marcar_cobrado(string id_remito, string estado)
+        {
+            administracion.marcar_cobrado(id_remito, estado);
+        }
         public void eliminar_imputacion(string id_imputacion)
         {
             administracion.eliminar_imputacion(id_imputacion);
@@ -62,7 +68,7 @@ namespace _03___sistemas_fabrica
             administracion.cargar_nota(id_orden, nota);
 
         }
-        public void cargar_nota_credito(string sucursal, string nota, string valor_remito,string fecha_nota)
+        public void cargar_nota_credito(string sucursal, string nota, string valor_remito, string fecha_nota)
         {
             administracion.cargar_nota_credito(sucursal, nota, valor_remito, fecha_nota);
         }
@@ -113,8 +119,8 @@ namespace _03___sistemas_fabrica
             double retorno, compra, pagado, pagado_subTotal;
             retorno = 0;
 
-            consultar_remitos();
-            consultar_imputaciones();
+            consultar_remitos(sucursal, mes, año);
+            //consultar_imputaciones();
             compra = 0;
             for (int fila = 0; fila <= remitos.Rows.Count - 1; fila++)
             {
@@ -142,24 +148,7 @@ namespace _03___sistemas_fabrica
             retorno = compra - pagado;
             return retorno;
         }
-        public double calcular_compra_mes(DataTable proveedorBD, string sucursal, string mes, string año)
-        {
-            string proveedor_seleccionado = proveedorBD.Rows[0]["nombre_en_BD"].ToString();
-            double compra;
 
-            compra = 0;
-            for (int fila = 0; fila <= remitos.Rows.Count - 1; fila++)
-            {
-                if (remitos.Rows[fila]["sucursal"].ToString() == sucursal &&
-                    verificar_proveedor_calculo(remitos.Rows[fila]["proveedor"].ToString(), proveedor_seleccionado) &&
-                    verificar_fecha(remitos.Rows[fila]["fecha_remito"].ToString(), mes, año))
-                {
-                    compra = compra + double.Parse(remitos.Rows[fila]["valor_remito"].ToString());
-                }
-            }
-
-            return compra;
-        }
         private bool verificar_proveedor_calculo(string proveedor_dato, string proveedor_seleccionado)
         {
             bool retorno = false;
@@ -178,33 +167,15 @@ namespace _03___sistemas_fabrica
             return retorno;
 
         }
-        public double calcular_pago_mes(DataTable proveedorBD, string sucursal, string mes, string año)
-        {
-            string proveedor_seleccionado = proveedorBD.Rows[0]["nombre_en_BD"].ToString();
-            double pagado, pagado_subTotal;
-            pagado = 0;
-            for (int fila = 0; fila <= imputaciones.Rows.Count - 1; fila++)
-            {
-                if (imputaciones.Rows[fila]["autorizado"].ToString() == "Si" &&
-                    imputaciones.Rows[fila]["sucursal"].ToString() == sucursal &&
-                    verificar_proveedor_calculo(imputaciones.Rows[fila]["proveedor"].ToString(), proveedor_seleccionado) &&
-                    verificar_fecha(imputaciones.Rows[fila]["fecha"].ToString(), mes, año))
-                {
-                    pagado_subTotal = double.Parse(imputaciones.Rows[fila]["abono_efectivo"].ToString()) + double.Parse(imputaciones.Rows[fila]["abono_digital"].ToString()) + double.Parse(imputaciones.Rows[fila]["abono_digital_mercadoPago"].ToString());
-                    pagado = pagado + pagado_subTotal;
-                }
-            }
 
-            return pagado;
-        }
 
 
         public double deuda_total_del_mes(string nombre_proveedor_seleccionado, string mes, string año)
         {
             double retorno = 0;
             double deuda_total_mes_anterior = deuda_total_del_mes_anterior(nombre_proveedor_seleccionado, mes, año);
-            consultar_todos_los_remitos();
-            consultar_todas_las_imputaciones();
+            consultar_todos_los_remitos(sucursal, mes, año);
+            //consultar_todas_las_imputaciones();
 
             double compra = 0;
             for (int fila = 0; fila <= todos_los_remitos.Rows.Count - 1; fila++)
@@ -230,8 +201,8 @@ namespace _03___sistemas_fabrica
         public double deuda_total_del_mes_anterior(string nombre_proveedor_seleccionado, string mes, string año)
         {
             double retorno = 0;
-            consultar_todos_los_remitos();
-            consultar_todas_las_imputaciones();
+            consultar_todos_los_remitos(sucursal, mes, año);
+            //consultar_todas_las_imputaciones();
 
             double compra = 0;
             for (int fila = 0; fila <= todos_los_remitos.Rows.Count - 1; fila++)
@@ -257,7 +228,7 @@ namespace _03___sistemas_fabrica
         public double compra_total_del_mes(string nombre_proveedor_seleccionado, string mes, string año)
         {
             double retorno = 0;
-            consultar_todos_los_remitos();
+            consultar_todos_los_remitos(sucursal, mes, año);
 
             double compra = 0;
             for (int fila = 0; fila <= todos_los_remitos.Rows.Count - 1; fila++)
@@ -273,7 +244,7 @@ namespace _03___sistemas_fabrica
         public double pago_total_del_mes(string nombre_proveedor_seleccionado, string mes, string año)
         {
             double retorno = 0;
-            consultar_todas_las_imputaciones();
+            //consultar_todas_las_imputaciones();
 
             double pagado_subTotal;
             double pagado = 0;
@@ -414,8 +385,8 @@ namespace _03___sistemas_fabrica
             double retorno, compra, pagado, pagado_subTotal;
             retorno = 0;
 
-            consultar_remitos();
-            consultar_imputaciones();
+            consultar_remitos(sucursal, mes, año);
+            //consultar_imputaciones();
             consultar_remitos_proveedores_a_fabrica();
             compra = 0;
             for (int fila = 0; fila <= remitos_proveedores_a_fabrica.Rows.Count - 1; fila++)
@@ -606,7 +577,7 @@ namespace _03___sistemas_fabrica
         public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad, string sucursal_seleccionada) //
         {
 
-            string acuerdo, num_acuerdo, nombre_proveedor,nota;
+            string acuerdo, num_acuerdo, nombre_proveedor, nota;
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
             consultar_sucursales();
@@ -627,7 +598,7 @@ namespace _03___sistemas_fabrica
             fila_remito = obtener_fila_de_remito(id_remito);
             if (seguridad < 2)
             {
-                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD,nota); // resumen_pedido,resumen_bonificado
+                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota); // resumen_pedido,resumen_bonificado
             }
 
 
@@ -766,6 +737,133 @@ namespace _03___sistemas_fabrica
 
         #endregion
         #region metogos get/set
+        public string get_deuda_total_mes(string sucursal, string mes, string año)
+        {
+            string deuda = "0";
+            sucursalBD = administracion.get_sucursal_nombre(sucursal);
+            string id_sucursal = sucursalBD.Rows[0]["id"].ToString();
+            double deuda_registrada, deuda_calculada;
+            if (deuda_mes == null)
+            {
+                consultar_deuda_mes(id_sucursal, mes, año);
+            }
+            else if (deuda_mes.Rows[0]["mes"].ToString() != mes ||
+                     deuda_mes.Rows[0]["año"].ToString() != año)
+            {
+                consultar_deuda_mes(id_sucursal, mes, año);
+            }
+            if (deuda_mes.Rows.Count > 0)
+            {
+                deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                deuda_registrada = Math.Round(double.Parse(deuda), 2);
+                deuda_calculada = Math.Round(calcular_deuda_del_mes(sucursal, mes, año), 2);
+                if (deuda_registrada != deuda_calculada)
+                {
+                    //actualizar deuda en bd
+                    string id_deuda = deuda_mes.Rows[0]["id"].ToString();
+                    administracion.actualizar_deuda_del_mes(id_deuda, deuda_calculada.ToString());
+                    consultar_deuda_mes(id_sucursal, mes, año);
+                    deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                }
+            }
+            else
+            {
+                administracion.crear_deuda_del_mes(id_sucursal, sucursal, mes, año, "0");
+            }
+            return deuda;
+        }
+        public double calcular_deuda_del_mes(string sucursal, string mes, string año)
+        {
+            double deuda_del_mes = 0;
+            get_remitos(sucursal, mes, año);
+            get_imputaciones(sucursal, mes, año);
+            string mes_anterior = obtener_mes_anterior(mes);
+            string año_anterior = obtener_año_anterior(mes, año);
+
+            double deuda_anterior = get_deuda_mes_anterior(sucursal, mes_anterior, año_anterior);
+
+            double total_compra = 0;
+            double total_cobrado = 0;
+            double abono_efectivo, abono_digital, abono_digital_mercadoPago, total;
+            for (int fila_remito = 0; fila_remito <= remitos.Rows.Count - 1; fila_remito++)
+            {
+                total_compra = total_compra + double.Parse(remitos.Rows[fila_remito]["valor_remito"].ToString());
+            }
+            for (int fila_imputacion = 0; fila_imputacion <= imputaciones.Rows.Count - 1; fila_imputacion++)
+            {
+                if (imputaciones.Rows[fila_imputacion]["autorizado"].ToString() == "Si")
+                {
+                    abono_efectivo = double.Parse(imputaciones.Rows[fila_imputacion]["abono_efectivo"].ToString());
+                    abono_digital = double.Parse(imputaciones.Rows[fila_imputacion]["abono_digital"].ToString());
+                    abono_digital_mercadoPago = double.Parse(imputaciones.Rows[fila_imputacion]["abono_digital_mercadoPago"].ToString());
+                    total = abono_efectivo + abono_digital + abono_digital_mercadoPago;
+                    total_cobrado = total_cobrado + total;
+                }
+            }
+            deuda_del_mes = (deuda_anterior + total_compra) - total_cobrado;
+            return deuda_del_mes;
+        }
+        public double calcular_compra_mes(string sucursal, string mes, string año)
+        {
+            get_remitos(sucursal, mes, año);
+
+
+            double total_compra = 0;
+            for (int fila_remito = 0; fila_remito <= remitos.Rows.Count - 1; fila_remito++)
+            {
+                total_compra = total_compra + double.Parse(remitos.Rows[fila_remito]["valor_remito"].ToString());
+            }
+
+            return total_compra;
+        }
+        public double calcular_pago_mes(string sucursal, string mes, string año)
+        {
+            get_imputaciones(sucursal, mes, año);
+
+
+            double total_cobrado = 0;
+            double abono_efectivo, abono_digital, abono_digital_mercadoPago, total;
+
+            for (int fila_imputacion = 0; fila_imputacion < imputaciones.Rows.Count - 1; fila_imputacion++)
+            {
+                if (imputaciones.Rows[fila_imputacion]["autorizado"].ToString() == "Si")
+                {
+                    abono_efectivo = double.Parse(imputaciones.Rows[fila_imputacion]["abono_efectivo"].ToString());
+                    abono_digital = double.Parse(imputaciones.Rows[fila_imputacion]["abono_digital"].ToString());
+                    abono_digital_mercadoPago = double.Parse(imputaciones.Rows[fila_imputacion]["abono_digital_mercadoPago"].ToString());
+                    total = abono_efectivo + abono_digital + abono_digital_mercadoPago;
+                    total_cobrado = total_cobrado + total;
+                }
+            }
+            return total_cobrado;
+        }
+        public double get_deuda_mes_anterior(string sucursal, string mes, string año)
+        {
+            double retorno = 0;
+            sucursalBD = administracion.get_sucursal_nombre(sucursal);
+            string id_sucursal = sucursalBD.Rows[0]["id"].ToString();
+            string mes_anterior = obtener_mes_anterior(mes);
+            string año_anterior = obtener_año_anterior(mes, año);
+            if (deuda_mes_anterior == null)
+            {
+                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
+            }
+            else if (deuda_mes_anterior.Rows.Count == 0)
+            {
+                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
+            }
+            else if (deuda_mes_anterior.Rows[0]["mes"].ToString() != mes ||
+                     deuda_mes_anterior.Rows[0]["año"].ToString() != año)
+            {
+                consultar_deuda_mes_anterior(id_sucursal, mes, año);
+            }
+            if (deuda_mes_anterior.Rows.Count > 0)
+            {
+                retorno = double.Parse(deuda_mes_anterior.Rows[0]["deuda_del_mes"].ToString());
+            }
+            return retorno;
+        }
+
         public DataTable get_sucursal(string id)
         {
             consultar_sucursal(id);
@@ -776,9 +874,21 @@ namespace _03___sistemas_fabrica
             consultar_sucursales();
             return sucursales;
         }
-        public DataTable get_remitos()
+        public DataTable get_remitos(string sucursal, string mes, string año)
         {
-            consultar_remitos();
+            if (remitos == null)
+            {
+                consultar_remitos(sucursal, mes, año);
+            }
+            else
+            {
+                DateTime fecha_remito = (DateTime)remitos.Rows[0]["fecha_remito"];
+                if (fecha_remito.Month.ToString() != mes ||
+                     fecha_remito.Year.ToString() != año)
+                {
+                    consultar_remitos(sucursal, mes, año);
+                }
+            }
             return remitos;
         }
         public DataTable get_remitos_proveedores_a_fabrica()
@@ -786,9 +896,24 @@ namespace _03___sistemas_fabrica
             consultar_remitos_proveedores_a_fabrica();
             return remitos_proveedores_a_fabrica;
         }
-        public DataTable get_imputaciones()
+        public DataTable get_imputaciones(string sucursal, string mes, string año)
         {
-            consultar_imputaciones();
+            if (imputaciones == null)
+            {
+                consultar_imputaciones(sucursal, mes, año);
+            }
+            else
+            {
+                if (imputaciones.Rows.Count > 0)
+                {
+                    DateTime fecha = (DateTime)imputaciones.Rows[0]["fecha"];
+                    if (fecha.Month.ToString() != mes ||
+                         fecha.Year.ToString() != año)
+                    {
+                        consultar_imputaciones(sucursal, mes, año);
+                    }
+                }
+            }
             return imputaciones;
         }
         public DataTable get_imputaciones_fabrica_a_proveedor()
@@ -844,7 +969,6 @@ namespace _03___sistemas_fabrica
         }
         private int obtener_fila_remito(string id)
         {
-            consultar_remitos();
             int retorno = 0;
             int fila = 0;
             while (fila <= remitos.Rows.Count - 1)
@@ -1094,7 +1218,7 @@ namespace _03___sistemas_fabrica
             consultar_sucursales();
 
             consultar_acuerdo_de_precios();
-            consultar_remitos();
+            //   consultar_remitos(sucursal, mes, año);
             crear_tabla_resumen();
             string id_remito, sucursal_seleccionada, id_sucursal;
             for (int fila_resumen = 0; fila_resumen <= resumen.Rows.Count - 1; fila_resumen++)
@@ -1403,6 +1527,36 @@ namespace _03___sistemas_fabrica
             }
             return retorno;
         }
+        private string obtener_mes_anterior(string mes_dato)
+        {
+            string retorno = mes_dato.ToString(); ;
+            int mes = int.Parse(mes_dato);
+
+            if (mes > 1 && mes <= 12)
+            {
+                mes = mes - 1;
+                retorno = mes.ToString();
+            }
+            else if (mes == 1)
+            {
+                mes = 12;
+                retorno = mes.ToString();
+            }
+            return retorno;
+        }
+        private string obtener_año_anterior(string mes_dato, string año_dato)
+        {
+            string retorno = año_dato.ToString(); ;
+            int mes = int.Parse(mes_dato);
+            int año = int.Parse(año_dato);
+
+            if (mes == 1)
+            {
+                año = año - 1;
+                retorno = año.ToString();
+            }
+            return retorno;
+        }
         private double suma_de_imputacion(string efectivo_dato, string transferencia_dato, string mercado_pago_dato)
         {
             double efectivo, transferencia, mercado_pago, retorno;
@@ -1442,6 +1596,14 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region metodos consulta
+        private void consultar_deuda_mes_anterior(string id_sucursal, string mes, string año)
+        {
+            deuda_mes_anterior = administracion.get_deuda_mes(id_sucursal, mes, año);
+        }
+        private void consultar_deuda_mes(string id_sucursal, string mes, string año)
+        {
+            deuda_mes = administracion.get_deuda_mes(id_sucursal, mes, año);
+        }
         private void consultar_todas_las_imputaciones_fabrica()
         {
             todas_las_imputaciones_fabrica = administracion.get_imputaciones_fabrica_a_proveedor();
@@ -1450,13 +1612,13 @@ namespace _03___sistemas_fabrica
         {
             todos_los_remitos_fabrica = administracion.get_remitos_proveedores_a_fabrica();
         }
-        private void consultar_todas_las_imputaciones()
+        private void consultar_todas_las_imputaciones(string sucursal, string mes, string año)
         {
-            todas_las_imputaciones = administracion.get_imputaciones();
+            todas_las_imputaciones = administracion.get_imputaciones(sucursal, mes, año);
         }
-        private void consultar_todos_los_remitos()
+        private void consultar_todos_los_remitos(string sucursal, string mes, string año)
         {
-            todos_los_remitos = administracion.get_remitos();
+            todos_los_remitos = administracion.get_remitos(sucursal, mes, año);
         }
         private void consultar_pedidos_fabrica()
         {
@@ -1484,17 +1646,17 @@ namespace _03___sistemas_fabrica
         {
             sucursales = administracion.get_sucursales();
         }
-        private void consultar_imputaciones()
+        private void consultar_imputaciones(string sucursal, string mes, string año)
         {
-            imputaciones = administracion.get_imputaciones();
+            imputaciones = administracion.get_imputaciones(sucursal, mes, año);
         }
         private void consultar_imputaciones_fabrica_a_proveedor()
         {
             imputaciones_fabrica_a_proveedor = administracion.get_imputaciones_fabrica_a_proveedor();
         }
-        private void consultar_remitos()
+        private void consultar_remitos(string sucursal, string mes, string año)
         {
-            remitos = administracion.get_remitos();
+            remitos = administracion.get_remitos(sucursal, mes, año);
         }
         private void consultar_remitos_proveedores_a_fabrica()
         {

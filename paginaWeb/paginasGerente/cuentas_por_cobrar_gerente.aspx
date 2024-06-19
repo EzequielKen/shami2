@@ -107,8 +107,14 @@
                                     <asp:BoundField HeaderText="N° pedido" DataField="num_pedido" />
                                     <asp:BoundField HeaderText="fecha" DataField="fecha_remito" />
                                     <asp:BoundField HeaderText="valor" DataField="valor_remito" />
-                                    <asp:CommandField HeaderText="PDF" ShowSelectButton="true" SelectText="PDF" ControlStyle-CssClass="btn btn-primary btn-sm" />
+                                    <asp:CommandField HeaderText="PDF" ShowSelectButton="true" SelectText="PDF" ControlStyle-CssClass="btn btn-primary btn-sm"/>
                                     <asp:BoundField HeaderText="nota" DataField="nota" />
+                                    <asp:TemplateField HeaderText="Cobrado">
+                                        <ItemTemplate>
+                                            <asp:Button ID="boton_cobrado" CssClass="btn btn-primary" Text="Cobrado" runat="server" OnClick="boton_cobrado_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
                                 </Columns>
                             </asp:GridView>
                         </div>

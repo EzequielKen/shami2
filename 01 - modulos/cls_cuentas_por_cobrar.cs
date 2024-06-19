@@ -57,9 +57,16 @@ namespace _01___modulos
         DataTable imputaciones;
         DataTable imputaciones_fabrica_a_proveedor;
         DataTable pedidos_fabrica;
+        DataTable deuda_mes;
         #endregion
 
         #region cargar nota
+        public void marcar_cobrado(string id_remito, string estado)
+        {
+            string actualizar = "`cobrado` = '" + estado + "'";
+            consultas.actualizar_tabla(base_de_datos, "cuenta_por_pagar", actualizar, id_remito);
+
+        }
         public void eliminar_imputacion(string id_imputacion)
         {
             string actualizar = "`activa` = '0'";
@@ -127,144 +134,34 @@ namespace _01___modulos
         }
         #endregion
 
+        #region carga a base de datos
+        public void actualizar_deuda_del_mes(string id_deuda,string deuda_del_mes)
+        {
+            string actualizar = "`deuda_del_mes` = '" + deuda_del_mes + "'";
+            consultas.actualizar_tabla(base_de_datos, "deudas_local_a_fabrica", actualizar, id_deuda);
+        }
+        public void crear_deuda_del_mes(string id_sucursal,string sucursal,string mes,string año, string deuda_del_mes)
+        {
+            string columnas = string.Empty;
+            string valores = string.Empty;  
+            //id_sucursal
+            columnas = funciones.armar_query_columna(columnas,"id_sucursal",false);
+            valores = funciones.armar_query_valores(valores,id_sucursal,false);
+            //sucursal
+            columnas = funciones.armar_query_columna(columnas, "sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal, false);
+            //mes
+            columnas = funciones.armar_query_columna(columnas, "mes", false);
+            valores = funciones.armar_query_valores(valores, mes, false);
+            //año
+            columnas = funciones.armar_query_columna(columnas, "año", false);
+            valores = funciones.armar_query_valores(valores, año, false);
+            //deuda_del_mes
+            columnas = funciones.armar_query_columna(columnas, "deuda_del_mes", true);
+            valores = funciones.armar_query_valores(valores, deuda_del_mes, true);
 
-        #region metodos privados de consulta
-        private void consultar_sucursal(string id)
-        {
-            sucursalBD = consultas.consultar_sucursal(int.Parse(id));
+            consultas.insertar_en_tabla(base_de_datos, "deudas_local_a_fabrica",columnas,valores);
         }
-        private void consultar_pedidos_fabrica()
-        {
-            pedidos_fabrica = consultas.consultar_tabla(base_de_datos, "pedidos_fabrica_a_proveedor");
-        }
-        private void consultar_sucursales()
-        {
-            sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
-        }
-        private void consultar_imputaciones()
-        {
-            imputaciones = consultas.consultar_tabla(base_de_datos, "imputaciones");
-        }
-        private void consultar_imputaciones_fabrica_a_proveedor()
-        {
-            imputaciones_fabrica_a_proveedor = consultas.consultar_tabla(base_de_datos, "imputaciones_fabrica_a_proveedor");
-        }
-        private void consultar_remitos()
-        {
-            remitos = consultas.consultar_tabla(base_de_datos, "cuenta_por_pagar");
-        }
-        private void consultar_remitos_proveedores_a_fabrica()
-        {
-            remitos_proveedores_a_fabrica = consultas.consultar_tabla(base_de_datos, "remitos_proveedores_a_fabrica");
-        }
-        private void consultar_lista_proveedores()
-        {
-            lista_proveedores = consultas.consultar_tabla(base_de_datos, "lista_proveedores");
-        }
-        private void consultar_lista_proveedores_fabrica()
-        {
-            lista_proveedores_fabrica = consultas.consultar_tabla(base_de_datos, "lista_proveedores_fabrica");
-        }
-        private void consultar_pedidos()
-        {
-            pedidos = consultas.consultar_tabla(base_de_datos, "pedidos");
-        }
-        private void consultar_pedidos_no_calculados()
-        {
-            pedidos_no_calculados = consultas.consultar_pedidos_no_calculados_fabrica(base_de_datos, "pedidos");
-        }
-        private void consultar_acuerdo_de_precios()
-        {
-            acuerdo_de_precios = consultas.consultar_tabla_completa(base_de_datos, "acuerdo_de_precios");
-        }
-        private void consultar_acuerdo_de_precios_segun_parametros(string proveedor, string acuerdo_de_precios, string tipo_de_acuerdo)
-        {
-            acuerdo_de_precios_segun_parametros = consultas.consultar_acuerdo_de_precios_segun_parametros(base_de_datos, "acuerdo_de_precios", proveedor, acuerdo_de_precios, tipo_de_acuerdo);
-        }
-        private void consultar_productos_proveedor(string proveedor_seleccionado)
-        {
-            productos_proveedor = consultas.consultar_tabla_completa(base_de_datos, proveedor_seleccionado);
-        }
-        #endregion
-
-        #region metodos get/set 
-        public DataTable get_sucursales_id(string id)
-        {
-            consultar_sucursal(id);
-            return sucursalBD;
-        }
-        public DataTable get_pedidos_fabrica()
-        {
-            consultar_pedidos_fabrica();
-            return pedidos_fabrica;
-        }
-        public DataTable get_sucursales()
-        {
-            consultar_sucursales();
-            return sucursales;
-        }
-        public DataTable get_imputaciones()
-        {
-            consultar_imputaciones();
-            return imputaciones;
-        }
-        public DataTable get_imputaciones_fabrica_a_proveedor()
-        {
-            consultar_imputaciones_fabrica_a_proveedor();
-            return imputaciones_fabrica_a_proveedor;
-        }
-        public DataTable get_remitos()
-        {
-            consultar_remitos();
-            return remitos;
-        }
-        public DataTable get_remitos_proveedores_a_fabrica()
-        {
-            consultar_remitos_proveedores_a_fabrica();
-            return remitos_proveedores_a_fabrica;
-        }
-        public DataTable get_lista_proveedores()
-        {
-            consultar_lista_proveedores();
-            return lista_proveedores;
-        }
-        public DataTable get_acuerdo_de_precio()
-        {
-            consultar_acuerdo_de_precios();
-            return acuerdo_de_precios;
-        }
-        public DataTable get_lista_proveedores_fabrica()
-        {
-            consultar_lista_proveedores_fabrica();
-            return lista_proveedores_fabrica;
-        }
-        public DataTable get_pedidos()
-        {
-            consultar_pedidos();
-            return pedidos;
-        }
-        public DataTable get_pedidos_no_calculados()
-        {
-            consultar_pedidos_no_calculados();
-            return pedidos_no_calculados;
-        }
-        public DataTable get_acuerdo_de_precios()
-        {
-            consultar_acuerdo_de_precios();
-            return acuerdo_de_precios;
-        }
-        public DataTable get_acuerdo_de_precios_segun_parametros(string proveedor, string acuerdo_de_precio, string tipo_de_acuerdo)
-        {
-            consultar_acuerdo_de_precios_segun_parametros(proveedor, acuerdo_de_precio, tipo_de_acuerdo);
-            return acuerdo_de_precios_segun_parametros;
-        }
-        public DataTable get_productos_proveedor(string proveedor_seleccionado)
-        {
-            consultar_productos_proveedor(proveedor_seleccionado);
-            return productos_proveedor;
-        }
-        #endregion
-
         public void autorizar_imputacion(string id_imputacion)
         {
             consultas.actualizar_tabla(base_de_datos, "imputaciones", "`autorizado` = 'Si'", id_imputacion);
@@ -426,5 +323,170 @@ namespace _01___modulos
 
             return retorno;
         }
+        #endregion
+
+        #region metodos privados de consulta
+        private void consultar_deuda_mes_local(string id_sucursal, string mes, string año)
+        {
+            deuda_mes = consultas.consultar_deuda_mes_local(id_sucursal, mes, año);
+        }
+        private void consultar_sucursal_por_nombre(string sucursal)
+        {
+            sucursalBD = consultas.consultar_sucursal_por_nombre(sucursal);
+        }
+        private void consultar_sucursal(string id)
+        {
+            sucursalBD = consultas.consultar_sucursal(int.Parse(id));
+        }
+        private void consultar_pedidos_fabrica()
+        {
+            pedidos_fabrica = consultas.consultar_tabla(base_de_datos, "pedidos_fabrica_a_proveedor");
+        }
+        private void consultar_sucursales()
+        {
+            sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
+        }
+        private void consultar_imputaciones(string sucursal, string mes, string año)
+        {
+            imputaciones = consultas.consultar_imputaciones_segun_fecha(sucursal, mes, año);
+        }
+        private void consultar_imputaciones_fabrica_a_proveedor()
+        {
+            imputaciones_fabrica_a_proveedor = consultas.consultar_tabla(base_de_datos, "imputaciones_fabrica_a_proveedor");
+        }
+        private void consultar_remitos(string sucursal, string mes, string año)
+        {
+            remitos = consultas.consultar_cuenta_por_pagar_segun_fecha(sucursal, mes, año);
+        }
+        private void consultar_remitos_proveedores_a_fabrica()
+        {
+            remitos_proveedores_a_fabrica = consultas.consultar_tabla(base_de_datos, "remitos_proveedores_a_fabrica");
+        }
+        private void consultar_lista_proveedores()
+        {
+            lista_proveedores = consultas.consultar_tabla(base_de_datos, "lista_proveedores");
+        }
+        private void consultar_lista_proveedores_fabrica()
+        {
+            lista_proveedores_fabrica = consultas.consultar_tabla(base_de_datos, "lista_proveedores_fabrica");
+        }
+        private void consultar_pedidos()
+        {
+            pedidos = consultas.consultar_tabla(base_de_datos, "pedidos");
+        }
+        private void consultar_pedidos_no_calculados()
+        {
+            pedidos_no_calculados = consultas.consultar_pedidos_no_calculados_fabrica(base_de_datos, "pedidos");
+        }
+        private void consultar_acuerdo_de_precios()
+        {
+            acuerdo_de_precios = consultas.consultar_tabla_completa(base_de_datos, "acuerdo_de_precios");
+        }
+        private void consultar_acuerdo_de_precios_segun_parametros(string proveedor, string acuerdo_de_precios, string tipo_de_acuerdo)
+        {
+            acuerdo_de_precios_segun_parametros = consultas.consultar_acuerdo_de_precios_segun_parametros(base_de_datos, "acuerdo_de_precios", proveedor, acuerdo_de_precios, tipo_de_acuerdo);
+        }
+        private void consultar_productos_proveedor(string proveedor_seleccionado)
+        {
+            productos_proveedor = consultas.consultar_tabla_completa(base_de_datos, proveedor_seleccionado);
+        }
+        #endregion
+
+        #region metodos get/set 
+        public DataTable get_deuda_mes(string id_sucursal, string mes, string año)
+        {
+            consultar_deuda_mes_local(id_sucursal, mes, año);
+            return deuda_mes;
+        }
+        public DataTable get_sucursal_nombre(string sucursal)
+        {
+            if (deuda_mes == null)
+            {
+                consultar_sucursal_por_nombre(sucursal);
+            }
+            else if (sucursalBD.Rows[0]["sucursal"].ToString() != sucursal)
+            {
+                consultar_sucursal_por_nombre(sucursal);
+            }
+            return sucursalBD;
+        }
+        public DataTable get_sucursales_id(string id)
+        {
+            consultar_sucursal(id);
+            return sucursalBD;
+        }
+        public DataTable get_pedidos_fabrica()
+        {
+            consultar_pedidos_fabrica();
+            return pedidos_fabrica;
+        }
+        public DataTable get_sucursales()
+        {
+            consultar_sucursales();
+            return sucursales;
+        }
+        public DataTable get_imputaciones(string sucursal, string mes, string año)
+        {
+            consultar_imputaciones(sucursal, mes, año);
+            return imputaciones;
+        }
+        public DataTable get_imputaciones_fabrica_a_proveedor()
+        {
+            consultar_imputaciones_fabrica_a_proveedor();
+            return imputaciones_fabrica_a_proveedor;
+        }
+        public DataTable get_remitos(string sucursal, string mes, string año)
+        {
+            consultar_remitos(sucursal, mes, año);
+            return remitos;
+        }
+        public DataTable get_remitos_proveedores_a_fabrica()
+        {
+            consultar_remitos_proveedores_a_fabrica();
+            return remitos_proveedores_a_fabrica;
+        }
+        public DataTable get_lista_proveedores()
+        {
+            consultar_lista_proveedores();
+            return lista_proveedores;
+        }
+        public DataTable get_acuerdo_de_precio()
+        {
+            consultar_acuerdo_de_precios();
+            return acuerdo_de_precios;
+        }
+        public DataTable get_lista_proveedores_fabrica()
+        {
+            consultar_lista_proveedores_fabrica();
+            return lista_proveedores_fabrica;
+        }
+        public DataTable get_pedidos()
+        {
+            consultar_pedidos();
+            return pedidos;
+        }
+        public DataTable get_pedidos_no_calculados()
+        {
+            consultar_pedidos_no_calculados();
+            return pedidos_no_calculados;
+        }
+        public DataTable get_acuerdo_de_precios()
+        {
+            consultar_acuerdo_de_precios();
+            return acuerdo_de_precios;
+        }
+        public DataTable get_acuerdo_de_precios_segun_parametros(string proveedor, string acuerdo_de_precio, string tipo_de_acuerdo)
+        {
+            consultar_acuerdo_de_precios_segun_parametros(proveedor, acuerdo_de_precio, tipo_de_acuerdo);
+            return acuerdo_de_precios_segun_parametros;
+        }
+        public DataTable get_productos_proveedor(string proveedor_seleccionado)
+        {
+            consultar_productos_proveedor(proveedor_seleccionado);
+            return productos_proveedor;
+        }
+        #endregion
+
+
     }
 }

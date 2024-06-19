@@ -32,6 +32,8 @@ namespace paginaWeb.paginasFabrica
         {
 
             cargar_dropDowns();
+
+
         }
         private void cargar_dropDowns()
         {
@@ -39,7 +41,7 @@ namespace paginaWeb.paginasFabrica
             cargar_mes();
             cargar_año();
 
-           
+
         }
         private void configurar_controles_nota_credito()
         {
@@ -104,15 +106,14 @@ namespace paginaWeb.paginasFabrica
         private void cargar_año()
         {
             int num_item = 1;
-            System.Web.UI.WebControls.ListItem item;
             for (int año = 2022; año <= DateTime.Now.Year; año++)
             {
-                item = new System.Web.UI.WebControls.ListItem(año.ToString(), num_item.ToString());
-                dropDown_año.Items.Add(item);
+                dropDown_año.Items.Add(año.ToString());
                 num_item++;
             }
 
-            dropDown_año.SelectedIndex = dropDown_año.Items.Count - 1;
+            dropDown_año.SelectedValue = DateTime.Now.Year.ToString();
+
         }
         private void cargar_año_nota()
         {
@@ -137,8 +138,9 @@ namespace paginaWeb.paginasFabrica
             remitos.Columns.Add("sucursal", typeof(string));
             remitos.Columns.Add("num_pedido", typeof(string));
             remitos.Columns.Add("valor_remito", typeof(string));
-            remitos.Columns.Add("fecha_remito", typeof(string)); 
-            remitos.Columns.Add("nota", typeof(string)); 
+            remitos.Columns.Add("fecha_remito", typeof(string));
+            remitos.Columns.Add("nota", typeof(string));
+            remitos.Columns.Add("cobrado", typeof(string));
 
             imputaciones = new DataTable();
             imputaciones.Rows.Clear();
@@ -173,8 +175,9 @@ namespace paginaWeb.paginasFabrica
                     remitos.Rows[fila_dt]["sucursal"] = remitosBD.Rows[fila]["sucursal"].ToString();
                     remitos.Rows[fila_dt]["num_pedido"] = remitosBD.Rows[fila]["num_pedido"].ToString();
                     remitos.Rows[fila_dt]["valor_remito"] = formatCurrency(remitosBD.Rows[fila]["valor_remito"]);
-                    remitos.Rows[fila_dt]["fecha_remito"] = formatDate(remitosBD.Rows[fila]["fecha_remito"].ToString()); 
-                    remitos.Rows[fila_dt]["nota"] = remitosBD.Rows[fila]["nota"].ToString(); 
+                    remitos.Rows[fila_dt]["fecha_remito"] = formatDate(remitosBD.Rows[fila]["fecha_remito"].ToString());
+                    remitos.Rows[fila_dt]["nota"] = remitosBD.Rows[fila]["nota"].ToString();
+                    remitos.Rows[fila_dt]["cobrado"] = remitosBD.Rows[fila]["cobrado"].ToString();
 
                     fila_dt++;
                 }
@@ -223,6 +226,7 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_remitos()
         {
+            remitosBD = (DataTable)Session["remitosBD"];
             llenar_dataTable();
             gridView_remitos.DataSource = remitos;
             gridView_remitos.DataBind();
@@ -235,15 +239,15 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_saldo()
         {
-            label_deuda_total_mes.Text = "Deuda total del mes: " + formatCurrency(sistema_Administracion.deuda_total_del_mes(nombre_proveedor_seleccionado, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
 
-
-            label_saldo.Text = "Deuda actual: " + formatCurrency(sistema_Administracion.calcular_deuda_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.calcular_deuda_mes_anterior((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_compra.Text = "Compra del mes: " + formatCurrency(sistema_Administracion.calcular_compra_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(sistema_Administracion.calcular_compra_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_pago.Text = "Total pagado del mes: " + formatCurrency(sistema_Administracion.calcular_pago_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(sistema_Administracion.calcular_pago_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            label_saldo.Text = "Deuda actual: " + formatCurrency(sistema_Administracion.get_deuda_total_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.get_deuda_mes_anterior(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            double compra_del_mes = sistema_Administracion.calcular_compra_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
+            label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(compra_del_mes); ;
+            double total_pagado_mes = sistema_Administracion.calcular_pago_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_pago.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+            label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
         }
         private string formatDate(string valor)
         {
@@ -283,7 +287,6 @@ namespace paginaWeb.paginasFabrica
                 gridView_remitos.Columns[3].Visible = true;
                 gridView_imputaciones.Visible = true;
 
-                label_deuda_total_mes.Visible = true;
 
 
             }
@@ -299,7 +302,6 @@ namespace paginaWeb.paginasFabrica
                 gridView_remitos.Columns[4].Visible = false;
                 gridView_imputaciones.Visible = false;
 
-                label_deuda_total_mes.Visible = false;
 
             }
 
@@ -310,32 +312,36 @@ namespace paginaWeb.paginasFabrica
             sucursalBD = (DataTable)Session["sucursal"];
             Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
             pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
-            sucursales = pedidos_fabrica.get_sucursales();
+            if (!IsPostBack)
+            {
+                sucursales = pedidos_fabrica.get_sucursales();
 
-            Session.Add("sucursalesBD", sucursales);
+                Session.Add("sucursalesBD", sucursales);
+
+            }
             sucursales = (DataTable)Session["sucursalesBD"];
 
 
 
+            sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
+            Session.Add("sistema_Administracion_fabrica", new cls_sistema_cuentas_por_cobrar((DataTable)Session["usuariosBD"]));
+            sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
 
             if (!IsPostBack)
             {
 
-                //calcular remitos nuevos
-                Session.Add("sistema_Administracion_fabrica", new cls_sistema_cuentas_por_cobrar((DataTable)Session["usuariosBD"]));
 
-                sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
+                //calcular remitos nuevos
+
                 // sistema_Administracion.actualizar_remitos();
                 configurar_controles();
 
                 configurar_controles_nota_credito();
-
+                imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+                Session.Add("imputacionesBD", imputacionesBD);
 
             }
-            sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
-            imputacionesBD = sistema_Administracion.get_imputaciones();
 
-            Session.Add("imputacionesBD", imputacionesBD);
 
 
 
@@ -354,17 +360,19 @@ namespace paginaWeb.paginasFabrica
                 Session.Add("sucursal_seleccionada", dropDown_sucursales.SelectedItem.Text);
             }
 
-            sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
-            remitosBD = sistema_Administracion.get_remitos();
 
-
-            proveedor_seleccionado = proveedorBD.Rows[0]["nombre_proveedor"].ToString();
-            nombre_proveedor_seleccionado = proveedorBD.Rows[0]["nombre_en_BD"].ToString();
 
 
 
             if (!IsPostBack)
             {
+                sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
+                remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+                Session.Add("remitosBD", remitosBD);
+
+                proveedor_seleccionado = proveedorBD.Rows[0]["nombre_proveedor"].ToString();
+                nombre_proveedor_seleccionado = proveedorBD.Rows[0]["nombre_en_BD"].ToString();
+
                 cargar_remitos();
 
             }
@@ -390,12 +398,16 @@ namespace paginaWeb.paginasFabrica
 
         protected void dropDown_mes_SelectedIndexChanged(object sender, EventArgs e)
         {
+            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            Session.Add("remitosBD", remitosBD);
             cargar_remitos();
 
         }
 
         protected void dropDown_año_SelectedIndexChanged(object sender, EventArgs e)
         {
+            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            Session.Add("remitosBD", remitosBD);
             cargar_remitos();
 
         }
@@ -434,9 +446,12 @@ namespace paginaWeb.paginasFabrica
 
         protected void gridView_remitos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            remitosBD = (DataTable)Session["remitosBD"];
+
+            string id;
+            int num_pedido, fila_remito;
             for (int fila = 0; fila <= gridView_remitos.Rows.Count - 1; fila++)
             {
-                int num_pedido;
                 if (int.TryParse(gridView_remitos.Rows[fila].Cells[2].Text, out num_pedido))
                 {
                     if (num_pedido == 0)
@@ -447,6 +462,15 @@ namespace paginaWeb.paginasFabrica
                 else
                 {
                     gridView_remitos.Rows[fila].Cells[5].Controls[0].Visible = false;
+                }
+                id = gridView_remitos.Rows[fila].Cells[0].Text;
+                fila_remito = funciones.buscar_fila_por_id(id, remitosBD);
+                if (remitosBD.Rows[fila_remito]["cobrado"].ToString() == "Si")
+                {
+                    Button boton_cobrado = (gridView_remitos.Rows[fila].Cells[7].FindControl("boton_cobrado") as Button);
+                    boton_cobrado.Text = "Desmarcar";
+                    boton_cobrado.CssClass = "btn btn-danger";
+                    gridView_remitos.Rows[fila].CssClass = "table-success";
                 }
             }
         }
@@ -460,7 +484,7 @@ namespace paginaWeb.paginasFabrica
                 string id_imputacion = gridView_imputaciones.Rows[int.Parse(index)].Cells[0].Text;
                 sistema_Administracion.autorizar_imputacion(id_imputacion);
                 cargar_saldo();
-                imputacionesBD = sistema_Administracion.get_imputaciones();
+                imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
 
                 cargar_remitos();
             }
@@ -472,7 +496,7 @@ namespace paginaWeb.paginasFabrica
                 TextBox textbox_nota = (gridView_imputaciones.Rows[int.Parse(index)].Cells[8].FindControl("textbox_nota") as TextBox);
 
                 cargar_nota(id, textbox_nota.Text);
-                imputacionesBD = sistema_Administracion.get_imputaciones();
+                imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
                 Session.Add("imputacionesBD", imputacionesBD);
                 cargar_remitos();
 
@@ -497,7 +521,7 @@ namespace paginaWeb.paginasFabrica
         protected void boton_cargarImputacion_Click(object sender, EventArgs e)
         {
             cargar_imputaciones();
-            imputacionesBD = sistema_Administracion.get_imputaciones();
+            imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             Session.Add("imputacionesBD", imputacionesBD);
             cargar_remitos();
             textBox_efectivo.Text = string.Empty;
@@ -539,17 +563,45 @@ namespace paginaWeb.paginasFabrica
                 else
                 {
                     string fecha_nota = DropDow_nota_año.SelectedItem.Text + "-" + DropDow_nota_mes.SelectedItem.Text + "-" + DropDow_nota_dia.SelectedItem.Text;
-                    fecha_nota  = fecha_nota + " " + DateTime.Now.Hour.ToString()+":"+DateTime.Now.Minute.ToString()+":"+DateTime.Now.Second.ToString();
+                    fecha_nota = fecha_nota + " " + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString();
                     string cantidad_a_cargar = "-" + cantidad.ToString();
                     sistema_Administracion.cargar_nota_credito(dropDown_sucursales.SelectedItem.Text, textBox_detalle.Text, cantidad_a_cargar, fecha_nota);
                     textBox_monto.Text = string.Empty;
                     textBox_detalle.Text = string.Empty;
                     label_monto.Text = "Total: $0.00";
                 }
-                remitosBD = sistema_Administracion.get_remitos();
+                remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+                Session.Add("remitosBD", remitosBD);
                 cargar_remitos();
             }
         }
 
+        protected void boton_cobrado_Click(object sender, EventArgs e)
+        {
+            remitosBD = (DataTable)Session["remitosBD"];
+
+            Button boton_cobrado = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_cobrado.NamingContainer;
+            int fila = row.RowIndex;
+
+            string id = gridView_remitos.Rows[fila].Cells[0].Text;
+
+            int fila_remitos = funciones.buscar_fila_por_id(id, remitosBD);
+
+            string estado = remitosBD.Rows[fila_remitos]["cobrado"].ToString();
+
+            if (estado == "Si")
+            {
+                sistema_Administracion.marcar_cobrado(id, "No");
+            }
+            else
+            {
+                sistema_Administracion.marcar_cobrado(id, "Si");
+            }
+
+            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+
+            cargar_remitos();
+        }
     }
 }

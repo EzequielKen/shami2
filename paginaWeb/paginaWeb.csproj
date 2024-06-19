@@ -169,6 +169,7 @@
     <Content Include="paginas\administrador_de_empleados.aspx" />
     <Content Include="paginas\administrador_de_empleados_cajero.aspx" />
     <Content Include="paginas\administrar_lista_de_chequeo.aspx" />
+    <Content Include="paginas\administrar_tabla_produccion.aspx" />
     <Content Include="paginas\calendario_de_entrega.aspx" />
     <Content Include="paginas\cuentas_por_pagar.aspx" />
     <Content Include="paginas\estadisticas_de_pedido.aspx" />
@@ -773,6 +774,13 @@
     </Compile>
     <Compile Include="paginas\administrar_lista_de_chequeo.aspx.designer.cs">
       <DependentUpon>administrar_lista_de_chequeo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\administrar_tabla_produccion.aspx.cs">
+      <DependentUpon>administrar_tabla_produccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\administrar_tabla_produccion.aspx.designer.cs">
+      <DependentUpon>administrar_tabla_produccion.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\calendario_de_entrega.aspx.cs">
       <DependentUpon>calendario_de_entrega.aspx</DependentUpon>

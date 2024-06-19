@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -143,6 +144,7 @@ namespace paginaWeb.paginasGerente
             remitos.Columns.Add("valor_remito", typeof(string));
             remitos.Columns.Add("fecha_remito", typeof(string));
             remitos.Columns.Add("nota", typeof(string));
+            remitos.Columns.Add("cobrado", typeof(string));
 
             imputaciones = new DataTable();
             imputaciones.Rows.Clear();
@@ -179,6 +181,7 @@ namespace paginaWeb.paginasGerente
                     remitos.Rows[fila_dt]["valor_remito"] = formatCurrency(remitosBD.Rows[fila]["valor_remito"]);
                     remitos.Rows[fila_dt]["fecha_remito"] = formatDate(remitosBD.Rows[fila]["fecha_remito"].ToString());
                     remitos.Rows[fila_dt]["nota"] = remitosBD.Rows[fila]["nota"].ToString();
+                    remitos.Rows[fila_dt]["cobrado"] = remitosBD.Rows[fila]["cobrado"].ToString();
 
                     fila_dt++;
                 }
@@ -239,15 +242,14 @@ namespace paginaWeb.paginasGerente
         }
         private void cargar_saldo()
         {
-            label_deuda_total_mes.Text = "Deuda total del mes: " + formatCurrency(sistema_Administracion.deuda_total_del_mes(nombre_proveedor_seleccionado, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-
-
-            label_saldo.Text = "Deuda actual: " + formatCurrency(sistema_Administracion.calcular_deuda_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.calcular_deuda_mes_anterior((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_compra.Text = "Compra del mes: " + formatCurrency(sistema_Administracion.calcular_compra_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(sistema_Administracion.calcular_compra_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_pago.Text = "Total pagado del mes: " + formatCurrency(sistema_Administracion.calcular_pago_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(sistema_Administracion.calcular_pago_mes((DataTable)Session["proveedorBD"], dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            label_saldo.Text = "Deuda actual: " + formatCurrency(sistema_Administracion.get_deuda_total_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.get_deuda_mes_anterior(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            double compra_del_mes = sistema_Administracion.calcular_compra_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
+            label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(compra_del_mes); ;
+            double total_pagado_mes = sistema_Administracion.calcular_pago_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_pago.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+            label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
         }
         private string formatDate(string valor)
         {
@@ -337,7 +339,7 @@ namespace paginaWeb.paginasGerente
 
             }
             sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
-            imputacionesBD = sistema_Administracion.get_imputaciones();
+            imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
 
             Session.Add("imputacionesBD", imputacionesBD);
 
@@ -359,7 +361,7 @@ namespace paginaWeb.paginasGerente
             }
 
             sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
-            remitosBD = sistema_Administracion.get_remitos();
+            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
 
 
             proveedor_seleccionado = proveedorBD.Rows[0]["nombre_proveedor"].ToString();
@@ -438,9 +440,10 @@ namespace paginaWeb.paginasGerente
 
         protected void gridView_remitos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            string id;
+            int num_pedido, fila_remito;
             for (int fila = 0; fila <= gridView_remitos.Rows.Count - 1; fila++)
             {
-                int num_pedido;
                 if (int.TryParse(gridView_remitos.Rows[fila].Cells[2].Text, out num_pedido))
                 {
                     if (num_pedido == 0)
@@ -451,6 +454,15 @@ namespace paginaWeb.paginasGerente
                 else
                 {
                     gridView_remitos.Rows[fila].Cells[5].Controls[0].Visible = false;
+                }
+                id = gridView_remitos.Rows[fila].Cells[0].Text;
+                fila_remito = funciones.buscar_fila_por_id(id, remitosBD);
+                if (remitosBD.Rows[fila_remito]["cobrado"].ToString() == "Si")
+                {
+                    Button boton_cobrado = (gridView_remitos.Rows[fila].Cells[7].FindControl("boton_cobrado") as Button);
+                    boton_cobrado.Text = "Desmarcar";
+                    boton_cobrado.CssClass = "btn btn-danger";
+                    gridView_remitos.Rows[fila].CssClass = "table-success";
                 }
             }
         }
@@ -464,7 +476,7 @@ namespace paginaWeb.paginasGerente
                 string id_imputacion = gridView_imputaciones.Rows[int.Parse(index)].Cells[0].Text;
                 sistema_Administracion.autorizar_imputacion(id_imputacion);
                 cargar_saldo();
-                imputacionesBD = sistema_Administracion.get_imputaciones();
+                imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
 
                 cargar_remitos();
             }
@@ -476,7 +488,7 @@ namespace paginaWeb.paginasGerente
                 TextBox textbox_nota = (gridView_imputaciones.Rows[int.Parse(index)].Cells[8].FindControl("textbox_nota") as TextBox);
 
                 cargar_nota(id, textbox_nota.Text);
-                imputacionesBD = sistema_Administracion.get_imputaciones();
+                imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
                 Session.Add("imputacionesBD", imputacionesBD);
                 cargar_remitos();
 
@@ -488,7 +500,7 @@ namespace paginaWeb.paginasGerente
                 string id = gridView_imputaciones.Rows[int.Parse(index)].Cells[0].Text;
 
                 eliminar_imputacion(id);
-                imputacionesBD = sistema_Administracion.get_imputaciones();
+                imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
                 Session.Add("imputacionesBD", imputacionesBD);
                 cargar_remitos();
 
@@ -513,7 +525,7 @@ namespace paginaWeb.paginasGerente
         protected void boton_cargarImputacion_Click(object sender, EventArgs e)
         {
             cargar_imputaciones();
-            imputacionesBD = sistema_Administracion.get_imputaciones();
+            imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             Session.Add("imputacionesBD", imputacionesBD);
             cargar_remitos();
             textBox_efectivo.Text = string.Empty;
@@ -562,9 +574,35 @@ namespace paginaWeb.paginasGerente
                     textBox_detalle.Text = string.Empty;
                     label_monto.Text = "Total: $0.00";
                 }
-                remitosBD = sistema_Administracion.get_remitos();
+                remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
                 cargar_remitos();
             }
+        }
+
+        protected void boton_cobrado_Click(object sender, EventArgs e)
+        {
+            Button boton_cobrado = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_cobrado.NamingContainer;
+            int fila = row.RowIndex;
+
+            string id = gridView_remitos.Rows[fila].Cells[0].Text;
+
+            int fila_remitos = funciones.buscar_fila_por_id(id, remitosBD);
+
+            string estado = remitosBD.Rows[fila_remitos]["cobrado"].ToString();
+
+            if (estado == "Si")
+            {
+                sistema_Administracion.marcar_cobrado(id, "No");
+            }
+            else
+            {
+                sistema_Administracion.marcar_cobrado(id, "Si");
+            }
+
+            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+
+            cargar_remitos();
         }
     }
 }
