@@ -55,9 +55,14 @@ namespace modulos
         DataTable productos_proveedor;
         DataTable imputaciones;
         DataTable cuenta_por_pagar;
+        DataTable deuda_actual;
         #endregion
 
         #region metodos privados de consulta
+        private void consultar_deuda_actual(string sucursal)
+        {
+            deuda_actual = consultas.consultar_deudas_de_sucursal(sucursal);
+        }
         private void consultar_cuenta_por_pagar()
         {
             cuenta_por_pagar = consultas.consultar_tabla(base_de_datos, "cuenta_por_pagar");
@@ -97,6 +102,13 @@ namespace modulos
         #endregion
 
         #region metodos get/set
+        public DataTable get_deuda_actual(string sucursal)
+        {
+            consultar_deuda_actual(sucursal);
+            deuda_actual.DefaultView.Sort = "año DESC, mes DESC";
+            deuda_actual = deuda_actual.DefaultView.ToTable();
+            return deuda_actual;
+        }
         public DataTable get_imputaciones()
         {
             consultar_imputaciones();

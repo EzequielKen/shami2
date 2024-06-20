@@ -15,24 +15,14 @@
                         <div class="alert alert-light">
                             <div class="row">
                                 <div class="col">
-                                    <h1>
-                                        <asp:Label ID="label_deuda_total_mes" Text="Deuda total del mes" CssClass="badge bg-secondary" runat="server" />
-                                    </h1>
-                                    
-                                   
                                 </div>
                                 <div class="col">
-                                  
-                                   
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
-                                 
                                 </div>
                                 <div class="col">
-                                    
-                                  
                                 </div>
                             </div>
                         </div>
@@ -88,6 +78,9 @@
                                 <h1>
                                     <asp:Label ID="label_saldo" Text="SALDO:" CssClass="badge bg-secondary" runat="server" />
                                 </h1>
+                                <h1>
+                                    <asp:Label ID="label_deuda_actual" Text="SALDO:" CssClass="badge bg-secondary" runat="server" />
+                                </h1>
                             </div>
                         </div>
                     </div>
@@ -127,7 +120,7 @@
                                 <h2>
                                     <asp:Label ID="label_pagado_mes" Text="Total pagado del mes:" CssClass="badge bg-secondary" runat="server" />
                                 </h2>
-                                <asp:GridView ID="gridView_imputaciones" runat="server" Caption="IMPUTACIONES" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped"  OnSelectedIndexChanged="gridView_imputaciones_SelectedIndexChanged" OnRowDataBound="gridView_imputaciones_RowDataBound" >
+                                <asp:GridView ID="gridView_imputaciones" runat="server" Caption="IMPUTACIONES" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped" OnSelectedIndexChanged="gridView_imputaciones_SelectedIndexChanged" OnRowDataBound="gridView_imputaciones_RowDataBound">
                                     <Columns>
                                         <asp:BoundField HeaderText="id" DataField="id" />
                                         <asp:BoundField HeaderText="Efectivo" DataField="Efectivo" />
@@ -178,6 +171,6 @@
                     </div>
                 </div>
             </div>
-     </ContentTemplate>
+        </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>

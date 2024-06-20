@@ -172,7 +172,7 @@ namespace paginaWeb.paginas
         }
         private void cargar_saldo()
         {
-            label_deuda_total_mes.Text = "Deuda total del mes: " + formatCurrency(sistema_Administracion.deuda_total_del_mes(dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            //label_deuda_total_mes.Text = "Deuda total del mes: " + formatCurrency(sistema_Administracion.deuda_total_del_mes(dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
 
             label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.calcular_deuda_mes_anterior(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
             label_saldo.Text = "Deuda actual: " + formatCurrency(sistema_Administracion.calcular_deuda_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
@@ -225,7 +225,7 @@ namespace paginaWeb.paginas
                 label_compra_mes_titulo.Visible = false;
                 label_pagado_mes.Visible = false;
                 label_pagado_mes_titulo.Visible = false;
-                label_deuda_total_mes.Visible = false;
+                //label_deuda_total_mes.Visible = false;
 
                 gridView_remitos.Columns[3].Visible = false;
                 gridView_imputaciones.Visible = false;
