@@ -168,6 +168,8 @@ namespace paginaWeb.paginasFabrica
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
             seguridad = int.Parse(Session["nivel_seguridad"].ToString());
+
+           
             if (seguridad > 1)
             {
                 label_total_pedido.Visible = false;

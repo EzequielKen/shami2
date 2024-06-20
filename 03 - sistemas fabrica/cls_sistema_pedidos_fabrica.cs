@@ -19,9 +19,12 @@ namespace _03___sistemas_fabrica
             movimientos_stock_producto = new cls_movimientos_stock_producto(usuarios_BD);
             stock_insumos = new cls_stock_insumos(usuarios_BD);
             historial_stock = new cls_movimientos_stock_producto(usuarios_BD);
+            sistema_Administracion = new cls_sistema_cuentas_por_cobrar(usuarios_BD);
+
         }
         #region atributos
         cls_movimientos_stock_producto movimientos_stock_producto;
+        cls_sistema_cuentas_por_cobrar sistema_Administracion;
         cls_stock_insumos stock_insumos;
         cls_movimientos_stock_producto historial_stock;
         cls_funciones funciones = new cls_funciones();
@@ -619,6 +622,9 @@ namespace _03___sistemas_fabrica
                 }
             }
             stock_insumos.guardar_registro_entrega_insumo_a_local(rol_usuario, insumos, insumos_copia);
+            DateTime fecha = DateTime.Now;
+            sucursal = resumen_de_pedidos.Rows[0]["sucursal"].ToString();
+            sistema_Administracion.get_deuda_total_mes(sucursal,fecha.Month.ToString(),fecha.Year.ToString());
         }
         private bool verificar_si_cargo_remito(string sucursal, string num_pedido, string nombre_remito, string valor_remito, string proveedor)
         {

@@ -87,6 +87,15 @@ namespace paginaWeb.paginasGerente
         protected global::System.Web.UI.WebControls.Label label_saldo;
 
         /// <summary>
+        /// Control label_deuda_actual.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_deuda_actual;
+
+        /// <summary>
         /// Control label_total_compra.
         /// </summary>
         /// <remarks>

@@ -226,21 +226,28 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_remitos()
         {
+            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            Session.Add("remitosBD", remitosBD);
+
+            imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            Session.Add("imputacionesBD", imputacionesBD);
+
             remitosBD = (DataTable)Session["remitosBD"];
             llenar_dataTable();
             gridView_remitos.DataSource = remitos;
             gridView_remitos.DataBind();
 
-            gridView_imputaciones.DataSource = null;
+           
             gridView_imputaciones.DataBind();
             gridView_imputaciones.DataSource = imputaciones;
             gridView_imputaciones.DataBind();
             cargar_saldo();
+
         }
         private void cargar_saldo()
         {
-
-            label_saldo.Text = "Deuda actual: " + formatCurrency(sistema_Administracion.get_deuda_total_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            label_saldo.Text = "Deuda del Mes: " + formatCurrency(double.Parse(sistema_Administracion.get_deuda_total_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text)));
+            label_deuda_actual.Text = "Deuda Actual: " + formatCurrency(sistema_Administracion.get_deuda_actual(dropDown_sucursales.SelectedItem.Text));
             label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.get_deuda_mes_anterior(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
             double compra_del_mes = sistema_Administracion.calcular_compra_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
@@ -337,8 +344,7 @@ namespace paginaWeb.paginasFabrica
                 configurar_controles();
 
                 configurar_controles_nota_credito();
-                imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
-                Session.Add("imputacionesBD", imputacionesBD);
+             
 
             }
 
@@ -367,14 +373,12 @@ namespace paginaWeb.paginasFabrica
             if (!IsPostBack)
             {
                 sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
-                remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
-                Session.Add("remitosBD", remitosBD);
+             
 
                 proveedor_seleccionado = proveedorBD.Rows[0]["nombre_proveedor"].ToString();
                 nombre_proveedor_seleccionado = proveedorBD.Rows[0]["nombre_en_BD"].ToString();
 
                 cargar_remitos();
-
             }
 
 
@@ -393,23 +397,18 @@ namespace paginaWeb.paginasFabrica
             }
             cargar_remitos();
 
-
         }
 
         protected void dropDown_mes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
-            Session.Add("remitosBD", remitosBD);
+   
             cargar_remitos();
-
         }
 
         protected void dropDown_año_SelectedIndexChanged(object sender, EventArgs e)
         {
-            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
-            Session.Add("remitosBD", remitosBD);
+          
             cargar_remitos();
-
         }
 
         protected void gridView_remitos_SelectedIndexChanged(object sender, EventArgs e)
@@ -499,7 +498,6 @@ namespace paginaWeb.paginasFabrica
                 imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
                 Session.Add("imputacionesBD", imputacionesBD);
                 cargar_remitos();
-
             }
         }
         #region cargar imputaciones
@@ -524,6 +522,7 @@ namespace paginaWeb.paginasFabrica
             imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             Session.Add("imputacionesBD", imputacionesBD);
             cargar_remitos();
+            cargar_saldo();
             textBox_efectivo.Text = string.Empty;
             textBox_transferencia.Text = string.Empty;
             textBox_mercadoPago.Text = string.Empty;
@@ -562,10 +561,8 @@ namespace paginaWeb.paginasFabrica
                 }
                 else
                 {
-                    string fecha_nota = DropDow_nota_año.SelectedItem.Text + "-" + DropDow_nota_mes.SelectedItem.Text + "-" + DropDow_nota_dia.SelectedItem.Text;
-                    fecha_nota = fecha_nota + " " + DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString();
                     string cantidad_a_cargar = "-" + cantidad.ToString();
-                    sistema_Administracion.cargar_nota_credito(dropDown_sucursales.SelectedItem.Text, textBox_detalle.Text, cantidad_a_cargar, fecha_nota);
+                    sistema_Administracion.cargar_nota_credito(dropDown_sucursales.SelectedItem.Text, textBox_detalle.Text, cantidad_a_cargar);
                     textBox_monto.Text = string.Empty;
                     textBox_detalle.Text = string.Empty;
                     label_monto.Text = "Total: $0.00";

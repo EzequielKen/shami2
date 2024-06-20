@@ -58,6 +58,7 @@ namespace _01___modulos
         DataTable imputaciones_fabrica_a_proveedor;
         DataTable pedidos_fabrica;
         DataTable deuda_mes;
+        DataTable deuda_actual;
         #endregion
 
         #region cargar nota
@@ -79,13 +80,13 @@ namespace _01___modulos
             consultas.actualizar_tabla(base_de_datos, "imputaciones", actualizar, id_orden);
 
         }
-        public void cargar_nota_credito(string sucursal, string nota, string valor_remito, string fecha_nota)
+        public void cargar_nota_credito(string sucursal, string nota, string valor_remito)
         {
-            cargar_nota_credito_en_cuentas_por_pagar(sucursal, nota, valor_remito, fecha_nota);
-            cargar_nota_credito_en_remitos(sucursal, nota, valor_remito, fecha_nota);
+            cargar_nota_credito_en_cuentas_por_pagar(sucursal, nota, valor_remito);
+            cargar_nota_credito_en_remitos(sucursal, nota, valor_remito);
         }
 
-        private void cargar_nota_credito_en_cuentas_por_pagar(string sucursal, string nota, string valor_remito, string fecha_nota)
+        private void cargar_nota_credito_en_cuentas_por_pagar(string sucursal, string nota, string valor_remito)
         {
             string columnas = "";
             string valores = "";
@@ -103,14 +104,14 @@ namespace _01___modulos
             valores = funciones.armar_query_valores(valores, valor_remito, false);
             //fecha_remito
             columnas = funciones.armar_query_columna(columnas, "fecha_remito", false);
-            valores = funciones.armar_query_valores(valores, fecha_nota, false);
+            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
             //proveedor
             columnas = funciones.armar_query_columna(columnas, "proveedor", true);
             valores = funciones.armar_query_valores(valores, "proveedor_villaMaipu", true);
 
             consultas.insertar_en_tabla(base_de_datos, "cuenta_por_pagar", columnas, valores);
         }
-        private void cargar_nota_credito_en_remitos(string sucursal, string nota, string valor_remito, string fecha_nota)
+        private void cargar_nota_credito_en_remitos(string sucursal, string nota, string valor_remito)
         {
             string columnas = "";
             string valores = "";
@@ -125,7 +126,7 @@ namespace _01___modulos
             valores = funciones.armar_query_valores(valores, valor_remito, false);
             //fecha_remito
             columnas = funciones.armar_query_columna(columnas, "fecha_remito", false);
-            valores = funciones.armar_query_valores(valores, fecha_nota, false);
+            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
             //proveedor
             columnas = funciones.armar_query_columna(columnas, "proveedor", true);
             valores = funciones.armar_query_valores(valores, "proveedor_villaMaipu", true);
@@ -326,6 +327,10 @@ namespace _01___modulos
         #endregion
 
         #region metodos privados de consulta
+        private void consultar_deuda_actual(string sucursal)
+        {
+            deuda_actual = consultas.consultar_deudas_de_sucursal(sucursal);
+        }
         private void consultar_deuda_mes_local(string id_sucursal, string mes, string año)
         {
             deuda_mes = consultas.consultar_deuda_mes_local(id_sucursal, mes, año);
@@ -393,6 +398,13 @@ namespace _01___modulos
         #endregion
 
         #region metodos get/set 
+        public DataTable get_deuda_actual(string sucursal)
+        {
+            consultar_deuda_actual(sucursal);
+            deuda_actual.DefaultView.Sort = "año DESC, mes DESC";
+            deuda_actual = deuda_actual.DefaultView.ToTable();
+            return deuda_actual;
+        }
         public DataTable get_deuda_mes(string id_sucursal, string mes, string año)
         {
             consultar_deuda_mes_local(id_sucursal, mes, año);

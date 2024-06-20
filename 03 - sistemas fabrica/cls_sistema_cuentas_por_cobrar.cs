@@ -52,6 +52,7 @@ namespace _03___sistemas_fabrica
         DataTable todas_las_imputaciones_fabrica;
         DataTable deuda_mes_anterior;
         DataTable deuda_mes;
+        DataTable deuda_actual;
         #endregion
 
         #region cargar nota
@@ -68,9 +69,9 @@ namespace _03___sistemas_fabrica
             administracion.cargar_nota(id_orden, nota);
 
         }
-        public void cargar_nota_credito(string sucursal, string nota, string valor_remito, string fecha_nota)
+        public void cargar_nota_credito(string sucursal, string nota, string valor_remito)
         {
-            administracion.cargar_nota_credito(sucursal, nota, valor_remito, fecha_nota);
+            administracion.cargar_nota_credito(sucursal, nota, valor_remito);
         }
         #endregion
 
@@ -737,6 +738,23 @@ namespace _03___sistemas_fabrica
 
         #endregion
         #region metogos get/set
+        public double get_deuda_actual(string sucursal)
+        {
+            double deuda = 0;
+            consultar_deuda_actual(sucursal);
+            if (deuda_actual.Rows.Count > 0)
+            {
+                for (int fila = 0; fila <= deuda_actual.Rows.Count - 1; fila++)
+                {
+                    if (deuda_actual.Rows[fila]["deuda_del_mes"].ToString() != "0")
+                    {
+                        deuda = double.Parse(deuda_actual.Rows[fila]["deuda_del_mes"].ToString());
+                        break;
+                    }
+                }
+            }
+            return deuda;
+        }
         public string get_deuda_total_mes(string sucursal, string mes, string año)
         {
             string deuda = "0";
@@ -748,7 +766,8 @@ namespace _03___sistemas_fabrica
                 consultar_deuda_mes(id_sucursal, mes, año);
             }
             else if (deuda_mes.Rows[0]["mes"].ToString() != mes ||
-                     deuda_mes.Rows[0]["año"].ToString() != año)
+                     deuda_mes.Rows[0]["año"].ToString() != año ||
+                     deuda_mes.Rows[0]["sucursal"].ToString() != sucursal)
             {
                 consultar_deuda_mes(id_sucursal, mes, año);
             }
@@ -769,6 +788,18 @@ namespace _03___sistemas_fabrica
             else
             {
                 administracion.crear_deuda_del_mes(id_sucursal, sucursal, mes, año, "0");
+                consultar_deuda_mes(id_sucursal, mes, año);
+                deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                deuda_registrada = Math.Round(double.Parse(deuda), 2);
+                deuda_calculada = Math.Round(calcular_deuda_del_mes(sucursal, mes, año), 2);
+                if (deuda_registrada != deuda_calculada)
+                {
+                    //actualizar deuda en bd
+                    string id_deuda = deuda_mes.Rows[0]["id"].ToString();
+                    administracion.actualizar_deuda_del_mes(id_deuda, deuda_calculada.ToString());
+                    consultar_deuda_mes(id_sucursal, mes, año);
+                    deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                }
             }
             return deuda;
         }
@@ -777,10 +808,8 @@ namespace _03___sistemas_fabrica
             double deuda_del_mes = 0;
             get_remitos(sucursal, mes, año);
             get_imputaciones(sucursal, mes, año);
-            string mes_anterior = obtener_mes_anterior(mes);
-            string año_anterior = obtener_año_anterior(mes, año);
 
-            double deuda_anterior = get_deuda_mes_anterior(sucursal, mes_anterior, año_anterior);
+            double deuda_anterior = get_deuda_mes_anterior(sucursal, mes, año);
 
             double total_compra = 0;
             double total_cobrado = 0;
@@ -824,7 +853,7 @@ namespace _03___sistemas_fabrica
             double total_cobrado = 0;
             double abono_efectivo, abono_digital, abono_digital_mercadoPago, total;
 
-            for (int fila_imputacion = 0; fila_imputacion < imputaciones.Rows.Count - 1; fila_imputacion++)
+            for (int fila_imputacion = 0; fila_imputacion <= imputaciones.Rows.Count - 1; fila_imputacion++)
             {
                 if (imputaciones.Rows[fila_imputacion]["autorizado"].ToString() == "Si")
                 {
@@ -853,9 +882,10 @@ namespace _03___sistemas_fabrica
                 consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
             }
             else if (deuda_mes_anterior.Rows[0]["mes"].ToString() != mes ||
-                     deuda_mes_anterior.Rows[0]["año"].ToString() != año)
+                     deuda_mes_anterior.Rows[0]["año"].ToString() != año ||
+                     deuda_mes_anterior.Rows[0]["sucursal"].ToString() != sucursal)
             {
-                consultar_deuda_mes_anterior(id_sucursal, mes, año);
+                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
             }
             if (deuda_mes_anterior.Rows.Count > 0)
             {
@@ -880,11 +910,16 @@ namespace _03___sistemas_fabrica
             {
                 consultar_remitos(sucursal, mes, año);
             }
+            else if (remitos.Rows.Count == 0)
+            {
+                consultar_remitos(sucursal, mes, año);
+            }
             else
             {
                 DateTime fecha_remito = (DateTime)remitos.Rows[0]["fecha_remito"];
                 if (fecha_remito.Month.ToString() != mes ||
-                     fecha_remito.Year.ToString() != año)
+                     fecha_remito.Year.ToString() != año ||
+                     remitos.Rows[0]["sucursal"].ToString() != sucursal)
                 {
                     consultar_remitos(sucursal, mes, año);
                 }
@@ -902,13 +937,18 @@ namespace _03___sistemas_fabrica
             {
                 consultar_imputaciones(sucursal, mes, año);
             }
+            else if (imputaciones.Rows.Count == 0)
+            {
+                consultar_imputaciones(sucursal, mes, año);
+            }
             else
             {
                 if (imputaciones.Rows.Count > 0)
                 {
                     DateTime fecha = (DateTime)imputaciones.Rows[0]["fecha"];
                     if (fecha.Month.ToString() != mes ||
-                         fecha.Year.ToString() != año)
+                         fecha.Year.ToString() != año ||
+                         imputaciones.Rows[0]["sucursal"].ToString() != sucursal)
                     {
                         consultar_imputaciones(sucursal, mes, año);
                     }
@@ -1596,6 +1636,10 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region metodos consulta
+        private void consultar_deuda_actual(string sucursal)
+        {
+            deuda_actual = administracion.get_deuda_actual(sucursal);
+        }
         private void consultar_deuda_mes_anterior(string id_sucursal, string mes, string año)
         {
             deuda_mes_anterior = administracion.get_deuda_mes(id_sucursal, mes, año);

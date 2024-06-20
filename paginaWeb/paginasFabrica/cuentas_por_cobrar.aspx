@@ -14,9 +14,6 @@
                         <div class="alert alert-light">
                             <div class="row">
                                 <div class="col">
-
-
-                                    
                                 </div>
                                 <div class="col">
                                 </div>
@@ -79,6 +76,9 @@
                                 </h2>
                                 <h1>
                                     <asp:Label ID="label_saldo" Text="SALDO:" CssClass="badge bg-secondary" runat="server" />
+                                </h1>
+                                <h1>
+                                    <asp:Label ID="label_deuda_actual" Text="SALDO:" CssClass="badge bg-secondary" runat="server" />
                                 </h1>
                             </div>
                         </div>
@@ -163,25 +163,25 @@
                             <h3>carga de notas de credito</h3>
                             <div class="row">
                                 <div class="col">
-                                    <asp:Label Text="Dia" CssClass=" form-label" runat="server" />
-                                    <asp:DropDownList ID="DropDow_nota_dia" runat="server" CssClass="form-select">
+                                    <asp:Label Visible="false" Text="Dia" CssClass=" form-label" runat="server" />
+                                    <asp:DropDownList Visible="false" ID="DropDow_nota_dia" runat="server" CssClass="form-select">
                                     </asp:DropDownList>
                                 </div>
                                 <div class="col">
-                                    <asp:Label Text="Mes" CssClass=" form-label" runat="server" />
-                                    <asp:DropDownList ID="DropDow_nota_mes" runat="server" CssClass="form-select">
+                                    <asp:Label Visible="false" Text="Mes" CssClass=" form-label" runat="server" />
+                                    <asp:DropDownList Visible="false" ID="DropDow_nota_mes" runat="server" CssClass="form-select">
                                     </asp:DropDownList>
                                 </div>
                                 <div class="col">
-                                    <asp:Label Text="Año" CssClass=" form-label" runat="server" />
-                                    <asp:DropDownList ID="DropDow_nota_año" runat="server" CssClass="form-select">
+                                    <asp:Label Visible="false" Text="Año" CssClass=" form-label" runat="server" />
+                                    <asp:DropDownList Visible="false" ID="DropDow_nota_año" runat="server" CssClass="form-select">
                                     </asp:DropDownList>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col">
                                     <asp:Label Text="Detalle" CssClass=" form-label" runat="server" />
-                                    <asp:TextBox ID="textBox_detalle" CssClass="form-control" OnTextChanged="textBox_detalle_TextChanged" AutoPostBack="true" runat="server" />
+                                    <asp:TextBox  ID="textBox_detalle" CssClass="form-control" OnTextChanged="textBox_detalle_TextChanged" AutoPostBack="true" runat="server" />
                                 </div>
                             </div>
                             <div class="col">
