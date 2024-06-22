@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using acceso_a_base_de_datos;
 using _01___modulos;
 using System.Configuration;
+using paginaWeb;
 
 namespace modulos
 {
@@ -32,11 +33,14 @@ namespace modulos
 
             consultas = new cls_consultas_Mysql(servidor, puerto, usuario, password, base_de_datos);
 
+            funciones = new cls_funciones();
+
             sucursal = sucursal_BD.Rows[0]["sucursal"].ToString();
         }
         #region atributos
         private cls_consultas_Mysql consultas;
         private cls_whatsapp whatsapp;
+        cls_funciones funciones;
         DataTable usuariosBD;
 
         private string servidor;
@@ -56,9 +60,52 @@ namespace modulos
         DataTable imputaciones;
         DataTable cuenta_por_pagar;
         DataTable deuda_actual;
+        DataTable deuda_mes;
+        #endregion
+
+        #region carga a base de datos
+        public void actualizar_deuda_del_mes(string id_deuda, string deuda_del_mes)
+        {
+            string actualizar = "`deuda_del_mes` = '" + deuda_del_mes + "'";
+            consultas.actualizar_tabla(base_de_datos, "deudas_local_a_fabrica", actualizar, id_deuda);
+        }
+        public void crear_deuda_del_mes(string id_sucursal, string sucursal, string mes, string año, string deuda_del_mes)
+        {
+            string columnas = string.Empty;
+            string valores = string.Empty;
+            //id_sucursal
+            columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
+            valores = funciones.armar_query_valores(valores, id_sucursal, false);
+            //sucursal
+            columnas = funciones.armar_query_columna(columnas, "sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal, false);
+            //mes
+            columnas = funciones.armar_query_columna(columnas, "mes", false);
+            valores = funciones.armar_query_valores(valores, mes, false);
+            //año
+            columnas = funciones.armar_query_columna(columnas, "año", false);
+            valores = funciones.armar_query_valores(valores, año, false);
+            //deuda_del_mes
+            columnas = funciones.armar_query_columna(columnas, "deuda_del_mes", true);
+            valores = funciones.armar_query_valores(valores, deuda_del_mes, true);
+
+            consultas.insertar_en_tabla(base_de_datos, "deudas_local_a_fabrica", columnas, valores);
+        }
         #endregion
 
         #region metodos privados de consulta
+        private void consultar_imputaciones(string sucursal, string mes, string año)
+        {
+            imputaciones = consultas.consultar_imputaciones_segun_fecha(sucursal, mes, año);
+        }
+        private void consultar_remitos(string sucursal, string mes, string año)
+        {
+            remitos = consultas.consultar_remitos_segun_fecha(sucursal, mes, año);
+        }
+        private void consultar_deuda_mes_local(string id_sucursal, string mes, string año)
+        {
+            deuda_mes = consultas.consultar_deuda_mes_local(id_sucursal, mes, año);
+        }
         private void consultar_deuda_actual(string sucursal)
         {
             deuda_actual = consultas.consultar_deudas_de_sucursal(sucursal);
@@ -102,6 +149,21 @@ namespace modulos
         #endregion
 
         #region metodos get/set
+        public DataTable get_imputaciones(string sucursal, string mes, string año)
+        {
+            consultar_imputaciones(sucursal, mes, año);
+            return imputaciones;
+        }
+        public DataTable get_remitos(string sucursal, string mes, string año)
+        {
+            consultar_remitos(sucursal, mes, año);
+            return remitos;
+        }
+        public DataTable get_deuda_mes(string id_sucursal, string mes, string año)
+        {
+            consultar_deuda_mes_local(id_sucursal, mes, año);
+            return deuda_mes;
+        }
         public DataTable get_deuda_actual(string sucursal)
         {
             consultar_deuda_actual(sucursal);

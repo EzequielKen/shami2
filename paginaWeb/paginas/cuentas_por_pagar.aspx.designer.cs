@@ -51,22 +51,22 @@ namespace paginaWeb.paginas
         protected global::System.Web.UI.WebControls.Label label_saldo_anterior;
 
         /// <summary>
-        /// Control label_compra_mes_titulo.
+        /// Control label_total_compra_titulo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_compra_mes_titulo;
+        protected global::System.Web.UI.WebControls.Label label_total_compra_titulo;
 
         /// <summary>
-        /// Control label_pagado_mes_titulo.
+        /// Control label_total_pago_titulo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_pagado_mes_titulo;
+        protected global::System.Web.UI.WebControls.Label label_total_pago_titulo;
 
         /// <summary>
         /// Control label_saldo.
@@ -87,13 +87,13 @@ namespace paginaWeb.paginas
         protected global::System.Web.UI.WebControls.Label label_deuda_actual;
 
         /// <summary>
-        /// Control label_compra_mes.
+        /// Control label_total_compra.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_compra_mes;
+        protected global::System.Web.UI.WebControls.Label label_total_compra;
 
         /// <summary>
         /// Control gridView_remitos.
@@ -105,13 +105,13 @@ namespace paginaWeb.paginas
         protected global::System.Web.UI.WebControls.GridView gridView_remitos;
 
         /// <summary>
-        /// Control label_pagado_mes.
+        /// Control label_total_pago.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_pagado_mes;
+        protected global::System.Web.UI.WebControls.Label label_total_pago;
 
         /// <summary>
         /// Control gridView_imputaciones.

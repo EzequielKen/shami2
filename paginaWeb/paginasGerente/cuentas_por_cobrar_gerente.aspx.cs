@@ -427,7 +427,7 @@ namespace paginaWeb.paginasGerente
 
                 byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
 
-                sistema_Administracion.crear_pdf(ruta_archivo, gridView_remitos.SelectedRow.Cells[0].Text, proveedor_seleccionado, imgdata, Session["nivel_seguridad"].ToString(), Session["sucursal_seleccionada"].ToString()); //crear_pdf();
+                sistema_Administracion.crear_pdf(ruta_archivo, gridView_remitos.SelectedRow.Cells[0].Text, proveedor_seleccionado, imgdata, Session["nivel_seguridad"].ToString(), Session["sucursal_seleccionada"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text); //crear_pdf();
 
                 //           Response.Redirect("~/archivo.pdf");
                 string strUrl = "/paginasFabrica/pdf/" + id_pedido;

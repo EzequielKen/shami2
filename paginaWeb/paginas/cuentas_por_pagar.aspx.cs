@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using System.IO;
+using paginaWeb.paginasFabrica;
 
 
 
@@ -172,14 +173,15 @@ namespace paginaWeb.paginas
         }
         private void cargar_saldo()
         {
-            //label_deuda_total_mes.Text = "Deuda total del mes: " + formatCurrency(sistema_Administracion.deuda_total_del_mes(dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-
-            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.calcular_deuda_mes_anterior(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_saldo.Text = "Deuda actual: " + formatCurrency(sistema_Administracion.calcular_deuda_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_compra_mes.Text = "Compra del mes: " + formatCurrency(sistema_Administracion.calcular_compra_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_compra_mes_titulo.Text = "Compra del mes: " + formatCurrency(sistema_Administracion.calcular_compra_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_pagado_mes.Text = "Total pagado del mes: " + formatCurrency(sistema_Administracion.calcular_pago_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_pagado_mes_titulo.Text = "Total pagado del mes: " + formatCurrency(sistema_Administracion.calcular_pago_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            label_saldo.Text = "Deuda del Mes: " + formatCurrency(double.Parse(sistema_Administracion.get_deuda_total_mes(sucursal.Rows[0]["id"].ToString(), sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text)));
+            label_deuda_actual.Text = "Deuda Actual: " + formatCurrency(sistema_Administracion.get_deuda_actual(sucursal.Rows[0]["sucursal"].ToString()));
+            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.get_deuda_mes_anterior(sucursal.Rows[0]["id"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            double compra_del_mes = sistema_Administracion.calcular_compra_mes(sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
+            label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(compra_del_mes); ;
+            double total_pagado_mes = sistema_Administracion.calcular_pago_mes(sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_pago.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+            label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
         }
         private void sumar_imputaciones()
         {
@@ -207,6 +209,7 @@ namespace paginaWeb.paginas
         //#########################################################################################################
         #region atributos
         cls_sistema_cuentas_por_pagar sistema_Administracion;
+        DataTable sucursal;
         DataTable lista_proveedores;
         DataTable remitosBD;
         DataTable imputacionesBD;
@@ -216,16 +219,17 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
+            sucursal = (DataTable)Session["sucursal"];
             seguridad = int.Parse(Session["nivel_seguridad"].ToString());
             if (seguridad > 2)
             {
                 label_saldo_anterior.Visible = false;
                 label_saldo.Visible = false;
-                label_compra_mes.Visible = false;
-                label_compra_mes_titulo.Visible = false;
-                label_pagado_mes.Visible = false;
-                label_pagado_mes_titulo.Visible = false;
-                //label_deuda_total_mes.Visible = false;
+                label_total_compra.Visible = false;
+                label_total_compra_titulo.Visible = false;
+                label_total_pago.Visible = false;
+                label_total_pago_titulo.Visible = false;
+                gridView_imputaciones.Visible = false;
 
                 gridView_remitos.Columns[3].Visible = false;
                 gridView_imputaciones.Visible = false;
@@ -235,8 +239,8 @@ namespace paginaWeb.paginas
             {
                 label_saldo_anterior.Visible = false;
                 label_saldo.Visible = false;
-                label_compra_mes.Visible = false;
-                label_pagado_mes.Visible = false;
+            //    label_compra_mes.Visible = false;
+            //    label_pagado_mes.Visible = false;
             }
 
             if (Session["usuariosBD"] == null)

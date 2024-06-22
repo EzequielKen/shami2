@@ -575,13 +575,14 @@ namespace _03___sistemas_fabrica
             return retorno;
         }
         //ruta_archivo, gridView_remitos.SelectedRow.Cells[0].Text, proveedor_seleccionado, imgdata, Session["nivel_seguridad"].ToString(), Session["sucursal_seleccionada"].ToString(), sistema_Administracion.get_sucursales()
-        public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad, string sucursal_seleccionada) //
+        public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad, string sucursal_seleccionada,string mes,string año) //
         {
 
             string acuerdo, num_acuerdo, nombre_proveedor, nota;
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
             consultar_sucursales();
+            consultar_remitos_todas_las_sucursales(mes,año);
 
             consultar_acuerdo_de_precios();
             fila_pedido = obtener_fila_de_pedido_mediante_idRemito(id_remito, sucursal_seleccionada);
@@ -645,11 +646,10 @@ namespace _03___sistemas_fabrica
             //PDF.GenerarPDF_orden_de_compra(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_pedido, pedidos_fabrica_a_proveedor, proveedor_BD, remitos_proveedores_a_fabrica, fila_remito);
 
         }
-        public void crear_pdf_remito_de_carga(string ruta, DataTable resumen, byte[] logo) //
+        public void crear_pdf_remito_de_carga(string ruta, DataTable resumen, byte[] logo,DateTime fecha) //
         {
 
-
-
+            consultar_remitos_todas_las_sucursales(fecha.Month.ToString(), fecha.Year.ToString());
             abrir_pedido_remito_de_carga(resumen);
 
             PDF.GenerarPDF_remito_de_carga(ruta, logo, resumen, resumen_pedido, sucursales); // resumen_pedido,resumen_bonificado
@@ -1254,7 +1254,7 @@ namespace _03___sistemas_fabrica
         {
             string acuerdo, num_acuerdo, nombre_proveedor, num_pedido;
             int fila_pedido, fila_acuerdo;
-
+           
             consultar_sucursales();
 
             consultar_acuerdo_de_precios();
@@ -1701,6 +1701,10 @@ namespace _03___sistemas_fabrica
         private void consultar_remitos(string sucursal, string mes, string año)
         {
             remitos = administracion.get_remitos(sucursal, mes, año);
+        }
+        private void consultar_remitos_todas_las_sucursales( string mes, string año)
+        {
+            remitos = administracion.get_remitos_todas_las_sucursales( mes, año);
         }
         private void consultar_remitos_proveedores_a_fabrica()
         {

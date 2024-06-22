@@ -105,7 +105,7 @@ namespace paginaWeb.paginasFabrica
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
 
-            cuentas_Por_Cobrar.crear_pdf_remito_de_carga(ruta_archivo, (DataTable)Session["resumen_de_PDF"], imgdata); //crear_pdf();
+            cuentas_Por_Cobrar.crear_pdf_remito_de_carga(ruta_archivo, (DataTable)Session["resumen_de_PDF"], imgdata, (DateTime)Session["fecha"]); //crear_pdf();
 
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginasFabrica/pdf/" + id_pedido;
@@ -166,7 +166,7 @@ namespace paginaWeb.paginasFabrica
 
                 byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
 
-                cuentas_Por_Cobrar.crear_pdf_remito_de_carga(ruta_archivo, (DataTable)Session["resumen_de_PDF"],imgdata); //crear_pdf();
+                cuentas_Por_Cobrar.crear_pdf_remito_de_carga(ruta_archivo, (DataTable)Session["resumen_de_PDF"],imgdata, (DateTime)Session["fecha"]); //crear_pdf();
 
                 //           Response.Redirect("~/archivo.pdf");
                 string strUrl = "/paginasFabrica/pdf/" + id_pedido;

@@ -363,6 +363,10 @@ namespace _01___modulos
         {
             remitos = consultas.consultar_cuenta_por_pagar_segun_fecha(sucursal, mes, año);
         }
+        private void consultar_remitos_todas_las_sucursales(string mes, string año)
+        {
+            remitos = consultas.consultar_remitos_todas_las_sucursales( mes, año);
+        }
         private void consultar_remitos_proveedores_a_fabrica()
         {
             remitos_proveedores_a_fabrica = consultas.consultar_tabla(base_de_datos, "remitos_proveedores_a_fabrica");
@@ -450,6 +454,11 @@ namespace _01___modulos
         public DataTable get_remitos(string sucursal, string mes, string año)
         {
             consultar_remitos(sucursal, mes, año);
+            return remitos;
+        }
+        public DataTable get_remitos_todas_las_sucursales( string mes, string año)
+        {
+            consultar_remitos_todas_las_sucursales(mes,año);
             return remitos;
         }
         public DataTable get_remitos_proveedores_a_fabrica()

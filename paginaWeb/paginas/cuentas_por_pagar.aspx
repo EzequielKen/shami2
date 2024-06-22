@@ -67,13 +67,13 @@
                                     <asp:Label ID="label_saldo_anterior" Text="Saldo mes anterior" CssClass="badge bg-secondary" runat="server" />
                                 </h3>
                                 <h2>
-                                    <asp:Label ID="label_compra_mes_titulo" Text="Total compra del mes:" CssClass="badge bg-secondary" runat="server" />
+                                    <asp:Label ID="label_total_compra_titulo" Text="Total compra:" CssClass="badge bg-secondary" runat="server" />
                                 </h2>
                             </div>
                             <div class="col-1"></div>
                             <div class="col">
                                 <h2>
-                                    <asp:Label ID="label_pagado_mes_titulo" Text="Total pagado del mes:" CssClass="badge bg-secondary" runat="server" />
+                                    <asp:Label ID="label_total_pago_titulo" Text="Total pago:" CssClass="badge bg-secondary" runat="server" />
                                 </h2>
                                 <h1>
                                     <asp:Label ID="label_saldo" Text="SALDO:" CssClass="badge bg-secondary" runat="server" />
@@ -99,7 +99,7 @@
                         <div class="container-fluid">
                             <div class="alert alert-light">
                                 <h2>
-                                    <asp:Label ID="label_compra_mes" Text="Total compra del mes:" CssClass="badge bg-secondary" runat="server" />
+                                    <asp:Label ID="label_total_compra" Text="Total compra:" CssClass="badge bg-secondary" runat="server" />
                                 </h2>
 
                                 <asp:GridView ID="gridView_remitos" runat="server" Caption="REMITOS" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped" OnSelectedIndexChanged="gridView_remitos_SelectedIndexChanged" OnRowDataBound="gridView_remitos_RowDataBound">
@@ -118,7 +118,7 @@
                         <div class="container-fluid">
                             <div class="alert alert-light">
                                 <h2>
-                                    <asp:Label ID="label_pagado_mes" Text="Total pagado del mes:" CssClass="badge bg-secondary" runat="server" />
+                                    <asp:Label ID="label_total_pago" Text="Total pago:" CssClass="badge bg-secondary" runat="server" />
                                 </h2>
                                 <asp:GridView ID="gridView_imputaciones" runat="server" Caption="IMPUTACIONES" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped" OnSelectedIndexChanged="gridView_imputaciones_SelectedIndexChanged" OnRowDataBound="gridView_imputaciones_RowDataBound">
                                     <Columns>

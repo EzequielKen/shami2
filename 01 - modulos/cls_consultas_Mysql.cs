@@ -1605,6 +1605,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_remitos_segun_fecha(string sucursal, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".remitos WHERE activa=1 and sucursal='" + sucursal + "' and YEAR(fecha_remito)='" + año + "' and MONTH(fecha_remito)='" + mes + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_imputaciones_segun_fecha(string sucursal, string mes, string año)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
@@ -1635,6 +1656,27 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + ".deudas_local_a_fabrica WHERE activa=1 and sucursal='" + sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_remitos_todas_las_sucursales( string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".cuenta_por_pagar WHERE activa=1  and YEAR(fecha_remito)='" + año + "' and MONTH(fecha_remito)='" + mes + "';";
 
 
                 retorno = base_datos.READ(query);
