@@ -525,8 +525,6 @@ namespace paginaWeb.paginasGerente
         protected void boton_cargarImputacion_Click(object sender, EventArgs e)
         {
             cargar_imputaciones();
-            imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
-            Session.Add("imputacionesBD", imputacionesBD);
             cargar_remitos();
             textBox_efectivo.Text = string.Empty;
             textBox_transferencia.Text = string.Empty;

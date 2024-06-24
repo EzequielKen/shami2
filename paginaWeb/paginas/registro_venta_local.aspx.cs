@@ -73,14 +73,20 @@ namespace paginaWeb.paginas
             total = turno_1 + turno_2;
             double porcentaje_turno_1 = 0;
             double porcentaje_turno_2 = 0;
+            double porcentaje_total;
             if (total != 0)
             {
                 porcentaje_turno_1 = (turno_1 * 100) / total;
                 porcentaje_turno_2 = (turno_2 * 100) / total;
             }
-            label_total_turno1.Text = "Total Ventas Turno 1: " + funciones.formatCurrency(turno_1) + " %" + Math.Round(porcentaje_turno_1,2).ToString();
-            label_total_turno2.Text = "Total Ventas Turno 2: " + funciones.formatCurrency(turno_2) + " %" + Math.Round(porcentaje_turno_2,2).ToString();
+            porcentaje_total = porcentaje_turno_1 + porcentaje_turno_2;
+            label_total_turno1.Text = "Total Ventas Turno 1: " + funciones.formatCurrency(turno_1);
+            label_total_turno2.Text = "Total Ventas Turno 2: " + funciones.formatCurrency(turno_2);
             label_total_ventas.Text = "Total Ventas: " + funciones.formatCurrency(total);
+
+            label_porcentaje_turno_1.Text = "Porcentaje de Venta Diaria Turno 1: %" + Math.Round(porcentaje_turno_1, 2).ToString();
+            label_porcentaje_turno_2.Text = "Porcentaje de Venta Diaria Turno 2: %" + Math.Round(porcentaje_turno_2, 2).ToString();
+            label_total_porcentaje.Text = "Total Porcentaje de Venta Diaria: %" + Math.Round(porcentaje_total, 2).ToString();
         }
         #endregion
         #region carga a base de datos

@@ -93,7 +93,6 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:BoundField HeaderText="entregas parciales" DataField="entrega_parcial" />
 
                         </Columns>
                     </asp:GridView>

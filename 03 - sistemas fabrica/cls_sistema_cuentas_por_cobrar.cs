@@ -906,7 +906,9 @@ namespace _03___sistemas_fabrica
         }
         public DataTable get_remitos(string sucursal, string mes, string año)
         {
-            if (remitos == null)
+            consultar_remitos(sucursal, mes, año);
+
+          /*  if (remitos == null)
             {
                 consultar_remitos(sucursal, mes, año);
             }
@@ -923,7 +925,7 @@ namespace _03___sistemas_fabrica
                 {
                     consultar_remitos(sucursal, mes, año);
                 }
-            }
+            }*/
             return remitos;
         }
         public DataTable get_remitos_proveedores_a_fabrica()
@@ -933,7 +935,9 @@ namespace _03___sistemas_fabrica
         }
         public DataTable get_imputaciones(string sucursal, string mes, string año)
         {
-            if (imputaciones == null)
+            consultar_imputaciones(sucursal, mes, año);
+
+           /* if (imputaciones == null)
             {
                 consultar_imputaciones(sucursal, mes, año);
             }
@@ -953,7 +957,7 @@ namespace _03___sistemas_fabrica
                         consultar_imputaciones(sucursal, mes, año);
                     }
                 }
-            }
+            }*/
             return imputaciones;
         }
         public DataTable get_imputaciones_fabrica_a_proveedor()

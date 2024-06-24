@@ -40,23 +40,38 @@
                     </div>
                 </div>
                 <hr />
-                
+
 
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-light">
                             <h2>Historial de Registro de Ventas</h2>
                             <div class="row">
+                                <div class="row">
+                                    <div class="col">
+                                        <h2>
+                                            <asp:Label ID="label_total_turno1" Text="Total Turno 1" runat="server" />
+                                        </h2>
+                                        <h2>
+                                            <asp:Label ID="label_total_turno2" Text="Total Turno 2" runat="server" />
+                                        </h2>
+                                        <h2>
+                                            <asp:Label ID="label_total_ventas" Text="Total Venta del dia" runat="server" />
+                                        </h2>
+                                    </div>
+                                     <div class="col">
+     <h2>
+         <asp:Label ID="label_porcentaje_turno_1" Text="Total Turno 1" runat="server" />
+     </h2>
+     <h2>
+         <asp:Label ID="label_porcentaje_turno_2" Text="Total Turno 2" runat="server" />
+     </h2>
+     <h2>
+         <asp:Label ID="label_total_porcentaje" Text="Total Venta del dia" runat="server" />
+     </h2>
+ </div>
+                                </div>
 
-                                <h2>
-                                    <asp:Label ID="label_total_turno1" Text="Total Turno 1" runat="server" />
-                                </h2>
-                                <h2>
-                                    <asp:Label ID="label_total_turno2" Text="Total Turno 2" runat="server" />
-                                </h2>
-                                <h2>
-                                    <asp:Label ID="label_total_ventas" Text="Total Venta del dia" runat="server" />
-                                </h2>
 
                                 <hr />
                                 <%  if (tipo_usuario.Rows[0]["rol"].ToString() == "franquiciado")

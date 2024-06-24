@@ -522,7 +522,6 @@ namespace paginaWeb.paginasFabrica
             imputacionesBD = sistema_Administracion.get_imputaciones(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             Session.Add("imputacionesBD", imputacionesBD);
             cargar_remitos();
-            cargar_saldo();
             textBox_efectivo.Text = string.Empty;
             textBox_transferencia.Text = string.Empty;
             textBox_mercadoPago.Text = string.Empty;

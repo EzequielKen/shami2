@@ -132,6 +132,33 @@ namespace paginaWeb.paginas
         protected global::System.Web.UI.WebControls.Label label_total_ventas;
 
         /// <summary>
+        /// Control label_porcentaje_turno_1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_porcentaje_turno_1;
+
+        /// <summary>
+        /// Control label_porcentaje_turno_2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_porcentaje_turno_2;
+
+        /// <summary>
+        /// Control label_total_porcentaje.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_total_porcentaje;
+
+        /// <summary>
         /// Control label_fecha_historial_inicio.
         /// </summary>
         /// <remarks>
