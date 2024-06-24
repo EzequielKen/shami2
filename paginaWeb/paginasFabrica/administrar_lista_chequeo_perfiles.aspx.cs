@@ -39,7 +39,7 @@ namespace paginaWeb.paginasFabrica
                 resumen.Rows[ultima_fila]["categoria"] = lista_de_chequeoBD.Rows[fila_actividad]["categoria"].ToString();
                 resumen.Rows[ultima_fila]["area"] = lista_de_chequeoBD.Rows[fila_actividad]["area"].ToString();
             }
-            else
+            else if (fila_resumen!=-1)
             {
                resumen.Rows[fila_resumen].Delete();
             }

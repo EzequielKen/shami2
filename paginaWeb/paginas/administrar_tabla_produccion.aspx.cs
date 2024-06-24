@@ -73,17 +73,99 @@ namespace paginaWeb.paginas
             total = turno_1 + turno_2;
             double porcentaje_turno_1 = 0;
             double porcentaje_turno_2 = 0;
+            double porcentaje_total;
             if (total != 0)
             {
                 porcentaje_turno_1 = (turno_1 * 100) / total;
                 porcentaje_turno_2 = (turno_2 * 100) / total;
             }
-            label_total_turno1.Text = "Total Ventas Turno 1: " + funciones.formatCurrency(turno_1) + " %" + Math.Round(porcentaje_turno_1, 2).ToString();
-            label_total_turno2.Text = "Total Ventas Turno 2: " + funciones.formatCurrency(turno_2) + " %" + Math.Round(porcentaje_turno_2, 2).ToString();
+            porcentaje_total = porcentaje_turno_1 + porcentaje_turno_2;
+            label_total_turno1.Text = "Total Ventas Turno 1: " + funciones.formatCurrency(turno_1);
+            label_total_turno2.Text = "Total Ventas Turno 2: " + funciones.formatCurrency(turno_2);
             label_total_ventas.Text = "Total Ventas: " + funciones.formatCurrency(total);
+
+            label_porcentaje_turno_1.Text = "Porcentaje de Venta Diaria Turno 1: %" + Math.Round(porcentaje_turno_1, 2).ToString();
+            label_porcentaje_turno_2.Text = "Porcentaje de Venta Diaria Turno 2: %" + Math.Round(porcentaje_turno_2, 2).ToString();
+            label_total_porcentaje.Text = "Total Porcentaje de Venta Diaria: %" + Math.Round(porcentaje_total, 2).ToString();
         }
         #endregion
-        
+        #region configurar controles
+        private void configurar_estados_de_dias()
+        {
+            Session.Add("lunes", false);
+            Session.Add("martes", false);
+            Session.Add("miercoles", false);
+            Session.Add("jueves", false);
+            Session.Add("viernes", false);
+            Session.Add("sabado", false);
+            Session.Add("domingo", false);
+        }
+        private void configurar_botontes_de_dias()
+        {
+            if ((bool)Session["lunes"])
+            {
+                boton_lunes.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_lunes.CssClass = "btn btn-danger";
+            }
+
+            if ((bool)Session["martes"])
+            {
+                boton_martes.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_martes.CssClass = "btn btn-danger";
+            }
+
+            if ((bool)Session["miercoles"])
+            {
+                boton_miercoles.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_miercoles.CssClass = "btn btn-danger";
+            }
+
+            if ((bool)Session["jueves"])
+            {
+                boton_jueves.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_jueves.CssClass = "btn btn-danger";
+            }
+
+            if ((bool)Session["viernes"])
+            {
+                boton_viernes.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_viernes.CssClass = "btn btn-danger";
+            }
+
+            if ((bool)Session["sabado"])
+            {
+                boton_sabado.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_sabado.CssClass = "btn btn-danger";
+            }
+
+            if ((bool)Session["domingo"])
+            {
+                boton_domingo.CssClass = "btn btn-success";
+            }
+            else
+            {
+                boton_domingo.CssClass = "btn btn-danger";
+            }
+        }
+        #endregion
         /// <summary>
         /// ////////////////////////////////////////////////////////////
         /// </summary>
@@ -129,7 +211,10 @@ namespace paginaWeb.paginas
                 DateTime fecha_registro_seleccionada = (DateTime)Session["fecha_registro_seleccionada"];
                 label_fecha_historial_inicio.Text = "Fecha Inicio: " + fecha_inicio.ToString("dd/MM/yyyy");
                 label_fecha_historial_fin.Text = "Fecha Fin: " + fecha_fin.ToString("dd/MM/yyyy");
+
+                configurar_estados_de_dias();
             }
+            configurar_botontes_de_dias();
         }
 
 
@@ -138,11 +223,11 @@ namespace paginaWeb.paginas
 
         }
 
-       
 
-        
 
-        
+
+
+
 
         protected void boton_eliminar_Click(object sender, EventArgs e)
         {
@@ -231,6 +316,46 @@ namespace paginaWeb.paginas
             label_fecha_historial_fin.Text = "Fecha Fin: " + fecha_fin.ToString("dd/MM/yyyy");
         }
 
-      
+        protected void boton_lunes_Click(object sender, EventArgs e)
+        {
+            Session.Add("lunes", !(bool)Session["lunes"]);
+            configurar_botontes_de_dias();
+        }
+
+        protected void boton_martes_Click(object sender, EventArgs e)
+        {
+            Session.Add("martes", !(bool)Session["martes"]);
+            configurar_botontes_de_dias();
+        }
+
+        protected void boton_miercoles_Click(object sender, EventArgs e)
+        {
+            Session.Add("miercoles", !(bool)Session["miercoles"]);
+            configurar_botontes_de_dias();
+        }
+
+        protected void boton_jueves_Click(object sender, EventArgs e)
+        {
+            Session.Add("jueves", !(bool)Session["jueves"]);
+            configurar_botontes_de_dias();
+        }
+
+        protected void boton_viernes_Click(object sender, EventArgs e)
+        {
+            Session.Add("viernes", !(bool)Session["viernes"]);
+            configurar_botontes_de_dias();
+        }
+
+        protected void boton_sabado_Click(object sender, EventArgs e)
+        {
+            Session.Add("sabado", !(bool)Session["sabado"]);
+            configurar_botontes_de_dias();
+        }
+
+        protected void boton_domingo_Click(object sender, EventArgs e)
+        {
+            Session.Add("domingo", !(bool)Session["domingo"]);
+            configurar_botontes_de_dias();
+        }
     }
 }

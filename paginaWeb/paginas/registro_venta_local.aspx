@@ -6,7 +6,8 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            <div class="container">
+            <div class=" container-fluid">
+                <h1>Registro / Historial de Ventas Diarias.</h1>
                 <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];%>
                 <div class="row">
                     <div class="col">
@@ -59,17 +60,17 @@
                                             <asp:Label ID="label_total_ventas" Text="Total Venta del dia" runat="server" />
                                         </h2>
                                     </div>
-                                     <div class="col">
-     <h2>
-         <asp:Label ID="label_porcentaje_turno_1" Text="Total Turno 1" runat="server" />
-     </h2>
-     <h2>
-         <asp:Label ID="label_porcentaje_turno_2" Text="Total Turno 2" runat="server" />
-     </h2>
-     <h2>
-         <asp:Label ID="label_total_porcentaje" Text="Total Venta del dia" runat="server" />
-     </h2>
- </div>
+                                    <div class="col">
+                                        <h2>
+                                            <asp:Label ID="label_porcentaje_turno_1" Text="Total Turno 1" runat="server" />
+                                        </h2>
+                                        <h2>
+                                            <asp:Label ID="label_porcentaje_turno_2" Text="Total Turno 2" runat="server" />
+                                        </h2>
+                                        <h2>
+                                            <asp:Label ID="label_total_porcentaje" Text="Total Venta del dia" runat="server" />
+                                        </h2>
+                                    </div>
                                 </div>
 
 
@@ -119,8 +120,8 @@
                                     <asp:BoundField HeaderText="id Empleado" DataField="id_empleado" />
                                     <asp:BoundField HeaderText="Nombre Empleado" DataField="nombre" />
                                     <asp:BoundField HeaderText="Apellido Empleado" DataField="apellido" />
-                                    <asp:BoundField HeaderText="Turno" DataField="turno" />
                                     <asp:BoundField HeaderText="Fecha" DataField="fecha" />
+                                    <asp:BoundField HeaderText="Turno" DataField="turno" />
                                     <asp:BoundField HeaderText="Venta" DataField="venta" />
                                     <asp:BoundField HeaderText="Nota" DataField="nota" />
                                     <asp:TemplateField HeaderText="Eliminar">
