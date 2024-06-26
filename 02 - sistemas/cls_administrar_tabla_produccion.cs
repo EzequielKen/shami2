@@ -40,12 +40,81 @@ namespace _02___sistemas
         DataTable insumos_fabrica;
         DataTable productos_terminados;
         DataTable resumen;
+        DataTable ventas;
         #endregion
 
+        #region metodos privados
+        private void crear_tabla_resumen()
+        {
+            resumen = new DataTable();
+            resumen.Columns.Add("id",typeof(string));
+            resumen.Columns.Add("producto",typeof(string));
+            resumen.Columns.Add("tipo_producto", typeof(string));
+            resumen.Columns.Add("venta_alta",typeof(string));
+            resumen.Columns.Add("venta_baja",typeof(string));
+        }
+        private void llenar_tabla_resumen()
+        {
+            crear_tabla_resumen();
+            int ultima_fila;
+            for (int fila = 0; fila <=insumos_fabrica.Rows.Count-1; fila++)
+            {
+                resumen.Rows.Add();
+                ultima_fila = resumen.Rows.Count-1;
+
+                resumen.Rows[ultima_fila]["id"] = insumos_fabrica.Rows[fila]["id"].ToString();
+                resumen.Rows[ultima_fila]["producto"] = insumos_fabrica.Rows[fila]["producto"].ToString();
+                resumen.Rows[ultima_fila]["tipo_producto"] = insumos_fabrica.Rows[fila]["tipo_producto"].ToString();
+
+                resumen.Rows[ultima_fila]["venta_alta"] = "0";
+                resumen.Rows[ultima_fila]["venta_baja"] = "0";
+
+            }
+
+            for (int fila = 0; fila <= productos_terminados.Rows.Count - 1; fila++)
+            {
+                resumen.Rows.Add();
+                ultima_fila = resumen.Rows.Count - 1;
+
+                resumen.Rows[ultima_fila]["id"] = productos_terminados.Rows[fila]["id"].ToString();
+                resumen.Rows[ultima_fila]["producto"] = productos_terminados.Rows[fila]["producto"].ToString();
+                resumen.Rows[ultima_fila]["tipo_producto"] = productos_terminados.Rows[fila]["tipo_producto"].ToString();
+
+                resumen.Rows[ultima_fila]["venta_alta"] = "0";
+                resumen.Rows[ultima_fila]["venta_baja"] = "0";
+
+            }
+        }
+        #endregion
         #region consultas
+        private void consultar_ventas(string id_sucursal)
+        {
+            DateTime fecha_hoy = DateTime.Now;
+            DateTime fecha_anterior = fecha_hoy.AddDays(-7);
+            ventas = consultas.consultar_registro_venta_local_segun_fecha(id_sucursal,fecha_anterior.ToString("yyyy-MM-dd"),fecha_hoy.ToString("yyyy-MM-dd"));
+        }
         private void consultar_insumos_fabrica()
         {
+            insumos_fabrica = consultas.consultar_insumos_tabla_produccion();
+        }
+        private void consultar_productos_terminados()
+        {
+            productos_terminados = consultas.consultar_productos_terminado_tabla_produccion();
+        }
+        #endregion
 
+        #region metodos get/set
+        public DataTable get_ventas(string id_sucursal)
+        {
+            consultar_ventas(id_sucursal);
+            return ventas;
+        }
+        public DataTable get_lista_productos()
+        {
+            consultar_insumos_fabrica();
+            consultar_productos_terminados();
+            llenar_tabla_resumen();
+            return resumen;
         }
         #endregion
     }

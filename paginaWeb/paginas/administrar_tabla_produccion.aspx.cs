@@ -11,48 +11,51 @@ namespace paginaWeb.paginas
 {
     public partial class administrar_tabla_produccion : System.Web.UI.Page
     {
-        #region historial
+        #region cargar lista
         private void crear_tabla_resumen()
         {
             resumen = new DataTable();
             resumen.Columns.Add("id", typeof(string));
-            resumen.Columns.Add("id_empleado", typeof(string));
-            resumen.Columns.Add("nombre", typeof(string));
-            resumen.Columns.Add("apellido", typeof(string));
-            resumen.Columns.Add("turno", typeof(string));
-            resumen.Columns.Add("fecha", typeof(string));
-            resumen.Columns.Add("venta", typeof(string));
-            resumen.Columns.Add("nota", typeof(string));
+            resumen.Columns.Add("producto", typeof(string));
+            resumen.Columns.Add("tipo_producto", typeof(string));
+            resumen.Columns.Add("venta_alta", typeof(string));
+            resumen.Columns.Add("venta_baja", typeof(string));
         }
         private void llenar_tabla_resumen()
         {
             crear_tabla_resumen();
+            int ultima_fila;
 
-            for (int fila = 0; fila <= registro_venta_localBD.Rows.Count - 1; fila++)
+            for (int fila = 0; fila <= lista_productosBD.Rows.Count-1; fila++)
             {
-                if (dropdown_turno.SelectedItem.Text == registro_venta_localBD.Rows[fila]["turno"].ToString())
+                if (dropDown_tipo.SelectedItem.Text == lista_productosBD.Rows[fila]["tipo_producto"].ToString() ||
+                    dropDown_tipo.SelectedItem.Text == "todos")
                 {
                     resumen.Rows.Add();
-                    int ultima_fila = resumen.Rows.Count - 1;
-                    resumen.Rows[ultima_fila]["id"] = registro_venta_localBD.Rows[fila]["id"].ToString();
-                    resumen.Rows[ultima_fila]["id_empleado"] = registro_venta_localBD.Rows[fila]["id_empleado"].ToString();
-                    resumen.Rows[ultima_fila]["nombre"] = registro_venta_localBD.Rows[fila]["nombre"].ToString();
-                    resumen.Rows[ultima_fila]["apellido"] = registro_venta_localBD.Rows[fila]["apellido"].ToString();
-                    resumen.Rows[ultima_fila]["turno"] = registro_venta_localBD.Rows[fila]["turno"].ToString();
-                    resumen.Rows[ultima_fila]["fecha"] = registro_venta_localBD.Rows[fila]["fecha"].ToString();
-                    resumen.Rows[ultima_fila]["venta"] = funciones.formatCurrency(double.Parse(registro_venta_localBD.Rows[fila]["venta"].ToString()));
-                    resumen.Rows[ultima_fila]["nota"] = registro_venta_localBD.Rows[fila]["nota"].ToString();
+                    ultima_fila = resumen.Rows.Count - 1;
+
+                    resumen.Rows[ultima_fila]["id"] = lista_productosBD.Rows[fila]["id"].ToString();
+                    resumen.Rows[ultima_fila]["producto"] = lista_productosBD.Rows[fila]["producto"].ToString();
+                    resumen.Rows[ultima_fila]["tipo_producto"] = lista_productosBD.Rows[fila]["tipo_producto"].ToString();
+
+                    resumen.Rows[ultima_fila]["venta_alta"] = lista_productosBD.Rows[fila]["venta_alta"].ToString();
+                    resumen.Rows[ultima_fila]["venta_baja"] = lista_productosBD.Rows[fila]["venta_baja"].ToString();
                 }
             }
         }
-        private void caragar_registro_venta_local()
+
+        private void cargar_lista_producto()
         {
-            registro_venta_localBD = (DataTable)Session["registro_venta_localBD"];
+            lista_productosBD = (DataTable)Session["lista_productosBD"];
             llenar_tabla_resumen();
-            gridview_historial.DataSource = resumen;
-            gridview_historial.DataBind();
-            sumar_ventas();
+
+            gridview_productos.DataSource = resumen;
+            gridview_productos.DataBind();
         }
+        #endregion
+        #region historial
+
+
         private void sumar_ventas()
         {
             double turno_1 = 0;
@@ -90,7 +93,40 @@ namespace paginaWeb.paginas
         }
         #endregion
         #region configurar controles
-        private void configurar_estados_de_dias()
+        private void configurar_controles()
+        {
+            llenar_dropDownList(lista_productosBD);
+        }
+        private void llenar_dropDownList(DataTable dt)
+        {
+            dropDown_tipo.Items.Clear();
+            int num_item = 1;
+            dt.DefaultView.Sort = "tipo_producto";
+            dt = dt.DefaultView.ToTable();
+
+            //        item = new ListItem("Todos", num_item.ToString());
+            //        dropDown_tipo.Items.Add(item);
+            //        num_item = num_item + 1;
+
+            dropDown_tipo.Items.Add("todos");
+            num_item = num_item + 1;
+            tipo_seleccionado = dt.Rows[0]["tipo_producto"].ToString();
+            dropDown_tipo.Items.Add(dt.Rows[0]["tipo_producto"].ToString());
+            num_item = num_item + 1;
+            for (int fila = 1; fila <= dt.Rows.Count - 1; fila++)
+            {
+
+
+                if (dropDown_tipo.Items[num_item - 2].Text != dt.Rows[fila]["tipo_producto"].ToString())
+                {
+
+                    dropDown_tipo.Items.Add(dt.Rows[fila]["tipo_producto"].ToString());
+                    num_item = num_item + 1;
+                }
+
+            }
+        }
+            private void configurar_estados_de_dias()
         {
             Session.Add("lunes", false);
             Session.Add("martes", false);
@@ -170,14 +206,16 @@ namespace paginaWeb.paginas
         /// ////////////////////////////////////////////////////////////
         /// </summary>
         #region atributos
-        cls_registro_venta_local registro_venta;
+        cls_administrar_tabla_produccion tabla_produccion;
         cls_lista_de_chequeo lista_chequeo;
         cls_funciones funciones = new cls_funciones();
         DataTable usuariosBD;
         DataTable empleado;
         DataTable sucursal;
         DataTable tipo_usuario;
+
         DataTable registro_venta_localBD;
+        DataTable lista_productosBD;
         DataTable resumen;
 
 
@@ -189,133 +227,27 @@ namespace paginaWeb.paginas
             empleado = (DataTable)Session["empleado"];
             sucursal = (DataTable)Session["sucursal"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
-            if (Session["registro_venta"] == null)
+            if (Session["tabla_produccion"] == null)
             {
-                Session.Add("registro_venta", new cls_registro_venta_local(usuariosBD));
+                Session.Add("tabla_produccion", new cls_administrar_tabla_produccion(usuariosBD));
             }
-            registro_venta = (cls_registro_venta_local)Session["registro_venta"];
+            tabla_produccion = (cls_administrar_tabla_produccion)Session["tabla_produccion"];
 
-
+            registro_venta_localBD = tabla_produccion.get_ventas(sucursal.Rows[0]["id"].ToString());
+            sumar_ventas();
             if (!IsPostBack)
             {
-                Session.Add("turno", "N/A");
-                Session.Add("fecha_registro_seleccionada_inicio", DateTime.Now);
-                Session.Add("fecha_registro_seleccionada_fin", DateTime.Now);
-                Session.Add("fecha_registro_seleccionada", DateTime.Now);
-
-                registro_venta_localBD = registro_venta.get_registro_venta_local(sucursal.Rows[0]["id"].ToString(), (DateTime)Session["fecha_registro_seleccionada_inicio"], (DateTime)Session["fecha_registro_seleccionada_fin"]);
-                Session.Add("registro_venta_localBD", registro_venta_localBD);
-                caragar_registro_venta_local();
-                DateTime fecha_inicio = (DateTime)Session["fecha_registro_seleccionada_inicio"];
-                DateTime fecha_fin = (DateTime)Session["fecha_registro_seleccionada_fin"];
-                DateTime fecha_registro_seleccionada = (DateTime)Session["fecha_registro_seleccionada"];
-                label_fecha_historial_inicio.Text = "Fecha Inicio: " + fecha_inicio.ToString("dd/MM/yyyy");
-                label_fecha_historial_fin.Text = "Fecha Fin: " + fecha_fin.ToString("dd/MM/yyyy");
-
+                lista_productosBD = tabla_produccion.get_lista_productos();
+                Session.Add("lista_productosBD", lista_productosBD);
+                configurar_controles();
                 configurar_estados_de_dias();
+                cargar_lista_producto();
+
             }
             configurar_botontes_de_dias();
         }
 
-
-        protected void calendario_SelectionChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-
-
-
-
-        protected void boton_eliminar_Click(object sender, EventArgs e)
-        {
-            Button boton_cargar = (Button)sender;
-            GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
-            int fila = row.RowIndex;
-
-            string id = gridview_historial.Rows[fila].Cells[0].Text;
-            registro_venta.eliminar_registro(id);
-
-            registro_venta_localBD = registro_venta.get_registro_venta_local(sucursal.Rows[0]["id"].ToString(), (DateTime)Session["fecha_registro_seleccionada_inicio"], (DateTime)Session["fecha_registro_seleccionada_fin"]);
-
-            Session.Add("registro_venta_localBD", registro_venta_localBD);
-            caragar_registro_venta_local();
-        }
-
-        protected void dropdown_turno_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            caragar_registro_venta_local();
-        }
-
-        protected void gridview_historial_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            registro_venta_localBD = (DataTable)Session["registro_venta_localBD"];
-            string id, id_empleado;
-            int fila_registro;
-            DateTime fecha_registroBD;
-            string fecha_registro, fecha_hoy;
-            for (int fila = 0; fila <= gridview_historial.Rows.Count - 1; fila++)
-            {
-                id = gridview_historial.Rows[fila].Cells[0].Text;
-                id_empleado = gridview_historial.Rows[fila].Cells[1].Text;
-                fila_registro = funciones.buscar_fila_por_id(id, registro_venta_localBD);
-                if (fila_registro != -1)
-                {
-                    fecha_hoy = DateTime.Now.ToString("dd/MM/yyyy");
-                    fecha_registroBD = (DateTime)registro_venta_localBD.Rows[fila_registro]["fecha"];
-                    fecha_registro = fecha_registroBD.ToString("dd/MM/yyyy");
-                    if (empleado != null)
-                    {
-                        if (fecha_hoy != fecha_registro ||
-                            id_empleado != empleado.Rows[0]["id"].ToString())
-                        {
-                            Button boton_eliminar = (gridview_historial.Rows[fila].Cells[7].FindControl("boton_eliminar") as Button);
-                            boton_eliminar.Visible = false;
-                        }
-                    }
-                    else if (id_empleado != "N/A")
-                    {
-                        Button boton_eliminar = (gridview_historial.Rows[fila].Cells[7].FindControl("boton_eliminar") as Button);
-                        boton_eliminar.Visible = false;
-                    }
-
-                }
-            }
-        }
-
-        protected void calendario_inicio_SelectionChanged(object sender, EventArgs e)
-        {
-            DateTime fecha_seleccionada = calendario_inicio.SelectedDate;
-            Session.Add("fecha_registro_seleccionada_inicio", fecha_seleccionada);
-
-            registro_venta_localBD = registro_venta.get_registro_venta_local(sucursal.Rows[0]["id"].ToString(), (DateTime)Session["fecha_registro_seleccionada_inicio"], (DateTime)Session["fecha_registro_seleccionada_fin"]);
-
-            Session.Add("registro_venta_localBD", registro_venta_localBD);
-            caragar_registro_venta_local();
-            DateTime fecha_inicio = (DateTime)Session["fecha_registro_seleccionada_inicio"];
-            DateTime fecha_fin = (DateTime)Session["fecha_registro_seleccionada_fin"];
-            label_fecha_historial_inicio.Text = "Fecha Inicio: " + fecha_inicio.ToString("dd/MM/yyyy");
-            label_fecha_historial_fin.Text = "Fecha Fin: " + fecha_fin.ToString("dd/MM/yyyy");
-
-        }
-
-        protected void calendario_fin_SelectionChanged(object sender, EventArgs e)
-        {
-            DateTime fecha_seleccionada = calendario_fin.SelectedDate;
-            Session.Add("fecha_registro_seleccionada_fin", fecha_seleccionada);
-
-            registro_venta_localBD = registro_venta.get_registro_venta_local(sucursal.Rows[0]["id"].ToString(), (DateTime)Session["fecha_registro_seleccionada_inicio"], (DateTime)Session["fecha_registro_seleccionada_fin"]);
-
-            Session.Add("registro_venta_localBD", registro_venta_localBD);
-            caragar_registro_venta_local();
-            DateTime fecha_inicio = (DateTime)Session["fecha_registro_seleccionada_inicio"];
-            DateTime fecha_fin = (DateTime)Session["fecha_registro_seleccionada_fin"];
-            label_fecha_historial_inicio.Text = "Fecha Inicio: " + fecha_inicio.ToString("dd/MM/yyyy");
-            label_fecha_historial_fin.Text = "Fecha Fin: " + fecha_fin.ToString("dd/MM/yyyy");
-        }
-
+        #region dia de la semana
         protected void boton_lunes_Click(object sender, EventArgs e)
         {
             Session.Add("lunes", !(bool)Session["lunes"]);
@@ -357,5 +289,76 @@ namespace paginaWeb.paginas
             Session.Add("domingo", !(bool)Session["domingo"]);
             configurar_botontes_de_dias();
         }
+        #endregion
+
+        #region lista
+        protected void dropDown_tipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cargar_lista_producto();
+        }
+
+        protected void textbox_venta_alta_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_venta_alta = (TextBox)sender;
+            if (textbox_venta_alta.Text!=string.Empty)
+            {
+                double venta;
+                if (double.TryParse(textbox_venta_alta.Text,out venta))
+                {
+                    lista_productosBD = (DataTable)Session["lista_productosBD"];
+                    GridViewRow row = (GridViewRow)textbox_venta_alta.NamingContainer;
+                    int fila = row.RowIndex;
+                    string id = gridview_productos.Rows[fila].Cells[0].Text;
+                    int fila_producto = funciones.buscar_fila_por_id(id,lista_productosBD);
+                    lista_productosBD.Rows[fila_producto]["venta_alta"] = venta.ToString();
+                    Session.Add("lista_productosBD", lista_productosBD);
+                }
+            }
+            cargar_lista_producto();
+
+        }
+
+        protected void textbox_venta_baja_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_venta_baja = (TextBox)sender;
+            if (textbox_venta_baja.Text != string.Empty)
+            {
+                double venta;
+                if (double.TryParse(textbox_venta_baja.Text, out venta))
+                {
+                    lista_productosBD = (DataTable)Session["lista_productosBD"];
+                    GridViewRow row = (GridViewRow)textbox_venta_baja.NamingContainer;
+                    int fila = row.RowIndex;
+                    string id = gridview_productos.Rows[fila].Cells[0].Text;
+                    int fila_producto = funciones.buscar_fila_por_id(id, lista_productosBD);
+                    lista_productosBD.Rows[fila_producto]["venta_baja"] = venta.ToString();
+                    Session.Add("lista_productosBD", lista_productosBD);
+                }
+            }
+            cargar_lista_producto();
+
+        }
+
+        protected void gridview_productos_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            lista_productosBD = (DataTable)Session["lista_productosBD"];
+            string id;
+            int fila_producto;
+            for (int fila = 0; fila <=gridview_productos.Rows.Count-1; fila++)
+            {
+                id = gridview_productos.Rows[fila].Cells[0].Text;
+                fila_producto = funciones.buscar_fila_por_id(id,lista_productosBD);
+                TextBox textbox_venta_alta = (gridview_productos.Rows[fila].Cells[2].FindControl("textbox_venta_alta") as TextBox);
+                TextBox textbox_venta_baja = (gridview_productos.Rows[fila].Cells[3].FindControl("textbox_venta_baja") as TextBox);
+
+                textbox_venta_alta.Text = lista_productosBD.Rows[fila_producto]["venta_alta"].ToString();
+                textbox_venta_baja.Text = lista_productosBD.Rows[fila_producto]["venta_baja"].ToString();
+
+                gridview_productos.Rows[fila].Cells[2].CssClass= "table-success";
+                gridview_productos.Rows[fila].Cells[3].CssClass= "table-danger";
+            }
+        }
+
+        #endregion
     }
 }

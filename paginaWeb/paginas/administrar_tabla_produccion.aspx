@@ -12,7 +12,14 @@
                 <div class="row">
                     <div class="alert alert-light">
                         <div class="row">
-
+                            <h3>
+                                <label>Seleccione Dias de </label>
+                                <span class="badge rounded-pill bg-success">Alta Venta</span>
+                            </h3>
+                            <h3>
+                                <label>Dias de </label>
+                                <span class="badge rounded-pill bg-danger">Baja Venta</span>
+                            </h3>
                             <div class="col text-center">
                                 <asp:Button ID="boton_lunes" Text="Lunes" CssClass="btn btn-danger" runat="server" OnClick="boton_lunes_Click" />
                             </div>
@@ -20,19 +27,19 @@
                                 <asp:Button ID="boton_martes" Text="Martes" CssClass="btn btn-danger" runat="server" OnClick="boton_martes_Click" />
                             </div>
                             <div class="col text-center">
-                                <asp:Button ID="boton_miercoles" Text="Miercoles" CssClass="btn btn-danger" runat="server" OnClick="boton_miercoles_Click"/>
+                                <asp:Button ID="boton_miercoles" Text="Miercoles" CssClass="btn btn-danger" runat="server" OnClick="boton_miercoles_Click" />
                             </div>
                             <div class="col text-center">
-                                <asp:Button ID="boton_jueves" Text="Jueves" CssClass="btn btn-danger" runat="server" OnClick="boton_jueves_Click"/>
+                                <asp:Button ID="boton_jueves" Text="Jueves" CssClass="btn btn-danger" runat="server" OnClick="boton_jueves_Click" />
                             </div>
                             <div class="col text-center">
-                                <asp:Button ID="boton_viernes" Text="Viernes" CssClass="btn btn-danger" runat="server" OnClick="boton_viernes_Click"/>
+                                <asp:Button ID="boton_viernes" Text="Viernes" CssClass="btn btn-danger" runat="server" OnClick="boton_viernes_Click" />
                             </div>
                             <div class="col text-center">
-                                <asp:Button ID="boton_sabado" Text="Sabado" CssClass="btn btn-danger" runat="server" OnClick="boton_sabado_Click"/>
+                                <asp:Button ID="boton_sabado" Text="Sabado" CssClass="btn btn-danger" runat="server" OnClick="boton_sabado_Click" />
                             </div>
                             <div class="col text-center">
-                                <asp:Button ID="boton_domingo" Text="Domingo" CssClass="btn btn-danger" runat="server" OnClick="boton_domingo_Click"/>
+                                <asp:Button ID="boton_domingo" Text="Domingo" CssClass="btn btn-danger" runat="server" OnClick="boton_domingo_Click" />
                             </div>
                         </div>
                     </div>
@@ -41,7 +48,7 @@
             <div class="row">
                 <div class="col">
                     <div class="alert alert-light">
-                        <h2>Historial de Registro de Ventas</h2>
+                        <h2>Total de Ventas de los Ultimos 7 Dias:</h2>
                         <div class="row">
                             <div class="row">
                                 <div class="col">
@@ -69,59 +76,25 @@
                             </div>
 
                             <hr />
-                            <%  if (tipo_usuario.Rows[0]["rol"].ToString() == "franquiciado")
-                                {%>
-                            <div class="col">
-                                <h2>
-                                    <asp:Label ID="label_fecha_historial_inicio" Text="text" runat="server" />
-                                </h2>
-                                <asp:Calendar ID="calendario_inicio" CssClass="  table-bordered " OnSelectionChanged="calendario_inicio_SelectionChanged" runat="server">
-                                    <OtherMonthDayStyle ForeColor="LightGray"></OtherMonthDayStyle>
-                                    <TitleStyle BackColor="gray"
-                                        ForeColor="White"></TitleStyle>
-                                    <DayStyle BackColor="gray"></DayStyle>
-                                    <SelectedDayStyle BackColor="LightGray"
-                                        Font-Bold="True"></SelectedDayStyle>
-                                </asp:Calendar>
 
-
-                            </div>
-                            <div class="col ">
-                                <h2>
-                                    <asp:Label ID="label_fecha_historial_fin" Text="text" runat="server" />
-                                </h2>
-                                <asp:Calendar ID="calendario_fin" CssClass="  table-bordered " OnSelectionChanged="calendario_fin_SelectionChanged" runat="server">
-                                    <OtherMonthDayStyle ForeColor="LightGray"></OtherMonthDayStyle>
-                                    <TitleStyle BackColor="gray"
-                                        ForeColor="White"></TitleStyle>
-                                    <DayStyle BackColor="gray"></DayStyle>
-                                    <SelectedDayStyle BackColor="LightGray"
-                                        Font-Bold="True"></SelectedDayStyle>
-                                </asp:Calendar>
-
-                            </div>
-                            <%}%>
-                            <h3>
-                                <asp:Label Visible="false" Text="Seleccione turno para ver detalle." runat="server" />
-                            </h3>
-                            <asp:DropDownList Visible="false" ID="dropdown_turno" CssClass="form-control" OnSelectedIndexChanged="dropdown_turno_SelectedIndexChanged" AutoPostBack="true" runat="server">
-                                <asp:ListItem Text="Turno 1" />
-                                <asp:ListItem Text="Turno 2" />
-                            </asp:DropDownList>
                         </div>
-                        <asp:GridView Visible="false" Caption="DETALLE DE VENTAS" CaptionAlign="Top" runat="server" ID="gridview_historial" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_historial_RowDataBound">
+                        <h2>
+                            <label>Tipo Producto:</label>
+                        </h2>
+                        <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true" runat="server">
+                        </asp:DropDownList>
+                        <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_productos_RowDataBound">
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
-                                <asp:BoundField HeaderText="id Empleado" DataField="id_empleado" />
-                                <asp:BoundField HeaderText="Nombre Empleado" DataField="nombre" />
-                                <asp:BoundField HeaderText="Apellido Empleado" DataField="apellido" />
-                                <asp:BoundField HeaderText="Turno" DataField="turno" />
-                                <asp:BoundField HeaderText="Fecha" DataField="fecha" />
-                                <asp:BoundField HeaderText="Venta" DataField="venta" />
-                                <asp:BoundField HeaderText="Nota" DataField="nota" />
-                                <asp:TemplateField HeaderText="Eliminar">
+                                <asp:BoundField HeaderText="id Empleado" DataField="producto" />
+                                <asp:TemplateField HeaderText="Venta Alta">
                                     <ItemTemplate>
-                                        <asp:Button ID="boton_eliminar" CssClass="btn btn-danger" Text="Eliminar" runat="server" OnClick="boton_eliminar_Click" />
+                                        <asp:TextBox ID="textbox_venta_alta" CssClass="form-control " OnTextChanged="textbox_venta_alta_TextChanged" AutoPostBack="true" runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Venta Baja">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="textbox_venta_baja" CssClass="form-control " OnTextChanged="textbox_venta_baja_TextChanged" AutoPostBack="true" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
