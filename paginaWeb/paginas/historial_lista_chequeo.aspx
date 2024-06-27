@@ -17,6 +17,9 @@
                                 <SelectedDayStyle BackColor="LightGray"
                                     Font-Bold="True"></SelectedDayStyle>
                             </asp:Calendar>
+                            <h3>
+                                <label>Seleccione Turno.</label>
+                            </h3>
                             <asp:DropDownList ID="dropdown_turno" CssClass="form-control" runat="server">
                                 <asp:ListItem Text="Turno 1" />
                                 <asp:ListItem Text="Turno 2" />

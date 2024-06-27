@@ -79,7 +79,7 @@
 
                         </div>
                         <h2>
-                            <label>Tipo Producto:</label>
+                            <label>Seleccione Categoria de Producto:</label>
                         </h2>
                         <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true" runat="server">
                         </asp:DropDownList>
