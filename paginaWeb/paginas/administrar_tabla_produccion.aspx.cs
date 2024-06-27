@@ -17,7 +17,7 @@ namespace paginaWeb.paginas
             resumen = new DataTable();
             resumen.Columns.Add("id", typeof(string));
             resumen.Columns.Add("producto", typeof(string));
-            resumen.Columns.Add("tipo_producto", typeof(string));
+            resumen.Columns.Add("tipo_producto_local", typeof(string));
             resumen.Columns.Add("venta_alta", typeof(string));
             resumen.Columns.Add("venta_baja", typeof(string));
         }
@@ -28,7 +28,7 @@ namespace paginaWeb.paginas
 
             for (int fila = 0; fila <= lista_productosBD.Rows.Count-1; fila++)
             {
-                if (dropDown_tipo.SelectedItem.Text == lista_productosBD.Rows[fila]["tipo_producto"].ToString() ||
+                if (dropDown_tipo.SelectedItem.Text == lista_productosBD.Rows[fila]["tipo_producto_local"].ToString() ||
                     dropDown_tipo.SelectedItem.Text == "todos")
                 {
                     resumen.Rows.Add();
@@ -36,7 +36,7 @@ namespace paginaWeb.paginas
 
                     resumen.Rows[ultima_fila]["id"] = lista_productosBD.Rows[fila]["id"].ToString();
                     resumen.Rows[ultima_fila]["producto"] = lista_productosBD.Rows[fila]["producto"].ToString();
-                    resumen.Rows[ultima_fila]["tipo_producto"] = lista_productosBD.Rows[fila]["tipo_producto"].ToString();
+                    resumen.Rows[ultima_fila]["tipo_producto_local"] = lista_productosBD.Rows[fila]["tipo_producto_local"].ToString();
 
                     resumen.Rows[ultima_fila]["venta_alta"] = lista_productosBD.Rows[fila]["venta_alta"].ToString();
                     resumen.Rows[ultima_fila]["venta_baja"] = lista_productosBD.Rows[fila]["venta_baja"].ToString();
@@ -101,7 +101,7 @@ namespace paginaWeb.paginas
         {
             dropDown_tipo.Items.Clear();
             int num_item = 1;
-            dt.DefaultView.Sort = "tipo_producto";
+            dt.DefaultView.Sort = "tipo_producto_local";
             dt = dt.DefaultView.ToTable();
 
             //        item = new ListItem("Todos", num_item.ToString());
@@ -110,17 +110,17 @@ namespace paginaWeb.paginas
 
             dropDown_tipo.Items.Add("todos");
             num_item = num_item + 1;
-            tipo_seleccionado = dt.Rows[0]["tipo_producto"].ToString();
-            dropDown_tipo.Items.Add(dt.Rows[0]["tipo_producto"].ToString());
+            tipo_seleccionado = dt.Rows[0]["tipo_producto_local"].ToString();
+            dropDown_tipo.Items.Add(dt.Rows[0]["tipo_producto_local"].ToString());
             num_item = num_item + 1;
             for (int fila = 1; fila <= dt.Rows.Count - 1; fila++)
             {
 
 
-                if (dropDown_tipo.Items[num_item - 2].Text != dt.Rows[fila]["tipo_producto"].ToString())
+                if (dropDown_tipo.Items[num_item - 2].Text != dt.Rows[fila]["tipo_producto_local"].ToString())
                 {
 
-                    dropDown_tipo.Items.Add(dt.Rows[fila]["tipo_producto"].ToString());
+                    dropDown_tipo.Items.Add(dt.Rows[fila]["tipo_producto_local"].ToString());
                     num_item = num_item + 1;
                 }
 

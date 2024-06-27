@@ -87,12 +87,12 @@
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="id Empleado" DataField="producto" />
-                                <asp:TemplateField HeaderText="Venta Alta">
+                                <asp:TemplateField HeaderText="Ingrese Unidades Vendidas Dias de Alto vol. Venta">
                                     <ItemTemplate>
                                         <asp:TextBox ID="textbox_venta_alta" CssClass="form-control " OnTextChanged="textbox_venta_alta_TextChanged" AutoPostBack="true" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Venta Baja">
+                                <asp:TemplateField HeaderText="Ingrese Unidades Vendidas Dias de Bajo vol. Venta">
                                     <ItemTemplate>
                                         <asp:TextBox ID="textbox_venta_baja" CssClass="form-control " OnTextChanged="textbox_venta_baja_TextChanged" AutoPostBack="true" runat="server" />
                                     </ItemTemplate>

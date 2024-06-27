@@ -273,19 +273,35 @@ namespace _02___sistemas
         #endregion
 
         #region metodos get/set
-        public DataTable get_historial(DateTime fecha, string id_empleado,string id_sucursal)
+        public DataTable get_historial(DateTime fecha,string turno, string id_empleado,string id_sucursal)
         {
             string hora_inicio = "07:00";
             string hora_fin = "16:59";
-            if ("rango 1" == verificar_horario(fecha))// 
+            if (turno=="N/A")
             {
-                consultar_historial(fecha, hora_inicio, hora_fin, id_empleado,id_sucursal);
-            }
-            else if ("rango 2" == verificar_horario(fecha) ||
-                    "rango 3" == verificar_horario(fecha))// 
-            {
+                if ("rango 1" == verificar_horario(fecha))// 
+                {
+                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal);
+                }
+                else if ("rango 2" == verificar_horario(fecha) || "rango 3" == verificar_horario(fecha))// 
+                {
 
-                consultar_historial_turno2(fecha, id_empleado,id_sucursal);
+                    consultar_historial_turno2(fecha, id_empleado, id_sucursal);
+                }
+
+            }
+            else
+            {
+                if (turno == "Turno 1")// "rango 1" == verificar_horario(fecha)
+                {
+                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal);
+                }
+                else if (turno == "Turno 2")// "rango 2" == verificar_horario(fecha) ||"rango 3" == verificar_horario(fecha)
+                {
+
+                    consultar_historial_turno2(fecha, id_empleado, id_sucursal);
+                }
+
             }
 
             llenar_historial_resumen();

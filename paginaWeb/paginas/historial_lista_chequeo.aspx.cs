@@ -466,7 +466,7 @@ namespace paginaWeb.paginas
             empleado = historial.get_empleado(id_empleado);
             Session.Add("empleado_historial", empleado);
             DateTime fecha = (DateTime)Session["fecha_historial_chequeo"];
-            historial_chequeo = lista_chequeo.get_historial(fecha, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+            historial_chequeo = lista_chequeo.get_historial(fecha,dropdown_turno.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
             Session.Add("historial_chequeo", historial_chequeo);
             if (historial_chequeo.Rows.Count>0)
             {
@@ -480,6 +480,7 @@ namespace paginaWeb.paginas
                 label_categoria.Visible = true;
                 dropDown_tipo.Visible = true;
                 dropDown_categoria.Visible = true;
+                gridview_chequeos.Visible = true;
 
                 label_alerta_registro.Visible = false;
 
@@ -500,9 +501,10 @@ namespace paginaWeb.paginas
                 boton_atencion.Visible = false;
                 boton_cocina.Visible = false;
                 boton_limpieza.Visible = false;
+                gridview_chequeos.Visible = false;
                 DateTime fecha_seleccionada = (DateTime)Session["fecha_historial_chequeo"];
                 string nombre_empleado = empleado.Rows[0]["nombre"].ToString() + " " + empleado.Rows[0]["apellido"].ToString();
-                label_alerta_registro.Text = "No hay registros del empleado "+ nombre_empleado + " para la fecha " + fecha_seleccionada.ToString("dd/MM/yyyy");
+                label_alerta_registro.Text = "No hay registros del empleado "+ nombre_empleado + " para la fecha " + fecha_seleccionada.ToString("dd/MM/yyyy") + " en el " + dropdown_turno.SelectedItem.Text;
                 label_alerta_registro.Visible = true;
             }
         }

@@ -17,7 +17,10 @@
                                 <SelectedDayStyle BackColor="LightGray"
                                     Font-Bold="True"></SelectedDayStyle>
                             </asp:Calendar>
-
+                            <asp:DropDownList ID="dropdown_turno" CssClass="form-control" runat="server">
+                                <asp:ListItem Text="Turno 1" />
+                                <asp:ListItem Text="Turno 2" />
+                            </asp:DropDownList>
                         </div>
                         <div class=" col">
                             <h2>
@@ -78,9 +81,9 @@
                         <asp:DropDownList ID="dropDown_categoria" Visible="false" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_categoria_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                     </div>
-                    <h4>
+                    
                         <asp:Label ID="label_alerta_registro" CssClass="alert alert-danger" Visible="false" Text="No hay registros" runat="server" />
-                    </h4>
+                    
                     <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />

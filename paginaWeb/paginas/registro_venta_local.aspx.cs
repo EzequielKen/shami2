@@ -235,7 +235,7 @@ namespace paginaWeb.paginas
                 }
                 if (tipo_usuario.Rows[0]["rol"].ToString() != "franquiciado")
                 {
-                    registro_venta.registrar_venta(sucursal, empleado, Session["turno"].ToString(), textbox_venta.Text, nota);
+                    registro_venta.registrar_venta(sucursal, empleado, (DateTime)Session["fecha_registro_seleccionada"], Session["turno"].ToString(), textbox_venta.Text, nota);
                 }
                 else if (tipo_usuario.Rows[0]["rol"].ToString() == "franquiciado")
                 {

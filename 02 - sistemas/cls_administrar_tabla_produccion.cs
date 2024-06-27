@@ -43,13 +43,73 @@ namespace _02___sistemas
         DataTable ventas;
         #endregion
 
+        #region carga a base de datos
+        public void cargar_tabla_produccion(DataTable sucursal,string dias,string porcentaje_venta_baja , string porcentaje_venta_alta, DataTable resumen)
+        {
+            string columnas= string.Empty;
+            string valores = string.Empty;
+            //id_sucursal
+            columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["id"].ToString(),false);
+
+            //sucursal
+            columnas = funciones.armar_query_columna(columnas, "sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["sucursal"].ToString(), false);
+
+            //dias
+            columnas = funciones.armar_query_columna(columnas, "dias", false);
+            valores = funciones.armar_query_valores(valores, dias, false);
+
+            //porcentaje_venta_baja
+            columnas = funciones.armar_query_columna(columnas, "porcentaje_venta_baja", false);
+            valores = funciones.armar_query_valores(valores, porcentaje_venta_baja, false);
+
+            //porcentaje_venta_alta
+            columnas = funciones.armar_query_columna(columnas, "porcentaje_venta_alta", false);
+            valores = funciones.armar_query_valores(valores, porcentaje_venta_alta, false);
+
+            //fecha
+            columnas = funciones.armar_query_columna(columnas, "fecha", false);
+            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
+
+            //producto_1
+            string id,producto,venta_alta,venta_baja,dato;
+            int index=1;
+            for (int fila = 0; fila < resumen.Rows.Count-1; fila++)
+            {
+                id = resumen.Rows[fila]["id"].ToString();
+                producto = resumen.Rows[fila]["producto"].ToString();
+                venta_alta = resumen.Rows[fila]["venta_alta"].ToString();
+                venta_baja = resumen.Rows[fila]["venta_baja"].ToString();
+
+                dato = id + "-" + producto + "-" + venta_alta + "-" + venta_baja;
+
+                columnas = funciones.armar_query_columna(columnas,"producto_"+index.ToString(),false);
+                valores = funciones.armar_query_valores(valores,dato,false);
+                index++;
+            }
+            int ultima_fila = resumen.Rows.Count-1;
+
+            id = resumen.Rows[ultima_fila]["id"].ToString();
+            producto = resumen.Rows[ultima_fila]["producto"].ToString();
+            venta_alta = resumen.Rows[ultima_fila]["venta_alta"].ToString();
+            venta_baja = resumen.Rows[ultima_fila]["venta_baja"].ToString();
+
+            dato = id + "-" + producto + "-" + venta_alta + "-" + venta_baja;
+
+            columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
+            valores = funciones.armar_query_valores(valores, dato, true);
+
+           consultas.insertar_en_tabla(base_de_datos, "tabla_produccion",columnas,valores);
+        }
+        #endregion
         #region metodos privados
         private void crear_tabla_resumen()
         {
             resumen = new DataTable();
             resumen.Columns.Add("id",typeof(string));
             resumen.Columns.Add("producto",typeof(string));
-            resumen.Columns.Add("tipo_producto", typeof(string));
+            resumen.Columns.Add("tipo_producto_local", typeof(string));
             resumen.Columns.Add("venta_alta",typeof(string));
             resumen.Columns.Add("venta_baja",typeof(string));
         }
@@ -63,8 +123,8 @@ namespace _02___sistemas
                 ultima_fila = resumen.Rows.Count-1;
 
                 resumen.Rows[ultima_fila]["id"] = insumos_fabrica.Rows[fila]["id"].ToString();
-                resumen.Rows[ultima_fila]["producto"] = insumos_fabrica.Rows[fila]["producto"].ToString();
-                resumen.Rows[ultima_fila]["tipo_producto"] = insumos_fabrica.Rows[fila]["tipo_producto"].ToString();
+                resumen.Rows[ultima_fila]["producto"] = insumos_fabrica.Rows[fila]["producto"].ToString() + " " + insumos_fabrica.Rows[fila]["unidad_tabla_produccion"].ToString();
+                resumen.Rows[ultima_fila]["tipo_producto_local"] = insumos_fabrica.Rows[fila]["tipo_producto_local"].ToString();
 
                 resumen.Rows[ultima_fila]["venta_alta"] = "0";
                 resumen.Rows[ultima_fila]["venta_baja"] = "0";
@@ -77,8 +137,8 @@ namespace _02___sistemas
                 ultima_fila = resumen.Rows.Count - 1;
 
                 resumen.Rows[ultima_fila]["id"] = productos_terminados.Rows[fila]["id"].ToString();
-                resumen.Rows[ultima_fila]["producto"] = productos_terminados.Rows[fila]["producto"].ToString();
-                resumen.Rows[ultima_fila]["tipo_producto"] = productos_terminados.Rows[fila]["tipo_producto"].ToString();
+                resumen.Rows[ultima_fila]["producto"] = productos_terminados.Rows[fila]["producto"].ToString() + " " + productos_terminados.Rows[fila]["unidad_tabla_produccion"].ToString();
+                resumen.Rows[ultima_fila]["tipo_producto_local"] = productos_terminados.Rows[fila]["tipo_producto_local"].ToString();
 
                 resumen.Rows[ultima_fila]["venta_alta"] = "0";
                 resumen.Rows[ultima_fila]["venta_baja"] = "0";
@@ -114,6 +174,8 @@ namespace _02___sistemas
             consultar_insumos_fabrica();
             consultar_productos_terminados();
             llenar_tabla_resumen();
+            resumen.DefaultView.Sort = "tipo_producto_local asc";
+            resumen = resumen.DefaultView.ToTable();
             return resumen;
         }
         #endregion

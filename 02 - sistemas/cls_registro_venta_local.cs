@@ -41,11 +41,24 @@ namespace _02___sistemas
         #endregion
 
         #region carga a base de datos
-        public void registrar_venta(DataTable sucursal,DataTable empleado,string turno,string venta,string nota)
+        public void registrar_venta(DataTable sucursal,DataTable empleado, DateTime fecha, string turno,string venta,string nota)
         {
             string columnas = string.Empty;
             string valores = string.Empty;
-
+            DateTime fecha_actual = DateTime.Now;
+            if (turno == "turno 2")
+            {
+                if ((fecha_actual.Hour>=0 &&
+                    fecha_actual.Minute>= 0 &&
+                    fecha_actual.Second>= 0) 
+                    &&
+                    (fecha_actual.Hour <= 5 &&
+                    fecha_actual.Minute <= 0 &&
+                    fecha_actual.Second <= 0))
+                {
+                    fecha = fecha.AddDays(-1);
+                }
+            }
             //id_sucursal
             columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
             valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["id"].ToString(),false);
@@ -66,7 +79,7 @@ namespace _02___sistemas
             valores = funciones.armar_query_valores(valores, turno, false);
             //fecha
             columnas = funciones.armar_query_columna(columnas, "fecha", false);
-            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
+            valores = funciones.armar_query_valores(valores, fecha.ToString("yyyy-MM-dd HH:mm:ss"), false);
             //venta
             columnas = funciones.armar_query_columna(columnas, "venta", false);
             valores = funciones.armar_query_valores(valores, venta, false);

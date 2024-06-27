@@ -123,6 +123,42 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.GridView gridView_imputaciones;
 
         /// <summary>
+        /// Control textBox_detalle_boleta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBox_detalle_boleta;
+
+        /// <summary>
+        /// Control textBox_monto_boleta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textBox_monto_boleta;
+
+        /// <summary>
+        /// Control label_total_boleta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_total_boleta;
+
+        /// <summary>
+        /// Control boton_cargar_boleta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_cargar_boleta;
+
+        /// <summary>
         /// Control DropDow_nota_dia.
         /// </summary>
         /// <remarks>

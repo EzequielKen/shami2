@@ -22,11 +22,10 @@
                         </div>
                     </div>
                     <div class="col">
+
                         <h2>
                             <asp:Label ID="label_fecha" Text="Fecha: 18/06/2024" runat="server" />
                         </h2>
-                        <% if (tipo_usuario.Rows[0]["rol"].ToString() == "franquiciado")
-                            {%>
                         <asp:Calendar ID="calendario_fecha_registro" CssClass="pb-5 table-bordered " OnSelectionChanged="calendario_fecha_registro_SelectionChanged" runat="server">
                             <OtherMonthDayStyle ForeColor="LightGray"></OtherMonthDayStyle>
                             <TitleStyle BackColor="gray"
@@ -35,7 +34,6 @@
                             <SelectedDayStyle BackColor="LightGray"
                                 Font-Bold="True"></SelectedDayStyle>
                         </asp:Calendar>
-                        <%}%>
 
                         <asp:Label ID="label_alerta" Visible="false" CssClass="alert alert-danger" Text="text" runat="server" />
                     </div>

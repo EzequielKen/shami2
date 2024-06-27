@@ -599,5 +599,50 @@ namespace paginaWeb.paginasFabrica
 
             cargar_remitos();
         }
+
+        protected void textBox_detalle_boleta_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void textBox_monto_boleta_TextChanged(object sender, EventArgs e)
+        {
+            double cantidad = 0;
+            if (double.TryParse(textBox_monto_boleta.Text, out cantidad))
+            {
+                if (cantidad < 0)
+                {
+                    textBox_monto_boleta.Text = string.Empty;
+                }
+                else
+                {
+                    label_total_boleta.Text = funciones.formatCurrency(cantidad);
+                }
+            }
+        }
+
+        protected void boton_cargar_boleta_Click(object sender, EventArgs e)
+        {
+            double cantidad = 0;
+            if (double.TryParse(textBox_monto_boleta.Text, out cantidad) &&
+                textBox_detalle_boleta.Text != string.Empty)
+            {
+                if (cantidad < 0)
+                {
+                    textBox_monto_boleta.Text = string.Empty;
+                }
+                else
+                {
+                    string cantidad_a_cargar =  cantidad.ToString();
+                    sistema_Administracion.cargar_nota_credito(dropDown_sucursales.SelectedItem.Text, textBox_detalle_boleta.Text, cantidad_a_cargar);
+                    textBox_monto_boleta.Text = string.Empty;
+                    textBox_detalle_boleta.Text = string.Empty;
+                    label_total_boleta.Text = "Total: $0.00";
+                }
+                remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+                Session.Add("remitosBD", remitosBD);
+                cargar_remitos();
+            }
+        }
     }
 }

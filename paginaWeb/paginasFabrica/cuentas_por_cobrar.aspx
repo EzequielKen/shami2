@@ -156,42 +156,66 @@
                 <hr />
             </div>
 
-            <div class="container">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                        <div class="row alert alert-light">
-                            <h3>carga de notas de credito</h3>
-                            <div class="row">
-                                <div class="col">
-                                    <asp:Label Visible="false" Text="Dia" CssClass=" form-label" runat="server" />
-                                    <asp:DropDownList Visible="false" ID="DropDow_nota_dia" runat="server" CssClass="form-select">
-                                    </asp:DropDownList>
-                                </div>
-                                <div class="col">
-                                    <asp:Label Visible="false" Text="Mes" CssClass=" form-label" runat="server" />
-                                    <asp:DropDownList Visible="false" ID="DropDow_nota_mes" runat="server" CssClass="form-select">
-                                    </asp:DropDownList>
-                                </div>
-                                <div class="col">
-                                    <asp:Label Visible="false" Text="Año" CssClass=" form-label" runat="server" />
-                                    <asp:DropDownList Visible="false" ID="DropDow_nota_año" runat="server" CssClass="form-select">
-                                    </asp:DropDownList>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <asp:Label Text="Detalle" CssClass=" form-label" runat="server" />
-                                    <asp:TextBox  ID="textBox_detalle" CssClass="form-control" OnTextChanged="textBox_detalle_TextChanged" AutoPostBack="true" runat="server" />
+                        <div class="row">
+                            <div class="col">
+                                <div class="alert alert-light">
+                                    <h3>Cargar Boleta</h3>
+                                    <div class="row">
+                                        <div class="col">
+                                            <asp:Label Text="Detalle" CssClass=" form-label" runat="server" />
+                                            <asp:TextBox ID="textBox_detalle_boleta" CssClass="form-control" OnTextChanged="textBox_detalle_boleta_TextChanged" AutoPostBack="true" runat="server" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <asp:Label Text="Monto" CssClass=" form-label" runat="server" />
+                                        <asp:TextBox ID="textBox_monto_boleta" CssClass="form-control" OnTextChanged="textBox_monto_boleta_TextChanged" TextMode="Number" AutoPostBack="true" runat="server" />
+                                    </div>
+                                    <div class="col">
+                                        <asp:Label ID="label_total_boleta" CssClass="form-label" Text="Total: $0.00" runat="server" />
+                                        <br />
+                                        <asp:Button ID="boton_cargar_boleta" CssClass="btn btn-primary" OnClick="boton_cargar_boleta_Click" Text="Cargar" runat="server" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col">
-                                <asp:Label Text="Monto" CssClass=" form-label" runat="server" />
-                                <asp:TextBox ID="textBox_monto" CssClass="form-control" OnTextChanged="textBox_monto_TextChanged" TextMode="Number" AutoPostBack="true" runat="server" />
-                            </div>
-                            <div class="col">
-                                <asp:Label ID="label_monto" CssClass="form-label" Text="Total: $0.00" runat="server" />
-                                <br />
-                                <asp:Button ID="boton_carga_nota_credido" CssClass="btn btn-primary" OnClick="boton_carga_nota_credido_Click" Text="Cargar" runat="server" />
+                                <div class="alert alert-light">
+                                    <h3>Carga de Notas de Credito</h3>
+                                    <div class="row">
+                                        <div class="col">
+                                            <asp:Label Visible="false" Text="Dia" CssClass=" form-label" runat="server" />
+                                            <asp:DropDownList Visible="false" ID="DropDow_nota_dia" runat="server" CssClass="form-select">
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col">
+                                            <asp:Label Visible="false" Text="Mes" CssClass=" form-label" runat="server" />
+                                            <asp:DropDownList Visible="false" ID="DropDow_nota_mes" runat="server" CssClass="form-select">
+                                            </asp:DropDownList>
+                                        </div>
+                                        <div class="col">
+                                            <asp:Label Visible="false" Text="Año" CssClass=" form-label" runat="server" />
+                                            <asp:DropDownList Visible="false" ID="DropDow_nota_año" runat="server" CssClass="form-select">
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <asp:Label Text="Detalle" CssClass=" form-label" runat="server" />
+                                            <asp:TextBox ID="textBox_detalle" CssClass="form-control" OnTextChanged="textBox_detalle_TextChanged" AutoPostBack="true" runat="server" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <asp:Label Text="Monto" CssClass=" form-label" runat="server" />
+                                        <asp:TextBox ID="textBox_monto" CssClass="form-control" OnTextChanged="textBox_monto_TextChanged" TextMode="Number" AutoPostBack="true" runat="server" />
+                                    </div>
+                                    <div class="col">
+                                        <asp:Label ID="label_monto" CssClass="form-label" Text="Total: $0.00" runat="server" />
+                                        <br />
+                                        <asp:Button ID="boton_carga_nota_credido" CssClass="btn btn-primary" OnClick="boton_carga_nota_credido_Click" Text="Cargar" runat="server" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
