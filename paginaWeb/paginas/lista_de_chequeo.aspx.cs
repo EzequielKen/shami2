@@ -370,7 +370,7 @@ namespace paginaWeb.paginas
         {
             string id;
             int fila_historial;
-            DataTable historial = lista_chequeo.get_historial(DateTime.Now, empleado.Rows[0]["id"].ToString(), "N/A", empleado.Rows[0]["id_sucursal"].ToString());
+            DataTable historial = lista_chequeo.get_historial(DateTime.Now, "N/A", empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
             for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
             {
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;

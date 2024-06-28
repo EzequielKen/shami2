@@ -74,8 +74,7 @@ namespace paginaWeb.paginas
                 }
             }
             total = turno_1 + turno_2;
-            double porcentaje_turno_1 = 0;
-            double porcentaje_turno_2 = 0;
+            
             double porcentaje_total;
             if (total != 0)
             {
@@ -201,6 +200,10 @@ namespace paginaWeb.paginas
                 boton_domingo.CssClass = "btn btn-danger";
             }
         }
+        private string get_dias()
+        {
+            return Session["lunes"].ToString()+"-"+ Session["martes"].ToString() + "-" + Session["miercoles"].ToString() + "-" + Session["jueves"].ToString() + "-" + Session["viernes"].ToString() + "-" + Session["sabado"].ToString() + "-" + Session["domingo"].ToString();
+        }
         #endregion
         /// <summary>
         /// ////////////////////////////////////////////////////////////
@@ -220,6 +223,8 @@ namespace paginaWeb.paginas
 
 
         string tipo_seleccionado;
+        double porcentaje_turno_1 = 0;
+        double porcentaje_turno_2 = 0;
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -360,5 +365,11 @@ namespace paginaWeb.paginas
         }
 
         #endregion
+
+        protected void boton_cargar_Click(object sender, EventArgs e)
+        {
+            sumar_ventas();
+            tabla_produccion.cargar_tabla_produccion(sucursal, get_dias(), porcentaje_turno_1.ToString(), porcentaje_turno_2.ToString(), (DataTable)Session["lista_productosBD"]);
+        }
     }
 }

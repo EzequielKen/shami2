@@ -56,6 +56,7 @@
     <Compile Include="cls_sistema_la_feria.cs" />
     <Compile Include="cls_sistema_login.cs" />
     <Compile Include="cls_sistema_pedidos.cs" />
+    <Compile Include="cls_tabla_produccion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

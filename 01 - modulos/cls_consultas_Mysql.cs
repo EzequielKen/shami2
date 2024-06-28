@@ -1731,6 +1731,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_tabla_produccion(string id_sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".tabla_produccion WHERE  activa ='1' and id_sucursal='" + id_sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region consultas fabrica a proveedor

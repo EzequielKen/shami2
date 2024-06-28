@@ -105,6 +105,9 @@
                         <a class="nav-link btn btn-primary" href="/paginas/registro_venta_local.aspx">Registro de venta del local</a>
                     </li>
                     <%}%>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/tabla_produccion.aspx">Tabla de Produccion</a>
+                    </li>
                 </ul>
                 <%}
                     else

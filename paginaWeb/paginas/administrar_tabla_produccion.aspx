@@ -99,6 +99,7 @@
                                 </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
+                        <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Cargar" OnClick="boton_cargar_Click" runat="server" />
                     </div>
                 </div>
             </div>

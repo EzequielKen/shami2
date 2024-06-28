@@ -44,7 +44,7 @@ namespace _02___sistemas
         #endregion
 
         #region carga a base de datos
-        public void cargar_tabla_produccion(DataTable sucursal,string dias,string porcentaje_venta_baja , string porcentaje_venta_alta, DataTable resumen)
+        public void cargar_tabla_produccion(DataTable sucursal,string dias,string porcentaje_turno_1, string porcentaje_turno_2, DataTable resumen)
         {
             string columnas= string.Empty;
             string valores = string.Empty;
@@ -60,13 +60,13 @@ namespace _02___sistemas
             columnas = funciones.armar_query_columna(columnas, "dias", false);
             valores = funciones.armar_query_valores(valores, dias, false);
 
-            //porcentaje_venta_baja
-            columnas = funciones.armar_query_columna(columnas, "porcentaje_venta_baja", false);
-            valores = funciones.armar_query_valores(valores, porcentaje_venta_baja, false);
+            //porcentaje_turno_1
+            columnas = funciones.armar_query_columna(columnas, "porcentaje_turno_1", false);
+            valores = funciones.armar_query_valores(valores, porcentaje_turno_1, false);
 
-            //porcentaje_venta_alta
-            columnas = funciones.armar_query_columna(columnas, "porcentaje_venta_alta", false);
-            valores = funciones.armar_query_valores(valores, porcentaje_venta_alta, false);
+            //porcentaje_turno_2
+            columnas = funciones.armar_query_columna(columnas, "porcentaje_turno_2", false);
+            valores = funciones.armar_query_valores(valores, porcentaje_turno_2, false);
 
             //fecha
             columnas = funciones.armar_query_columna(columnas, "fecha", false);
