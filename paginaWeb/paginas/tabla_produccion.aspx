@@ -8,7 +8,7 @@
             <h2>
                 <label>Seleccione Turno:</label>
             </h2>
-            <asp:DropDownList ID="dropdown_turno" CssClass="form-control" OnSelectedIndexChanged="dropdown_turno_SelectedIndexChanged" AutoPostBack="true" runat="server">
+            <asp:DropDownList ID="dropdown_turno" CssClass="form-control bg-danger" OnSelectedIndexChanged="dropdown_turno_SelectedIndexChanged" AutoPostBack="true" runat="server">
                 <asp:ListItem Text="Turno 1" />
                 <asp:ListItem Text="Turno 2" />
             </asp:DropDownList>
@@ -20,22 +20,24 @@
             <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_productos_RowDataBound">
                 <Columns>
                     <asp:BoundField HeaderText="id" DataField="id" />
-                    <asp:BoundField HeaderText="id Empleado" DataField="producto" />
-                    <asp:TemplateField HeaderText="Ingrese Stock">
+                    <asp:BoundField HeaderText="id historial" DataField="id_historial" />
+                    <asp:BoundField HeaderText="Producto" DataField="producto" />
+                    <asp:BoundField HeaderText="Historico Vta. Dia Semana Anterior" DataField="ventas" />
+                    <asp:TemplateField HeaderText="Ingrese Stock Actual">
                         <ItemTemplate>
-                            <asp:TextBox ID="textbox_stock" CssClass="form-control " OnTextChanged="textbox_stock_TextChanged" AutoPostBack="true" runat="server" />
+                            <asp:TextBox ID="textbox_stock" placeholder="N/A" CssClass="form-control " OnTextChanged="textbox_stock_TextChanged" AutoPostBack="true" runat="server" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField HeaderText="Venta del Turno" DataField="ventas" />
-                    <asp:BoundField HeaderText="Objetivo de Produccion" DataField="objetivo_produccion" />
+                    <asp:BoundField HeaderText="Objetivo de Produccion del Turno" DataField="objetivo_produccion" />
 
-                    <asp:TemplateField HeaderText="Produccion">
+                    <asp:TemplateField HeaderText="Produccion del Turno">
                         <ItemTemplate>
-                            <asp:TextBox ID="textbox_produccion" CssClass="form-control " OnTextChanged="textbox_produccion_TextChanged" AutoPostBack="true" runat="server" />
+                            <asp:TextBox ID="textbox_produccion"  placeholder="N/A" CssClass="form-control " OnTextChanged="textbox_produccion_TextChanged" AutoPostBack="true" runat="server" />
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
             </asp:GridView>
+            <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Nuevo Registro" OnClick="boton_cargar_Click" runat="server" />
         </div>
     </div>
 </asp:Content>

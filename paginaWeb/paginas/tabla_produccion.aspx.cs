@@ -17,6 +17,7 @@ namespace paginaWeb.paginas
         {
             resumen = new DataTable();
             resumen.Columns.Add("id", typeof(string));
+            resumen.Columns.Add("id_historial", typeof(string));
             resumen.Columns.Add("producto", typeof(string));
             resumen.Columns.Add("tipo_producto_local", typeof(string));
 
@@ -40,6 +41,7 @@ namespace paginaWeb.paginas
                     ultima_fila = resumen.Rows.Count - 1;
 
                     resumen.Rows[ultima_fila]["id"] = lista_productosBD.Rows[fila]["id"].ToString();
+                    resumen.Rows[ultima_fila]["id_historial"] = lista_productosBD.Rows[fila]["id_historial"].ToString();
                     resumen.Rows[ultima_fila]["producto"] = lista_productosBD.Rows[fila]["producto"].ToString();
                     resumen.Rows[ultima_fila]["tipo_producto_local"] = lista_productosBD.Rows[fila]["tipo_producto_local"].ToString();
                     resumen.Rows[ultima_fila]["objetivo_produccion"] = lista_productosBD.Rows[fila]["objetivo_produccion"].ToString();
@@ -55,7 +57,7 @@ namespace paginaWeb.paginas
                                 venta = double.Parse(lista_productosBD.Rows[fila]["venta_alta_turno1"].ToString());
                                 stock = double.Parse(lista_productosBD.Rows[fila]["stock"].ToString());
                                 objetivo_produccion = venta - stock;
-                                resumen.Rows[ultima_fila]["objetivo_produccion"]= objetivo_produccion.ToString();
+                                resumen.Rows[ultima_fila]["objetivo_produccion"] = objetivo_produccion.ToString();
                             }
                         }
                         else
@@ -103,10 +105,18 @@ namespace paginaWeb.paginas
         private void cargar_lista_producto()
         {
             lista_productosBD = (DataTable)Session["lista_productosBD"];
-            llenar_tabla_resumen();
+            if (!(bool)lista_productosBD.Rows[0]["crear_nuevo_registro"])
+            {
+                llenar_tabla_resumen();
 
-            gridview_productos.DataSource = resumen;
-            gridview_productos.DataBind();
+                gridview_productos.DataSource = resumen;
+                gridview_productos.DataBind();
+            }
+            else
+            {
+                gridview_productos.DataSource = null;
+                gridview_productos.DataBind();
+            }
         }
         #endregion
         #region configurar controles
@@ -180,16 +190,40 @@ namespace paginaWeb.paginas
 
             if (!IsPostBack)
             {
-                lista_productosBD = tabla_produccion_empleado.get_lista_productos(sucursal.Rows[0]["id"].ToString());
+                lista_productosBD = tabla_produccion_empleado.get_lista_productos(sucursal, empleado, dropdown_turno.SelectedItem.Text);
                 Session.Add("lista_productosBD", lista_productosBD);
-                configurar_controles();
-                cargar_lista_producto();
+                if (lista_productosBD.Rows.Count > 0)
+                {
+                    configurar_controles();
+                    cargar_lista_producto();
+                }
             }
+            
         }
 
         protected void dropdown_turno_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cargar_lista_producto();
+            lista_productosBD = tabla_produccion_empleado.get_lista_productos(sucursal, empleado, dropdown_turno.SelectedItem.Text);
+            Session.Add("lista_productosBD", lista_productosBD);
+            if (lista_productosBD.Rows.Count > 0)
+            {
+                configurar_controles();
+                cargar_lista_producto();
+            }
+            else
+            {
+                gridview_productos.DataSource = null;
+                gridview_productos.DataBind();
+            }
+            if (dropdown_turno.SelectedItem.Text == "Turno 1")
+            {
+                dropdown_turno.CssClass = "form-control bg-danger";
+            }
+            else
+            {
+                dropdown_turno.CssClass = "form-control bg-success";
+
+            }
         }
         protected void dropDown_tipo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -209,9 +243,12 @@ namespace paginaWeb.paginas
                     GridViewRow row = (GridViewRow)textbox_stock.NamingContainer;
                     int fila = row.RowIndex;
                     string id = gridview_productos.Rows[fila].Cells[0].Text;
+                    string id_historial = gridview_productos.Rows[fila].Cells[1].Text;
                     int fila_producto = funciones.buscar_fila_por_id(id, lista_productosBD);
                     lista_productosBD.Rows[fila_producto]["stock"] = stock.ToString();
                     Session.Add("lista_productosBD", lista_productosBD);
+                    tabla_produccion_empleado.modificar_registro(id_historial, "stock", stock.ToString());
+
                 }
             }
             cargar_lista_producto();
@@ -230,9 +267,11 @@ namespace paginaWeb.paginas
                     GridViewRow row = (GridViewRow)textbox_produccion.NamingContainer;
                     int fila = row.RowIndex;
                     string id = gridview_productos.Rows[fila].Cells[0].Text;
+                    string id_historial = gridview_productos.Rows[fila].Cells[1].Text;
                     int fila_producto = funciones.buscar_fila_por_id(id, lista_productosBD);
                     lista_productosBD.Rows[fila_producto]["produccion"] = produccion.ToString();
                     Session.Add("lista_productosBD", lista_productosBD);
+                    tabla_produccion_empleado.modificar_registro(id_historial, "produccion", produccion.ToString());
                 }
             }
             cargar_lista_producto();
@@ -249,11 +288,25 @@ namespace paginaWeb.paginas
                 fila_producto = funciones.buscar_fila_por_id(id, lista_productosBD);
                 TextBox textbox_stock = (gridview_productos.Rows[fila].Cells[2].FindControl("textbox_stock") as TextBox);
                 TextBox textbox_produccion = (gridview_productos.Rows[fila].Cells[5].FindControl("textbox_produccion") as TextBox);
-
-                textbox_stock.Text = lista_productosBD.Rows[fila_producto]["stock"].ToString();
-                textbox_produccion.Text = lista_productosBD.Rows[fila_producto]["produccion"].ToString();
+                if (lista_productosBD.Rows[fila_producto]["stock"].ToString() != "N/A")
+                {
+                    textbox_stock.Text = lista_productosBD.Rows[fila_producto]["stock"].ToString();
+                }
+                if (lista_productosBD.Rows[fila_producto]["produccion"].ToString() != "N/A")
+                {
+                    textbox_produccion.Text = lista_productosBD.Rows[fila_producto]["produccion"].ToString();
+                }
 
             }
+        }
+
+        protected void boton_cargar_Click(object sender, EventArgs e)
+        {
+            string id_tabla_produccion = tabla_produccion_empleado.get_id_tabla_produccion(sucursal.Rows[0]["id"].ToString()); ;
+            tabla_produccion_empleado.cargar_registro_tabla_produccion(sucursal, empleado, (DataTable)Session["lista_productosBD"], id_tabla_produccion, dropdown_turno.SelectedItem.Text);
+            lista_productosBD = tabla_produccion_empleado.get_lista_productos(sucursal, empleado, dropdown_turno.SelectedItem.Text);
+            Session.Add("lista_productosBD", lista_productosBD);
+            cargar_lista_producto();
         }
     }
 }

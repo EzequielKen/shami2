@@ -1752,6 +1752,28 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_historial_tabla_produccion(string id_sucursal,string id_empleado, string id_tabla_produccion,string turno)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".historial_tabla_produccion WHERE activa=1 and id_sucursal='" + id_sucursal + "' and id_empleado='" + id_empleado + "'and id_tabla_produccion='" + id_tabla_produccion + "' and turno='" + turno + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+
         #endregion
 
         #region consultas fabrica a proveedor
