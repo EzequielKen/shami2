@@ -50,7 +50,7 @@ namespace _02___sistemas
         #region metodos
 
 
-       
+
 
         private bool verificar_proveedor_calculo(string proveedor_dato, string proveedor_seleccionado)
         {
@@ -71,7 +71,7 @@ namespace _02___sistemas
 
         }
 
-        
+
 
         public double deuda_total_del_mes(string mes, string año)
         {
@@ -223,7 +223,7 @@ namespace _02___sistemas
         public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad) //
         {
 
-            string acuerdo, num_acuerdo, nombre_proveedor, nota;
+            string acuerdo, num_acuerdo, nombre_proveedor, nota,aumento;
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
             consultar_acuerdo_de_precios();
@@ -233,6 +233,7 @@ namespace _02___sistemas
 
             nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
             nota = pedidos.Rows[fila_pedido]["nota"].ToString();
+            aumento = pedidos.Rows[fila_pedido]["aumento"].ToString();
             fila_acuerdo = obtener_fila_de_acuerdo(acuerdo, num_acuerdo, nombre_proveedor);
 
             consultar_productos_proveedor(nombre_proveedor);
@@ -241,7 +242,7 @@ namespace _02___sistemas
             fila_remito = obtener_fila_de_remito(id_remito);
             if (seguridad <= 2)
             {
-                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota); // resumen_pedido,resumen_bonificado
+                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota,aumento); // resumen_pedido,resumen_bonificado
             }
             else
             {
@@ -341,6 +342,14 @@ namespace _02___sistemas
                 num_pedido = pedidos_no_calculados.Rows[fila]["num_pedido"].ToString();
                 tipo_de_acuerdo = pedidos_no_calculados.Rows[fila]["tipo_de_acuerdo"].ToString();
 
+                double porcentaje, impuesto=0;
+                if (pedidos_no_calculados.Rows[fila]["aumento"].ToString() != "0")
+                {
+                    impuesto = double.Parse(pedidos_no_calculados.Rows[fila]["aumento"].ToString());
+                    porcentaje = (total_remito*impuesto)/100;
+                    total_remito = total_remito+porcentaje;
+                }
+
                 if (IsNotDBNull(acuerdo_de_precios_parametreados.Rows[0]["descuentos"]))
                 {
                     porcentaje_descuento = double.Parse(acuerdo_de_precios_parametreados.Rows[0]["descuentos"].ToString());
@@ -352,15 +361,15 @@ namespace _02___sistemas
                     descuento = 0;
                 }
                 string fecha_remito = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                cargar_remito_en_BD(proveedor, sucursal_pedido, num_pedido, tipo_de_acuerdo, total_remito.ToString().Replace(",", "."), fecha_remito, descuento.ToString().Replace(",", "."));
+                cargar_remito_en_BD(proveedor, sucursal_pedido, num_pedido, tipo_de_acuerdo, total_remito.ToString().Replace(",", "."), fecha_remito, descuento.ToString().Replace(",", "."),impuesto.ToString());
                 id_pedido = pedidos_no_calculados.Rows[fila]["id"].ToString();
                 actualizar_lectura_de_pedido(id_pedido);
             }
         }
-        private void cargar_remito_en_BD(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento)
+        private void cargar_remito_en_BD(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento,string impuesto)
         {
-            administracion.cargar_remito(proveedor, sucursal, num_pedido, tipo_de_acuerdoBD, valor_remito, fecha_remito, descuento);
-        }
+            administracion.cargar_remito(proveedor, sucursal, num_pedido, tipo_de_acuerdoBD, valor_remito, fecha_remito, descuento,impuesto);
+        }  
         private void actualizar_lectura_de_pedido(string id_pedido)
         {
             administracion.actualizar_lectura_de_pedido(id_pedido);
@@ -395,7 +404,7 @@ namespace _02___sistemas
             double deuda_registrada, deuda_calculada;
             if (deuda_mes == null)
             {
-                    consultar_deuda_mes(id_sucursal, mes, año);
+                consultar_deuda_mes(id_sucursal, mes, año);
             }
             else if (deuda_mes.Rows[0]["mes"].ToString() != mes ||
                      deuda_mes.Rows[0]["año"].ToString() != año ||
@@ -435,7 +444,7 @@ namespace _02___sistemas
             }
             return deuda;
         }
-        public double calcular_deuda_del_mes(string sucursal,string id_sucursal, string mes, string año)
+        public double calcular_deuda_del_mes(string sucursal, string id_sucursal, string mes, string año)
         {
             double deuda_del_mes = 0;
             get_remitos(sucursal, mes, año);
@@ -503,23 +512,19 @@ namespace _02___sistemas
             double retorno = 0;
             string mes_anterior = obtener_mes_anterior(mes);
             string año_anterior = obtener_año_anterior(mes, año);
-            if (deuda_mes_anterior == null)
-            {
-                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
-            }
-            else if (deuda_mes_anterior.Rows.Count == 0)
-            {
-                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
-            }
-            else if (deuda_mes_anterior.Rows[0]["mes"].ToString() != mes ||
-                     deuda_mes_anterior.Rows[0]["año"].ToString() != año ||
-                     deuda_mes_anterior.Rows[0]["id_sucursal"].ToString() != id_sucursal)
-            {
-                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
-            }
+            consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
             if (deuda_mes_anterior.Rows.Count > 0)
             {
-                retorno = double.Parse(deuda_mes_anterior.Rows[0]["deuda_del_mes"].ToString());
+                for (int fil = 0; fil <= deuda_mes_anterior.Rows.Count - 1; fil++)
+                {
+                    if (deuda_mes_anterior.Rows[fil]["mes"].ToString() == mes_anterior &&
+                     deuda_mes_anterior.Rows[fil]["año"].ToString() == año_anterior &&
+                     deuda_mes_anterior.Rows[fil]["id_sucursal"].ToString() == id_sucursal)
+                    {
+                        retorno = double.Parse(deuda_mes_anterior.Rows[fil]["deuda_del_mes"].ToString());
+                        break;
+                    }
+                }
             }
             return retorno;
         }
@@ -918,6 +923,7 @@ namespace _02___sistemas
             resumen_pedido.Columns.Add("sub.total", typeof(string));
 
             resumen_pedido.Columns.Add("pedido_dato", typeof(string));
+            resumen_pedido.Columns.Add("aumento", typeof(string));
 
 
         }

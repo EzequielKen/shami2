@@ -33,6 +33,15 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.Label label_total_pedido;
 
         /// <summary>
+        /// Control textbox_porcentaje.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textbox_porcentaje;
+
+        /// <summary>
         /// Control gridview_pedido.
         /// </summary>
         /// <remarks>

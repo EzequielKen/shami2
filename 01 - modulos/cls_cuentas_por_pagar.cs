@@ -226,7 +226,7 @@ namespace modulos
             whatsapp = new cls_whatsapp();
             return whatsapp.cancelar_pedido(num_pedido, lista_proveedores, sucursalBD);
         }
-        public void cargar_remito(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento)
+        public void cargar_remito(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento,string impuesto)
         {
             string columnas, valores;
             columnas = "";
@@ -248,6 +248,9 @@ namespace modulos
 
             columnas = armar_query_columna(columnas, "valor_remito", false);
             valores = armar_query_valores(valores, valor_remito, false);
+
+            columnas = armar_query_columna(columnas, "aumento", false);
+            valores = armar_query_valores(valores, impuesto, false);
 
             columnas = armar_query_columna(columnas, "fecha_remito", true);
             valores = armar_query_valores(valores, fecha_remito, true);

@@ -47,7 +47,9 @@
 
                         </div>
 
-
+                        <div class=" alert alert-light">
+                            <asp:TextBox ID="textbox_porcentaje" CssClass="form-control" placeholder="Ingrese porcentaje de aumento" runat="server" OnTextChanged="textbox_porcentaje_TextChanged"  AutoPostBack="true"/>
+                        </div>
                         <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" OnRowDataBound="gridview_pedido_RowDataBound" runat="server" ID="gridview_pedido" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
 
                             <Columns>

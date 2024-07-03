@@ -578,7 +578,7 @@ namespace _03___sistemas_fabrica
         public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad, string sucursal_seleccionada,string mes,string año) //
         {
 
-            string acuerdo, num_acuerdo, nombre_proveedor, nota;
+            string acuerdo, num_acuerdo, nombre_proveedor, nota,impuesto;
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
             consultar_sucursales();
@@ -591,6 +591,7 @@ namespace _03___sistemas_fabrica
 
             nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
             nota = pedidos.Rows[fila_pedido]["nota"].ToString();
+            impuesto = pedidos.Rows[fila_pedido]["aumento"].ToString();
             fila_acuerdo = obtener_fila_de_acuerdo(acuerdo, num_acuerdo, nombre_proveedor);
             string id = buscar_id_sucursal(sucursal_seleccionada, sucursales);
             consultar_sucursal(id);
@@ -600,7 +601,7 @@ namespace _03___sistemas_fabrica
             fila_remito = obtener_fila_de_remito(id_remito);
             if (seguridad < 2)
             {
-                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota); // resumen_pedido,resumen_bonificado
+                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota,impuesto); // resumen_pedido,resumen_bonificado
             }
 
 
@@ -740,13 +741,16 @@ namespace _03___sistemas_fabrica
         #region metogos get/set
         public double get_deuda_actual(string sucursal)
         {
+            DateTime fecha = DateTime.Now;
             double deuda = 0;
             consultar_deuda_actual(sucursal);
             if (deuda_actual.Rows.Count > 0)
             {
                 for (int fila = 0; fila <= deuda_actual.Rows.Count - 1; fila++)
                 {
-                    if (deuda_actual.Rows[fila]["deuda_del_mes"].ToString() != "0")
+                    if (deuda_actual.Rows[fila]["sucursal"].ToString() == sucursal &&
+                        deuda_actual.Rows[fila]["mes"].ToString() == fecha.Month.ToString() &&
+                        deuda_actual.Rows[fila]["año"].ToString() == fecha.Year.ToString())
                     {
                         deuda = double.Parse(deuda_actual.Rows[fila]["deuda_del_mes"].ToString());
                         break;
@@ -873,23 +877,20 @@ namespace _03___sistemas_fabrica
             string id_sucursal = sucursalBD.Rows[0]["id"].ToString();
             string mes_anterior = obtener_mes_anterior(mes);
             string año_anterior = obtener_año_anterior(mes, año);
-            if (deuda_mes_anterior == null)
-            {
+           
                 consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
-            }
-            else if (deuda_mes_anterior.Rows.Count == 0)
-            {
-                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
-            }
-            else if (deuda_mes_anterior.Rows[0]["mes"].ToString() != mes ||
-                     deuda_mes_anterior.Rows[0]["año"].ToString() != año ||
-                     deuda_mes_anterior.Rows[0]["sucursal"].ToString() != sucursal)
-            {
-                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
-            }
             if (deuda_mes_anterior.Rows.Count > 0)
             {
-                retorno = double.Parse(deuda_mes_anterior.Rows[0]["deuda_del_mes"].ToString());
+                for (int fil = 0; fil <= deuda_mes_anterior.Rows.Count - 1; fil++)
+                {
+                    if (deuda_mes_anterior.Rows[fil]["mes"].ToString() == mes_anterior &&
+                     deuda_mes_anterior.Rows[fil]["año"].ToString() == año_anterior &&
+                     deuda_mes_anterior.Rows[fil]["id_sucursal"].ToString() == id_sucursal)
+                    {
+                        retorno = double.Parse(deuda_mes_anterior.Rows[fil]["deuda_del_mes"].ToString());
+                        break;
+                    }
+                }
             }
             return retorno;
         }

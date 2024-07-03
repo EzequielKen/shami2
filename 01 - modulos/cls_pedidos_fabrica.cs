@@ -604,12 +604,14 @@ namespace modulos
 
 
         }
-        public void actualizar_pedido(string id_pedido, DataTable pedido, string proveedor)
+        public void actualizar_pedido(string id_pedido, DataTable pedido, string proveedor, string impuesto)
         {
             cls_consultas_Mysql consultas_Mysql = new cls_consultas_Mysql(servidor, puerto, usuario, password, base_de_datos);
             int columna = 1;
             string dato = "";
-            string actualizar = "`estado` = 'Listo para despachar',";
+            string actualizar = "`aumento` = '" + impuesto + "'";
+            consultas.actualizar_tabla(base_de_datos, "pedidos", actualizar, id_pedido);
+            actualizar = "`estado` = 'Listo para despachar',";
             for (int fila = 0; fila <= pedido.Rows.Count - 1; fila++)
             {
                 if (pedido.Rows[fila]["proveedor"].ToString() == proveedor && pedido.Rows[fila]["id_pedido"].ToString() == id_pedido)
@@ -766,7 +768,7 @@ namespace modulos
 
 
         }
-        public void enviar_remito_fabrica(string id_pedido, string sucursal, string num_pedido, string nombre_remito, string valor_remito, string fecha_remito, string proveedor,string nota)
+        public void enviar_remito_fabrica(string id_pedido, string sucursal, string num_pedido, string nombre_remito, string valor_remito, string fecha_remito, string proveedor, string nota, string impuesto)
         {
             cls_consultas_Mysql consultas_Mysql = new cls_consultas_Mysql(servidor, puerto, usuario, password, base_de_datos);
             string columnas = "";
@@ -787,6 +789,9 @@ namespace modulos
             //valor_remito
             columnas = armar_query_columna(columnas, "valor_remito", false);
             valores = armar_query_valores(valores, valor_remito, false);
+            //aumento
+            columnas = armar_query_columna(columnas, "aumento", false);
+            valores = armar_query_valores(valores, impuesto, false);
             //fecha_remito
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             columnas = armar_query_columna(columnas, "fecha_remito", false);

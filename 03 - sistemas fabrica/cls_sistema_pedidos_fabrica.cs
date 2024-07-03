@@ -578,7 +578,7 @@ namespace _03___sistemas_fabrica
                 }
             }
         }
-        public void enviar_carga_de_pedido(DataTable pedido_sucursalSESSION, DataTable pedido, DataTable resumen_de_pedidos, string rol_usuario)
+        public void enviar_carga_de_pedido(DataTable pedido_sucursalSESSION, DataTable pedido, DataTable resumen_de_pedidos, string rol_usuario,string impuesto)
         {
             pedidos_sucursal = pedido_sucursalSESSION;
             string id_pedido;
@@ -616,8 +616,8 @@ namespace _03___sistemas_fabrica
                         restar_stock_insumo(pedido, proveedor);
                     }
 
-                    pedidos.enviar_remito_fabrica(id_pedido, sucursal, num_pedido, nombre_remito, valor_remito, fecha_remito, proveedor, nota_pedido);
-                    pedidos.actualizar_pedido(id_pedido, pedido, proveedor);
+                    pedidos.enviar_remito_fabrica(id_pedido, sucursal, num_pedido, nombre_remito, valor_remito, fecha_remito, proveedor, nota_pedido,impuesto);
+                    pedidos.actualizar_pedido(id_pedido, pedido, proveedor,impuesto);
                     pedidos.cargar_venta_en_rendiciones(pedido, pedidos_sucursal, fila_pedido, proveedor);
                 }
             }

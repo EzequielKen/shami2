@@ -23,7 +23,7 @@ namespace _01___modulos
 
 
         #region questPDF
-        public void GenerarPDF(string ruta_archivo, byte[] logo, DataTable pedido, string proveedor_seleccionado, int fila_remito, DataTable remitos, DataTable usuario,string nota)
+        public void GenerarPDF(string ruta_archivo, byte[] logo, DataTable pedido, string proveedor_seleccionado, int fila_remito, DataTable remitos, DataTable usuario,string nota,string aumento)
         {
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
@@ -155,30 +155,17 @@ namespace _01___modulos
                             }
                         });
 
-                        decimal total = decimal.Parse(remitos.Rows[fila_remito]["valor_remito"].ToString());
-                        /*if (IsNotDBNull(remitos.Rows[fila_remito]["descuento"]))
+                        double total = double.Parse(remitos.Rows[fila_remito]["valor_remito"].ToString());
+                        if (aumento!="0")
                         {
-                            if (remitos.Rows[fila_remito]["descuento"].ToString() == "0" || remitos.Rows[fila_remito]["descuento"].ToString() == "")
-                            {
-                                col.Item().AlignRight().Text("TOTAL:" + formatCurrency(total)).FontSize(12);
-                                
+                            double totalOriginal = total; // Cambia esto al valor que necesites
+                            double porcentajeIva = 1+ double.Parse(aumento)/100; // Porcentaje de IVA personalizado (por ejemplo, 15%)
+                            
+                            double totalSinIva = totalOriginal / porcentajeIva;
+                            col.Item().AlignRight().Text("Total Sin Impuesto:" + formatCurrency(totalSinIva)).FontSize(12);
+                            col.Item().AlignRight().Text("Impuesto: %" + aumento).FontSize(12);
 
-
-                            }
-                            else
-                            {
-                                decimal descuento = decimal.Parse(remitos.Rows[fila_remito]["descuento"].ToString());
-                                decimal valor_pedido = total + descuento;
-
-                                col.Item().AlignRight().Text("VALOR PEDIDO:" + formatCurrency(valor_pedido)).FontSize(12);
-                                col.Item().AlignRight().Text("DESCUENTO:" + formatCurrency(descuento)).FontSize(12);
-                                col.Item().AlignRight().Text("TOTAL PEDIDO:" + formatCurrency(total)).FontSize(12);
-                            }
                         }
-                        else
-                        {
-                           
-                        }*/
                         col.Item().AlignRight().Text("TOTAL:" + formatCurrency(total)).FontSize(12);
                         col.Item().Background(Colors.Grey.Lighten3).Padding(10)
                         .Column(column =>

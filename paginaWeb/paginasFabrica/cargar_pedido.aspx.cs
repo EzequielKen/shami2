@@ -74,7 +74,7 @@ namespace paginaWeb.paginasFabrica
             double total = 0;
             double sub_total = 0;
             string id_pedido = string.Empty;
-            double cantidad_entrega, precio, multiplicador;
+            double cantidad_entrega, precio, multiplicador, porcentaje, impuesto;
 
             for (int fila_resumen = 0; fila_resumen <= resumen_de_pedidos.Rows.Count - 1; fila_resumen++)
             {
@@ -89,6 +89,7 @@ namespace paginaWeb.paginasFabrica
                         total = total + sub_total;
                     }
                 }
+
                 resumen_de_pedidos.Rows[fila_resumen]["total_pedido"] = total;
             }
             Session.Add("resumen_de_pedidos", resumen_de_pedidos);
@@ -169,7 +170,7 @@ namespace paginaWeb.paginasFabrica
             tipo_usuario = (DataTable)Session["tipo_usuario"];
             seguridad = int.Parse(Session["nivel_seguridad"].ToString());
 
-           
+
             if (seguridad > 1)
             {
                 label_total_pedido.Visible = false;
@@ -245,8 +246,13 @@ namespace paginaWeb.paginasFabrica
         {
             if (verificar_carga_a_BD())
             {
-
-                pedidos_fabrica.enviar_carga_de_pedido(pedidos_sucursal, pedido, resumen_de_pedidos, tipo_usuario.Rows[0]["rol"].ToString());
+                string impuesto_carga = "0";
+                double impuesto=0;
+                if (double.TryParse(textbox_porcentaje.Text,out impuesto))
+                {
+                    impuesto_carga = impuesto.ToString();
+                }
+                pedidos_fabrica.enviar_carga_de_pedido(pedidos_sucursal, pedido, resumen_de_pedidos, tipo_usuario.Rows[0]["rol"].ToString(),impuesto_carga);
                 Response.Redirect("/paginasFabrica/sucursales.aspx", false);
             }
 
@@ -273,7 +279,7 @@ namespace paginaWeb.paginasFabrica
             double cantidad, stock, stock_total, cantidad_entrega;
             pedido.Rows[fila_producto]["presentacion_entrega_seleccionada"] = presentacion_entrega;
             pedido.Rows[fila_producto]["presentacion_extraccion_seleccionada"] = presentacion_extraccion;
-
+            double porcentaje, impuesto;
             if (double.TryParse(cantidad_dato, out cantidad))
             {
 
@@ -288,7 +294,11 @@ namespace paginaWeb.paginasFabrica
                     precio = precio * multiplicador;
                 }
                 sub_total = cantidad * precio;
-
+                if (double.TryParse(textbox_porcentaje.Text, out impuesto))
+                {
+                    porcentaje = (sub_total * impuesto) / 100;
+                    sub_total = sub_total + porcentaje;
+                }
                 stock_total = stock_total - cantidad;
                 pedido.Rows[fila_producto]["cantidad_entrega"] = cantidad.ToString();
                 pedido.Rows[fila_producto]["sub_total"] = sub_total.ToString();
@@ -327,6 +337,7 @@ namespace paginaWeb.paginasFabrica
         {
             pedido = (DataTable)Session["pedido"];
             int fila_tabla = 0;
+            double porcentaje, impuesto;
             for (int fila = 0; fila <= gridview_pedido.Rows.Count - 1; fila++)
             {
                 fila_tabla = funciones.buscar_fila_por_id_y_nombre(gridview_pedido.Rows[fila].Cells[0].Text, gridview_pedido.Rows[fila].Cells[1].Text, gridview_pedido.Rows[fila].Cells[10].Text, pedido);
@@ -346,7 +357,11 @@ namespace paginaWeb.paginasFabrica
                     precio = precio * multiplicador;
                 }
                 sub_total = cantidad_entrega * precio;
-
+                if (double.TryParse(textbox_porcentaje.Text, out impuesto))
+                {
+                    porcentaje = (sub_total * impuesto) / 100;
+                    sub_total = sub_total + porcentaje;
+                }
                 pedido.Rows[fila_tabla]["cantidad_entrega"] = cantidad_entrega.ToString();
                 pedido.Rows[fila_tabla]["sub_total"] = sub_total.ToString();
                 gridview_pedido.Rows[fila].Cells[9].Text = funciones.formatCurrency(sub_total);
@@ -458,6 +473,19 @@ namespace paginaWeb.paginasFabrica
         protected void dropdown_extraido_de_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void textbox_porcentaje_TextChanged(object sender, EventArgs e)
+        {
+            double porcentaje;
+            if (!double.TryParse(textbox_porcentaje.Text, out porcentaje))
+            {
+                textbox_porcentaje.Text = string.Empty;
+            }
+            else
+            {
+                cargar_pedido_abierto();
+            }
         }
     }
 }
