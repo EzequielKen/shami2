@@ -54,7 +54,12 @@ namespace _03___sistemas_fabrica
         DataTable deuda_mes;
         DataTable deuda_actual;
         #endregion
-
+        #region cargar iva
+        public void cargar_iva(string id_remito, string proveedor, string sucursal, string num_pedido, string valor_remito)
+        {
+            administracion.cargar_iva(id_remito,proveedor,sucursal,num_pedido,valor_remito);
+        }
+        #endregion
         #region cargar nota
         public void marcar_cobrado(string id_remito, string estado)
         {

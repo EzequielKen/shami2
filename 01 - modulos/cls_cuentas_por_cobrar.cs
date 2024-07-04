@@ -59,8 +59,39 @@ namespace _01___modulos
         DataTable pedidos_fabrica;
         DataTable deuda_mes;
         DataTable deuda_actual;
+        DataTable remitos_local;
         #endregion
+        #region cargar iva
+        public void cargar_iva(string id_remito, string proveedor, string sucursal, string num_pedido, string valor_remito)
+        {
 
+            string actualizar = "`valor_remito` = '" + valor_remito + "'";
+            consultas.actualizar_tabla(base_de_datos, "cuenta_por_pagar", actualizar, id_remito);
+
+            actualizar = "`aumento` = '21'";
+            consultas.actualizar_tabla(base_de_datos, "cuenta_por_pagar", actualizar, id_remito);
+
+            consultar_remitos_local(proveedor, sucursal, num_pedido);
+            if (remitos_local.Rows.Count > 0)
+            {
+
+                string id_remito_local = remitos_local.Rows[0]["id"].ToString();
+
+                actualizar = "`valor_remito` = '" + valor_remito + "'";
+                consultas.actualizar_tabla(base_de_datos, "remitos", actualizar, id_remito_local);
+
+                actualizar = "`aumento` = '21'";
+                consultas.actualizar_tabla(base_de_datos, "remitos", actualizar, id_remito_local);
+            }
+
+            consultar_pedido(proveedor, sucursal, num_pedido);
+
+            string id_pedido = pedidos.Rows[0]["id"].ToString();
+            actualizar = "`aumento` = '21'";
+            consultas.actualizar_tabla(base_de_datos, "pedidos", actualizar, id_pedido);
+
+        }
+        #endregion
         #region cargar nota
         public void marcar_cobrado(string id_remito, string estado)
         {
@@ -136,18 +167,18 @@ namespace _01___modulos
         #endregion
 
         #region carga a base de datos
-        public void actualizar_deuda_del_mes(string id_deuda,string deuda_del_mes)
+        public void actualizar_deuda_del_mes(string id_deuda, string deuda_del_mes)
         {
             string actualizar = "`deuda_del_mes` = '" + deuda_del_mes + "'";
             consultas.actualizar_tabla(base_de_datos, "deudas_local_a_fabrica", actualizar, id_deuda);
         }
-        public void crear_deuda_del_mes(string id_sucursal,string sucursal,string mes,string año, string deuda_del_mes)
+        public void crear_deuda_del_mes(string id_sucursal, string sucursal, string mes, string año, string deuda_del_mes)
         {
             string columnas = string.Empty;
-            string valores = string.Empty;  
+            string valores = string.Empty;
             //id_sucursal
-            columnas = funciones.armar_query_columna(columnas,"id_sucursal",false);
-            valores = funciones.armar_query_valores(valores,id_sucursal,false);
+            columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
+            valores = funciones.armar_query_valores(valores, id_sucursal, false);
             //sucursal
             columnas = funciones.armar_query_columna(columnas, "sucursal", false);
             valores = funciones.armar_query_valores(valores, sucursal, false);
@@ -161,7 +192,7 @@ namespace _01___modulos
             columnas = funciones.armar_query_columna(columnas, "deuda_del_mes", true);
             valores = funciones.armar_query_valores(valores, deuda_del_mes, true);
 
-            consultas.insertar_en_tabla(base_de_datos, "deudas_local_a_fabrica",columnas,valores);
+            consultas.insertar_en_tabla(base_de_datos, "deudas_local_a_fabrica", columnas, valores);
         }
         public void autorizar_imputacion(string id_imputacion)
         {
@@ -363,9 +394,13 @@ namespace _01___modulos
         {
             remitos = consultas.consultar_cuenta_por_pagar_segun_fecha(sucursal, mes, año);
         }
+        private void consultar_remitos_local(string proveedor, string sucursal, string num_pedido)
+        {
+            remitos_local = consultas.consultar_remito_de_pedido(base_de_datos, proveedor, sucursal, num_pedido);
+        }
         private void consultar_remitos_todas_las_sucursales(string mes, string año)
         {
-            remitos = consultas.consultar_remitos_todas_las_sucursales( mes, año);
+            remitos = consultas.consultar_remitos_todas_las_sucursales(mes, año);
         }
         private void consultar_remitos_proveedores_a_fabrica()
         {
@@ -382,6 +417,10 @@ namespace _01___modulos
         private void consultar_pedidos()
         {
             pedidos = consultas.consultar_tabla(base_de_datos, "pedidos");
+        }
+        private void consultar_pedido(string proveedor, string sucursal, string num_pedido)
+        {
+            pedidos = consultas.consultar_pedido(base_de_datos, proveedor, sucursal, num_pedido);
         }
         private void consultar_pedidos_no_calculados()
         {
@@ -456,9 +495,9 @@ namespace _01___modulos
             consultar_remitos(sucursal, mes, año);
             return remitos;
         }
-        public DataTable get_remitos_todas_las_sucursales( string mes, string año)
+        public DataTable get_remitos_todas_las_sucursales(string mes, string año)
         {
-            consultar_remitos_todas_las_sucursales(mes,año);
+            consultar_remitos_todas_las_sucursales(mes, año);
             return remitos;
         }
         public DataTable get_remitos_proveedores_a_fabrica()

@@ -1773,7 +1773,25 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_pedido(string base_de_datos, string proveedor, string sucursal, string num_pedido)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
 
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".pedidos where activa=1 and proveedor='" + proveedor + "' and sucursal='" + sucursal + "' and num_pedido='" + num_pedido + "'";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region consultas fabrica a proveedor

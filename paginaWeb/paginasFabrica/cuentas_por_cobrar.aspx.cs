@@ -226,6 +226,7 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_remitos()
         {
+            
             remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             Session.Add("remitosBD", remitosBD);
 
@@ -237,7 +238,7 @@ namespace paginaWeb.paginasFabrica
             gridView_remitos.DataSource = remitos;
             gridView_remitos.DataBind();
 
-           
+
             gridView_imputaciones.DataBind();
             gridView_imputaciones.DataSource = imputaciones;
             gridView_imputaciones.DataBind();
@@ -344,7 +345,7 @@ namespace paginaWeb.paginasFabrica
                 configurar_controles();
 
                 configurar_controles_nota_credito();
-             
+
 
             }
 
@@ -373,7 +374,7 @@ namespace paginaWeb.paginasFabrica
             if (!IsPostBack)
             {
                 sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
-             
+
 
                 proveedor_seleccionado = proveedorBD.Rows[0]["nombre_proveedor"].ToString();
                 nombre_proveedor_seleccionado = proveedorBD.Rows[0]["nombre_en_BD"].ToString();
@@ -401,13 +402,13 @@ namespace paginaWeb.paginasFabrica
 
         protected void dropDown_mes_SelectedIndexChanged(object sender, EventArgs e)
         {
-   
+
             cargar_remitos();
         }
 
         protected void dropDown_año_SelectedIndexChanged(object sender, EventArgs e)
         {
-          
+
             cargar_remitos();
         }
 
@@ -425,8 +426,8 @@ namespace paginaWeb.paginasFabrica
                 string ruta_archivo = Server.MapPath(ruta);
 
                 byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
-                
-                sistema_Administracion.crear_pdf(ruta_archivo, gridView_remitos.SelectedRow.Cells[0].Text, proveedor_seleccionado, imgdata, Session["nivel_seguridad"].ToString(), Session["sucursal_seleccionada"].ToString(),dropDown_mes.SelectedItem.Text,dropDown_año.SelectedItem.Text); //crear_pdf();
+
+                sistema_Administracion.crear_pdf(ruta_archivo, gridView_remitos.SelectedRow.Cells[0].Text, proveedor_seleccionado, imgdata, Session["nivel_seguridad"].ToString(), Session["sucursal_seleccionada"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text); //crear_pdf();
 
                 //           Response.Redirect("~/archivo.pdf");
                 string strUrl = "/paginasFabrica/pdf/" + id_pedido;
@@ -461,6 +462,8 @@ namespace paginaWeb.paginasFabrica
                 else
                 {
                     gridView_remitos.Rows[fila].Cells[5].Controls[0].Visible = false;
+                    Button boton_iva = (gridView_remitos.Rows[fila].Cells[8].FindControl("boton_iva") as Button);
+                    boton_iva.Visible = false;
                 }
                 id = gridView_remitos.Rows[fila].Cells[0].Text;
                 fila_remito = funciones.buscar_fila_por_id(id, remitosBD);
@@ -470,6 +473,11 @@ namespace paginaWeb.paginasFabrica
                     boton_cobrado.Text = "Desmarcar";
                     boton_cobrado.CssClass = "btn btn-danger";
                     gridView_remitos.Rows[fila].CssClass = "table-success";
+                }
+                if (remitosBD.Rows[fila_remito]["aumento"].ToString() != "0")
+                {
+                    Button boton_iva = (gridView_remitos.Rows[fila].Cells[8].FindControl("boton_iva") as Button);
+                    boton_iva.Visible = false;
                 }
             }
         }
@@ -633,7 +641,7 @@ namespace paginaWeb.paginasFabrica
                 }
                 else
                 {
-                    string cantidad_a_cargar =  cantidad.ToString();
+                    string cantidad_a_cargar = cantidad.ToString();
                     sistema_Administracion.cargar_nota_credito(dropDown_sucursales.SelectedItem.Text, textBox_detalle_boleta.Text, cantidad_a_cargar);
                     textBox_monto_boleta.Text = string.Empty;
                     textBox_detalle_boleta.Text = string.Empty;
@@ -643,6 +651,61 @@ namespace paginaWeb.paginasFabrica
                 Session.Add("remitosBD", remitosBD);
                 cargar_remitos();
             }
+        }
+
+        protected void boton_iva_Click(object sender, EventArgs e)
+        {
+            remitosBD = (DataTable)Session["remitosBD"];
+
+            Button boton_iva = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_iva.NamingContainer;
+            int fila = row.RowIndex;
+
+            string id = gridView_remitos.Rows[fila].Cells[0].Text;
+
+            int fila_remitos = funciones.buscar_fila_por_id(id, remitosBD);
+
+            double valor_remito = double.Parse(remitosBD.Rows[fila_remitos]["valor_remito"].ToString());
+
+            double porcentaje = (valor_remito * 21) / 100;
+
+            valor_remito = valor_remito + porcentaje;
+
+            string proveedor = remitosBD.Rows[fila_remitos]["proveedor"].ToString();
+            string sucursal = gridView_remitos.Rows[fila].Cells[1].Text;
+            string num_pedido = gridView_remitos.Rows[fila].Cells[2].Text;
+            sistema_Administracion.cargar_iva(id,proveedor,sucursal,num_pedido,valor_remito.ToString());
+            
+            DateTime fecha_actual = DateTime.Now;
+            int mes_seleccionado = int.Parse(dropDown_mes.SelectedItem.Text);
+            int año_seleccionado = int.Parse(dropDown_año.SelectedItem.Text);
+            bool seguir=true;
+            while (seguir)
+            {
+                sistema_Administracion.get_deuda_total_mes(sucursal,mes_seleccionado.ToString(),año_seleccionado.ToString());
+                if (mes_seleccionado == fecha_actual.Month &&
+                    año_seleccionado == fecha_actual.Year)
+                {
+                    seguir = false;
+                }
+                else
+                {
+                    if (mes_seleccionado < fecha_actual.Month &&
+                        año_seleccionado == fecha_actual.Year)
+                    {
+                        mes_seleccionado++;
+                    }
+                    else if (mes_seleccionado == 12 &&
+                             año_seleccionado < fecha_actual.Year)
+                    {
+                        mes_seleccionado = 1;
+                        año_seleccionado++;
+                    }
+                }
+            }
+            remitosBD = sistema_Administracion.get_remitos(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+
+            cargar_remitos();
         }
     }
 }

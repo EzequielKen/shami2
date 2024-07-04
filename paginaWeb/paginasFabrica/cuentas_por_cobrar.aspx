@@ -7,6 +7,24 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+
+            <!-- Modal -->
+            <div class="modal fade" id="spinnerModal" tabindex="-1" aria-labelledby="spinnerModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="spinnerModalLabel">calculando... espere...</h5>
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="container-fluid">
                 <h2>Cuentas por Cobrar</h2>
                 <div class="row">
@@ -112,6 +130,11 @@
                                         <asp:TemplateField HeaderText="Cobrado">
                                             <ItemTemplate>
                                                 <asp:Button ID="boton_cobrado" CssClass="btn btn-primary" Text="Cobrado" runat="server" OnClick="boton_cobrado_Click" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Aplicar IVA">
+                                            <ItemTemplate>
+                                                <asp:Button ID="boton_iva" CssClass="btn btn-primary" Text="Aplicar IVA" runat="server" OnClick="boton_iva_Click" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

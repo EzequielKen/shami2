@@ -300,11 +300,11 @@ namespace paginaWeb.paginas
                             boton_eliminar.Visible = false;
                         }
                     }
-                    else if (id_empleado != "N/A")
+                   /* else if (id_empleado != "N/A")
                     {
                         Button boton_eliminar = (gridview_historial.Rows[fila].Cells[7].FindControl("boton_eliminar") as Button);
                         boton_eliminar.Visible = false;
-                    }
+                    }*/
 
                 }
             }

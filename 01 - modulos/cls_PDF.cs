@@ -162,8 +162,9 @@ namespace _01___modulos
                             double porcentajeIva = 1+ double.Parse(aumento)/100; // Porcentaje de IVA personalizado (por ejemplo, 15%)
                             
                             double totalSinIva = totalOriginal / porcentajeIva;
+                            double diferencia = totalOriginal - totalSinIva;
                             col.Item().AlignRight().Text("Total Sin Impuesto:" + formatCurrency(totalSinIva)).FontSize(12);
-                            col.Item().AlignRight().Text("Impuesto: %" + aumento).FontSize(12);
+                            col.Item().AlignRight().Text("Impuesto: %" + aumento +" "+ formatCurrency(diferencia)).FontSize(12);
 
                         }
                         col.Item().AlignRight().Text("TOTAL:" + formatCurrency(total)).FontSize(12);
