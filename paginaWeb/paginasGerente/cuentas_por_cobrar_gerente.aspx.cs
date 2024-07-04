@@ -583,6 +583,8 @@ namespace paginaWeb.paginasGerente
 
         protected void boton_cobrado_Click(object sender, EventArgs e)
         {
+            remitosBD = (DataTable)Session["remitosBD"];
+
             Button boton_cobrado = (Button)sender;
             GridViewRow row = (GridViewRow)boton_cobrado.NamingContainer;
             int fila = row.RowIndex;
