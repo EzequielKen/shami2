@@ -18,7 +18,7 @@
     <title>Shami | Sistema</title>
     <meta property="og:image" content="/imagenes/logo-redondo.png" />
     <link href="/imagenes/logo-redondo.png" rel=" shortcut icon" />
-
+    <meta charset="utf-8" />
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
     <meta name="viewport" content="width=device-width, initial-scale=1">

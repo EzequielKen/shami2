@@ -16,7 +16,7 @@ namespace acceso_a_base_de_datos
         public cls_conexion(string servidor, string puerto,string usuario,string password,string base_de_datos)
         {
          
-            cadena_conexion = "server="+servidor+";"+"port="+puerto+";"+"user id="+usuario+";"+"password="+password+";"+"database="+base_de_datos+";";
+            cadena_conexion = "server="+servidor+";"+"port="+puerto+";"+"user id="+usuario+";"+"password="+password+";"+"database="+base_de_datos+ ";CharSet=utf8;";
 
             conexion = new MySqlConnection(cadena_conexion);
         }

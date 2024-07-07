@@ -17,6 +17,8 @@
     <meta charset="utf-8">
     <!-- Favicon-->
     <title>Shami | Sistema</title>
+    <meta charset="utf-8" />
+
     <meta property="og:image" content="/imagenes/logo-redondo.png" />
     <link href="/imagenes/logo-redondo.png" rel=" shortcut icon" />
 
