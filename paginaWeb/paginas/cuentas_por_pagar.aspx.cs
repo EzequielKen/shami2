@@ -333,6 +333,7 @@ namespace paginaWeb.paginas
                 string ruta_archivo = Server.MapPath(ruta);
 
                 byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+                string ruta_logo = "~/imagenes/logo-completo.png";
                 sistema_Administracion.crear_pdf(ruta_archivo, gridView_remitos.SelectedRow.Cells[0].Text, dropDown_proveedores.SelectedItem.Text, imgdata, Session["nivel_seguridad"].ToString()); //crear_pdf();
 
                 //           Response.Redirect("~/archivo.pdf");

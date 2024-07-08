@@ -3,6 +3,7 @@ using paginaWeb;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using QuestPDF.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,6 +26,7 @@ namespace _01___modulos
         #region questPDF
         public void GenerarPDF(string ruta_archivo, byte[] logo, DataTable pedido, string proveedor_seleccionado, int fila_remito, DataTable remitos, DataTable usuario,string nota,string aumento)
         {
+
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
             {
