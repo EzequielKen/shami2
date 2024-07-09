@@ -483,7 +483,8 @@ namespace paginaWeb.paginas
                 gridview_chequeos.Visible = true;
 
                 label_alerta_registro.Visible = false;
-
+                gridview_chequeos.DataSource = null;
+                gridview_chequeos.DataBind();
                 configurar_botones_cargos(historial_chequeo.Rows[0]["cargo"].ToString());
             }
             else

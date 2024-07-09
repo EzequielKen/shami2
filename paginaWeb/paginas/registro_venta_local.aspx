@@ -6,6 +6,23 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+
+            <!-- Modal -->
+            <div class="modal fade" id="spinnerModal" tabindex="-1" aria-labelledby="spinnerModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="spinnerModalLabel">Registrando Venta... espere...</h5>
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class=" container-fluid">
                 <h1>Registro / Historial de Ventas Diarias.</h1>
                 <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];%>
@@ -17,7 +34,7 @@
                             <asp:Label ID="label_turno" Text="Turno seleccionado: N/A" runat="server" />
                             <asp:TextBox ID="textbox_venta" CssClass="form-control" placeholder="Ingrese venta" runat="server" OnTextChanged="textbox_venta_TextChanged" AutoPostBack="true" />
                             <asp:TextBox ID="textbox_nota" CssClass="form-control" placeholder="Ingrese nota" runat="server" />
-                            <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Registrar" OnClick="boton_cargar_Click" runat="server" />
+                            <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Registrar" OnClick="boton_cargar_Click" runat="server" data-bs-toggle="modal" data-bs-target="#spinnerModal" />
                             <asp:Label ID="label_total" Text="Total: $0.00" runat="server" />
                         </div>
                     </div>

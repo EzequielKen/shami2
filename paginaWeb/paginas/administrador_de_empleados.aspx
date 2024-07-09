@@ -101,6 +101,8 @@
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
+                            <span class="badge rounded-pill text-bg-primary">Azul = No Seleccionado</span>
+                            <span class="badge rounded-pill text-bg-success">Verde = Seleccionado</span>
                             <h2>
                                 <asp:Label ID="label_total" Text="text" runat="server" />
                             </h2>

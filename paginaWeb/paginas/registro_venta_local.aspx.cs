@@ -251,6 +251,7 @@ namespace paginaWeb.paginas
                 Session.Add("registro_venta_localBD", registro_venta_localBD);
                 caragar_registro_venta_local();
                 label_total.Text = "Total: $0.00";
+                Response.Redirect("/paginas/registro_venta_local.aspx",false);
             }
         }
 
@@ -343,7 +344,7 @@ namespace paginaWeb.paginas
 
         protected void calendario_fecha_registro_SelectionChanged(object sender, EventArgs e)
         {
-            Session.Add("fecha_registro_seleccionada", calendario_fecha_registro.SelectedDate);
+            Session.Add("fecha_registro_seleccionada", calendario_fecha_registro.SelectedDate.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second));
             DateTime fecha_registro_seleccionada = (DateTime)Session["fecha_registro_seleccionada"];
             label_fecha.Text = "Fecha de registro: " + fecha_registro_seleccionada.ToString("dd/MM/yyyy");
 
