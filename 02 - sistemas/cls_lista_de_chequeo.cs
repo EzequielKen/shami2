@@ -258,6 +258,8 @@ namespace _02___sistemas
 
                     //actividad
                     historial.Rows[ultima_fila]["actividad"] = historial_turno2.Rows[fila]["actividad"].ToString();
+                    //cargo
+                    historial.Rows[ultima_fila]["cargo"] = historial_turno2.Rows[fila]["cargo"].ToString();
 
                 }
             }
@@ -298,6 +300,7 @@ namespace _02___sistemas
                 }
                 else if (turno == "Turno 2")// "rango 2" == verificar_horario(fecha) ||"rango 3" == verificar_horario(fecha)
                 {
+                    fecha = fecha.AddHours(18).AddMinutes(0).AddSeconds(0);
 
                     consultar_historial_turno2(fecha, id_empleado, id_sucursal);
                 }

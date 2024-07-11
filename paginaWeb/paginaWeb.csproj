@@ -179,6 +179,7 @@
     <Content Include="paginas\historial_lista_chequeo.aspx" />
     <Content Include="paginas\historial_pedido.aspx" />
     <Content Include="paginas\lista_de_chequeo.aspx" />
+    <Content Include="paginas\lista_de_faltantes.aspx" />
     <Content Include="paginas\login.aspx" />
     <Content Include="paginas\pedido.aspx" />
     <Content Include="paginas\proveedores.aspx" />
@@ -827,6 +828,13 @@
     </Compile>
     <Compile Include="paginas\lista_de_chequeo.aspx.designer.cs">
       <DependentUpon>lista_de_chequeo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\lista_de_faltantes.aspx.cs">
+      <DependentUpon>lista_de_faltantes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\lista_de_faltantes.aspx.designer.cs">
+      <DependentUpon>lista_de_faltantes.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\login.aspx.cs">
       <DependentUpon>login.aspx</DependentUpon>
