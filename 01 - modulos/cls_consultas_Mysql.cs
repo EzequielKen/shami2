@@ -1361,7 +1361,7 @@ namespace modulos
 
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".movimientos_caja_chica WHERE activa=1 and MONTH(fecha) = '" + mes+"' and year(fecha)='"+año+ "' and concepto='" + concepto + "'	;";
+                query = "SELECT * FROM " + base_de_datos + ".movimientos_caja_chica WHERE activa=1 and MONTH(fecha) = '" + mes + "' and year(fecha)='" + año + "' and concepto='" + concepto + "'	;";
 
 
                 retorno = base_datos.READ(query);
@@ -1437,7 +1437,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_configuracion_chequeo( string perfil)
+        public DataTable consultar_configuracion_chequeo(string perfil)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1501,7 +1501,7 @@ namespace modulos
             return retorno;
         }
         public DataTable consultar_usuario_segun_sucural(string id_sucursal)
-        {   
+        {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
             string query;
@@ -1521,15 +1521,15 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia,string hora_inicio,string hora_fin, string id_empleado,string id_sucursal)
+        public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
             string query;
-                
+
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".historial_lista_chequeo WHERE activa=1 and id_sucursal='" + id_sucursal + "' and id_empleado='" + id_empleado + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "' AND TIME(fecha) BETWEEN '"+hora_inicio+"' AND '"+hora_fin+"';";
+                query = "SELECT * FROM " + base_de_datos + ".historial_lista_chequeo WHERE activa=1 and id_sucursal='" + id_sucursal + "' and id_empleado='" + id_empleado + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "' AND TIME(fecha) BETWEEN '" + hora_inicio + "' AND '" + hora_fin + "';";
 
 
                 retorno = base_datos.READ(query);
@@ -1542,7 +1542,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_registro_venta_local_segun_fecha(string id_sucursal,string fecha_inicio, string fecha_fin)
+        public DataTable consultar_registro_venta_local_segun_fecha(string id_sucursal, string fecha_inicio, string fecha_fin)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1668,7 +1668,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_remitos_todas_las_sucursales( string mes, string año)
+        public DataTable consultar_remitos_todas_las_sucursales(string mes, string año)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1752,7 +1752,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_historial_tabla_produccion(string id_sucursal,string id_empleado, string id_tabla_produccion,string turno)
+        public DataTable consultar_historial_tabla_produccion(string id_sucursal, string id_empleado, string id_tabla_produccion, string turno)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1782,6 +1782,25 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + ".pedidos where activa=1 and proveedor='" + proveedor + "' and sucursal='" + sucursal + "' and num_pedido='" + num_pedido + "'";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_lista_de_faltantes(string id_sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".lista_de_faltantes where activa=1 and id_sucursal='" + id_sucursal + "'";
                 retorno = base_datos.READ(query);
             }
             catch (Exception ex)
@@ -1834,7 +1853,7 @@ namespace modulos
 
             return retorno;
         }
-       
+
         public DataTable consultar_cuenta_por_pagar_fabrica(string id)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
@@ -1857,7 +1876,7 @@ namespace modulos
         #endregion
 
         #region verificaciones 
-        public DataTable consultar_produccion(string fabrica,string proveedor,string receptor,string fecha)
+        public DataTable consultar_produccion(string fabrica, string proveedor, string receptor, string fecha)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1877,7 +1896,7 @@ namespace modulos
             return retorno;
         }
 
-        public DataTable consultar_remito_cuentas_por_pagar( string sucursal, string num_pedido, string nombre_remito, string valor_remito, string proveedor)
+        public DataTable consultar_remito_cuentas_por_pagar(string sucursal, string num_pedido, string nombre_remito, string valor_remito, string proveedor)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1904,7 +1923,7 @@ namespace modulos
 
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".descripcion_de_cargos where rol='" + rol +"'and activa=1";
+                query = "SELECT * FROM " + base_de_datos + ".descripcion_de_cargos where rol='" + rol + "'and activa=1";
                 retorno = base_datos.READ(query);
             }
             catch (Exception ex)

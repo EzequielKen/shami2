@@ -103,6 +103,24 @@ namespace paginaWeb
             }
             return retorno;
         }
+        public int buscar_fila_por_id_proveedor(string id, string proveedor, DataTable dt)
+        {
+            int retorno = -1;
+            int fila = 0;
+            while (fila <= dt.Rows.Count - 1)
+            {
+
+                string id_muestra = dt.Rows[fila]["id"].ToString();
+                string nombre_muestra = dt.Rows[fila]["producto"].ToString();
+                if (id == dt.Rows[fila]["id"].ToString() && proveedor == dt.Rows[fila]["proveedor"].ToString())
+                {
+                    retorno = fila;
+                    break;
+                }
+                fila++;
+            }
+            return retorno;
+        }
         public int buscar_fila_por_id_y_nombre(string id,string nombre, string id_pedido ,DataTable dt)
         {
             int retorno = -1;

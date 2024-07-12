@@ -10,9 +10,27 @@
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-light">
-                            <label>Tipo Producto</label>
-                            <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged1" AutoPostBack="true">
-                            </asp:DropDownList>
+                            <div class="input-group">
+
+                                <h4>
+                                    <label>Tipo Producto</label>
+                                </h4>
+                                <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged1" AutoPostBack="true">
+                                </asp:DropDownList>
+
+                                <h4>
+                                    <label>Buscar</label>
+                                </h4>
+                                <asp:TextBox ID="textbox_buscar" CssClass="form-control" placeholder="Buscar..." runat="server" OnTextChanged="textbox_buscar_TextChanged" AutoPostBack="true"/>
+
+                                <h4>
+                                    <label>Filtro</label>
+                                </h4>
+                                <asp:DropDownList ID="dropdown_filtro" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropdown_filtro_SelectedIndexChanged"  AutoPostBack="true">
+                                    <asp:ListItem Text="Todos" />
+                                    <asp:ListItem Text="Faltantes" />
+                                </asp:DropDownList>
+                            </div>
                             <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_productos_RowDataBound">
                                 <Columns>
                                     <asp:BoundField HeaderText="id" DataField="id" />

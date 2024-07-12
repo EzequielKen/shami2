@@ -40,6 +40,77 @@ namespace _02___sistemas
         DataTable productos_terminados;
         DataTable insumos;
         DataTable resumen;
+        DataTable resumen_carga;
+        DataTable lista_de_faltantes;
+        #endregion
+
+        #region carga a base de datos
+        public void cargar_lista_faltante(string id_sucursal, string sucursal, DataTable productosBD)
+        {
+            llenar_resumen_carga(productosBD);
+            string columnas = string.Empty;
+            string valores = string.Empty;
+            //id_sucursal
+            columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
+            valores = funciones.armar_query_valores(valores, id_sucursal, false);
+            //sucursal
+            columnas = funciones.armar_query_columna(columnas, "sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal, false);
+            //fecha
+            columnas = funciones.armar_query_columna(columnas, "fecha", false);
+            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
+            string id, producto, proveedor, dato = string.Empty;
+            int index = 1;
+            for (int fila = 0; fila < resumen_carga.Rows.Count - 1; fila++)
+            {
+                id = resumen_carga.Rows[fila]["id"].ToString();
+                producto = resumen_carga.Rows[fila]["producto"].ToString();
+                proveedor = resumen_carga.Rows[fila]["proveedor"].ToString();
+                dato = id + "-" + producto + "-" + proveedor;
+                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), false);
+                valores = funciones.armar_query_valores(valores, dato, false);
+                index++;
+            }
+            int ultima_fila = resumen_carga.Rows.Count - 1;
+            if (ultima_fila>=0)
+            {
+                id = resumen_carga.Rows[ultima_fila]["id"].ToString();
+                producto = resumen_carga.Rows[ultima_fila]["producto"].ToString();
+                proveedor = resumen_carga.Rows[ultima_fila]["proveedor"].ToString();
+                dato = id + "-" + producto + "-" + proveedor;
+                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
+                valores = funciones.armar_query_valores(valores, dato, true);
+            }
+            else
+            {
+                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
+                valores = funciones.armar_query_valores(valores, "N/A", true);
+            }
+            consultas.insertar_en_tabla(base_de_datos, "lista_de_faltantes", columnas, valores);
+        }
+        private void crear_tabla_resumen_carga()
+        {
+            resumen_carga = new DataTable();
+            resumen_carga.Columns.Add("id", typeof(string));
+            resumen_carga.Columns.Add("producto", typeof(string));
+            resumen_carga.Columns.Add("proveedor", typeof(string));
+        }
+        private void llenar_resumen_carga(DataTable productosBD)
+        {
+            crear_tabla_resumen_carga();
+            int ultima_fila;
+            for (int fila = 0; fila <= productosBD.Rows.Count - 1; fila++)
+            {
+                if (productosBD.Rows[fila]["faltante"].ToString() != "N/A")
+                {
+                    resumen_carga.Rows.Add();
+                    ultima_fila = resumen_carga.Rows.Count - 1;
+                    resumen_carga.Rows[ultima_fila]["id"] = productosBD.Rows[fila]["id"].ToString();
+                    resumen_carga.Rows[ultima_fila]["producto"] = productosBD.Rows[fila]["producto"].ToString();
+                    resumen_carga.Rows[ultima_fila]["proveedor"] = productosBD.Rows[fila]["proveedor"].ToString();
+                }
+            }
+        }
         #endregion
 
         #region metodos consultas
@@ -50,6 +121,10 @@ namespace _02___sistemas
         private void consultar_insumos()
         {
             insumos = consultas.consultar_insumos_fabrica_venta(base_de_datos, "insumos_fabrica");
+        }
+        private void consultar_lista_de_faltantes(string id_sucursal)
+        {
+            lista_de_faltantes = consultas.consultar_lista_de_faltantes(id_sucursal);
         }
         #endregion
 
@@ -80,7 +155,7 @@ namespace _02___sistemas
                 resumen.Rows[ultima_fila]["orden_tipo"] = int.Parse(funciones.obtener_dato(productos_terminados.Rows[fila]["tipo_producto"].ToString(), 1));
             }
 
-            for (int fila = 0; fila <= insumos.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= insumos.Rows.Count - 1; fila++)
             {
                 resumen.Rows.Add();
                 ultima_fila = resumen.Rows.Count - 1;
@@ -93,14 +168,35 @@ namespace _02___sistemas
             }
             resumen.DefaultView.Sort = "orden_tipo ASC";
             resumen = resumen.DefaultView.ToTable();
+
+            if (lista_de_faltantes.Rows.Count > 0)
+            {
+                string id_producto = string.Empty;
+                string proveedor = string.Empty;
+                int fila_producto;
+                for (int columna = lista_de_faltantes.Columns["producto_1"].Ordinal; columna <= lista_de_faltantes.Columns.Count - 1; columna++)
+                {
+                    if (lista_de_faltantes.Rows[0][columna].ToString() != "N/A")
+                    {
+                        id_producto = funciones.obtener_dato(lista_de_faltantes.Rows[0][columna].ToString(), 1);
+                        proveedor = funciones.obtener_dato(lista_de_faltantes.Rows[0][columna].ToString(), 3);
+                        fila_producto = funciones.buscar_fila_por_id_proveedor(id_producto, proveedor, resumen);
+                        resumen.Rows[fila_producto]["faltante"] = "Si";
+                    }
+                }
+            }
+
         }
         #endregion
 
         #region metodos get/set
-        public DataTable get_lista_producto()
+        public DataTable get_lista_producto(string id_sucursal)
         {
             consultar_productos_terminados();
             consultar_insumos();
+            consultar_lista_de_faltantes(id_sucursal);
+            lista_de_faltantes.DefaultView.Sort = "fecha DESC";
+            lista_de_faltantes = lista_de_faltantes.DefaultView.ToTable();
             llenar_tabla_resumen();
             return resumen;
         }
