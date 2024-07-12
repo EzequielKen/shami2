@@ -110,6 +110,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/tabla_produccion.aspx">Tabla de Produccion</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/lista_de_faltantes.aspx">Lista de Faltante</a>
+                    </li>
                 </ul>
                 <%}
                     else
