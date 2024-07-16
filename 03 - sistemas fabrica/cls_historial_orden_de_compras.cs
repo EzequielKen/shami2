@@ -188,9 +188,9 @@ namespace _03___sistemas_fabrica
         }
         #endregion
         #region metodos consultas
-        private void consultar_ordenes_de_compra()
+        private void consultar_ordenes_de_compra(string mes, string año)
         {
-            ordenes_de_compra = consultas.consultar_tabla(base_de_datos, "ordenes_de_compra");
+            ordenes_de_compra = consultas.consultar_orden_de_compras_segun_mes(mes,año);
         } 
         private void consultar_orden_de_compra_por_id(string id)
         {
@@ -216,9 +216,9 @@ namespace _03___sistemas_fabrica
             consultar_lista_proveedores_fabrica();
             return proveedores_de_fabrica;
         }
-        public DataTable get_ordenes_de_compra()
+        public DataTable get_ordenes_de_compra(string mes,string año)
         {
-            consultar_ordenes_de_compra();
+            consultar_ordenes_de_compra(mes,año);
             return ordenes_de_compra;
         }
         public DataTable get_ordenes_de_compra_de_proveedor(string nombre_proveedor)

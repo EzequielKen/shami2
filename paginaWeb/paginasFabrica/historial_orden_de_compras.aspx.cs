@@ -63,8 +63,8 @@ namespace paginaWeb.paginasFabrica
         }
         private void consultar_ordenes_de_compra_de_proveedor()
         {
-            //      proveedores_de_fabrica_seleccionado = Session["proveedores_de_fabrica_seleccionado"].ToString();
-            ordenes_de_compra_de_proveedorBD = historial.get_ordenes_de_compra();
+            ordenes_de_compra_de_proveedorBD = historial.get_ordenes_de_compra(dropDown_mes.SelectedItem.Text,dropDown_año.SelectedItem.Text);
+            Session.Add("ordenes_de_compra_de_proveedorBD", ordenes_de_compra_de_proveedorBD);
         }
         #endregion
 
@@ -217,7 +217,7 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_ordenes()
         {
-            consultar_ordenes_de_compra_de_proveedor();
+            ordenes_de_compra_de_proveedorBD = (DataTable)Session["ordenes_de_compra_de_proveedorBD"];
             llenar_tabla_ordenes();
 
             gridView_ordenes.DataSource = ordenes_de_compra_de_proveedor;
@@ -226,7 +226,7 @@ namespace paginaWeb.paginasFabrica
 
         private void cargar_ordenes_abiertas()
         {
-            consultar_ordenes_de_compra_de_proveedor();
+            ordenes_de_compra_de_proveedorBD = (DataTable)Session["ordenes_de_compra_de_proveedorBD"];
             llenar_tabla_ordenes_abiertas();
 
             gridView_ordenes.DataSource = ordenes_de_compra_de_proveedor;
@@ -234,7 +234,7 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_ordenes_recibidas()
         {
-            consultar_ordenes_de_compra_de_proveedor();
+            ordenes_de_compra_de_proveedorBD = (DataTable)Session["ordenes_de_compra_de_proveedorBD"];
             llenar_tabla_ordenes_recibidas();
 
             gridView_ordenes.DataSource = ordenes_de_compra_de_proveedor;
@@ -300,7 +300,9 @@ namespace paginaWeb.paginasFabrica
             dropDown_año.SelectedIndex = dropDown_año.Items.Count - 1;
         }
         #endregion
-
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
         #region atributos
         cls_historial_orden_de_compras historial;
         cls_cuentas_por_pagar cuentas_Por_Pagar;
@@ -338,9 +340,6 @@ namespace paginaWeb.paginasFabrica
                     Session.Add("historial_orden_compra", new cls_historial_orden_de_compras(usuariosBD));
                 }
                 historial = (cls_historial_orden_de_compras)Session["historial_orden_compra"];
-                proveedores_de_fabrica = historial.get_proveedores_de_fabrica();
-                Session.Add("proveedores_de_fabrica", proveedores_de_fabrica);
-
                 if (!IsPostBack)
                 {
                     configurar_controles();
@@ -372,11 +371,15 @@ namespace paginaWeb.paginasFabrica
 
         protected void dropDown_mes_SelectedIndexChanged(object sender, EventArgs e)
         {
+                    consultar_ordenes_de_compra_de_proveedor();
+
             cargar_ordenes();
         }
 
         protected void dropDown_año_SelectedIndexChanged(object sender, EventArgs e)
         {
+            consultar_ordenes_de_compra_de_proveedor();
+
             cargar_ordenes();
         }
         protected void DropDown_estado_SelectedIndexChanged(object sender, EventArgs e)

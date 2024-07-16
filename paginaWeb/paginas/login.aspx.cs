@@ -1,7 +1,7 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
-using paginaWeb.paginasFabrica;
 using System;
+using System.Configuration;
 using System.Data;
 using System.IO;
 namespace paginaWeb
@@ -45,6 +45,10 @@ namespace paginaWeb
                 usuarioBD = login_sistema.get_usuarios();
 
                 sucursal = login_sistema.get_sucursal();
+                if ("1" == ConfigurationManager.AppSettings["desarrollo"])
+                {
+                    usuarioBD.Rows[0]["servidor"] = "201.235.217.38";
+                }
                 Session.Add("sucursal", sucursal);
                 Session.Add("usuariosBD", usuarioBD);
                 tipo_usuario = login_sistema.get_tipo_usuario();
@@ -117,15 +121,7 @@ namespace paginaWeb
                     }
                     else
                     {
-                        if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
-                        {
-
-                            Response.Redirect("~/paginas/proveedores.aspx", false);
-                        }
-                        else
-                        {
-                            Response.Redirect("~/paginas/cuentas_por_pagar.aspx", false);
-                        }
+                        Response.Redirect("~/paginas/proveedores.aspx", false);
                     }
                 }
             }
