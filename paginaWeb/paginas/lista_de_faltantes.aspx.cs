@@ -51,7 +51,26 @@ namespace paginaWeb.paginas
             for (int fila = 0; fila <= productosBD.Rows.Count - 1; fila++)
             {
                 if (funciones.verificar_tipo_producto(productosBD.Rows[fila]["tipo_producto"].ToString(), dropDown_tipo.SelectedItem.Text) &&
-                    funciones.buscar_alguna_coincidencia(textbox_buscar.Text, productosBD.Rows[fila]["producto"].ToString()) &&
+                    verificar_filtro(productosBD.Rows[fila]["faltante"].ToString()))
+                {
+                    productos.Rows.Add();
+                    ultima_fila = productos.Rows.Count - 1;
+                    productos.Rows[ultima_fila]["id"] = productosBD.Rows[fila]["id"].ToString();
+                    productos.Rows[ultima_fila]["producto"] = productosBD.Rows[fila]["producto"].ToString();
+                    productos.Rows[ultima_fila]["tipo_producto"] = productosBD.Rows[fila]["tipo_producto"].ToString();
+                    productos.Rows[ultima_fila]["proveedor"] = productosBD.Rows[fila]["proveedor"].ToString();
+                    productos.Rows[ultima_fila]["faltante"] = productosBD.Rows[fila]["faltante"].ToString();
+                }
+            }
+        }
+        private void llenar_tabla_productos_busqueda()
+        {
+            productosBD = (DataTable)Session["productosBD"];
+            crear_tabla_productos();
+            int ultima_fila;
+            for (int fila = 0; fila <= productosBD.Rows.Count - 1; fila++)
+            {
+                if (funciones.buscar_alguna_coincidencia(textbox_buscar.Text, productosBD.Rows[fila]["producto"].ToString()) &&
                     verificar_filtro(productosBD.Rows[fila]["faltante"].ToString()))
                 {
                     productos.Rows.Add();
@@ -104,7 +123,12 @@ namespace paginaWeb.paginas
             gridview_productos.DataSource = productos;
             gridview_productos.DataBind();
         }
-
+        private void cargar_productos_busqueda()
+        {
+            llenar_tabla_productos_busqueda();
+            gridview_productos.DataSource = productos;
+            gridview_productos.DataBind();
+        }
         private void cargar_productos_faltantes()
         {
             llenar_tabla_productos_faltantes();
@@ -239,13 +263,21 @@ namespace paginaWeb.paginas
 
         protected void textbox_buscar_TextChanged(object sender, EventArgs e)
         {
-            if (dropdown_filtro.SelectedItem.Text == "Todos")
+            if (textbox_buscar.Text == string.Empty &&
+                dropdown_filtro.SelectedItem.Text == "Todos")
             {
                 cargar_productos();
             }
             else
             {
-                cargar_productos_faltantes();
+                if (dropdown_filtro.SelectedItem.Text == "Todos")
+                {
+                    cargar_productos_busqueda();
+                }
+                else
+                {
+                    cargar_productos_faltantes();
+                }
             }
         }
 

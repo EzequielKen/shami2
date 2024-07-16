@@ -300,9 +300,11 @@ namespace _02___sistemas
                 }
                 else if (turno == "Turno 2")// "rango 2" == verificar_horario(fecha) ||"rango 3" == verificar_horario(fecha)
                 {
-                    fecha = fecha.AddHours(18).AddMinutes(0).AddSeconds(0);
-
-                    consultar_historial_turno2(fecha, id_empleado, id_sucursal);
+                    DateTime nueva_fecha = new DateTime(fecha.Year,
+                                                        fecha.Month,
+                                                        fecha.Day,
+                                                        18, 0, 0);
+                    consultar_historial_turno2(nueva_fecha, id_empleado, id_sucursal);
                 }
 
             }

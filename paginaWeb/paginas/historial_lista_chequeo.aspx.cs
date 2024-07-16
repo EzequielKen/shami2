@@ -30,16 +30,36 @@ namespace paginaWeb.paginas
             int ultima_fila = 0;
             for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count - 1; fila++)
             {
-                lista_de_empleado.Rows.Add();
-                ultima_fila = lista_de_empleado.Rows.Count - 1;
-                lista_de_empleado.Rows[ultima_fila]["id"] = lista_de_empleadoBD.Rows[fila]["id"].ToString();
-                lista_de_empleado.Rows[ultima_fila]["id_sucursal"] = lista_de_empleadoBD.Rows[fila]["id_sucursal"].ToString();
-                lista_de_empleado.Rows[ultima_fila]["nombre"] = lista_de_empleadoBD.Rows[fila]["nombre"].ToString();
-                lista_de_empleado.Rows[ultima_fila]["apellido"] = lista_de_empleadoBD.Rows[fila]["apellido"].ToString();
-                lista_de_empleado.Rows[ultima_fila]["dni"] = lista_de_empleadoBD.Rows[fila]["dni"].ToString();
-                lista_de_empleado.Rows[ultima_fila]["telefono"] = lista_de_empleadoBD.Rows[fila]["telefono"].ToString();
-                lista_de_empleado.Rows[ultima_fila]["cargo"] = lista_de_empleadoBD.Rows[fila]["cargo"].ToString();
+                if (dropdown_turno.SelectedItem.Text == historial.verificar_horario_turno((DateTime)lista_de_empleadoBD.Rows[fila]["fecha_logueo"]) ||
+                    dropdown_turno.SelectedItem.Text == "Todos")
+                {
+                    if (!verificar_si_cargo(lista_de_empleadoBD.Rows[fila]["id_empleado"].ToString()))
+                    {
+                        lista_de_empleado.Rows.Add();
+                        ultima_fila = lista_de_empleado.Rows.Count - 1;
+                        lista_de_empleado.Rows[ultima_fila]["id"] = lista_de_empleadoBD.Rows[fila]["id_empleado"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["id_sucursal"] = lista_de_empleadoBD.Rows[fila]["id_sucursal"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["nombre"] = lista_de_empleadoBD.Rows[fila]["nombre"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["apellido"] = lista_de_empleadoBD.Rows[fila]["apellido"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["dni"] = lista_de_empleadoBD.Rows[fila]["dni"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["telefono"] = lista_de_empleadoBD.Rows[fila]["telefono"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["cargo"] = lista_de_empleadoBD.Rows[fila]["cargo"].ToString();
+                    }
+                }
             }
+        }
+        private bool verificar_si_cargo(string id_empleado)
+        {
+            bool retorno = false;
+            for (int fila = 0; fila <= lista_de_empleado.Rows.Count - 1; fila++)
+            {
+                if (id_empleado == lista_de_empleado.Rows[fila]["id"].ToString())
+                {
+                    retorno = true;
+                    break;
+                }
+            }
+            return retorno;
         }
         private void cargar_lista_empleados()
         {
@@ -410,13 +430,13 @@ namespace paginaWeb.paginas
                 Session.Add("perfil_seleccionado", "N/A");
             }
             lista_chequeo = (cls_lista_de_chequeo)Session["lista_chequeo"];
-            lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString());
             lista_de_chequeoBD = historial.get_lista_de_chequeo();
             if (!IsPostBack)
             {
 
                 label_fecha.Text = "fecha seleccionada: " + fecha_de_hoy.ToString("dd/MM/yyyy");
                 Session.Add("fecha_historial_chequeo", fecha_de_hoy);
+                lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
                 cargar_lista_empleados();
             }
         }
@@ -458,7 +478,6 @@ namespace paginaWeb.paginas
             Button boton_cargar = (Button)sender;
             GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
             int fila = row.RowIndex;
-            DropDownList dropdown_cargo = (gridview_empleados.Rows[fila].Cells[3].FindControl("dropdown_cargo") as DropDownList);
 
             string id_empleado = gridview_empleados.Rows[fila].Cells[0].Text;
             string nombre = gridview_empleados.Rows[fila].Cells[1].Text;
@@ -466,9 +485,20 @@ namespace paginaWeb.paginas
             empleado = historial.get_empleado(id_empleado);
             Session.Add("empleado_historial", empleado);
             DateTime fecha = (DateTime)Session["fecha_historial_chequeo"];
-            historial_chequeo = lista_chequeo.get_historial(fecha,dropdown_turno.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+            if (dropdown_turno.SelectedItem.Text != "Todos")
+            {
+                historial_chequeo = lista_chequeo.get_historial(fecha, dropdown_turno.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+
+            }
+            else
+            {
+                DropDownList dropdown_turno_empleado = (gridview_empleados.Rows[fila].Cells[4].FindControl("dropdown_turno_empleado") as DropDownList);
+
+                historial_chequeo = lista_chequeo.get_historial(fecha, dropdown_turno_empleado.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+
+            }
             Session.Add("historial_chequeo", historial_chequeo);
-            if (historial_chequeo.Rows.Count>0)
+            if (historial_chequeo.Rows.Count > 0)
             {
 
                 lista_de_chequeoBD = historial.get_lista_de_chequeo();
@@ -505,14 +535,32 @@ namespace paginaWeb.paginas
                 gridview_chequeos.Visible = false;
                 DateTime fecha_seleccionada = (DateTime)Session["fecha_historial_chequeo"];
                 string nombre_empleado = empleado.Rows[0]["nombre"].ToString() + " " + empleado.Rows[0]["apellido"].ToString();
-                label_alerta_registro.Text = "No hay registros del empleado "+ nombre_empleado + " para la fecha " + fecha_seleccionada.ToString("dd/MM/yyyy") + " en el " + dropdown_turno.SelectedItem.Text;
+                if (dropdown_turno.SelectedItem.Text != "Todos")
+                {
+                    label_alerta_registro.Text = "No hay registros del empleado " + nombre_empleado + " para la fecha " + fecha_seleccionada.ToString("dd/MM/yyyy") + " en el " + dropdown_turno.SelectedItem.Text;
+
+                }
+                else
+                {
+                    DropDownList dropdown_turno_empleado = (gridview_empleados.Rows[fila].Cells[4].FindControl("dropdown_turno_empleado") as DropDownList);
+
+                    label_alerta_registro.Text = "No hay registros del empleado " + nombre_empleado + " para la fecha " + fecha_seleccionada.ToString("dd/MM/yyyy") + " en el " + dropdown_turno_empleado.SelectedItem.Text;
+
+                }
                 label_alerta_registro.Visible = true;
             }
         }
 
         protected void gridview_empleados_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-
+            if (dropdown_turno.SelectedItem.Text != "Todos")
+            {
+                gridview_empleados.Columns[4].Visible = false;
+            }
+            else
+            {
+                gridview_empleados.Columns[4].Visible = true;
+            }
         }
 
         protected void calendario_SelectionChanged(object sender, EventArgs e)
@@ -520,6 +568,8 @@ namespace paginaWeb.paginas
             DateTime fecha = calendario.SelectedDate.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second);
             label_fecha.Text = "fecha seleccionada: " + fecha.ToString("dd/MM/yyyy");
             Session.Add("fecha_historial_chequeo", fecha);
+            lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), (DateTime)Session["fecha_historial_chequeo"]);
+            cargar_lista_empleados();
         }
         protected void boton_encargado_Click(object sender, EventArgs e)
         {
@@ -592,6 +642,10 @@ namespace paginaWeb.paginas
             cargar_lista_chequeo();
         }
 
-        
+        protected void dropdown_turno_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), (DateTime)Session["fecha_historial_chequeo"]);
+            cargar_lista_empleados();
+        }
     }
 }

@@ -92,6 +92,31 @@ namespace _02___sistemas
             }
             return retorno;
         }
+        public string verificar_horario_turno(DateTime miFecha)
+        {
+            string retorno = "fuera de rango";
+
+            // Definir los límites de tiempo
+            DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 08, 0, 0); // 8:00 AM
+            DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 16, 59, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
+            {
+                retorno = "Turno 1";
+            }
+            DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0); // 8:00 AM
+            DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 59, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2)
+            {
+                retorno = "Turno 2";
+            }
+            DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 00, 0, 0); // 8:00 AM
+            DateTime horaFin_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 04, 59, 0); // 12:00 PM
+            if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
+            {
+                retorno = "rango 3";
+            }
+            return retorno;
+        }
         private void crear_tabla_resumen()
         {
             resumen = new DataTable();
@@ -130,9 +155,9 @@ namespace _02___sistemas
         {
             empleado = consultas.consultar_empleado(id_empleado);
         }
-        private void consultar_lista_de_empleado(string id_sucursal)
+        private void consultar_lista_de_empleado(string id_sucursal, DateTime fecha)
         {
-            lista_de_empleado = consultas.consultar_empleados(id_sucursal);
+            lista_de_empleado = consultas.consultar_empleados_segun_fecha(id_sucursal,fecha.Year.ToString(),fecha.Month.ToString(),fecha.Day.ToString());
         }
         private void consultar_configuracion_de_chequeo(string perfil)
         {
@@ -149,9 +174,9 @@ namespace _02___sistemas
             consultar_empleado(id_empleado);
             return empleado;
         }
-        public DataTable get_lista_de_empleado(string id_sucursal)
+        public DataTable get_lista_de_empleado(string id_sucursal,DateTime fecha)
         {
-            consultar_lista_de_empleado(id_sucursal);
+            consultar_lista_de_empleado(id_sucursal,fecha);
           //  limpiar_lista_empleados(fecha);
             return lista_de_empleado;
         }

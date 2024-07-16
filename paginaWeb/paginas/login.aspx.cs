@@ -127,6 +127,7 @@ namespace paginaWeb
                 Session.Add("usuariosBD", usuarioBD);
                 crear_tipo_usuario();
                 Session.Add("tipo_usuario", tipo_usuario);
+                login_sistema.registrar_logueo_empleado((DataTable)Session["empleado"]);
                 Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
 
             }

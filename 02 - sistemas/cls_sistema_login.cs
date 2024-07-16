@@ -111,6 +111,43 @@ namespace _02___sistemas
             }
             return retorno;
         }
+        public void registrar_logueo_empleado(DataTable empleado_logueado)
+        {
+            string columnas = string.Empty;
+            string valores = string.Empty;
+            //id_empleado
+            columnas = funciones.armar_query_columna(columnas, "id_empleado", false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["id"].ToString(),false);
+            //id_sucursal
+            columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["id_sucursal"].ToString(), false);
+
+            //nombre
+            columnas = funciones.armar_query_columna(columnas, "nombre", false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["nombre"].ToString(), false);
+
+            //apellido
+            columnas = funciones.armar_query_columna(columnas, "apellido", false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["apellido"].ToString(), false);
+
+            //dni
+            columnas = funciones.armar_query_columna(columnas, "dni", false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["dni"].ToString(), false);
+
+            //telefono
+            columnas = funciones.armar_query_columna(columnas, "telefono", false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["telefono"].ToString(), false);
+
+            //cargo
+            columnas = funciones.armar_query_columna(columnas, "cargo", false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["cargo"].ToString(), false);
+
+            //fecha_logueo
+            columnas = funciones.armar_query_columna(columnas, "fecha_logueo", true);
+            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), true);
+
+            consultas_Mysql.insertar_en_tabla(base_de_datos, "registro_logueo_empleados",columnas,valores);
+        }
         #endregion
 
         #region metodos privados

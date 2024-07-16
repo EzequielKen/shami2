@@ -15,15 +15,6 @@ namespace paginaWeb.paginas
     {
 
         /// <summary>
-        /// Control dropDown_tipo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
-
-        /// <summary>
         /// Control textbox_buscar.
         /// </summary>
         /// <remarks>
@@ -31,6 +22,15 @@ namespace paginaWeb.paginas
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox textbox_buscar;
+
+        /// <summary>
+        /// Control dropDown_tipo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
 
         /// <summary>
         /// Control dropdown_filtro.

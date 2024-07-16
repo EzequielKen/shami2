@@ -11,6 +11,10 @@
                     <div class="col">
                         <div class="alert alert-light">
                             <div class="input-group">
+                                <h4>
+                                    <label>Buscar</label>
+                                </h4>
+                                <asp:TextBox ID="textbox_buscar" CssClass="form-control" placeholder="Buscar..." runat="server" OnTextChanged="textbox_buscar_TextChanged" AutoPostBack="true" />
 
                                 <h4>
                                     <label>Tipo Producto</label>
@@ -18,15 +22,11 @@
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged1" AutoPostBack="true">
                                 </asp:DropDownList>
 
-                                <h4>
-                                    <label>Buscar</label>
-                                </h4>
-                                <asp:TextBox ID="textbox_buscar" CssClass="form-control" placeholder="Buscar..." runat="server" OnTextChanged="textbox_buscar_TextChanged" AutoPostBack="true"/>
 
                                 <h4>
                                     <label>Filtro</label>
                                 </h4>
-                                <asp:DropDownList ID="dropdown_filtro" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropdown_filtro_SelectedIndexChanged"  AutoPostBack="true">
+                                <asp:DropDownList ID="dropdown_filtro" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropdown_filtro_SelectedIndexChanged" AutoPostBack="true">
                                     <asp:ListItem Text="Todos" />
                                     <asp:ListItem Text="Faltantes" />
                                 </asp:DropDownList>

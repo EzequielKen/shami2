@@ -20,7 +20,8 @@
                             <h3>
                                 <label>Seleccione Turno.</label>
                             </h3>
-                            <asp:DropDownList ID="dropdown_turno" CssClass="form-control" runat="server">
+                            <asp:DropDownList ID="dropdown_turno" CssClass="form-control" OnSelectedIndexChanged="dropdown_turno_SelectedIndexChanged" runat="server" AutoPostBack="true">
+                                <asp:ListItem Text="Todos" />
                                 <asp:ListItem Text="Turno 1" />
                                 <asp:ListItem Text="Turno 2" />
                             </asp:DropDownList>
@@ -39,6 +40,14 @@
                             <asp:TemplateField HeaderText="Historial">
                                 <ItemTemplate>
                                     <asp:Button ID="boton_historial" CssClass="btn btn-primary" Text="Ver Detalle" runat="server" OnClick="boton_historial_Click" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Turno">
+                                <ItemTemplate>
+                                    <asp:DropDownList ID="dropdown_turno_empleado" CssClass="form-control" runat="server">
+                                        <asp:ListItem Text="Turno 1" />
+                                        <asp:ListItem Text="Turno 2" />
+                                    </asp:DropDownList>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -84,9 +93,9 @@
                         <asp:DropDownList ID="dropDown_categoria" Visible="false" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_categoria_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                     </div>
-                    
-                        <asp:Label ID="label_alerta_registro" CssClass="alert alert-danger" Visible="false" Text="No hay registros" runat="server" />
-                    
+
+                    <asp:Label ID="label_alerta_registro" CssClass="alert alert-danger" Visible="false" Text="No hay registros" runat="server" />
+
                     <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
