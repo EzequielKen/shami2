@@ -41,7 +41,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <%//MENU SUCURSAL %>
                 <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];
-
+                    System.Data.DataTable sucursal = (System.Data.DataTable)Session["sucursal"];
 
                     if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Fabrica Fatay")
                     {%>
@@ -118,6 +118,9 @@
                     else
                     {%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString()=="0")
+                        {%>
+
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/proveedores.aspx">Realizar Pedidos</a>
                     </li>
@@ -131,9 +134,13 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/calendario_de_entrega.aspx">Calendario de entrega</a>
                     </li>
+                    <%    } %>
+
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/cuentas_por_pagar.aspx">Cuentas por pagar</a>
                     </li>
+                    <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString()=="0")
+                        {%>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/registro_venta_local.aspx">Registro de venta del local</a>
                     </li>
@@ -149,6 +156,7 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/lista_de_faltantes.aspx">Lista de Faltante</a>
                     </li>
+                    <%    } %>
                 </ul>
                 <% }%>
                 <h1>
