@@ -258,10 +258,10 @@ namespace paginaWeb.paginas
 
                     sistema_Administracion = (cls_sistema_cuentas_por_pagar)Session["sistema_Administracion"];
                     sistema_Administracion.actualizar_remitos();
+                    Session.Add("lista_proveedores", sistema_Administracion.get_lista_proveedores());
                     configurar_controles();
                 }
                 sistema_Administracion = (cls_sistema_cuentas_por_pagar)Session["sistema_Administracion"];
-
                 if (Session["remitos"] == null)
                 {
                     remitosBD = sistema_Administracion.get_remitos();

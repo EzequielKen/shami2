@@ -1,5 +1,6 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
+using paginaWeb.paginasFabrica;
 using System;
 using System.Data;
 using System.IO;
@@ -10,7 +11,7 @@ namespace paginaWeb
         private void crear_tipo_usuario()
         {
             tipo_usuario = new DataTable();
-            tipo_usuario.Columns.Add("tipo",typeof(string));
+            tipo_usuario.Columns.Add("tipo", typeof(string));
             tipo_usuario.Columns.Add("seguridad", typeof(string));
             tipo_usuario.Columns.Add("rol", typeof(string));
 
@@ -26,6 +27,7 @@ namespace paginaWeb
         DataTable usuarioBD;
         DataTable proveedorBD;
         DataTable tipo_usuario;
+        DataTable sucursal;
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -42,9 +44,10 @@ namespace paginaWeb
 
                 usuarioBD = login_sistema.get_usuarios();
 
-                Session.Add("sucursal", login_sistema.get_sucursal());
+                sucursal = login_sistema.get_sucursal();
+                Session.Add("sucursal", sucursal);
                 Session.Add("usuariosBD", usuarioBD);
-                 tipo_usuario = login_sistema.get_tipo_usuario();
+                tipo_usuario = login_sistema.get_tipo_usuario();
                 Session.Add("tipo_usuario", tipo_usuario);
                 Session.Add("nivel_seguridad", tipo_usuario.Rows[0]["seguridad"].ToString());
                 if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Gerente")
@@ -82,11 +85,11 @@ namespace paginaWeb
                         else if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Compras")
                         {
                             Response.Redirect("~/paginasFabrica/proveedores_fabrica.aspx", false);
-                        } 
+                        }
                         else if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin")
                         {
                             Response.Redirect("~/paginasFabrica/produccion.aspx", false);
-                        } 
+                        }
                         else
                         {
                             if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")
@@ -103,7 +106,7 @@ namespace paginaWeb
                             }
                             else
                             {
-                                Response.Redirect("~/paginasFabrica/sucursales.aspx", false); 
+                                Response.Redirect("~/paginasFabrica/sucursales.aspx", false);
                             }
                         }
 
@@ -114,7 +117,15 @@ namespace paginaWeb
                     }
                     else
                     {
-                        Response.Redirect("~/paginas/proveedores.aspx", false);
+                        if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
+                        {
+
+                            Response.Redirect("~/paginas/proveedores.aspx", false);
+                        }
+                        else
+                        {
+                            Response.Redirect("~/paginas/cuentas_por_pagar.aspx", false);
+                        }
                     }
                 }
             }

@@ -610,6 +610,11 @@ namespace _02___sistemas
             consultar_lista_proveedores();
             return obtener_nombre_proveedor(proveedor);
         }
+        public DataTable get_lista_proveedores()
+        {
+            consultar_lista_proveedores();
+            return lista_proveedores;
+        }
         #endregion
         //-------------------------------------------------------------------------------------------------------------------------------------
         #region metodos privados
@@ -1019,6 +1024,7 @@ namespace _02___sistemas
 
 
         #region metodos consulta
+        
         private void consultar_imputaciones(string sucursal, string mes, string año)
         {
             imputaciones = administracion.get_imputaciones(sucursal, mes, año);
