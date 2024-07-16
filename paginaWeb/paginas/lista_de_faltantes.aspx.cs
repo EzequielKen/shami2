@@ -43,6 +43,15 @@ namespace paginaWeb.paginas
             productos.Columns.Add("proveedor", typeof(string));
             productos.Columns.Add("faltante", typeof(string));
         }
+        private void crear_tabla_productos_faltantes()
+        {
+            productos_faltantes = new DataTable();
+            productos_faltantes.Columns.Add("id", typeof(string));
+            productos_faltantes.Columns.Add("producto", typeof(string));
+            productos_faltantes.Columns.Add("tipo_producto", typeof(string));
+            productos_faltantes.Columns.Add("proveedor", typeof(string));
+            productos_faltantes.Columns.Add("faltante", typeof(string));
+        }
         private void llenar_tabla_productos()
         {
             productosBD = (DataTable)Session["productosBD"];
@@ -50,8 +59,7 @@ namespace paginaWeb.paginas
             int ultima_fila;
             for (int fila = 0; fila <= productosBD.Rows.Count - 1; fila++)
             {
-                if (funciones.verificar_tipo_producto(productosBD.Rows[fila]["tipo_producto"].ToString(), dropDown_tipo.SelectedItem.Text) &&
-                    verificar_filtro(productosBD.Rows[fila]["faltante"].ToString()))
+                if (funciones.verificar_tipo_producto(productosBD.Rows[fila]["tipo_producto"].ToString(), dropDown_tipo.SelectedItem.Text))
                 {
                     productos.Rows.Add();
                     ultima_fila = productos.Rows.Count - 1;
@@ -70,8 +78,7 @@ namespace paginaWeb.paginas
             int ultima_fila;
             for (int fila = 0; fila <= productosBD.Rows.Count - 1; fila++)
             {
-                if (funciones.buscar_alguna_coincidencia(textbox_buscar.Text, productosBD.Rows[fila]["producto"].ToString()) &&
-                    verificar_filtro(productosBD.Rows[fila]["faltante"].ToString()))
+                if (funciones.buscar_alguna_coincidencia(textbox_buscar.Text, productosBD.Rows[fila]["producto"].ToString()))
                 {
                     productos.Rows.Add();
                     ultima_fila = productos.Rows.Count - 1;
@@ -86,54 +93,42 @@ namespace paginaWeb.paginas
         private void llenar_tabla_productos_faltantes()
         {
             productosBD = (DataTable)Session["productosBD"];
-            crear_tabla_productos();
+            crear_tabla_productos_faltantes();
             int ultima_fila;
             for (int fila = 0; fila <= productosBD.Rows.Count - 1; fila++)
             {
-                if (funciones.buscar_alguna_coincidencia(textbox_buscar.Text, productosBD.Rows[fila]["producto"].ToString()) &&
-                    verificar_filtro(productosBD.Rows[fila]["faltante"].ToString()))
+                if (productosBD.Rows[fila]["faltante"].ToString()== "Si")
                 {
-                    productos.Rows.Add();
-                    ultima_fila = productos.Rows.Count - 1;
-                    productos.Rows[ultima_fila]["id"] = productosBD.Rows[fila]["id"].ToString();
-                    productos.Rows[ultima_fila]["producto"] = productosBD.Rows[fila]["producto"].ToString();
-                    productos.Rows[ultima_fila]["tipo_producto"] = productosBD.Rows[fila]["tipo_producto"].ToString();
-                    productos.Rows[ultima_fila]["proveedor"] = productosBD.Rows[fila]["proveedor"].ToString();
-                    productos.Rows[ultima_fila]["faltante"] = productosBD.Rows[fila]["faltante"].ToString();
+                    productos_faltantes.Rows.Add();
+                    ultima_fila = productos_faltantes.Rows.Count - 1;
+                    productos_faltantes.Rows[ultima_fila]["id"] = productosBD.Rows[fila]["id"].ToString();
+                    productos_faltantes.Rows[ultima_fila]["producto"] = productosBD.Rows[fila]["producto"].ToString();
+                    productos_faltantes.Rows[ultima_fila]["tipo_producto"] = productosBD.Rows[fila]["tipo_producto"].ToString();
+                    productos_faltantes.Rows[ultima_fila]["proveedor"] = productosBD.Rows[fila]["proveedor"].ToString();
+                    productos_faltantes.Rows[ultima_fila]["faltante"] = productosBD.Rows[fila]["faltante"].ToString();
                 }
             }
         }
-        private bool verificar_filtro(string faltante)
-        {
-            bool retorno = false;
-            if (dropdown_filtro.SelectedItem.Text == "Todos")
-            {
-                retorno = true;
-            }
-            else if (dropdown_filtro.SelectedItem.Text == "Faltantes" &&
-                    faltante == "Si")
-            {
-                retorno = true;
-            }
-            return retorno;
-        }
+      
         private void cargar_productos()
         {
             llenar_tabla_productos();
             gridview_productos.DataSource = productos;
             gridview_productos.DataBind();
+            cargar_productos_faltantes();
         }
         private void cargar_productos_busqueda()
         {
             llenar_tabla_productos_busqueda();
             gridview_productos.DataSource = productos;
             gridview_productos.DataBind();
+            cargar_productos_faltantes();
         }
         private void cargar_productos_faltantes()
         {
             llenar_tabla_productos_faltantes();
-            gridview_productos.DataSource = productos;
-            gridview_productos.DataBind();
+            gridview_resumen.DataSource = productos_faltantes;
+            gridview_resumen.DataBind();
         }
         #endregion
         #region controles
@@ -185,6 +180,7 @@ namespace paginaWeb.paginas
         DataTable empleado;
         DataTable productosBD;
         DataTable productos;
+        DataTable productos_faltantes;
         DateTime fecha_de_hoy = DateTime.Now;
 
 
@@ -225,14 +221,9 @@ namespace paginaWeb.paginas
             cambiar_estado_producto(id);
             productosBD = faltantes.get_lista_producto(sucursal.Rows[0]["id"].ToString());
             Session.Add("productosBD", productosBD);
-            if (dropdown_filtro.SelectedItem.Text == "Todos")
-            {
-                cargar_productos();
-            }
-            else
-            {
-                cargar_productos_faltantes();
-            }
+
+            cargar_productos();
+
         }
 
         protected void gridview_productos_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -245,7 +236,7 @@ namespace paginaWeb.paginas
                 id_producto = gridview_productos.Rows[fila].Cells[0].Text;
                 producto = gridview_productos.Rows[fila].Cells[1].Text;
                 fila_producto = funciones.buscar_fila_por_id_nombre(id_producto, producto, productosBD);
-                Button boton_faltante = (gridview_productos.Rows[fila].Cells[0].FindControl("boton_faltante") as Button);
+                Button boton_faltante = (gridview_productos.Rows[fila].Cells[2].FindControl("boton_faltante") as Button);
                 if (productosBD.Rows[fila_producto]["faltante"].ToString() == "Si")
                 {
                     gridview_productos.Rows[fila].CssClass = "table-danger";
@@ -263,34 +254,57 @@ namespace paginaWeb.paginas
 
         protected void textbox_buscar_TextChanged(object sender, EventArgs e)
         {
-            if (textbox_buscar.Text == string.Empty &&
-                dropdown_filtro.SelectedItem.Text == "Todos")
-            {
-                cargar_productos();
-            }
-            else
-            {
-                if (dropdown_filtro.SelectedItem.Text == "Todos")
-                {
-                    cargar_productos_busqueda();
-                }
-                else
-                {
-                    cargar_productos_faltantes();
-                }
-            }
+
+           cargar_productos_busqueda();
+
         }
 
         protected void dropdown_filtro_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (dropdown_filtro.SelectedItem.Text == "Todos")
+
+            cargar_productos();
+
+        }
+
+        protected void gridview_resumen_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            productosBD = (DataTable)Session["productosBD"];
+            string id_producto, producto;
+            int fila_producto;
+            for (int fila = 0; fila <= gridview_resumen.Rows.Count - 1; fila++)
             {
-                cargar_productos();
+                id_producto = gridview_resumen.Rows[fila].Cells[0].Text;
+                producto = gridview_resumen.Rows[fila].Cells[1].Text;
+                fila_producto = funciones.buscar_fila_por_id_nombre(id_producto, producto, productosBD);
+                Button boton_faltante_resumen = (gridview_resumen.Rows[fila].Cells[2].FindControl("boton_faltante_resumen") as Button);
+                if (productosBD.Rows[fila_producto]["faltante"].ToString() == "Si")
+                {
+                    gridview_resumen.Rows[fila].CssClass = "table-danger";
+
+                    boton_faltante_resumen.CssClass = "btn btn-danger";
+                    boton_faltante_resumen.Text = "Desmarcar";
+                }
+                else
+                {
+                    boton_faltante_resumen.CssClass = "btn btn-primary";
+                    boton_faltante_resumen.Text = "Marcar Como Faltante";
+                }
             }
-            else
-            {
-                cargar_productos_faltantes();
-            }
+        }
+
+        protected void boton_faltante_resumen_Click(object sender, EventArgs e)
+        {
+            Button boton_faltante = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_faltante.NamingContainer;
+            int rowIndex = row.RowIndex;
+
+            string id = gridview_resumen.Rows[rowIndex].Cells[0].Text;
+            cambiar_estado_producto(id);
+            productosBD = faltantes.get_lista_producto(sucursal.Rows[0]["id"].ToString());
+            Session.Add("productosBD", productosBD);
+
+            cargar_productos();
+
         }
     }
 }

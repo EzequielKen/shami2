@@ -314,10 +314,19 @@ namespace paginaWeb.paginasFabrica
                 Session.Add("ordenes_compra", new cls_crear_orden_de_compras(usuariosBD));
             }
             ordenes_compra = (cls_crear_orden_de_compras)Session["ordenes_compra"];
-            insumos_proveedorBD = ordenes_compra.get_insumos_proveedor(id_proveedor_fabrica_seleccionado);
-            proveedor = ordenes_compra.get_proveedor(id_proveedor_fabrica_seleccionado);
             if (!IsPostBack)
             {
+                insumos_proveedorBD = ordenes_compra.get_insumos_proveedor(id_proveedor_fabrica_seleccionado);
+                proveedor = ordenes_compra.get_proveedor(id_proveedor_fabrica_seleccionado);
+                Session.Add("insumos_proveedorBD", insumos_proveedorBD);
+                Session.Add("proveedor_crear_pedido", proveedor);
+
+            }
+            insumos_proveedorBD = (DataTable)Session["insumos_proveedorBD"];
+            proveedor = (DataTable)Session["proveedor_crear_pedido"];
+            if (!IsPostBack)
+            {
+                
                 Session.Add("fechaBD", "N/A");
 
                 if (insumos_proveedorBD.Rows.Count > 0)

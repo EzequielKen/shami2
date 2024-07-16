@@ -53,7 +53,7 @@ namespace paginaWeb.paginasFabrica
             string condicion_pago = orden_de_compraBD.Rows[0]["condicion_pago"].ToString();
 
 
-            orden_compra.actualizar_orden_de_compra(num_orden_de_compra_seleccionada, orden_de_compraBD, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedores_de_fabrica_seleccionado, Session["total_impuestos"].ToString(), tipo_usuario.Rows[0]["rol"].ToString(), Session["estado_pedido"].ToString(), condicion_pago, obtener_fecha_entrega(),"Recibido");
+            orden_compra.actualizar_orden_de_compra(num_orden_de_compra_seleccionada, orden_de_compraBD, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedores_de_fabrica_seleccionado, Session["total_impuestos"].ToString(), tipo_usuario.Rows[0]["rol"].ToString(), Session["estado_pedido"].ToString(), condicion_pago, obtener_fecha_entrega(), "Recibido");
 
         }
         private void actualizar_orden_de_compra_entrega_parcial()
@@ -67,7 +67,7 @@ namespace paginaWeb.paginasFabrica
             string valor_orden = calcular_total_con_impuestos().ToString();
             string condicion_pago = orden_de_compraBD.Rows[0]["condicion_pago"].ToString();
 
-            orden_compra.actualizar_orden_de_compra_entrega_parcial(num_orden_de_compra_seleccionada, orden_de_compraBD, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedores_de_fabrica_seleccionado, Session["total_impuestos"].ToString(), tipo_usuario.Rows[0]["rol"].ToString(), condicion_pago,"Entrega parcial");
+            orden_compra.actualizar_orden_de_compra_entrega_parcial(num_orden_de_compra_seleccionada, orden_de_compraBD, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedores_de_fabrica_seleccionado, Session["total_impuestos"].ToString(), tipo_usuario.Rows[0]["rol"].ToString(), condicion_pago, "Entrega parcial");
 
         }
         #endregion
@@ -357,6 +357,9 @@ namespace paginaWeb.paginasFabrica
         }
         #endregion
         //num_orden_de_compra_seleccionada
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
         #region atributos
         cls_cargar_orden_de_compra orden_compra;
         cls_historial_orden_de_compras historial;
@@ -420,7 +423,12 @@ namespace paginaWeb.paginasFabrica
             {
                 gridview_pedido.Columns[3].Visible = false;//5 
             }
-            proveedores_de_fabrica_seleccionado = historial.get_proveedores_de_fabrica_seleccionado(nombre_proveedores_de_fabrica_seleccionado);
+            if (!IsPostBack)
+            {
+                proveedores_de_fabrica_seleccionado = historial.get_proveedores_de_fabrica_seleccionado(nombre_proveedores_de_fabrica_seleccionado);
+                Session.Add("proveedores_de_fabrica_seleccionado", proveedores_de_fabrica_seleccionado);
+            }
+            proveedores_de_fabrica_seleccionado = (DataTable)Session["proveedores_de_fabrica_seleccionado"];
             label_num_orden_de_compra.Text = "N° orden de compra: " + num_orden_de_compra_seleccionada;
             label_proveedor_de_fabrica_seleeccionado.Text = proveedores_de_fabrica_seleccionado.Rows[0]["proveedor"].ToString();
             if (!IsPostBack)
@@ -433,8 +441,6 @@ namespace paginaWeb.paginasFabrica
                 cargar_orden_compra();
             }
             total_impuestos = Session["total_impuestos"].ToString();
-
-            
         }
 
         protected void gridview_pedido_SelectedIndexChanged(object sender, EventArgs e)
