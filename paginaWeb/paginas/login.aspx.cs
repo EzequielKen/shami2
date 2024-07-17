@@ -128,7 +128,10 @@ namespace paginaWeb
             else if (login_sistema.login_empleado(textbox_usuario.Text, textbox_contraseña.Text))
             {
                 usuarioBD = login_sistema.get_usuarios();
-
+                if ("1" == ConfigurationManager.AppSettings["desarrollo"])
+                {
+                    usuarioBD.Rows[0]["servidor"] = "201.235.217.38";
+                }
                 Session.Add("sucursal", login_sistema.get_sucursal());
                 Session.Add("empleado", login_sistema.get_empleado());
                 Session.Add("usuariosBD", usuarioBD);
