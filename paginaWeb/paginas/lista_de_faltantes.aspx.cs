@@ -270,18 +270,18 @@ namespace paginaWeb.paginas
                 id_producto = gridview_productos.Rows[fila].Cells[0].Text;
                 producto = gridview_productos.Rows[fila].Cells[1].Text;
                 fila_producto = funciones.buscar_fila_por_id_nombre(id_producto, producto, productosBD);
-                Button boton_faltante = (gridview_productos.Rows[fila].Cells[2].FindControl("boton_faltante") as Button);
-                Button boton_nota = (gridview_productos.Rows[fila].Cells[3].FindControl("boton_nota") as Button);
+                Button boton_nota = (gridview_productos.Rows[fila].Cells[2].FindControl("boton_nota") as Button);
+                Button boton_faltante = (gridview_productos.Rows[fila].Cells[3].FindControl("boton_faltante") as Button);
                 if (productosBD.Rows[fila_producto]["faltante"].ToString() == "Si")
                 {
                     gridview_productos.Rows[fila].CssClass = "table-danger";
-                    boton_nota.Visible=true;
+                    boton_nota.Visible = true;
                     boton_faltante.CssClass = "btn btn-danger";
                     boton_faltante.Text = "Desmarcar";
                 }
                 else
                 {
-                    boton_nota.Visible = false;
+                //    boton_nota.Visible = false;
                     boton_faltante.CssClass = "btn btn-primary";
                     boton_faltante.Text = "Marcar Como Faltante";
                 }
@@ -351,7 +351,7 @@ namespace paginaWeb.paginas
             string ruta_archivo = Server.MapPath(ruta);
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
-            faltantes.crear_pdf(ruta_archivo,imgdata, (DataTable)Session["productosBD"], sucursal.Rows[0]["sucursal"].ToString());
+            faltantes.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["productosBD"], sucursal.Rows[0]["sucursal"].ToString());
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try

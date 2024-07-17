@@ -45,7 +45,7 @@
                                     <asp:TemplateField HeaderText="Nota">
                                         <ItemTemplate>
                                             <asp:TextBox ID="textbox_nota" CssClass=" form-control" runat="server"/>
-                                            <asp:Button ID="boton_nota" Text="Modificar Nota" CssClass="btn btn-primary" OnClick="boton_nota_Click" runat="server" data-bs-toggle="modal" data-bs-target="#spinnerModal" />
+                                            <asp:Button ID="boton_nota" Visible="false" Text="Modificar Nota" CssClass="btn btn-primary" OnClick="boton_nota_Click" runat="server" data-bs-toggle="modal" data-bs-target="#spinnerModal" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Marcar Faltante">

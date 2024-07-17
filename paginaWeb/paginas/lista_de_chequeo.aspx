@@ -6,6 +6,21 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+                         <!-- Modal -->
+ <div class="modal fade" id="spinnerModal" tabindex="-1" aria-labelledby="spinnerModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h3>Cargando... Espere...</h3>
+             </div>
+             <div class="modal-body text-center">
+                 <div class="spinner-border" role="status">
+                     <span class="visually-hidden">Cargando... espere...</span>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
             <div class=" container">
                 <div class=" row">
                     <div class="col">
@@ -58,7 +73,7 @@
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Cargar">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>'  />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField HeaderText="Nota" DataField="nota" />

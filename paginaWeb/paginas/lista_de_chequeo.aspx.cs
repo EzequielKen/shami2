@@ -362,7 +362,7 @@ namespace paginaWeb.paginas
 
             configurar_botones_cargos(cargos);
 
-
+           
 
         }
 
@@ -420,12 +420,12 @@ namespace paginaWeb.paginas
                 nota = textbox_nota.Text;
             }
             registrar_chequeo(id_actividad, actividad, nota);
-
             configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
 
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
 
             cargar_lista_chequeo();
+            Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
 
         }
 
