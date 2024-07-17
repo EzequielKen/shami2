@@ -24,7 +24,7 @@ namespace _01___modulos
 
 
         #region questPDF
-        public void GenerarPDF(string ruta_archivo, byte[] logo, DataTable pedido, string proveedor_seleccionado, int fila_remito, DataTable remitos, DataTable usuario,string nota,string aumento)
+        public void GenerarPDF(string ruta_archivo, byte[] logo, DataTable pedido, string proveedor_seleccionado, int fila_remito, DataTable remitos, DataTable usuario, string nota, string aumento)
         {
 
             QuestPDF.Settings.License = LicenseType.Community;
@@ -158,15 +158,15 @@ namespace _01___modulos
                         });
 
                         double total = double.Parse(remitos.Rows[fila_remito]["valor_remito"].ToString());
-                        if (aumento!="0")
+                        if (aumento != "0")
                         {
                             double totalOriginal = total; // Cambia esto al valor que necesites
-                            double porcentajeIva = 1+ double.Parse(aumento)/100; // Porcentaje de IVA personalizado (por ejemplo, 15%)
-                            
+                            double porcentajeIva = 1 + double.Parse(aumento) / 100; // Porcentaje de IVA personalizado (por ejemplo, 15%)
+
                             double totalSinIva = totalOriginal / porcentajeIva;
                             double diferencia = totalOriginal - totalSinIva;
                             col.Item().AlignRight().Text("Total Sin Impuesto:" + formatCurrency(totalSinIva)).FontSize(12);
-                            col.Item().AlignRight().Text("Impuesto: %" + aumento +" "+ formatCurrency(diferencia)).FontSize(12);
+                            col.Item().AlignRight().Text("Impuesto: %" + aumento + " " + formatCurrency(diferencia)).FontSize(12);
 
                         }
                         col.Item().AlignRight().Text("TOTAL:" + formatCurrency(total)).FontSize(12);
@@ -2199,6 +2199,103 @@ namespace _01___modulos
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
                                     .Text(resumen.Rows[fila][columna].ToString()).FontSize(10);
                                 }
+                            }
+
+
+                        });
+
+
+                        /*col.Item().Background(Colors.Grey.Lighten3).Padding(10)
+                        .Column(column =>
+                        {
+                            column.Item().Text("Entrega conforme / firma:").FontSize(12);
+                            column.Item().Text("recibe conforme / firma:").FontSize(12);
+                            column.Spacing(20);
+                        });*/
+
+                        col.Spacing(10);
+                    });
+
+                    page.Footer().AlignRight().Text(txt =>
+                    {
+                        txt.Span("pagina ").FontSize(10);
+                        txt.CurrentPageNumber().FontSize(10);
+                        txt.Span(" de ").FontSize(10);
+                        txt.TotalPages().FontSize(10);
+                    });
+                });
+            }).GeneratePdf(ruta_archivo);
+        }
+        public void GenerarPDF_resumen_de_faltantes(string ruta_archivo, byte[] logo, DataTable resumen,string sucursal)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+            Document.Create(document =>
+            {
+                document.Page(page =>
+                {
+                    page.Size(PageSizes.A4);//Landscape()
+
+                    page.Margin(30);
+                    page.Header().ShowOnce().Row(row =>
+                    {
+
+                        row.ConstantItem(150).Image(logo);
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().AlignCenter().Text(sucursal).Bold().FontSize(14);
+                            //col.Item().AlignCenter().Text(direccion_seleccionado).FontSize(9);
+                            //col.Item().AlignCenter().Text(telefono_seleccionado).FontSize(9);
+
+                        });
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            DateTime fecha_dato = DateTime.Now;
+                            string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString();
+
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Shami Shawarma").Bold().FontSize(14);
+                            col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("Resumen de Faltantes.").Bold().FontSize(14).FontColor("#fff");
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Impreso el: " + fecha).Bold().FontSize(14);
+
+                        });
+                    });
+
+                    page.Content().PaddingVertical(10).Column(col =>
+                    {
+
+                        col.Item().LineHorizontal(0.5f);
+
+                        col.Item().Table(tabla =>
+                        {
+                            tabla.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+
+                            });
+
+                            tabla.Header(header =>
+                            {
+                                header.Cell().Background("#257272").Padding(2).Text("id").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("producto").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("nota").FontColor("#fff");
+
+
+
+                            });
+
+                            for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
+                            {
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(resumen.Rows[fila]["id"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(resumen.Rows[fila]["producto"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(resumen.Rows[fila]["nota"].ToString()).FontSize(10);
                             }
 
 

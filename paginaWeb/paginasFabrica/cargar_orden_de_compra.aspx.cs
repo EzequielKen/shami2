@@ -416,13 +416,7 @@ namespace paginaWeb.paginasFabrica
                 Session.Add("orden_compra", new cls_cargar_orden_de_compra(usuariosBD));
             }
             orden_compra = (cls_cargar_orden_de_compra)Session["orden_compra"];
-            Session.Add("estado_orden_de_compra", orden_compra.get_estado_orden_de_compra(num_orden_de_compra_seleccionada));
-            if (Session["estado_orden_de_compra"].ToString() == "Recibido" &&
-                proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" &&
-                tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")
-            {
-                gridview_pedido.Columns[3].Visible = false;//5 
-            }
+
             if (!IsPostBack)
             {
                 proveedores_de_fabrica_seleccionado = historial.get_proveedores_de_fabrica_seleccionado(nombre_proveedores_de_fabrica_seleccionado);
@@ -437,8 +431,15 @@ namespace paginaWeb.paginasFabrica
 
                 orden_de_compraBD = orden_compra.get_orden_de_compra(num_orden_de_compra_seleccionada);
                 Session.Add("orden_de_compra", orden_de_compraBD);
-
+                Session.Add("estado_orden_de_compra", orden_compra.get_estado_orden_de_compra(num_orden_de_compra_seleccionada));
+               
                 cargar_orden_compra();
+            }
+            if (Session["estado_orden_de_compra"].ToString() == "Recibido" &&
+                    proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" &&
+                    tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")
+            {
+                gridview_pedido.Columns[3].Visible = false;//5 
             }
             total_impuestos = Session["total_impuestos"].ToString();
         }

@@ -6,6 +6,21 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+             <!-- Modal -->
+ <div class="modal fade" id="spinnerModal" tabindex="-1" aria-labelledby="spinnerModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h3>Cargando... Espere...</h3>
+             </div>
+             <div class="modal-body text-center">
+                 <div class="spinner-border" role="status">
+                     <span class="visually-hidden">Cargando... espere...</span>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -21,16 +36,21 @@
                                 </h4>
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged1" AutoPostBack="true">
                                 </asp:DropDownList>
-
+                                <asp:Button ID="boton_pdf" Text="PDF Faltantes" CssClass="btn btn-primary" OnClick="boton_pdf_Click"  runat="server" />
                             </div>
                             <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_productos_RowDataBound">
                                 <Columns>
                                     <asp:BoundField HeaderText="id" DataField="id" />
                                     <asp:BoundField HeaderText="Producto" DataField="producto" />
-
+                                    <asp:TemplateField HeaderText="Nota">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="textbox_nota" CssClass=" form-control" runat="server"/>
+                                            <asp:Button ID="boton_nota" Text="Modificar Nota" CssClass="btn btn-primary" OnClick="boton_nota_Click" runat="server" data-bs-toggle="modal" data-bs-target="#spinnerModal" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Marcar Faltante">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_faltante" CssClass="btn btn-primary" Text="Marcar Como Faltante" runat="server" OnClick="boton_faltante_Click" />
+                                            <asp:Button ID="boton_faltante" CssClass="btn btn-primary" Text="Marcar Como Faltante" runat="server" OnClick="boton_faltante_Click" data-bs-toggle="modal" data-bs-target="#spinnerModal"  />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -41,10 +61,10 @@
                                 <Columns>
                                     <asp:BoundField HeaderText="id" DataField="id" />
                                     <asp:BoundField HeaderText="Producto" DataField="producto" />
-
+                                    <asp:BoundField HeaderText="Nota" DataField="nota" />
                                     <asp:TemplateField HeaderText="Marcar Faltante">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_faltante_resumen" CssClass="btn btn-primary" Text="Marcar Como Faltante" runat="server" OnClick="boton_faltante_resumen_Click" />
+                                            <asp:Button ID="boton_faltante_resumen" CssClass="btn btn-primary" Text="Marcar Como Faltante" runat="server" OnClick="boton_faltante_resumen_Click" data-bs-toggle="modal" data-bs-target="#spinnerModal"  />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

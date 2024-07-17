@@ -1915,6 +1915,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_orden_de_compras_incompletas_segun_mes(string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT activa,id,id_proveedor,proveedor,acuerdo_de_precios,estado,fecha,fecha_entrega_estimada,fecha_entrega,nota,tipo_de_pago,condicion_pago,cantidad_a_pagar FROM " + base_de_datos + ".ordenes_de_compra WHERE activa=1  and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region verificaciones 

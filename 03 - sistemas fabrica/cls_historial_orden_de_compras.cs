@@ -190,7 +190,7 @@ namespace _03___sistemas_fabrica
         #region metodos consultas
         private void consultar_ordenes_de_compra(string mes, string año)
         {
-            ordenes_de_compra = consultas.consultar_orden_de_compras_segun_mes(mes,año);
+            ordenes_de_compra = consultas.consultar_orden_de_compras_incompletas_segun_mes(mes,año);
         } 
         private void consultar_orden_de_compra_por_id(string id)
         {

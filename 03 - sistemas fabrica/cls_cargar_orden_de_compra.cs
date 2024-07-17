@@ -48,6 +48,7 @@ namespace _03___sistemas_fabrica
         DataTable acuerdo_de_precios_fabrica_a_proveedores_activo;
         DataTable orden_de_compraBD;
         DataTable orden_de_compra;
+        string estado_orden_de_compra;
         #endregion
 
         #region carga a base de datos
@@ -730,15 +731,17 @@ namespace _03___sistemas_fabrica
             consultar_orden_de_compra(id_orden);
             string id_proveedor = orden_de_compraBD.Rows[0]["id_proveedor"].ToString();
             string acuerdo_de_precios = orden_de_compraBD.Rows[0]["acuerdo_de_precios"].ToString();
+            estado_orden_de_compra = orden_de_compraBD.Rows[0]["estado"].ToString();
             consultar_acuerdo_de_precios_fabrica_a_proveedores_de_pedido(acuerdo_de_precios, id_proveedor);
             llenar_tabla_orden();
             return orden_de_compra;
         }
         public string get_estado_orden_de_compra(string id_orden)
         {
-            consultar_orden_de_compra(id_orden);
+            //consultar_orden_de_compra(id_orden);
 
-            return orden_de_compraBD.Rows[0]["estado"].ToString();
+           // return orden_de_compraBD.Rows[0]["estado"].ToString();
+           return estado_orden_de_compra;
         }
         #endregion
     }
