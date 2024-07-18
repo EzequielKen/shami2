@@ -76,6 +76,11 @@ namespace _02___sistemas
             valores = funciones.armar_query_valores(valores, nota, true);
             consultas.insertar_en_tabla(base_de_datos, "historial_lista_chequeo", columnas, valores);
         }
+        public void actualizar_nota(string id,string nota)
+        {
+            string actualizar = "`nota` = '"+nota+"' ";
+            consultas.actualizar_tabla(base_de_datos, "historial_lista_chequeo", actualizar, id);
+        }
         #endregion
         #region metodos privados
         private void crear_tabla_resumen()
@@ -91,6 +96,7 @@ namespace _02___sistemas
         {
             historial_resumen = new DataTable();
             historial_resumen.Columns.Add("id", typeof(string));
+            historial_resumen.Columns.Add("id_historial", typeof(string));
             historial_resumen.Columns.Add("actividad", typeof(string));
             historial_resumen.Columns.Add("nota", typeof(string));
             historial_resumen.Columns.Add("fecha", typeof(string));
@@ -134,7 +140,8 @@ namespace _02___sistemas
                 historial_resumen.Rows.Add();
                 ultima_fila = historial_resumen.Rows.Count - 1;
 
-                historial_resumen.Rows[ultima_fila]["id"] = id;
+                historial_resumen.Rows[ultima_fila]["id"] = id; 
+                historial_resumen.Rows[ultima_fila]["id_historial"] = historial.Rows[fila]["id"].ToString(); 
                 historial_resumen.Rows[ultima_fila]["actividad"] = actividad;
                 historial_resumen.Rows[ultima_fila]["nota"] = historial.Rows[fila]["nota"].ToString();
                 historial_resumen.Rows[ultima_fila]["fecha"] = historial.Rows[fila]["fecha"].ToString();

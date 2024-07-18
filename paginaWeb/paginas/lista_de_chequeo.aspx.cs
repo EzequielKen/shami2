@@ -381,7 +381,7 @@ namespace paginaWeb.paginas
                     gridview_chequeos.Rows[fila].Cells[4].Text = historial.Rows[fila_historial]["nota"].ToString();
                     Button boton_cargar = (gridview_chequeos.Rows[fila].Cells[0].FindControl("boton_cargar") as Button);
                     boton_cargar.Visible = false;
-
+                    gridview_chequeos.Rows[fila].Cells[5].Text = historial.Rows[fila_historial]["id_historial"].ToString();
 
                 }
             }
@@ -425,7 +425,7 @@ namespace paginaWeb.paginas
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
 
             cargar_lista_chequeo();
-            Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
+           // Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
 
         }
 
@@ -497,6 +497,30 @@ namespace paginaWeb.paginas
             configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
             configurar_controles();
+            cargar_lista_chequeo();
+        }
+
+        protected void textbox_nota_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_nota = (TextBox)sender;
+            GridViewRow row = (GridViewRow)textbox_nota.NamingContainer;
+            int fila = row.RowIndex;
+
+            string id_actividad = gridview_chequeos.Rows[fila].Cells[5].Text;
+            string nota;
+            if (textbox_nota.Text == string.Empty)
+            {
+                nota = "N/A";
+            }
+            else
+            {
+                nota = textbox_nota.Text;
+            }
+            lista_chequeo.actualizar_nota(id_actividad, nota);
+            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+
+            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+
             cargar_lista_chequeo();
         }
     }

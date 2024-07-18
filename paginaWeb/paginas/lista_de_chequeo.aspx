@@ -68,7 +68,7 @@
                                     <asp:BoundField HeaderText="actividad" DataField="actividad" />
                                     <asp:TemplateField HeaderText="Cargar">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" OnTextChanged="textbox_nota_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Cargar">
@@ -77,6 +77,7 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField HeaderText="Nota" DataField="nota" />
+                                    <asp:BoundField HeaderText="id historial"  />
                                 </Columns>
                             </asp:GridView>
                         </div>
