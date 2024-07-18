@@ -113,52 +113,67 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/lista_de_faltantes.aspx">Lista de Faltante</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/tutoriales.aspx">Procedimientos de Preparacion de Productos</a>
+                    </li>
                 </ul>
                 <%}
                     else
                     {%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString()=="0")
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Proveedor Fabrica
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
+                                {%>
+                            <li><a class="dropdown-item" href="/paginas/proveedores.aspx">Realizar Pedidos</a></li>
+                            <li><a class="dropdown-item" href="/paginas/historial_pedido.aspx">Historial de pedidos</a></li>
+                            <li><a class="dropdown-item" href="/paginas/estadisticas_de_pedido.aspx">Analisis de pedidos</a></li>
+                            <li><a class="dropdown-item" href="/paginas/calendario_de_entrega.aspx">Calendario de entrega</a></li>
+                            <%    } %>
+                            <li><a class="dropdown-item" href="/paginas/cuentas_por_pagar.aspx">Cuentas por pagar</a></li>
+
+                        </ul>
+                    </li>
+
+                    <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
                         {%>
-
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/proveedores.aspx">Realizar Pedidos</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/historial_pedido.aspx">Historial de pedidos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/estadisticas_de_pedido.aspx">Analisis de pedidos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/calendario_de_entrega.aspx">Calendario de entrega</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administracion del Local
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginas/registro_venta_local.aspx">Registro de Ventas del Local</a></li>
+                        </ul>
                     </li>
                     <%    } %>
 
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/cuentas_por_pagar.aspx">Cuentas por pagar</a>
-                    </li>
-                    <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString()=="0")
+                    <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
                         {%>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/registro_venta_local.aspx">Registro de venta del local</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Operaciones del Local
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginas/administrador_de_empleados.aspx">Administrar empleados</a></li>
+                            <li><a class="dropdown-item" href="/paginas/historial_lista_chequeo.aspx">Historial de Lista de Chequeo</a></li>
+                            <li><a class="dropdown-item" href="/paginas/administrar_tabla_produccion.aspx">Administrar Tabla de Produccio</a></li>
+                            <li><a class="dropdown-item" href="/paginas/lista_de_faltantes.aspx">Lista de Faltantes</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/administrador_de_empleados.aspx">Administrar empleados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/historial_lista_chequeo.aspx">Historial de Lista de Chequeo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/administrar_tabla_produccion.aspx">Administrar Tabla de Produccion</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/lista_de_faltantes.aspx">Lista de Faltante</a>
+                    <%    } %>
+
+                    <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
+                        {%>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Capacitacion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginas/tutoriales.aspx">Procedimientos de Preparacion de Productos</a></li>
+                        </ul>
                     </li>
                     <%    } %>
                 </ul>
-                <% }%>
+                <%    } %>
                 <h1>
                     <asp:Label ID="label_sucursal" Text="text" runat="server" />
                 </h1>
