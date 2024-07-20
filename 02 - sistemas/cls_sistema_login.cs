@@ -94,9 +94,9 @@ namespace _02___sistemas
                 {
                     string actualizar;
                     DateTime fecha_logueo = (DateTime)empleado.Rows[0]["fecha_logueo"];
-                    DateTime fecha_logueo2 = new DateTime(2024, 7, 20, 16,59,59);
+                    DateTime fecha_logueo2 = new DateTime(2024, 7, 21, 01, 59, 59);
 
-                    string turno_logueado = verificar_horario_logueo(fecha_logueo);
+                    string turno_logueado = verificar_horario_logueo(empleado.Rows[0]["turno_logueado"].ToString());
                     string id_empleado = this.empleado.Rows[0]["id"].ToString();
                     if (turno_logueado != empleado.Rows[0]["turno_logueado"].ToString())
                     {
@@ -108,7 +108,7 @@ namespace _02___sistemas
                     actualizar = "`id_sucursal` = '" + id_sucursal.ToString() + "'";
                     consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
 
-                    turno_logueado = verificar_horario(DateTime.Now);
+                    turno_logueado = verificar_horario_logueo(empleado.Rows[0]["turno_logueado"].ToString());
 
                     if (empleado.Rows[0]["turno_logueado"].ToString() == "N/A")
                     {
@@ -178,30 +178,39 @@ namespace _02___sistemas
         #endregion
 
         #region metodos privados
-        private string verificar_horario_logueo(DateTime miFecha)
+        private string verificar_horario_logueo(string turno_registrado)
         {
             string retorno = "N/A";
-            DateTime fecha_hoy = DateTime.Now;
-            if (verificar_fecha(miFecha, fecha_hoy))
+            DateTime miFecha = DateTime.Now;
+
+            // Definir los límites de tiempo para Turno 1
+            DateTime horario_normal_inicio = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 7, 0, 0);
+            DateTime horario_normal_fin = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 16, 59, 59);
+
+            // Definir los límites de tiempo para brecha horaria 
+            DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0); // 7:00 AM
+            DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 18, 59, 59); // 5:00 PM
+
+            // Definir los límites de tiempo para Turno 2
+            DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0); // 5:00 PM
+            DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 59, 59); // 11:59 PM
+            DateTime horaFin_rango2_extendido = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 4, 59, 59).AddDays(1); // 4:59 AM del siguiente día
+            DateTime horaInicio_rango1_extendido = miFecha.Date.AddDays(-1).AddHours(17);
+
+            if ((miFecha >= horario_normal_inicio && miFecha <= horario_normal_fin))
             {
-                // Definir los límites de tiempo para Turno 1
-                DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 7, 0, 0); // 7:00 AM
-                DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 18, 59, 59); // 5:00 PM
-                if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
-                {
-                    retorno = "Turno 1";
-                }
-                // Definir los límites de tiempo para Turno 2
-                DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 19, 0, 0); // 5:00 PM
-                DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 59, 59); // 11:59 PM
-                DateTime horaFin_rango2_extendido = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 4, 59, 59).AddDays(1); // 4:59 AM del siguiente día
-                DateTime horaInicio_rango1_extendido = miFecha.Date.AddDays(-1).AddHours(19);
-                if ((miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2) ||
-                    (miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2_extendido))
-                {
-                    retorno = "Turno 2";
-                }
+                retorno = "Turno 1";
             }
+            else if ((miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1) && (turno_registrado == "Turno 1"))
+            {
+                retorno = "Turno 1";
+            }
+            else if ((miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2) ||
+                (miFecha >= horaInicio_rango1_extendido && miFecha <= horaFin_rango2_extendido))
+            {
+                retorno = "Turno 2";
+            }
+
 
             return retorno;
         }
