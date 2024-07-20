@@ -30,7 +30,7 @@
                         <h2>
                             <asp:Label ID="label_fecha" Text="text" runat="server" />
                         </h2>
-
+                        <asp:Button ID="boton_cerrar_turno" Text="Cerrar Turno" CssClass="btn btn-warning" OnClick="boton_cerrar_turno_Click" runat="server" />
                         <div class="alert alert-light">
                             <div class="row">
                                 <div class="col">

@@ -29,6 +29,7 @@ namespace _02___sistemas
                 base_de_datos = ConfigurationManager.AppSettings["base_de_datos_desarrollo"];
             }
             consultas = new cls_consultas_Mysql(servidor, puerto, usuario_dato, contraseña_BD, base_de_datos);
+            login = new cls_sistema_login();
         }
 
         #region atributos
@@ -36,6 +37,8 @@ namespace _02___sistemas
         cls_funciones funciones = new cls_funciones();
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
+
+        cls_sistema_login login;
 
         DataTable lista_de_chequeo;
         DataTable configuracion_de_chequeo;
@@ -46,6 +49,12 @@ namespace _02___sistemas
         #endregion
 
         #region carga a base de datos
+        public DataTable cerrar_turno(DataTable empleado,string sucursal)
+        {
+            login.cerrar_turno(empleado);
+            login.login_empleado(sucursal, empleado.Rows[0]["dni"].ToString());
+            return login.get_empleado();
+        }
         public void registrar_chequeo(DataTable empleado, string actividad,string nota)
         {
             string columnas = string.Empty;
@@ -195,6 +204,20 @@ namespace _02___sistemas
             if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
             {
                 retorno = "rango 3";
+            }
+            return retorno;
+        }
+        public bool verificar_brecha_turno(DateTime miFecha,string turno)
+        {
+            bool retorno = false;
+
+            // Definir los límites de tiempo para Turno 1
+            DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0); // 7:00 AM
+            DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 18, 59, 59); // 5:00 PM
+            if ((miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1) &&
+                turno == "Turno 1")
+            {
+                retorno = true;
             }
             return retorno;
         }

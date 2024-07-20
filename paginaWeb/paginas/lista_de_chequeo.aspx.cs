@@ -330,6 +330,7 @@ namespace paginaWeb.paginas
         cls_funciones funciones = new cls_funciones();
         DataTable usuariosBD;
         DataTable empleado;
+        DataTable sucursal;
 
         DataTable lista_de_chequeoBD;
         DataTable configuracion;
@@ -341,6 +342,7 @@ namespace paginaWeb.paginas
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             empleado = (DataTable)Session["empleado"];
+            sucursal = (DataTable)Session["sucursal"];
             if (Session["lista_chequeo"] == null)
             {
                 Session.Add("lista_chequeo", new cls_lista_de_chequeo(usuariosBD));
@@ -359,10 +361,17 @@ namespace paginaWeb.paginas
             string cargos = empleado.Rows[0]["cargo"].ToString();
             label_nombre.Text = "Empleado: " + nombre + " " + apellido;
             label_fecha.Text = "Fecha: " + DateTime.Now.ToString("dd/MM/yyyyy");
-
+            if (!lista_chequeo.verificar_brecha_turno(DateTime.Now, empleado.Rows[0]["turno_logueado"].ToString()))
+            {
+                boton_cerrar_turno.Visible = false;
+            }
+            else
+            {
+                boton_cerrar_turno.Visible = true;
+            }
             configurar_botones_cargos(cargos);
 
-           
+
 
         }
 
@@ -426,7 +435,7 @@ namespace paginaWeb.paginas
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
 
             cargar_lista_chequeo();
-           // Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
+            // Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
 
         }
 
@@ -523,6 +532,12 @@ namespace paginaWeb.paginas
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
 
             cargar_lista_chequeo();
+        }
+
+        protected void boton_cerrar_turno_Click(object sender, EventArgs e)
+        {
+            Session.Add("empleado", lista_chequeo.cerrar_turno((DataTable)Session["empleado"], sucursal.Rows[0]["sucursal"].ToString()));
+            Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
         }
     }
 }

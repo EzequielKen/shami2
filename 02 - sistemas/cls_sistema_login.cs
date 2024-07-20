@@ -94,6 +94,8 @@ namespace _02___sistemas
                 {
                     string actualizar;
                     DateTime fecha_logueo = (DateTime)empleado.Rows[0]["fecha_logueo"];
+                    DateTime fecha_logueo2 = new DateTime(2024, 7, 20, 16,59,59);
+
                     string turno_logueado = verificar_horario_logueo(fecha_logueo);
                     string id_empleado = this.empleado.Rows[0]["id"].ToString();
                     if (turno_logueado != empleado.Rows[0]["turno_logueado"].ToString())
@@ -127,6 +129,14 @@ namespace _02___sistemas
                 }
             }
             return retorno;
+        }
+        public void cerrar_turno(DataTable empleado_logueado)
+        {
+            string actualizar;
+            string id_empleado = empleado_logueado.Rows[0]["id"].ToString();
+
+            actualizar = "`turno_logueado` = 'N/A'";
+            consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
         }
         public void registrar_logueo_empleado(DataTable empleado_logueado)
         {
@@ -213,7 +223,7 @@ namespace _02___sistemas
             DateTime horaFin_rango2_extendido = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 4, 59, 59).AddDays(1); // 4:59 AM del siguiente día
 
             if ((miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2) ||
-                (miFecha >= miFecha.Date.AddDays(-1).AddHours(17) && miFecha <= horaFin_rango2_extendido))
+                (miFecha >= miFecha.Date.AddDays(-1).AddHours(17) && miFecha <= horaFin_rango2_extendido && retorno != "Turno 1"))
             {
                 retorno = "Turno 2";
             }
