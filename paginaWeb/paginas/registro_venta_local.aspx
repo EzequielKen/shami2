@@ -34,7 +34,7 @@
                             <asp:Label ID="label_turno" Text="Turno seleccionado: N/A" runat="server" />
                             <asp:TextBox ID="textbox_venta" CssClass="form-control" placeholder="Ingrese venta" runat="server" OnTextChanged="textbox_venta_TextChanged" AutoPostBack="true" />
                             <asp:TextBox ID="textbox_nota" CssClass="form-control" placeholder="Ingrese nota" runat="server" />
-                            <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Registrar" OnClick="boton_cargar_Click" runat="server" data-bs-toggle="modal" data-bs-target="#spinnerModal" />
+                            <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Registrar" OnClick="boton_cargar_Click" runat="server"/>
                             <asp:Label ID="label_total" Text="Total: $0.00" runat="server" />
                         </div>
                     </div>
