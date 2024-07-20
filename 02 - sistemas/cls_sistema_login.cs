@@ -92,13 +92,30 @@ namespace _02___sistemas
                 DataTable sucursal_consultada = consultas_Mysql.login_consultar_sucursal(usuario);
                 if (sucursal_consultada.Rows.Count > 0)
                 {
+                    string actualizar;
+                    DateTime fecha_logueo = (DateTime)empleado.Rows[0]["fecha_logueo"];
+                    string turno_logueado = verificar_horario_logueo(fecha_logueo);
                     string id_empleado = this.empleado.Rows[0]["id"].ToString();
+                    if (turno_logueado != empleado.Rows[0]["turno_logueado"].ToString())
+                    {
+                        actualizar = "`turno_logueado` = 'N/A'";
+                        consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
+                        empleado.Rows[0]["turno_logueado"] = "N/A";
+                    }
                     int id_sucursal = int.Parse(sucursal_consultada.Rows[0]["id"].ToString());
-                    string actualizar = "`id_sucursal` = '" + id_sucursal.ToString() + "'";
-                    consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
-                    actualizar = "`fecha_logueo` = '" + funciones.get_fecha()  + "'";
+                    actualizar = "`id_sucursal` = '" + id_sucursal.ToString() + "'";
                     consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
 
+                    turno_logueado = verificar_horario(DateTime.Now);
+
+                    if (empleado.Rows[0]["turno_logueado"].ToString() == "N/A")
+                    {
+                        actualizar = "`fecha_logueo` = '" + funciones.get_fecha() + "'";
+                        consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
+
+                        actualizar = "`turno_logueado` = '" + turno_logueado + "'";
+                        consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
+                    }
 
                     this.empleado = consultas_Mysql.login_empleado(contraseña);
                     id_sucursal = int.Parse(this.empleado.Rows[0]["id_sucursal"].ToString());
@@ -117,7 +134,7 @@ namespace _02___sistemas
             string valores = string.Empty;
             //id_empleado
             columnas = funciones.armar_query_columna(columnas, "id_empleado", false);
-            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["id"].ToString(),false);
+            valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["id"].ToString(), false);
             //id_sucursal
             columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
             valores = funciones.armar_query_valores(valores, empleado_logueado.Rows[0]["id_sucursal"].ToString(), false);
@@ -146,11 +163,78 @@ namespace _02___sistemas
             columnas = funciones.armar_query_columna(columnas, "fecha_logueo", true);
             valores = funciones.armar_query_valores(valores, funciones.get_fecha(), true);
 
-            consultas_Mysql.insertar_en_tabla(base_de_datos, "registro_logueo_empleados",columnas,valores);
+            consultas_Mysql.insertar_en_tabla(base_de_datos, "registro_logueo_empleados", columnas, valores);
         }
         #endregion
 
         #region metodos privados
+        private string verificar_horario_logueo(DateTime miFecha)
+        {
+            string retorno = "N/A";
+            DateTime fecha_hoy = DateTime.Now;
+            if (verificar_fecha(miFecha, fecha_hoy))
+            {
+                // Definir los límites de tiempo para Turno 1
+                DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 7, 0, 0); // 7:00 AM
+                DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 18, 59, 59); // 5:00 PM
+                if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
+                {
+                    retorno = "Turno 1";
+                }
+                // Definir los límites de tiempo para Turno 2
+                DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 19, 0, 0); // 5:00 PM
+                DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 59, 59); // 11:59 PM
+                DateTime horaFin_rango2_extendido = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 4, 59, 59).AddDays(1); // 4:59 AM del siguiente día
+                DateTime horaInicio_rango1_extendido = miFecha.Date.AddDays(-1).AddHours(19);
+                if ((miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2) ||
+                    (miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2_extendido))
+                {
+                    retorno = "Turno 2";
+                }
+            }
+
+            return retorno;
+        }
+
+        private string verificar_horario(DateTime miFecha)
+        {
+            string retorno = "fuera de rango";
+
+            // Definir los límites de tiempo para Turno 1
+            DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 7, 0, 0); // 7:00 AM
+            DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0); // 5:00 PM
+            if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
+            {
+                retorno = "Turno 1";
+            }
+            // Definir los límites de tiempo para Turno 2
+            DateTime horaInicio_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0); // 5:00 PM
+            DateTime horaFin_rango2 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 59, 59); // 11:59 PM
+            DateTime horaFin_rango2_extendido = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 4, 59, 59).AddDays(1); // 4:59 AM del siguiente día
+
+            if ((miFecha >= horaInicio_rango2 && miFecha <= horaFin_rango2) ||
+                (miFecha >= miFecha.Date.AddDays(-1).AddHours(17) && miFecha <= horaFin_rango2_extendido))
+            {
+                retorno = "Turno 2";
+            }
+            return retorno;
+        }
+        private bool verificar_fecha(DateTime mi_fecha, DateTime fecha_hoy)
+        {
+            bool retorno = true;
+            if (mi_fecha.Year != fecha_hoy.Year)
+            {
+                retorno = false;
+            }
+            else
+            {
+                if (fecha_hoy.Day != mi_fecha.Day || fecha_hoy.Month != mi_fecha.Month)
+                {
+                    retorno = false;
+                }
+            }
+            return retorno;
+        }
         private void consultar_proveedor_id(string id)
         {
             proveedor = consultas_Mysql.consultar_proveeedor_id(id);
