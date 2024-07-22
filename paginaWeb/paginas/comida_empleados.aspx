@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="administrador_de_empleados_cajero.aspx.cs" Inherits="paginaWeb.paginas.administrador_de_empleados_cajero" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="comida_empleados.aspx.cs" Inherits="paginaWeb.paginas.comida_empleados" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -25,35 +25,12 @@
                                     <asp:BoundField HeaderText="id" DataField="id" />
                                     <asp:BoundField HeaderText="Nombre" DataField="nombre" />
                                     <asp:BoundField HeaderText="Apellido" DataField="apellido" />
-                                    <asp:BoundField HeaderText="Telefono" DataField="telefono" />
-
-                                    <asp:BoundField HeaderText="Encargado" DataField="Encargado" />
-                                    <asp:BoundField HeaderText="Cajero" DataField="Cajero" />
-
-                                    <asp:TemplateField HeaderText="Shawarmero">
+                                    
+                                    <asp:TemplateField HeaderText="Cargar Consumo de Comida">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_shawarmero_empleado" CssClass="btn btn-primary" Text="Shawarmero" runat="server" OnClick="boton_shawarmero_empleado_Click" />
+                                            <asp:Button ID="boton_cargar_comida" CssClass="btn btn-primary" Text="Cargar" runat="server" OnClick="boton_cargar_comida_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Atencion a cliente">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_atencion_empleado" CssClass="btn btn-primary" Text="Atencion a Cliente" runat="server" OnClick="boton_atencion_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Cocina">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_cocina_empleado" CssClass="btn btn-primary" Text="Cocina" runat="server" OnClick="boton_cocina_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Limpieza">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_limpieza_empleado" CssClass="btn btn-primary" Text="Limpieza" runat="server" OnClick="boton_limpieza_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
                                 </Columns>
                             </asp:GridView>
                         </div>

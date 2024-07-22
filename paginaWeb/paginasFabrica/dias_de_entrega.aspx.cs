@@ -54,6 +54,9 @@ namespace paginaWeb.paginasFabrica
             sucursales = sucursales.DefaultView.ToTable();
             gridView_sucursales.DataSource = sucursales;
             gridView_sucursales.DataBind();
+
+            gridView_usuarios.DataSource = usuarios;
+            gridView_usuarios.DataBind();
         }
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////
@@ -64,6 +67,7 @@ namespace paginaWeb.paginasFabrica
         DataTable usuariosBD;
 
         DataTable sucursales;
+        DataTable usuarios;
         DataTable calendario_entrega;
         #endregion
         protected void Page_Load(object sender, EventArgs e)
@@ -75,6 +79,7 @@ namespace paginaWeb.paginasFabrica
             }
             dia_entrega = (cls_dia_de_entrega)Session["dia_entrega"];
             sucursales = dia_entrega.get_sucursales();
+            usuarios = dia_entrega.get_usuarios();
             if (Session["calendario_entrega"] == null)
             {
                 calendario_entrega = dia_entrega.get_dias_de_entrega();

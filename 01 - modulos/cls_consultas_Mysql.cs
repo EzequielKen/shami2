@@ -185,6 +185,25 @@ namespace modulos
         #endregion
 
         #region consulta a tablas segun parametros
+        public DataTable consultar_usuarios_no_admin()
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".usuario where activa=1 and admin=0";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_insumos_fabrica_venta(string base_de_datos, string tabla)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);

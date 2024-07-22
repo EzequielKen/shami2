@@ -14,6 +14,7 @@ namespace paginaWeb
             tipo_usuario.Columns.Add("tipo", typeof(string));
             tipo_usuario.Columns.Add("seguridad", typeof(string));
             tipo_usuario.Columns.Add("rol", typeof(string));
+            tipo_usuario.Columns.Add("encargado", typeof(string));
 
             tipo_usuario.Rows.Add();
             tipo_usuario.Rows[0]["tipo"] = "empleado";
@@ -136,6 +137,7 @@ namespace paginaWeb
                 Session.Add("empleado", login_sistema.get_empleado());
                 Session.Add("usuariosBD", usuarioBD);
                 crear_tipo_usuario();
+                tipo_usuario.Rows[0]["encargado"] = login_sistema.get_estado_encargado((DataTable)Session["empleado"]);
                 Session.Add("tipo_usuario", tipo_usuario);
                 login_sistema.registrar_logueo_empleado((DataTable)Session["empleado"]);
                 Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);

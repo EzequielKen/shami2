@@ -40,6 +40,7 @@ namespace _03___sistemas_fabrica
 
         DataTable sucursales;
         DataTable dias_de_entrega;
+        DataTable usuarios;
         #endregion
 
         #region carga a base de datos
@@ -101,6 +102,10 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region metodos consultas
+        private void consultar_usuarios()
+        {
+            usuarios = consultas.consultar_usuarios_no_admin();
+        }
         private void consultar_sucursales()
         {
             sucursales = consultas.consultar_tabla_completa(base_de_datos, "sucursal");
@@ -120,7 +125,15 @@ namespace _03___sistemas_fabrica
         public DataTable get_dias_de_entrega()
         {
             consltar_dias_de_entrega();
+            
             return dias_de_entrega;
+        }
+        public DataTable get_usuarios()
+        {
+            consultar_usuarios();
+            usuarios.DefaultView.Sort = "usuario ASC";
+            usuarios = usuarios.DefaultView.ToTable();
+            return usuarios;
         }
         #endregion
     }

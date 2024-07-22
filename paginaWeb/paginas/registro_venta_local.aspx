@@ -25,7 +25,7 @@
 
             <div class=" container-fluid">
                 <h1>Registro / Historial de Ventas Diarias.</h1>
-                <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];%>
+                <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"]; %>
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-light">
@@ -90,7 +90,8 @@
 
 
                                 <hr />
-                                <%  if (tipo_usuario.Rows[0]["rol"].ToString() == "franquiciado")
+                                <%  if (tipo_usuario.Rows[0]["rol"].ToString() == "franquiciado" ||
+                                        tipo_usuario.Rows[0]["encargado"].ToString()=="Si")
                                     {%>
                                 <div class="col">
                                     <h2>

@@ -294,6 +294,23 @@ namespace _02___sistemas
         {
             return empleado;
         }
+        public string get_estado_encargado(DataTable empleado_logueado)
+        {
+            string retorno = "No";
+            string cargo = string.Empty;
+            string cargos = empleado_logueado.Rows[0]["cargo"].ToString();
+            int iteraciones = int.Parse(funciones.obtener_dato(cargos, 1));
+            for (int i = 1; i <= iteraciones; i++)
+            {
+                cargo = funciones.obtener_dato(cargos, i);
+                if (cargo == "Encargado")
+                {
+                    retorno ="Si";
+                    break;
+                }
+            }
+            return retorno;
+        }
         #endregion
     }
 }

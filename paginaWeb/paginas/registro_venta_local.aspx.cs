@@ -294,8 +294,9 @@ namespace paginaWeb.paginas
                     fecha_registro = fecha_registroBD.ToString("dd/MM/yyyy");
                     if (empleado != null)
                     {
-                        if (fecha_hoy != fecha_registro ||
-                            id_empleado != empleado.Rows[0]["id"].ToString())
+                        if ((fecha_hoy != fecha_registro ||
+                            id_empleado != empleado.Rows[0]["id"].ToString()) &&
+                            tipo_usuario.Rows[0]["encargado"].ToString() == "No")
                         {
                             Button boton_eliminar = (gridview_historial.Rows[fila].Cells[7].FindControl("boton_eliminar") as Button);
                             boton_eliminar.Visible = false;

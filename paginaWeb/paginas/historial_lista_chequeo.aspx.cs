@@ -70,7 +70,26 @@ namespace paginaWeb.paginas
         #endregion
 
         #region resumen
+        private void limpiar_resumen()
+        {
+            label_empleado.Visible = false;
+            label_fecha_historial.Visible = false;
+            label_area.Visible = false;
+            label_categoria.Visible = false;
+            dropDown_tipo.Visible = false;
+            dropDown_categoria.Visible = false;
 
+            boton_encargado.Visible = false;
+            boton_cajero.Visible = false;
+            boton_shawarmero.Visible = false;
+            boton_atencion.Visible = false;
+            boton_cocina.Visible = false;
+            boton_limpieza.Visible = false;
+            gridview_chequeos.Visible = false;
+
+            gridview_chequeos.DataSource = null;
+            gridview_chequeos.DataBind();
+        }
         private void crear_tabla_resumenBD()
         {
             resumenBD = new DataTable();
@@ -570,6 +589,7 @@ namespace paginaWeb.paginas
             Session.Add("fecha_historial_chequeo", fecha);
             lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), (DateTime)Session["fecha_historial_chequeo"]);
             cargar_lista_empleados();
+            limpiar_resumen();
         }
         protected void boton_encargado_Click(object sender, EventArgs e)
         {
@@ -646,6 +666,7 @@ namespace paginaWeb.paginas
         {
             lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), (DateTime)Session["fecha_historial_chequeo"]);
             cargar_lista_empleados();
+            limpiar_resumen();
         }
     }
 }

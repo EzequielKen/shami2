@@ -154,9 +154,10 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Operaciones del Local
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/paginas/administrador_de_empleados.aspx">Administrar empleados</a></li>
+                            <li><a class="dropdown-item" href="/paginas/administrador_de_empleados.aspx">Administrar Empleados</a></li>
+                            <li><a class="dropdown-item" href="/paginas/comida_empleados.aspx">Comida de Empleados</a></li>
                             <li><a class="dropdown-item" href="/paginas/historial_lista_chequeo.aspx">Historial de Lista de Chequeo</a></li>
-                            <li><a class="dropdown-item" href="/paginas/administrar_tabla_produccion.aspx">Administrar Tabla de Produccio</a></li>
+                            <li><a class="dropdown-item" href="/paginas/administrar_tabla_produccion.aspx">Administrar Tabla de Produccion</a></li>
                             <li><a class="dropdown-item" href="/paginas/lista_de_faltantes.aspx">Lista de Faltantes</a></li>
                         </ul>
                     </li>

@@ -6,6 +6,7 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+            <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];%>
             <div class="conteinter-fluid">
                 <div class="row">
                     <div class="col">
@@ -64,6 +65,9 @@
                                     <asp:ButtonField HeaderText="Eliminar" Text="Eliminar" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="boton_eliminar" />
                                 </Columns>
                             </asp:GridView>
+
+                            <%if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Expedicion")
+                                {%>
                             <div class="row">
                                 <div class="col">
                                     <asp:Button ID="boton_agregar_fila" CssClass="btn btn-primary" Text="Agregar Fila" OnClick="boton_agregar_fila_Click" runat="server" />
@@ -75,13 +79,15 @@
 
                                 </div>
                             </div>
+                            <%}%>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col">
-                        <asp:GridView  runat="server" ID="gridView_sucursales" AutoGenerateColumns="false" CssClass="table table-striped">
+                        <h2>Sucursales.</h2>
+                        <asp:GridView runat="server" ID="gridView_sucursales" AutoGenerateColumns="false" CssClass="table table-striped">
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="Cliente" DataField="sucursal" />
@@ -89,8 +95,22 @@
                             </Columns>
                         </asp:GridView>
                     </div>
-                    <div class="col"></div>
-                    <div class="col"></div>
+                    <div class="col">
+
+
+
+                        <%if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Expedicion")
+                            {%>
+                        <h2>Usuarios.</h2>
+                        <asp:GridView runat="server" ID="gridView_usuarios" AutoGenerateColumns="false" CssClass="table table-striped">
+                            <Columns>
+                                <asp:BoundField HeaderText="id" DataField="id" />
+                                <asp:BoundField HeaderText="Usuario" DataField="usuario" />
+                                <asp:BoundField HeaderText="Contraseña" DataField="contraseña" />
+                            </Columns>
+                        </asp:GridView>
+                        <%}%>
+                    </div>
                 </div>
             </div>
         </ContentTemplate>

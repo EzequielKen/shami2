@@ -129,8 +129,9 @@ namespace paginaWeb
                 if (dropDown_tipo.Items[num_item - 2].Text != dt.Rows[fila]["tipo_producto"].ToString())
                 {
                     if (verificar_sucursal())
-                    {
-                        if (dt.Rows[fila]["tipo_producto"].ToString() == "2-Empanadas")
+                    {//6-Jugos
+                        if (dt.Rows[fila]["tipo_producto"].ToString() == "2-Empanadas" ||
+                            dt.Rows[fila]["tipo_producto"].ToString() == "6-Jugos")
                         {
                             item = new ListItem(dt.Rows[fila]["tipo_producto"].ToString(), num_item.ToString());
                             dropDown_tipo.Items.Add(item);

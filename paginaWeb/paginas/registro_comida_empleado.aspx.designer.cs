@@ -7,56 +7,65 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace paginaWeb.paginasFabrica
+namespace paginaWeb.paginas
 {
 
 
-    public partial class dias_de_entrega
+    public partial class registro_comida_empleado
     {
 
         /// <summary>
-        /// Control gridview_dia_de_entrega.
+        /// Control label_nombre_empleado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_dia_de_entrega;
+        protected global::System.Web.UI.WebControls.Label label_nombre_empleado;
 
         /// <summary>
-        /// Control boton_agregar_fila.
+        /// Control textbox_buscar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_agregar_fila;
+        protected global::System.Web.UI.WebControls.TextBox textbox_buscar;
 
         /// <summary>
-        /// Control boton_guardar_cambios.
+        /// Control boton_buscar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_guardar_cambios;
+        protected global::System.Web.UI.WebControls.Button boton_buscar;
 
         /// <summary>
-        /// Control gridView_sucursales.
+        /// Control dropDown_tipo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridView_sucursales;
+        protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
 
         /// <summary>
-        /// Control gridView_usuarios.
+        /// Control gridview_productos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridView_usuarios;
+        protected global::System.Web.UI.WebControls.GridView gridview_productos;
+
+        /// <summary>
+        /// Control gridview_RESUMEN.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridview_RESUMEN;
     }
 }
