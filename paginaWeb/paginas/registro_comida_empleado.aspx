@@ -13,7 +13,7 @@
                             <asp:Label ID="label_nombre_empleado" Text="text" runat="server" />
                         </h1>
                         <div class="alert alert-light">
-                            <div class="input-group">
+                            <div class="input-group pb-3">
                                 <label>Buscar</label>
                                 <asp:TextBox ID="textbox_buscar" placeholder="Buscar..." CssClass="form-control" runat="server" OnTextChanged="textbox_buscar_TextChanged" AutoPostBack="true" />
                                 <asp:Button ID="boton_buscar" CssClass="btn btn-primary" Text="Buscar" runat="server" OnClick="boton_buscar_Click" />
@@ -22,6 +22,7 @@
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
+                            <asp:Button ID="boton_registrar" CssClass="btn btn-primary" Text="Registrar Consumo" runat="server" OnClick="boton_registrar_Click" />
                             <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped">
                                 <Columns>
                                     <asp:BoundField HeaderText="id" DataField="id" />

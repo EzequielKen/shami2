@@ -17,7 +17,8 @@ namespace paginaWeb.paginas
             resumen = new DataTable();
             resumen.Columns.Add("id", typeof(string));
             resumen.Columns.Add("producto", typeof(string));
-            resumen.Columns.Add("cantidad", typeof(string));
+            resumen.Columns.Add("cantidad", typeof(string)); 
+            resumen.Columns.Add("costo", typeof(string)); 
             Session.Add("resumen_comida_empleados", resumen);
         }
         private void cargar_producto_en_resumen(string id_producto, string cantidad)
@@ -31,7 +32,9 @@ namespace paginaWeb.paginas
                 ultima_fila = resumen.Rows.Count - 1;
                 resumen.Rows[ultima_fila]["id"] = productosBD.Rows[fila_producto]["id"].ToString();
                 resumen.Rows[ultima_fila]["producto"] = productosBD.Rows[fila_producto]["producto"].ToString();
-                resumen.Rows[ultima_fila]["cantidad"] = cantidad;
+                resumen.Rows[ultima_fila]["cantidad"] = cantidad; 
+                resumen.Rows[ultima_fila]["costo"] = productosBD.Rows[fila_producto]["costo"].ToString();
+
             }
             Session.Add("resumen_comida_empleados", resumen);
         }
@@ -209,6 +212,15 @@ namespace paginaWeb.paginas
         {
 
         }
+
+        protected void boton_registrar_Click(object sender, EventArgs e)
+        {
+          
+            resumen = (DataTable)Session["resumen_comida_empleados"];
+            registro.registrar_consumo(Session["id_empleado"].ToString(), Session["nombre_empleado"].ToString(), Session["apellido_empleado"].ToString(), resumen);
+            Response.Redirect("~/paginas/comida_empleados.aspx", false);
+        }
+
         protected void boton_cargar_Click(object sender, EventArgs e)
         {
             Button boton_cargar = (Button)sender;
