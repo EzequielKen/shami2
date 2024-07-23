@@ -308,7 +308,7 @@ namespace _02___sistemas
         public DataTable get_historial(DateTime fecha,string turno, string id_empleado,string id_sucursal)
         {
             string hora_inicio = "07:00";
-            string hora_fin = "16:59";
+            string hora_fin = "18:59";
             if (turno=="N/A")
             {
                 if ("rango 1" == verificar_horario(fecha))// 
