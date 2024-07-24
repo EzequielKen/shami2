@@ -1,0 +1,245 @@
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
+using System.Web;
+using System.Web.SessionState;
+
+namespace paginaWeb
+{
+    [Serializable]
+    public class SessionStateItemCollectionWrapper
+    {
+        public Dictionary<string, object> Items { get; set; }
+
+        public SessionStateItemCollectionWrapper()
+        {
+            Items = new Dictionary<string, object>();
+        }
+
+        public SessionStateItemCollectionWrapper(SessionStateItemCollection sessionItems)
+        {
+            Items = new Dictionary<string, object>();
+            foreach (string key in sessionItems.Keys)
+            {
+                Items[key] = sessionItems[key];
+            }
+        }
+
+        public SessionStateItemCollection ToSessionStateItemCollection()
+        {
+            var sessionItems = new SessionStateItemCollection();
+            foreach (var key in Items.Keys)
+            {
+                sessionItems[key] = Items[key];
+            }
+            return sessionItems;
+        }
+    }
+
+    public class MySqlSessionStateProvider : SessionStateStoreProviderBase
+    {
+        private string connectionString;
+
+        public override void Initialize(string name, NameValueCollection config)
+        {
+            base.Initialize(name, config);
+            connectionString = config["connectionString"];
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ConfigurationErrorsException("Connection string not provided.");
+            }
+        }
+
+        public override void SetAndReleaseItemExclusive(HttpContext context, string id, SessionStateStoreData item, object lockId, bool newItem)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    INSERT INTO Sessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockOwner, Timeout, SessionItems, Flags)
+                    VALUES (@SessionId, @Created, @Expires, @LockDate, @LockDateLocal, @LockOwner, @Timeout, @SessionItems, @Flags)
+                    ON DUPLICATE KEY UPDATE 
+                    Created = VALUES(Created),
+                    Expires = VALUES(Expires),
+                    LockDate = VALUES(LockDate),
+                    LockDateLocal = VALUES(LockDateLocal),
+                    LockOwner = VALUES(LockOwner),
+                    Timeout = VALUES(Timeout),
+                    SessionItems = VALUES(SessionItems),
+                    Flags = VALUES(Flags)";
+
+                cmd.Parameters.AddWithValue("@SessionId", id);
+                cmd.Parameters.AddWithValue("@Created", DateTime.UtcNow);
+                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(item.Timeout));
+                cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
+                cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
+                cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
+                cmd.Parameters.AddWithValue("@Timeout", item.Timeout);
+                cmd.Parameters.AddWithValue("@SessionItems", SerializeSessionItems((SessionStateItemCollection)item.Items));
+                cmd.Parameters.AddWithValue("@Flags", 0);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private string SerializeSessionItems(SessionStateItemCollection items)
+        {
+            var wrapper = new SessionStateItemCollectionWrapper(items);
+            return JsonConvert.SerializeObject(wrapper);
+        }
+
+        private SessionStateItemCollection DeserializeSessionItems(string sessionItems)
+        {
+            if (string.IsNullOrWhiteSpace(sessionItems))
+            {
+                return new SessionStateItemCollection();
+            }
+
+            try
+            {
+                var wrapper = JsonConvert.DeserializeObject<SessionStateItemCollectionWrapper>(sessionItems);
+                return wrapper.ToSessionStateItemCollection();
+            }
+            catch (JsonSerializationException)
+            {
+                var itemList = JsonConvert.DeserializeObject<List<object>>(sessionItems);
+                var sessionItemsCollection = new SessionStateItemCollection();
+                for (int i = 0; i < itemList.Count; i++)
+                {
+                    sessionItemsCollection[i.ToString()] = itemList[i];
+                }
+                return sessionItemsCollection;
+            }
+        }
+
+        public override void ReleaseItemExclusive(HttpContext context, string id, object lockId)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "UPDATE Sessions SET LockOwner = NULL, LockDate = NULL WHERE SessionId = @SessionId";
+                cmd.Parameters.AddWithValue("@SessionId", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public override SessionStateStoreData GetItem(HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
+        {
+            return GetItemExclusive(context, id, out locked, out lockAge, out lockId, out actions);
+        }
+
+        public override SessionStateStoreData GetItemExclusive(HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
+        {
+            SessionStateStoreData sessionData = null;
+            locked = false;
+            lockAge = TimeSpan.Zero;
+            lockId = null;
+            actions = SessionStateActions.None;
+
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT * FROM Sessions WHERE SessionId = @SessionId";
+                cmd.Parameters.AddWithValue("@SessionId", id);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var timeout = (int)reader["Timeout"];
+                        var sessionItems = reader["SessionItems"] as string;
+
+                        var items = sessionItems != null ? DeserializeSessionItems(sessionItems) : new SessionStateItemCollection();
+
+                        sessionData = new SessionStateStoreData(items, SessionStateUtility.GetSessionStaticObjects(context), timeout);
+                        lockId = Guid.NewGuid(); // Genera un ID de bloqueo único para la sesión
+                        locked = true; // Marca la sesión como bloqueada
+                    }
+                }
+            }
+
+            return sessionData;
+        }
+
+        public override void CreateUninitializedItem(HttpContext context, string id, int timeout)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                    INSERT INTO Sessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockOwner, Timeout, SessionItems, Flags)
+                    VALUES (@SessionId, @Created, @Expires, @LockDate, @LockDateLocal, @LockOwner, @Timeout, @SessionItems, @Flags)";
+
+                cmd.Parameters.AddWithValue("@SessionId", id);
+                cmd.Parameters.AddWithValue("@Created", DateTime.UtcNow);
+                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(timeout));
+                cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
+                cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
+                cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
+                cmd.Parameters.AddWithValue("@Timeout", timeout);
+                cmd.Parameters.AddWithValue("@SessionItems", DBNull.Value);
+                cmd.Parameters.AddWithValue("@Flags", 0);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public override SessionStateStoreData CreateNewStoreData(HttpContext context, int timeout)
+        {
+            return new SessionStateStoreData(new SessionStateItemCollection(), SessionStateUtility.GetSessionStaticObjects(context), timeout);
+        }
+
+        public override void EndRequest(HttpContext context)
+        {
+            // Maneja el final de una solicitud si es necesario
+        }
+
+        public override void Dispose()
+        {
+            // Limpia cualquier recurso utilizado por el proveedor de sesiones
+        }
+
+        public override void InitializeRequest(HttpContext context)
+        {
+            // Inicializa cualquier recurso necesario al inicio de una solicitud
+        }
+
+        public override void RemoveItem(HttpContext context, string id, object lockId, SessionStateStoreData item)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM Sessions WHERE SessionId = @SessionId";
+                cmd.Parameters.AddWithValue("@SessionId", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public override void ResetItemTimeout(HttpContext context, string id)
+        {
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "UPDATE Sessions SET Expires = @Expires WHERE SessionId = @SessionId";
+                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(20)); // Asume un timeout predeterminado de 20 minutos
+                cmd.Parameters.AddWithValue("@SessionId", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public override bool SetItemExpireCallback(SessionStateItemExpireCallback expireCallback)
+        {
+            // Establece el callback de expiración si es necesario
+            return true;
+        }
+    }
+}

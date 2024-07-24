@@ -8,6 +8,7 @@ namespace paginaWeb
 {
     public partial class login : System.Web.UI.Page
     {
+        
         private void crear_tipo_usuario()
         {
             tipo_usuario = new DataTable();
@@ -33,7 +34,7 @@ namespace paginaWeb
         {
 
             borrar_pdf();
-            Session.Contents.RemoveAll();
+            //Session.Contents.RemoveAll();
 
         }
 
@@ -135,13 +136,21 @@ namespace paginaWeb
                 }
                 Session.Add("sucursal", login_sistema.get_sucursal());
                 Session.Add("empleado", login_sistema.get_empleado());
+                DataTable empleado = (DataTable)Session["empleado"];
                 Session.Add("usuariosBD", usuarioBD);
                 crear_tipo_usuario();
                 tipo_usuario.Rows[0]["encargado"] = login_sistema.get_estado_encargado((DataTable)Session["empleado"]);
                 Session.Add("tipo_usuario", tipo_usuario);
                 login_sistema.registrar_logueo_empleado((DataTable)Session["empleado"]);
-                Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
-
+                if (login_sistema.verificar_brecha_horaria(DateTime.Now) &&
+                    empleado.Rows[0]["turno_logueado"].ToString() == "Turno 1") //
+                {
+                    Response.Redirect("~/paginas/login_turno.aspx", false);
+                }
+                else
+                {
+                    Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
+                }
             }
             textbox_usuario.Attributes.Add("placeholder", "ingrese su usuario");
             textbox_contraseña.Attributes.Add("placeholder", "ingrese contraseña");

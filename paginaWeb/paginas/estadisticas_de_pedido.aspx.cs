@@ -1,5 +1,6 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -93,8 +94,9 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = (DataTable)Session["usuariosBD"];
-            sucursal = (DataTable)Session["sucursal"];
+            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+
             if (Session["estadisticas"] == null)
             {
                 base.Session.Add("estadisticas", new _02___sistemas.cls_estadisticas_de_entrega(usuariosBD));

@@ -93,8 +93,6 @@ namespace _02___sistemas
                 if (sucursal_consultada.Rows.Count > 0)
                 {
                     string actualizar;
-                    DateTime fecha_logueo = (DateTime)empleado.Rows[0]["fecha_logueo"];
-                    DateTime fecha_logueo2 = new DateTime(2024, 7, 21, 01, 59, 59);
 
                     string turno_logueado = verificar_horario_logueo(empleado.Rows[0]["turno_logueado"].ToString());
                     string id_empleado = this.empleado.Rows[0]["id"].ToString();
@@ -129,6 +127,11 @@ namespace _02___sistemas
                 }
             }
             return retorno;
+        }
+        public void actualizar_turno_empleado(string id_empleado,string turno_logueado)
+        {
+            string actualizar = "`turno_logueado` = '" + turno_logueado + "'";
+            consultas_Mysql.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id_empleado);
         }
         public void cerrar_turno(DataTable empleado_logueado)
         {
@@ -236,6 +239,21 @@ namespace _02___sistemas
             {
                 retorno = "Turno 2";
             }
+            return retorno;
+        }
+        public bool verificar_brecha_horaria(DateTime miFecha)
+        {
+            bool retorno = false;
+
+            // Definir los límites de tiempo para Turno 1
+            DateTime horario_normal_inicio = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0);
+            DateTime horario_normal_fin = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 18, 59, 59);
+
+            if ((miFecha >= horario_normal_inicio && miFecha <= horario_normal_fin))
+            {
+                retorno = true;
+            }
+
             return retorno;
         }
         private bool verificar_fecha(DateTime mi_fecha, DateTime fecha_hoy)

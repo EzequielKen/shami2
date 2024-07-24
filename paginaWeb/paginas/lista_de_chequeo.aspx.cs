@@ -1,5 +1,6 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,6 +14,13 @@ namespace paginaWeb.paginas
 {
     public partial class lista_de_chequeo : System.Web.UI.Page
     {
+        [Serializable]
+        public class MiClaseSerializable
+        {
+            public int Numero { get; set; }
+            public string Texto { get; set; }
+            // Otros miembros de la clase...
+        }
         #region resumen
 
         private void crear_tabla_resumenBD()
@@ -317,10 +325,10 @@ namespace paginaWeb.paginas
 
 
         }
-        private void registrar_chequeo(string id_actividad, string actividad, string nota)
+        private void registrar_chequeo(string id_actividad, string actividad, string nota, string turno)
         {
             actividad = id_actividad + "-" + actividad;
-            lista_chequeo.registrar_chequeo(empleado, actividad, nota);
+            lista_chequeo.registrar_chequeo(empleado, actividad, nota,turno);
         }
         /// <summary>
         /// ////////////////////////////////////////////////////////////
@@ -340,9 +348,14 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = (DataTable)Session["usuariosBD"];
-            empleado = (DataTable)Session["empleado"];
-            sucursal = (DataTable)Session["sucursal"];
+            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+            empleado = funciones.Convertir_JArray_a_DataTable((JArray)Session["empleado"]);
+            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+
+            
+            
+            
+            label_turno.Text = empleado.Rows[0]["turno_logueado"].ToString();
             if (Session["lista_chequeo"] == null)
             {
                 Session.Add("lista_chequeo", new cls_lista_de_chequeo(usuariosBD));
@@ -429,7 +442,7 @@ namespace paginaWeb.paginas
             {
                 nota = textbox_nota.Text;
             }
-            registrar_chequeo(id_actividad, actividad, nota);
+            registrar_chequeo(id_actividad, actividad, nota, empleado.Rows[0]["turno_logueado"].ToString());
             configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
 
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());

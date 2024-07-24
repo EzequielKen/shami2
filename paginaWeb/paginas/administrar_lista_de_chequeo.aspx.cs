@@ -1,5 +1,6 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
+using Newtonsoft.Json.Linq;
 using paginaWeb.paginasFabrica;
 using System;
 using System.Collections.Generic;
@@ -221,8 +222,9 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = (DataTable)Session["usuariosBD"];
-            sucursal = (DataTable)Session["sucursal"];
+            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+
             if (Session["administracion_de_chequeo"] == null)
             {
                 Session.Add("administracion_de_chequeo", new cls_administrar_lista_de_chequeo(usuariosBD));

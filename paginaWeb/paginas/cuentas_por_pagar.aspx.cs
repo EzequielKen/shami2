@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using System.IO;
 using paginaWeb.paginasFabrica;
+using Newtonsoft.Json.Linq;
 
 
 
@@ -209,6 +210,7 @@ namespace paginaWeb.paginas
         //#########################################################################################################
         #region atributos
         cls_sistema_cuentas_por_pagar sistema_Administracion;
+        cls_funciones funciones = new cls_funciones();
         DataTable sucursal;
         DataTable lista_proveedores;
         DataTable remitosBD;
@@ -219,7 +221,8 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            sucursal = (DataTable)Session["sucursal"];
+            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+
             seguridad = int.Parse(Session["nivel_seguridad"].ToString());
             if (seguridad > 2)
             {

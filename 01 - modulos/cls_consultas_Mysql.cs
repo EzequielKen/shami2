@@ -1561,7 +1561,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal)
+        public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal,string turno)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1569,7 +1569,7 @@ namespace modulos
 
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".historial_lista_chequeo WHERE activa=1 and id_sucursal='" + id_sucursal + "' and id_empleado='" + id_empleado + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "' AND TIME(fecha) BETWEEN '" + hora_inicio + "' AND '" + hora_fin + "';";
+                query = "SELECT * FROM " + base_de_datos + ".historial_lista_chequeo WHERE activa=1 and turno_logueado='" + turno + "' and id_sucursal='" + id_sucursal + "' and id_empleado='" + id_empleado + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "' AND TIME(fecha) BETWEEN '" + hora_inicio + "' AND '" + hora_fin + "';";
 
 
                 retorno = base_datos.READ(query);

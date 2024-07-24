@@ -49,13 +49,13 @@ namespace _02___sistemas
         #endregion
 
         #region carga a base de datos
-        public DataTable cerrar_turno(DataTable empleado,string sucursal)
+        public DataTable cerrar_turno(DataTable empleado, string sucursal)
         {
             login.cerrar_turno(empleado);
             login.login_empleado(sucursal, empleado.Rows[0]["dni"].ToString());
             return login.get_empleado();
         }
-        public void registrar_chequeo(DataTable empleado, string actividad,string nota)
+        public void registrar_chequeo(DataTable empleado, string actividad, string nota,string turno)
         {
             string columnas = string.Empty;
             string valores = string.Empty;
@@ -81,13 +81,16 @@ namespace _02___sistemas
             columnas = funciones.armar_query_columna(columnas, "actividad", false);
             valores = funciones.armar_query_valores(valores, actividad, false);
             //nota
-            columnas = funciones.armar_query_columna(columnas, "nota", true);
-            valores = funciones.armar_query_valores(valores, nota, true);
+            columnas = funciones.armar_query_columna(columnas, "nota", false);
+            valores = funciones.armar_query_valores(valores, nota, false);
+            //turno_logueado
+            columnas = funciones.armar_query_columna(columnas, "turno_logueado", true);
+            valores = funciones.armar_query_valores(valores, turno, true);
             consultas.insertar_en_tabla(base_de_datos, "historial_lista_chequeo", columnas, valores);
         }
-        public void actualizar_nota(string id,string nota)
+        public void actualizar_nota(string id, string nota)
         {
-            string actualizar = "`nota` = '"+nota+"' ";
+            string actualizar = "`nota` = '" + nota + "' ";
             consultas.actualizar_tabla(base_de_datos, "historial_lista_chequeo", actualizar, id);
         }
         #endregion
@@ -119,20 +122,23 @@ namespace _02___sistemas
             int ultima_fila;
             for (int columna = configuracion_de_chequeo.Columns["producto_1"].Ordinal; columna <= configuracion_de_chequeo.Columns.Count - 1; columna++)
             {
-                if (configuracion_de_chequeo.Rows[0][columna].ToString() != "N/A")
+                if (funciones.IsNotDBNull(configuracion_de_chequeo.Rows[0][columna]))
                 {
-                    id = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 1);
-                    actividad = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 2);
-                    categoria = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 3);
-                    area = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 4);
+                    if (configuracion_de_chequeo.Rows[0][columna].ToString() != "N/A")
+                    {
+                        id = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 1);
+                        actividad = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 2);
+                        categoria = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 3);
+                        area = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 4);
 
-                    resumen.Rows.Add();
-                    ultima_fila = resumen.Rows.Count - 1;
+                        resumen.Rows.Add();
+                        ultima_fila = resumen.Rows.Count - 1;
 
-                    resumen.Rows[ultima_fila]["id"] = id;
-                    resumen.Rows[ultima_fila]["actividad"] = actividad;
-                    resumen.Rows[ultima_fila]["categoria"] = categoria;
-                    resumen.Rows[ultima_fila]["area"] = area;
+                        resumen.Rows[ultima_fila]["id"] = id;
+                        resumen.Rows[ultima_fila]["actividad"] = actividad;
+                        resumen.Rows[ultima_fila]["categoria"] = categoria;
+                        resumen.Rows[ultima_fila]["area"] = area;
+                    }
                 }
             }
         }
@@ -149,8 +155,8 @@ namespace _02___sistemas
                 historial_resumen.Rows.Add();
                 ultima_fila = historial_resumen.Rows.Count - 1;
 
-                historial_resumen.Rows[ultima_fila]["id"] = id; 
-                historial_resumen.Rows[ultima_fila]["id_historial"] = historial.Rows[fila]["id"].ToString(); 
+                historial_resumen.Rows[ultima_fila]["id"] = id;
+                historial_resumen.Rows[ultima_fila]["id_historial"] = historial.Rows[fila]["id"].ToString();
                 historial_resumen.Rows[ultima_fila]["actividad"] = actividad;
                 historial_resumen.Rows[ultima_fila]["nota"] = historial.Rows[fila]["nota"].ToString();
                 historial_resumen.Rows[ultima_fila]["fecha"] = historial.Rows[fila]["fecha"].ToString();
@@ -207,7 +213,7 @@ namespace _02___sistemas
             }
             return retorno;
         }
-        public bool verificar_brecha_turno(DateTime miFecha,string turno)
+        public bool verificar_brecha_turno(DateTime miFecha, string turno)
         {
             bool retorno = false;
 
@@ -227,11 +233,11 @@ namespace _02___sistemas
         {
             empleado = consultas.consultar_empleado(id_empleado);
         }
-        private void consultar_historial(DateTime fecha, string hora_inicio, string hora_fin, string id_empleado,string id_sucursal)
+        private void consultar_historial(DateTime fecha, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal,string turno)
         {
-            historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal);
+            historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal,turno);
         }
-        private void consultar_historial_turno2(DateTime fecha, string id_empleado,string id_sucursal)
+        private void consultar_historial_turno2(DateTime fecha, string id_empleado, string id_sucursal,string turno)
         {
             DateTime fecha_nueva;
             DataTable historial_turno2 = new DataTable();
@@ -243,10 +249,10 @@ namespace _02___sistemas
                 fecha_nueva = fecha_nueva.AddDays(1);
                 hora_inicio = "17:00";
                 hora_fin = "23:59";
-                historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal);
+                historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
                 hora_inicio = "00:00";
                 hora_fin = "04:59";
-                historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal);
+                historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
             }
             else if ("rango 2" == verificar_horario_turno2(fecha))//
             {
@@ -254,10 +260,10 @@ namespace _02___sistemas
                 fecha_nueva = fecha_nueva.AddDays(-1);
                 hora_inicio = "00:00";
                 hora_fin = "04:59";
-                historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal);
+                historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal,turno);
                 hora_inicio = "17:00";
                 hora_fin = "23:59";
-                historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal);
+                historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
             }
 
             if (historial_turno2.Rows.Count > 0)
@@ -305,20 +311,20 @@ namespace _02___sistemas
         #endregion
 
         #region metodos get/set
-        public DataTable get_historial(DateTime fecha,string turno, string id_empleado,string id_sucursal)
+        public DataTable get_historial(DateTime fecha, string turno, string id_empleado, string id_sucursal)
         {
             string hora_inicio = "07:00";
             string hora_fin = "18:59";
-            if (turno=="N/A")
+            if (turno == "N/A")
             {
                 if ("rango 1" == verificar_horario(fecha))// 
                 {
-                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal);
+                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
                 }
                 else if ("rango 2" == verificar_horario(fecha) || "rango 3" == verificar_horario(fecha))// 
                 {
 
-                    consultar_historial_turno2(fecha, id_empleado, id_sucursal);
+                    consultar_historial_turno2(fecha, id_empleado, id_sucursal,turno);
                 }
 
             }
@@ -326,7 +332,7 @@ namespace _02___sistemas
             {
                 if (turno == "Turno 1")// "rango 1" == verificar_horario(fecha)
                 {
-                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal);
+                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal,turno);
                 }
                 else if (turno == "Turno 2")// "rango 2" == verificar_horario(fecha) ||"rango 3" == verificar_horario(fecha)
                 {
@@ -334,7 +340,7 @@ namespace _02___sistemas
                                                         fecha.Month,
                                                         fecha.Day,
                                                         18, 0, 0);
-                    consultar_historial_turno2(nueva_fecha, id_empleado, id_sucursal);
+                    consultar_historial_turno2(nueva_fecha, id_empleado, id_sucursal,turno);
                 }
 
             }
@@ -361,7 +367,7 @@ namespace _02___sistemas
         public DataTable get_lista_de_chequeo()
         {
             consultar_lista_de_chequeo();
-         
+
             return lista_de_chequeo;
         }
         public DataTable get_empleado(string id_empleado)

@@ -37,8 +37,8 @@ namespace _02___sistemas
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
-        DataTable lista_de_empleado; 
-        DataTable lista_de_chequeo; 
+        DataTable lista_de_empleado;
+        DataTable lista_de_chequeo;
         DataTable configuracion_de_chequeo;
         DataTable empleado;
         DataTable resumen;
@@ -132,21 +132,26 @@ namespace _02___sistemas
             int ultima_fila;
             for (int columna = configuracion_de_chequeo.Columns["producto_1"].Ordinal; columna <= configuracion_de_chequeo.Columns.Count - 1; columna++)
             {
-                if (configuracion_de_chequeo.Rows[0][columna].ToString() != "N/A")
+                if (funciones.IsNotDBNull(configuracion_de_chequeo.Rows[0][columna]))
                 {
-                    id = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 1);
-                    actividad = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 2);
-                    categoria = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 3);
-                    area = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 4);
 
-                    resumen.Rows.Add();
-                    ultima_fila = resumen.Rows.Count - 1;
+                    if (configuracion_de_chequeo.Rows[0][columna].ToString() != "N/A")
+                    {
+                        id = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 1);
+                        actividad = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 2);
+                        categoria = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 3);
+                        area = funciones.obtener_dato(configuracion_de_chequeo.Rows[0][columna].ToString(), 4);
 
-                    resumen.Rows[ultima_fila]["id"] = id;
-                    resumen.Rows[ultima_fila]["actividad"] = actividad;
-                    resumen.Rows[ultima_fila]["categoria"] = categoria;
-                    resumen.Rows[ultima_fila]["area"] = area;
+                        resumen.Rows.Add();
+                        ultima_fila = resumen.Rows.Count - 1;
+
+                        resumen.Rows[ultima_fila]["id"] = id;
+                        resumen.Rows[ultima_fila]["actividad"] = actividad;
+                        resumen.Rows[ultima_fila]["categoria"] = categoria;
+                        resumen.Rows[ultima_fila]["area"] = area;
+                    }
                 }
+
             }
         }
         #endregion
@@ -157,7 +162,7 @@ namespace _02___sistemas
         }
         private void consultar_lista_de_empleado(string id_sucursal, DateTime fecha)
         {
-            lista_de_empleado = consultas.consultar_empleados_segun_fecha(id_sucursal,fecha.Year.ToString(),fecha.Month.ToString(),fecha.Day.ToString());
+            lista_de_empleado = consultas.consultar_empleados_segun_fecha(id_sucursal, fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString());
         }
         private void consultar_configuracion_de_chequeo(string perfil)
         {
@@ -174,10 +179,10 @@ namespace _02___sistemas
             consultar_empleado(id_empleado);
             return empleado;
         }
-        public DataTable get_lista_de_empleado(string id_sucursal,DateTime fecha)
+        public DataTable get_lista_de_empleado(string id_sucursal, DateTime fecha)
         {
-            consultar_lista_de_empleado(id_sucursal,fecha);
-          //  limpiar_lista_empleados(fecha);
+            consultar_lista_de_empleado(id_sucursal, fecha);
+            //  limpiar_lista_empleados(fecha);
             return lista_de_empleado;
         }
         public DataTable get_configuracion_de_chequeo(string perfil)

@@ -1,4 +1,5 @@
 ﻿using _02___sistemas;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -197,6 +198,10 @@ namespace paginaWeb.paginas
             for (int fila = 0; fila <= configuracion.Rows.Count - 1; fila++)
             {
                 id_actividad = configuracion.Rows[fila]["id"].ToString();
+                if (id_actividad=="")
+                {
+                    string stop="da";
+                }
                 cargar_actividad_en_resumen(id_actividad);
             }
         }
@@ -434,7 +439,8 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = (DataTable)Session["usuariosBD"];
+            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+
             if (Session["historial_de_chequeo"] == null)
             {
                 Session.Add("historial_de_chequeo", new cls_historial_lista_chequeo(usuariosBD));

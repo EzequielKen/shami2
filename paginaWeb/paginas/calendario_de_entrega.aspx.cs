@@ -1,4 +1,5 @@
 ﻿using _03___sistemas_fabrica;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,12 +13,14 @@ namespace paginaWeb.paginas
     public partial class calendario_de_entrega : System.Web.UI.Page
     {
         #region atributos
+        cls_funciones funciones = new cls_funciones();
         cls_dia_de_entrega calendario_entrega;
         DataTable usuariosBD;
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = (DataTable)Session["usuariosBD"];
+            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+
 
             calendario_entrega = new cls_dia_de_entrega(usuariosBD);
             

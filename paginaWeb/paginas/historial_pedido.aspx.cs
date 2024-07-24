@@ -1,4 +1,5 @@
 ﻿using _02___sistemas;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -126,6 +127,8 @@ namespace paginaWeb.paginas
         //#########################################################################################################
         #region atributos
         cls_sistema_cuentas_por_pagar sistema_Administracion;
+        cls_funciones funciones = new cls_funciones();
+        DataTable usuariosBD;
         DataTable sucusalBD;
         DataTable lista_proveedores;
         DataTable pedidosBD;
@@ -153,12 +156,14 @@ namespace paginaWeb.paginas
             }
             else
             {
+                usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+                sucusalBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucusalBD"]);
 
                 if (!IsPostBack)
                 {
 
                     //calcular remitos nuevos
-                    Session.Add("sistema_Administracion", new cls_sistema_cuentas_por_pagar((DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]));
+                    Session.Add("sistema_Administracion", new cls_sistema_cuentas_por_pagar(usuariosBD, sucusalBD));
                     sistema_Administracion = (cls_sistema_cuentas_por_pagar)Session["sistema_Administracion"];
                     sistema_Administracion.actualizar_remitos();
                     configurar_controles();

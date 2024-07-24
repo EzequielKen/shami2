@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -281,6 +282,32 @@ namespace paginaWeb
                 retorno = true;
             }
             return retorno;
+        }
+
+        public DataTable Convertir_JArray_a_DataTable(JArray jArray)
+        {
+
+            var dataTable = new DataTable();
+
+            if (jArray.Count == 0)
+                return dataTable;
+
+            foreach (var jToken in jArray.First.Children<JProperty>())
+            {
+                dataTable.Columns.Add(jToken.Name, typeof(string));
+            }
+
+            foreach (var jObject in jArray.Children<JObject>())
+            {
+                var dataRow = dataTable.NewRow();
+                foreach (var jProperty in jObject.Properties())
+                {
+                    dataRow[jProperty.Name] = jProperty.Value.ToString();
+                }
+                dataTable.Rows.Add(dataRow);
+            }
+
+            return dataTable;
         }
         /*private void llenar_dropDownList(DataTable dt)
         {

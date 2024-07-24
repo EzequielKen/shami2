@@ -1,4 +1,5 @@
 ﻿using _02___sistemas;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -399,7 +400,8 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = (DataTable)Session["usuariosBD"];
+            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+
             if (Session["administracion_de_empleados"] == null)
             {
                 Session.Add("administracion_de_empleados", new cls_administrar_empleados(usuariosBD));
