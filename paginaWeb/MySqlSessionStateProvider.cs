@@ -71,10 +71,10 @@ namespace paginaWeb
                     Timeout = VALUES(Timeout),
                     SessionItems = VALUES(SessionItems),
                     Flags = VALUES(Flags)";
-
+                DateTime fecha = DateTime.Now;
                 cmd.Parameters.AddWithValue("@SessionId", id);
-                cmd.Parameters.AddWithValue("@Created", DateTime.UtcNow);
-                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(item.Timeout));
+                cmd.Parameters.AddWithValue("@Created", fecha);//DateTime.UtcNow
+                cmd.Parameters.AddWithValue("@Expires", fecha.AddMinutes(item.Timeout));
                 cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
                 cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
                 cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
