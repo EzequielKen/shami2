@@ -274,8 +274,8 @@ namespace paginaWeb
 
                     fila_producto++;
                 }
-
             }
+            Session.Add("productosPDF",productosPDF);
         }
         private bool verificar_tipo_a_cargar(string tipo_producto)
         {
@@ -530,12 +530,9 @@ namespace paginaWeb
             {
                 textbox_nota.Visible=false;
             }
-            if (HttpContext.Current.Session["productos_proveedor"] == null)
-            {
-                Session.Add("sistema_pedidos", new cls_sistema_pedidos(usuariosBD, sucusalBD));
-                sistema_pedidos = (cls_sistema_pedidos)Session["sistema_pedidos"];
-            }
-            sistema_pedidos = (cls_sistema_pedidos)Session["sistema_pedidos"];
+
+            sistema_pedidos = new cls_sistema_pedidos(usuariosBD, sucusalBD);
+            
 
 
 
@@ -696,6 +693,7 @@ namespace paginaWeb
             string ruta_archivo = Server.MapPath(ruta);
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            productosPDF = (DataTable)Session["productosPDF"];
             sistema_pedidos.crear_pdf_lista_de_precios(ruta_archivo, imgdata, productosPDF); //crear_pdf();
 
             //           Response.Redirect("~/archivo.pdf");

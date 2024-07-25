@@ -4,6 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.SessionState;
 
@@ -73,7 +78,7 @@ namespace paginaWeb
                     Flags = VALUES(Flags)";
                 DateTime fecha = DateTime.Now;
                 cmd.Parameters.AddWithValue("@SessionId", id);
-                cmd.Parameters.AddWithValue("@Created", fecha);//DateTime.UtcNow
+                cmd.Parameters.AddWithValue("@Created", fecha);
                 cmd.Parameters.AddWithValue("@Expires", fecha.AddMinutes(item.Timeout));
                 cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
                 cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
@@ -89,6 +94,13 @@ namespace paginaWeb
         private string SerializeSessionItems(SessionStateItemCollection items)
         {
             var wrapper = new SessionStateItemCollectionWrapper(items);
+            foreach (var key in wrapper.Items.Keys.ToList())
+            {
+                if (wrapper.Items[key] is DataTable dataTable)
+                {
+                    wrapper.Items[key] = SerializeDataTable(dataTable);
+                }
+            }
             return JsonConvert.SerializeObject(wrapper);
         }
 
@@ -102,6 +114,16 @@ namespace paginaWeb
             try
             {
                 var wrapper = JsonConvert.DeserializeObject<SessionStateItemCollectionWrapper>(sessionItems);
+                foreach (var key in wrapper.Items.Keys.ToList())
+                {
+                    if (wrapper.Items[key] is string dataTableString)
+                    {
+                        if (IsBase64String(dataTableString))
+                        {
+                            wrapper.Items[key] = DeserializeDataTable(dataTableString);
+                        }
+                    }
+                }
                 return wrapper.ToSessionStateItemCollection();
             }
             catch (JsonSerializationException)
@@ -114,6 +136,33 @@ namespace paginaWeb
                 }
                 return sessionItemsCollection;
             }
+        }
+
+        private string SerializeDataTable(DataTable dataTable)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(memoryStream, dataTable);
+                return Convert.ToBase64String(memoryStream.ToArray());
+            }
+        }
+
+        private DataTable DeserializeDataTable(string dataTableString)
+        {
+            var bytes = Convert.FromBase64String(dataTableString);
+            using (var memoryStream = new MemoryStream(bytes))
+            {
+                var formatter = new BinaryFormatter();
+                return (DataTable)formatter.Deserialize(memoryStream);
+            }
+        }
+
+        private bool IsBase64String(string base64)
+        {
+            if (string.IsNullOrEmpty(base64)) return false;
+            base64 = base64.Trim();
+            return (base64.Length % 4 == 0) && Regex.IsMatch(base64, @"^[a-zA-Z0-9\+/]*={0,3}$", RegexOptions.None);
         }
 
         public override void ReleaseItemExclusive(HttpContext context, string id, object lockId)

@@ -96,8 +96,8 @@ namespace paginaWeb
             }
             else
             {
-                usuariosBD = (DataTable)Session["usuariosBD"];
-                sucusalBD = (DataTable)Session["sucursal"];
+                usuariosBD = Session["usuariosBD"] as DataTable;
+                sucusalBD = Session["sucursal"] as DataTable;
                 if (sucusalBD.Rows[0]["bloquear_por_deuda"].ToString()=="1")
                 {
                     Response.Redirect("~/paginas/cuentas_por_pagar.aspx", false);
