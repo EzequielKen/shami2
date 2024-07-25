@@ -182,11 +182,8 @@ namespace paginaWeb.paginas
             empleado = (DataTable)Session["empleado"];
             sucursal = (DataTable)Session["sucursal"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
-            if (Session["tabla_produccion_empleado"] == null)
-            {
-                Session.Add("tabla_produccion_empleado", new cls_tabla_produccion(usuariosBD));
-            }
-            tabla_produccion_empleado = (cls_tabla_produccion)Session["tabla_produccion_empleado"];
+            
+            tabla_produccion_empleado = new cls_tabla_produccion(usuariosBD);
 
             if (!IsPostBack)
             {
