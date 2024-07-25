@@ -104,11 +104,8 @@ namespace paginaWeb.paginasFabricaFatay
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucursal = (DataTable)Session["sucursal"];
-            if (Session["estadisticas"] == null)
-            {
-                Session.Add("estadisticas", new cls_estadisticas_de_entrega(usuariosBD));
-            }
-            estadisticas = (cls_estadisticas_de_entrega)Session["estadisticas"];
+            
+            estadisticas = new cls_estadisticas_de_entrega(usuariosBD);
             if (!IsPostBack)
             {
                 Session.Add("fecha_estadistica_inicio", "N/A");

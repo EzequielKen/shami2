@@ -137,11 +137,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["historial_stock"]==null)
-            {
-                Session.Add("historial_stock",new cls_movimientos_stock_producto(usuariosBD));
-            }
-            historial_stock = (cls_movimientos_stock_producto)Session["historial_stock"];
+            
+            historial_stock = new cls_movimientos_stock_producto(usuariosBD);
             productos_proveedorBD= historial_stock.get_productos_proveedor();
             if (!IsPostBack)
             {

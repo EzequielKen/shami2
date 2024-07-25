@@ -163,11 +163,8 @@ namespace paginaWeb.paginas
             empleado = (DataTable)Session["empleado"];
             sucursal = (DataTable)Session["sucursal"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
-            if (Session["registro_venta"] == null)
-            {
-                Session.Add("registro_venta", new cls_registro_venta_local(usuariosBD));
-            }
-            registro_venta = (cls_registro_venta_local)Session["registro_venta"];
+            
+            registro_venta = new cls_registro_venta_local(usuariosBD);
 
 
             if (!IsPostBack)

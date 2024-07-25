@@ -336,11 +336,8 @@ namespace paginaWeb.paginasGerente
         {
             proveedorBD = (DataTable)Session["proveedorBD"];
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["cuentas_Por_Pagar"] == null)
-            {
-                Session.Add("cuentas_Por_Pagar", new cls_cuentas_por_pagar(usuariosBD));
-            }
-            cuentas_Por_Pagar = (cls_cuentas_por_pagar)Session["cuentas_Por_Pagar"];
+            
+            cuentas_Por_Pagar = new cls_cuentas_por_pagar(usuariosBD);
             lista_proveedores = cuentas_Por_Pagar.get_lista_proveedores_fabrica();
             Session.Add("lista_proveedores", lista_proveedores);
             imputacionesBD = cuentas_Por_Pagar.get_imputaciones();

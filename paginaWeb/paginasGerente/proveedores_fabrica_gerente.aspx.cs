@@ -63,12 +63,9 @@ namespace paginaWeb.paginasGerente
             Session.Remove("proveedor_fabrica_seleccionado");
             Session.Remove("insumos_de_proveedor");
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["proveedores"] == null)
-            {
-                Session.Add("proveedores", new cls_proveedores_fabrica(usuariosBD));
-            }
+            
 
-            proveedores_de_fabrica = (cls_proveedores_fabrica)Session["proveedores"];
+            proveedores_de_fabrica = new cls_proveedores_fabrica(usuariosBD);
 
             proveedoresBD = proveedores_de_fabrica.get_proveedores_de_fabrica();
             cargar_proveedores();

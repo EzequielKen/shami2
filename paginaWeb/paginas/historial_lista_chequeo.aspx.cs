@@ -439,22 +439,14 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
-
-            if (Session["historial_de_chequeo"] == null)
-            {
-                Session.Add("historial_de_chequeo", new cls_historial_lista_chequeo(usuariosBD));
-            }
-            historial = (cls_historial_lista_chequeo)Session["historial_de_chequeo"];
-            if (Session["lista_chequeo"] == null)
-            {
-                Session.Add("lista_chequeo", new cls_lista_de_chequeo(usuariosBD));
-            }
+            usuariosBD = (DataTable)Session["usuariosBD"];
+            
+            historial = new cls_historial_lista_chequeo(usuariosBD);
             if (Session["perfil_seleccionado"] == null)
             {
                 Session.Add("perfil_seleccionado", "N/A");
             }
-            lista_chequeo = (cls_lista_de_chequeo)Session["lista_chequeo"];
+            lista_chequeo = new cls_lista_de_chequeo(usuariosBD);
             lista_de_chequeoBD = historial.get_lista_de_chequeo();
             if (!IsPostBack)
             {

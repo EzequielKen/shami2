@@ -102,11 +102,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["lista_productos_recetario"] == null)
-            {
-                Session.Add("lista_productos_recetario", new cls_recetario(usuariosBD));
-            }
-            lista_productos_recetario = (cls_recetario)Session["lista_productos_recetario"];
+            
+            lista_productos_recetario = new cls_recetario(usuariosBD);
             productos_proveedorBD = lista_productos_recetario.get_productos_proveedor();
             if (!IsPostBack)
             {

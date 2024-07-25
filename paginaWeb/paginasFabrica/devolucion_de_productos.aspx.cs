@@ -250,11 +250,8 @@ namespace paginaWeb.paginasFabrica
             usuariosBD = (DataTable)Session["usuariosBD"];
             proveedorBD = (DataTable)Session["proveedorBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
-            if (Session["merma_y_desperdicio"] == null)
-            {
-                Session.Add("merma_y_desperdicio", new cls_merma_y_desperdicio(usuariosBD));
-            }
-            merma_y_deperdicio = (cls_merma_y_desperdicio)Session["merma_y_desperdicio"];
+            
+            merma_y_deperdicio = new cls_merma_y_desperdicio(usuariosBD);
             if (!IsPostBack)
             {
                 productos_proveedorBD = merma_y_deperdicio.get_productos_proveedor(proveedorBD.Rows[0]["nombre_en_BD"].ToString());

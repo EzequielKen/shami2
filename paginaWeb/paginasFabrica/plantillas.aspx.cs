@@ -79,11 +79,8 @@ namespace paginaWeb.paginasFabrica
         {
             proveedorBD = (DataTable)Session["proveedorBD"];
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["plantilla"] == null)
-            {
-                Session.Add("plantilla", new cls_plantillas(usuariosBD));
-            }
-            plantilla = (cls_plantillas)Session["plantilla"];
+            
+            plantilla = new cls_plantillas(usuariosBD);
         }
 
         protected void boton_plantilla_stock_Click(object sender, EventArgs e)

@@ -73,11 +73,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["dia_entrega"] == null)
-            {
-                Session.Add("dia_entrega", new cls_dia_de_entrega(usuariosBD));
-            }
-            dia_entrega = (cls_dia_de_entrega)Session["dia_entrega"];
+          
+            dia_entrega = new cls_dia_de_entrega(usuariosBD);
             sucursales = dia_entrega.get_sucursales();
             usuarios = dia_entrega.get_usuarios();
             if (Session["calendario_entrega"] == null)

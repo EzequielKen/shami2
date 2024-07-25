@@ -98,11 +98,8 @@ namespace paginaWeb.paginasFabrica
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucursal = (DataTable)Session["sucursal"];
-            if (Session["analisis_produccion"] == null)
-            {
-                base.Session.Add("analisis_produccion", new cls_analisis_de_produccion(usuariosBD));
-            }
-            analisis = (cls_analisis_de_produccion)base.Session["analisis_produccion"];
+            
+            analisis = new cls_analisis_de_produccion(usuariosBD);
             if (!IsPostBack)
             {
                 Session.Add("fecha_estadistica_inicio", "N/A");

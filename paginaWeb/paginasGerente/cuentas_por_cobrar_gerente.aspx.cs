@@ -322,8 +322,8 @@ namespace paginaWeb.paginasGerente
 
             proveedorBD = (DataTable)Session["proveedorBD"];
             sucursalBD = (DataTable)Session["sucursal"];
-            Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-            pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
+            sistema_Administracion = new cls_sistema_cuentas_por_cobrar((DataTable)Session["usuariosBD"]);
+            pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
             sucursales = pedidos_fabrica.get_sucursales();
 
             Session.Add("sucursalesBD", sucursales);
@@ -334,11 +334,6 @@ namespace paginaWeb.paginasGerente
 
             if (!IsPostBack)
             {
-
-                //calcular remitos nuevos
-                Session.Add("sistema_Administracion_fabrica", new cls_sistema_cuentas_por_cobrar((DataTable)Session["usuariosBD"]));
-
-                sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
                 // sistema_Administracion.actualizar_remitos();
                 configurar_controles();
 
@@ -346,17 +341,12 @@ namespace paginaWeb.paginasGerente
 
 
             }
-            sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
 
             Session.Add("imputacionesBD", imputacionesBD);
 
 
 
 
-            if (Session["sistema_Administracion_fabrica"] == null)
-            {
-                Session.Add("sistema_Administracion_fabrica", new cls_sistema_cuentas_por_cobrar((DataTable)Session["usuariosBD"]));
-            }
             if (Session["sucursal_seleccionada"] == null)
             {
                 Session.Add("sucursal_seleccionada", dropDown_sucursales.SelectedItem.Text);
@@ -367,7 +357,6 @@ namespace paginaWeb.paginasGerente
                 Session.Add("sucursal_seleccionada", dropDown_sucursales.SelectedItem.Text);
             }
 
-            sistema_Administracion = (cls_sistema_cuentas_por_cobrar)Session["sistema_Administracion_fabrica"];
 
 
             proveedor_seleccionado = proveedorBD.Rows[0]["nombre_proveedor"].ToString();

@@ -224,11 +224,8 @@ namespace paginaWeb.paginasFabrica
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucursal = (DataTable)Session["sucursal"];
-            if (Session["estadisticas_entrega"] == null)
-            {
-                Session.Add("estadisticas_entrega", new cls_estadisticas_de_entrega(usuariosBD));
-            }
-            estadisticas = (cls_estadisticas_de_entrega)Session["estadisticas_entrega"];
+            
+            estadisticas = new cls_estadisticas_de_entrega(usuariosBD);
             sucursales = estadisticas.get_sucursal();
             if (!IsPostBack)
             {

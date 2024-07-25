@@ -116,7 +116,7 @@ namespace paginaWeb.paginasFabrica
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             proveedorBD = (DataTable)Session["proveedorBD"];
-            tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];
+            tipo_usuario = (DataTable)Session["tipo_usuario"];
 
             if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" &&
                 tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")
@@ -130,11 +130,7 @@ namespace paginaWeb.paginasFabrica
                 gridview_productos.Columns[3].Visible = false;
                 gridview_productos.Columns[4].Visible = false;
             }
-            if (Session["stock"]==null)
-            {
-                Session.Add("stock",new cls_stock(usuariosBD));
-            }
-            stockBD = (cls_stock)Session["stock"];
+            stockBD = new cls_stock(usuariosBD);
             productosBD = stockBD.get_productos_proveedor(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
             if (!IsPostBack)
             {

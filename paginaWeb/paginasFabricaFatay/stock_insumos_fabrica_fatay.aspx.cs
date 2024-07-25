@@ -236,11 +236,7 @@ namespace paginaWeb.paginasFabricaFatay
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
 
-            if (Session["cls_stock_insumos_fabrica_fatay"] == null)
-            {
-                Session.Add("cls_stock_insumos_fabrica_fatay", new cls_stock_insumos_fabrica_fatay(usuariosBD));
-            }
-            stock_insumo = (cls_stock_insumos_fabrica_fatay)Session["cls_stock_insumos_fabrica_fatay"];
+            stock_insumo = new cls_stock_insumos_fabrica_fatay(usuariosBD);
             stock_insumo.actualizar_stock_insumos();
 
 

@@ -129,11 +129,8 @@ namespace paginaWeb.paginasFabrica
             proveedorBD = (DataTable)Session["proveedorBD"];
             usuariosBD = (DataTable)Session["usuariosBD"];
             cuentas_Por_Cobrar = new cls_sistema_cuentas_por_cobrar(usuariosBD);
-            if (Session["remitos_carga"] == null)
-            {
-                Session.Add("remitos_carga", new cls_remitos_de_carga(usuariosBD));
-            }
-            remitos_carga = (cls_remitos_de_carga)Session["remitos_carga"];
+            
+            remitos_carga = new cls_remitos_de_carga(usuariosBD);
 
             cuentas_por_pagar = remitos_carga.get_cuentas_por_pagar();
             if (!IsPostBack)

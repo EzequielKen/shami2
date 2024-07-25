@@ -303,17 +303,9 @@ namespace paginaWeb.paginasFabrica
             }
 
 
-            if (Session["pedidos_fabrica"] == null)
-            {
-                Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-            }
-            pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
+            pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
 
-            if (Session["dia_entrega"] == null)
-            {
-                Session.Add("dia_entrega", new cls_dia_de_entrega(usuariosBD));
-            }
-            dia_entrega = (cls_dia_de_entrega)Session["dia_entrega"];
+            dia_entrega = new cls_dia_de_entrega(usuariosBD);
             calendario_entrega = dia_entrega.get_dias_de_entrega();
             if (Session["resumen_sucursal"] == null)
             {

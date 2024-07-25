@@ -194,7 +194,7 @@ namespace paginaWeb.paginasFabrica
             proveedorBD = (DataTable)Session["proveedorBD"];
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuarioBD = (DataTable)Session["tipo_usuario"];
-            stock_insumo = (cls_stock_insumos)Session["stock_insumo"];
+            stock_insumo = new cls_stock_insumos(usuariosBD);
 
             if (Session["usuariosBD"] == null)
             {
@@ -202,11 +202,8 @@ namespace paginaWeb.paginasFabrica
             }
             else
             {
-                if (Session["produccion"] == null)
-                {
-                    Session.Add("produccion", new cls_produccion(usuariosBD));
-                }
-                produccion = (cls_produccion)Session["produccion"];
+                
+                produccion = new cls_produccion(usuariosBD);
                 productos_produccionBD = produccion.get_productos_produccion(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
                 Session.Add("productos_produccionBD", productos_produccionBD);
 

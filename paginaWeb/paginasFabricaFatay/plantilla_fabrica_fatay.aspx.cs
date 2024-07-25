@@ -79,11 +79,8 @@ namespace paginaWeb.paginasFabricaFatay
         {
             proveedorBD = (DataTable)Session["proveedorBD"];
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["plantilla"] == null)
-            {
-                Session.Add("plantilla", new cls_plantillas_fabrica_fatay(usuariosBD));
-            }
-            plantilla = (cls_plantillas_fabrica_fatay)Session["plantilla"];
+            
+            plantilla = new cls_plantillas_fabrica_fatay(usuariosBD);
         }
 
         protected void boton_plantilla_stock_Click(object sender, EventArgs e)

@@ -177,11 +177,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["actualizador"] == null)
-            {
-                Session.Add("actualizador", new cls_actualizador_de_precios_insumos(usuariosBD));
-            }
-            actualizador = (cls_actualizador_de_precios_insumos)Session["actualizador"];
+         
+            actualizador = new cls_actualizador_de_precios_insumos(usuariosBD);
             if (!IsPostBack)
             {
                 actualizador.actualizar_precios_fabrica_fatay();

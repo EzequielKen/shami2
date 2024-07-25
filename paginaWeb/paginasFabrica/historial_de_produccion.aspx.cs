@@ -85,13 +85,7 @@ namespace paginaWeb.paginasFabrica
             if (landing.verificar_si_registro("2") ||
                 "Shami Villa Maipu Expedicion" != tipo_usuarioBD.Rows[0]["rol"].ToString())
             {
-
-
-                if (Session["historial_produccion"] == null)
-                {
-                    Session.Add("historial_produccion", new cls_historial_de_produccion(usuariosBD));
-                }
-                historial_produccion_cls = (cls_historial_de_produccion)Session["historial_produccion"];
+                historial_produccion_cls = new cls_historial_de_produccion(usuariosBD);
                 if ("Shami Villa Maipu Produccion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
                 {
                     //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), "Shami Villa Maipu Expedicion");

@@ -134,12 +134,8 @@ namespace paginaWeb.paginasFabrica
             }
 
 
-            if (Session["proveedores"] == null)
-            {
-                Session.Add("proveedores", new cls_proveedores_fabrica(usuariosBD));
-            }
 
-            proveedores_de_fabrica = (cls_proveedores_fabrica)Session["proveedores"];
+            proveedores_de_fabrica = new cls_proveedores_fabrica(usuariosBD);
 
             if (!IsPostBack)
             {

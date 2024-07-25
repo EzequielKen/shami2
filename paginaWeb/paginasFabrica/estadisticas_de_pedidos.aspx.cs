@@ -220,11 +220,8 @@ namespace paginaWeb.paginasFabrica
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucursal = (DataTable)Session["sucursal"];
-            if (Session["estadisticas"] == null)
-            {
-                base.Session.Add("estadisticas", new _02___sistemas.cls_estadisticas_de_entrega(usuariosBD));
-            }
-            estadisticas = (_02___sistemas.cls_estadisticas_de_entrega)base.Session["estadisticas"];
+            
+            estadisticas = new _02___sistemas.cls_estadisticas_de_entrega(usuariosBD);
             sucursales = estadisticas.get_sucursal();
             if (!IsPostBack)
             {

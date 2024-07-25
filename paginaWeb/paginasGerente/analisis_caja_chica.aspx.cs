@@ -154,11 +154,8 @@ namespace paginaWeb.paginasGerente
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["analisis_caja"] == null)
-            {
-                Session.Add("analisis_caja", new cls_analisis_caja_chica(usuariosBD));
-            }
-            analisis_caja = (cls_analisis_caja_chica)Session["analisis_caja"];
+            
+            analisis_caja = new cls_analisis_caja_chica(usuariosBD);
             if (!IsPostBack)
             {
                 cargar_dropDowns();

@@ -65,11 +65,8 @@ namespace paginaWeb.paginasGerente
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["caja_Chica"] == null)
-            {
-                Session.Add("caja_Chica", new cls_caja_chica(usuariosBD));
-            }
-            caja_Chica = (cls_caja_chica)Session["caja_Chica"];
+            
+            caja_Chica = new cls_caja_chica(usuariosBD);
             if (!IsPostBack)
             {
                 cargar_tipo_movimientos();

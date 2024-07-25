@@ -105,11 +105,7 @@ namespace paginaWeb.paginasFabrica
         DataTable cargos;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["landing"] == null)
-            {
-                Session.Add("landing", new cls_landing_page((DataTable)Session["usuariosBD"]));
-            }
-            landing = (cls_landing_page)Session["landing"];
+            landing = new cls_landing_page((DataTable)Session["usuariosBD"]);
             tipo_usuario = (DataTable)Session["tipo_usuario"];
             cargos = landing.get_descripcion_de_cargos(tipo_usuario.Rows[0]["rol"].ToString());
             construir_pagina();

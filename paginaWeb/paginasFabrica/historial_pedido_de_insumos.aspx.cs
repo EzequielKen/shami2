@@ -184,11 +184,8 @@ namespace paginaWeb.paginasFabrica
             {
                 usuariosBD = (DataTable)Session["usuariosBD"];
                 tipo_usuario = (DataTable)Session["tipo_usuario"];
-                if (Session["historial_pedido_insumos"] == null)
-                {
-                    Session.Add("historial_pedido_insumos", new cls_historial_de_pedido_de_insumos(usuariosBD));
-                }
-                historial_pedido_insumos = (cls_historial_de_pedido_de_insumos)Session["historial_pedido_insumos"];
+               
+                historial_pedido_insumos = new cls_historial_de_pedido_de_insumos(usuariosBD);
                 orden_de_pedidoBD = historial_pedido_insumos.get_orden_de_pedido();
                 if (!IsPostBack)
                 {

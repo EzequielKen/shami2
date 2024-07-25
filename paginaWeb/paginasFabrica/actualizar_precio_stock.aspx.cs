@@ -287,16 +287,8 @@ namespace paginaWeb.paginasFabrica
             }
             else
             {
+                pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
 
-                if (!IsPostBack)
-                {
-
-                    //calcular remitos nuevos
-                    Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-
-                    pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
-
-                }
                 if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" &&
                     tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Compras")
                 {
@@ -317,12 +309,6 @@ namespace paginaWeb.paginasFabrica
                     sucursalesBD = (DataTable)Session["sucursalesBD"];
                 }
 
-
-                if (Session["pedidos_fabrica"] == null)
-                {
-                    Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-                }
-                pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
 
                 if (Session["productos_proveedorBD"] == null)
                 {

@@ -156,26 +156,21 @@ namespace paginaWeb.paginas
             }
             else
             {
-                usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
-                sucusalBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucusalBD"]);
+                usuariosBD = (DataTable)Session["usuariosBD"];
+                sucusalBD = (DataTable)Session["sucursal"];
+
+
+                sistema_Administracion = new cls_sistema_cuentas_por_pagar(usuariosBD, sucusalBD);
 
                 if (!IsPostBack)
                 {
 
                     //calcular remitos nuevos
-                    Session.Add("sistema_Administracion", new cls_sistema_cuentas_por_pagar(usuariosBD, sucusalBD));
-                    sistema_Administracion = (cls_sistema_cuentas_por_pagar)Session["sistema_Administracion"];
                     sistema_Administracion.actualizar_remitos();
                     configurar_controles();
                 }
 
 
-                if (Session["sistema_Administracion"] == null)
-                {
-                    Session.Add("sistema_Administracion", new cls_sistema_cuentas_por_pagar((DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]));
-                }
-                sistema_Administracion = (cls_sistema_cuentas_por_pagar)Session["sistema_Administracion"];
-                sucusalBD = (DataTable)Session["sucursal"];
                 sucursal = sucusalBD.Rows[0]["sucursal"].ToString();
 
                 pedidosBD = sistema_Administracion.get_pedidos();

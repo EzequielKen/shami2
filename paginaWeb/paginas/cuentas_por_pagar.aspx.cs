@@ -221,7 +221,7 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+            sucursal = (DataTable)Session["sucursal"];
 
             seguridad = int.Parse(Session["nivel_seguridad"].ToString());
             if (seguridad > 2)
@@ -252,19 +252,16 @@ namespace paginaWeb.paginas
             }
             else
             {
+                sistema_Administracion = new cls_sistema_cuentas_por_pagar((DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]);
 
                 if (!IsPostBack)
                 {
 
                     //calcular remitos nuevos
-                    Session.Add("sistema_Administracion", new cls_sistema_cuentas_por_pagar((DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]));
-
-                    sistema_Administracion = (cls_sistema_cuentas_por_pagar)Session["sistema_Administracion"];
                     sistema_Administracion.actualizar_remitos();
                     Session.Add("lista_proveedores", sistema_Administracion.get_lista_proveedores());
                     configurar_controles();
                 }
-                sistema_Administracion = (cls_sistema_cuentas_por_pagar)Session["sistema_Administracion"];
                 if (Session["remitos"] == null)
                 {
                     remitosBD = sistema_Administracion.get_remitos();
@@ -290,10 +287,6 @@ namespace paginaWeb.paginas
                     imputacionesBD = (DataTable)Session["imputacionesBD"];
                 }
 
-                if (Session["sistema_Administracion"] == null)
-                {
-                    Session.Add("sistema_Administracion", new cls_sistema_cuentas_por_pagar((DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]));
-                }
 
                 cargar_remitos();
             }

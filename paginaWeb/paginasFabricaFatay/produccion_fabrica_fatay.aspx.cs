@@ -203,11 +203,7 @@ namespace paginaWeb.paginasFabricaFatay
             }
             else
             {
-                if (Session["produccion"] == null)
-                {
-                    Session.Add("produccion", new cls_produccion_fabrica_fatay(usuariosBD));
-                }
-                produccion = (cls_produccion_fabrica_fatay)Session["produccion"];
+                produccion = new cls_produccion_fabrica_fatay(usuariosBD);
                 productos_produccionBD = produccion.get_productos_produccion("proveedor_villaMaipu");
                 Session.Add("productos_produccionBD", productos_produccionBD);
 

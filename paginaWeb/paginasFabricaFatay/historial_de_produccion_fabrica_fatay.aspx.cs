@@ -80,11 +80,7 @@ namespace paginaWeb.paginasFabricaFatay
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuarioBD = (DataTable)Session["tipo_usuario"];
 
-            if (Session["historial_produccion"] == null)
-            {
-                Session.Add("historial_produccion", new cls_historial_de_produccion(usuariosBD));
-            }
-            historial_produccion_cls = (cls_historial_de_produccion)Session["historial_produccion"];
+            historial_produccion_cls = new cls_historial_de_produccion(usuariosBD);
           
             historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion_segun_fabrica("Fabrica Fatay Callao");
             if (!IsPostBack)

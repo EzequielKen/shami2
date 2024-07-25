@@ -235,15 +235,9 @@ namespace paginaWeb.paginasGerente
         string tipo_movimiento;
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
-            if (Session["caja_Chica"] == null)
-            {
-                Session.Add("caja_Chica", new cls_caja_chica(usuariosBD));
-            }
-
-            Session.Add("caja_Chica", new cls_caja_chica(usuariosBD));
-
-            caja_Chica = (cls_caja_chica)Session["caja_Chica"];
+            usuariosBD = (DataTable)Session["usuariosBD"];
+            
+            caja_Chica = new cls_caja_chica(usuariosBD);
             tipo_movimientosBD = caja_Chica.get_tipo_movimientos_caja_chica();
             movimientosBD = caja_Chica.get_movimientos_caja_chica();
             if (!IsPostBack)

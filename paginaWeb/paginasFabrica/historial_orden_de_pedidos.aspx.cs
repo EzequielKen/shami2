@@ -232,11 +232,8 @@ namespace paginaWeb.paginasFabrica
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
-            if (Session["historial_pedido"] == null)
-            {
-                Session.Add("historial_pedido", new cls_historial_orden_de_pedidos(usuariosBD));
-            }
-            historial_pedido = (cls_historial_orden_de_pedidos)Session["historial_pedido"];
+            
+            historial_pedido = new cls_historial_orden_de_pedidos(usuariosBD);
             orden_de_pedidoBD = historial_pedido.get_orden_de_pedido();
             if (!IsPostBack)
             {

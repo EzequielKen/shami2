@@ -27,7 +27,7 @@ namespace paginaWeb.paginas
             crear_tabla_resumen();
             int ultima_fila;
 
-            for (int fila = 0; fila <= lista_productosBD.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= lista_productosBD.Rows.Count - 1; fila++)
             {
                 if (dropDown_tipo.SelectedItem.Text == lista_productosBD.Rows[fila]["tipo_producto_local"].ToString() ||
                     dropDown_tipo.SelectedItem.Text == "todos")
@@ -75,7 +75,7 @@ namespace paginaWeb.paginas
                 }
             }
             total = turno_1 + turno_2;
-            
+
             double porcentaje_total;
             if (total != 0)
             {
@@ -126,7 +126,7 @@ namespace paginaWeb.paginas
 
             }
         }
-            private void configurar_estados_de_dias()
+        private void configurar_estados_de_dias()
         {
             Session.Add("lunes", false);
             Session.Add("martes", false);
@@ -203,7 +203,7 @@ namespace paginaWeb.paginas
         }
         private string get_dias()
         {
-            return Session["lunes"].ToString()+"-"+ Session["martes"].ToString() + "-" + Session["miercoles"].ToString() + "-" + Session["jueves"].ToString() + "-" + Session["viernes"].ToString() + "-" + Session["sabado"].ToString() + "-" + Session["domingo"].ToString();
+            return Session["lunes"].ToString() + "-" + Session["martes"].ToString() + "-" + Session["miercoles"].ToString() + "-" + Session["jueves"].ToString() + "-" + Session["viernes"].ToString() + "-" + Session["sabado"].ToString() + "-" + Session["domingo"].ToString();
         }
         #endregion
         /// <summary>
@@ -229,16 +229,12 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
-            empleado = funciones.Convertir_JArray_a_DataTable((JArray)Session["empleado"]);
-            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
-            tipo_usuario = funciones.Convertir_JArray_a_DataTable((JArray)Session["tipo_usuario"]);
+            usuariosBD = (DataTable)Session["usuariosBD"];
+            empleado = (DataTable)Session["empleado"];
+            sucursal = (DataTable)Session["sucursal"];
+            tipo_usuario = (DataTable)Session["tipo_usuario"];
 
-            if (Session["tabla_produccion"] == null)
-            {
-                Session.Add("tabla_produccion", new cls_administrar_tabla_produccion(usuariosBD));
-            }
-            tabla_produccion = (cls_administrar_tabla_produccion)Session["tabla_produccion"];
+            tabla_produccion = new cls_administrar_tabla_produccion(usuariosBD);
 
             registro_venta_localBD = tabla_produccion.get_ventas(sucursal.Rows[0]["id"].ToString());
             sumar_ventas();
@@ -307,16 +303,16 @@ namespace paginaWeb.paginas
         protected void textbox_venta_alta_TextChanged(object sender, EventArgs e)
         {
             TextBox textbox_venta_alta = (TextBox)sender;
-            if (textbox_venta_alta.Text!=string.Empty)
+            if (textbox_venta_alta.Text != string.Empty)
             {
                 double venta;
-                if (double.TryParse(textbox_venta_alta.Text,out venta))
+                if (double.TryParse(textbox_venta_alta.Text, out venta))
                 {
                     lista_productosBD = (DataTable)Session["lista_productosBD"];
                     GridViewRow row = (GridViewRow)textbox_venta_alta.NamingContainer;
                     int fila = row.RowIndex;
                     string id = gridview_productos.Rows[fila].Cells[0].Text;
-                    int fila_producto = funciones.buscar_fila_por_id(id,lista_productosBD);
+                    int fila_producto = funciones.buscar_fila_por_id(id, lista_productosBD);
                     lista_productosBD.Rows[fila_producto]["venta_alta"] = venta.ToString();
                     Session.Add("lista_productosBD", lista_productosBD);
                 }
@@ -351,18 +347,18 @@ namespace paginaWeb.paginas
             lista_productosBD = (DataTable)Session["lista_productosBD"];
             string id;
             int fila_producto;
-            for (int fila = 0; fila <=gridview_productos.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= gridview_productos.Rows.Count - 1; fila++)
             {
                 id = gridview_productos.Rows[fila].Cells[0].Text;
-                fila_producto = funciones.buscar_fila_por_id(id,lista_productosBD);
+                fila_producto = funciones.buscar_fila_por_id(id, lista_productosBD);
                 TextBox textbox_venta_alta = (gridview_productos.Rows[fila].Cells[2].FindControl("textbox_venta_alta") as TextBox);
                 TextBox textbox_venta_baja = (gridview_productos.Rows[fila].Cells[3].FindControl("textbox_venta_baja") as TextBox);
 
                 textbox_venta_alta.Text = lista_productosBD.Rows[fila_producto]["venta_alta"].ToString();
                 textbox_venta_baja.Text = lista_productosBD.Rows[fila_producto]["venta_baja"].ToString();
 
-                gridview_productos.Rows[fila].Cells[2].CssClass= "table-success";
-                gridview_productos.Rows[fila].Cells[3].CssClass= "table-danger";
+                gridview_productos.Rows[fila].Cells[2].CssClass = "table-success";
+                gridview_productos.Rows[fila].Cells[3].CssClass = "table-danger";
             }
         }
 

@@ -330,16 +330,10 @@ namespace paginaWeb.paginasFabrica
                 usuariosBD = (DataTable)Session["usuariosBD"];
                 proveedorBD = (DataTable)Session["proveedorBD"];
                 tipo_usuario = (DataTable)Session["tipo_usuario"];
-                if (Session["cuentas_Por_Pagar"] == null)
-                {
-                    Session.Add("cuentas_Por_Pagar", new cls_cuentas_por_pagar(usuariosBD));
-                }
-                cuentas_Por_Pagar = (cls_cuentas_por_pagar)Session["cuentas_Por_Pagar"];
-                if (Session["historial_orden_compra"] == null)
-                {
-                    Session.Add("historial_orden_compra", new cls_historial_orden_de_compras(usuariosBD));
-                }
-                historial = (cls_historial_orden_de_compras)Session["historial_orden_compra"];
+             
+                cuentas_Por_Pagar = new cls_cuentas_por_pagar(usuariosBD);
+             
+                historial = new cls_historial_orden_de_compras(usuariosBD);
                 if (!IsPostBack)
                 {
                     configurar_controles();

@@ -158,15 +158,12 @@ namespace paginaWeb.paginas
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
-            if (Session["registro_comida_empleado"] == null)
-            {
-                Session.Add("registro_comida_empleado", new cls_registro_comida_empleado(usuariosBD));
-            }
+            
             nombre_empleado = Session["nombre_empleado"].ToString();
             apellido_empleado = Session["apellido_empleado"].ToString();
             nombre_completo = nombre_empleado + " " + apellido_empleado;
             label_nombre_empleado.Text = "Empleado Seleccionado: " + nombre_completo;
-            registro = (cls_registro_comida_empleado)Session["registro_comida_empleado"];
+            registro = new cls_registro_comida_empleado(usuariosBD);
             productosBD = registro.get_lista_productos_comida_empleados();
             if (!IsPostBack)
             {

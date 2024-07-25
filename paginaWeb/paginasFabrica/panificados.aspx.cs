@@ -45,11 +45,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["panificado"] == null)
-            {
-                Session.Add("panificado", new cls_panificados(usuariosBD));
-            }
-            panificado = (cls_panificados)Session["panificado"];
+            
+            panificado = new cls_panificados(usuariosBD);
             if (!IsPostBack)
             {
                 Session.Add("productos_panificados", panificado.get_productos_panificados());

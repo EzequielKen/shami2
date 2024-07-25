@@ -261,11 +261,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["cls_pedir_insumos"] == null)
-            {
-                Session.Add("cls_pedir_insumos", new cls_pedir_insumos(usuariosBD));
-            }
-            pedir_insumo = (cls_pedir_insumos)Session["cls_pedir_insumos"];
+            
+            pedir_insumo = new cls_pedir_insumos(usuariosBD);
             insumos_proveedorBD = pedir_insumo.get_insumos_fabrica();
             if (!IsPostBack)
             {

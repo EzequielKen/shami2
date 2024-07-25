@@ -237,11 +237,7 @@ namespace paginaWeb.paginasFabrica
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
 
-            if (Session["stock_insumo"] == null)
-            {
-                Session.Add("stock_insumo", new cls_stock_insumos(usuariosBD));
-            }
-            stock_insumo = (cls_stock_insumos)Session["stock_insumo"];
+            stock_insumo = new cls_stock_insumos(usuariosBD);
             stock_insumo.actualizar_stock_insumos();
 
 

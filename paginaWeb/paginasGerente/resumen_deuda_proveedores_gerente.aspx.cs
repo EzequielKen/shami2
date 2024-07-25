@@ -316,17 +316,10 @@ namespace paginaWeb.paginasGerente
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["resumen_deuda"] == null)
-            {
-                Session.Add("resumen_deuda", new cls_resumen_deuda_proveedores(usuariosBD));
-            }
-            resumen_deuda = (cls_resumen_deuda_proveedores)Session["resumen_deuda"];
+            
+            resumen_deuda = new cls_resumen_deuda_proveedores(usuariosBD);
 
-            if (Session["cuentas_Por_Pagar"] == null)
-            {
-                Session.Add("cuentas_Por_Pagar", new cls_cuentas_por_pagar(usuariosBD));
-            }
-            cuentas_Por_Pagar = (cls_cuentas_por_pagar)Session["cuentas_Por_Pagar"];
+            cuentas_Por_Pagar = new cls_cuentas_por_pagar(usuariosBD);
             if (!IsPostBack)
             {
                 configurar_controles();

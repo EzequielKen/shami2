@@ -348,23 +348,19 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
-            empleado = funciones.Convertir_JArray_a_DataTable((JArray)Session["empleado"]);
-            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+            usuariosBD = (DataTable)Session["usuariosBD"];
+            empleado = (DataTable)Session["empleado"];
+            sucursal = (DataTable)Session["sucursal"];
 
             
             
             
             label_turno.Text = empleado.Rows[0]["turno_logueado"].ToString();
-            if (Session["lista_chequeo"] == null)
-            {
-                Session.Add("lista_chequeo", new cls_lista_de_chequeo(usuariosBD));
-            }
             if (Session["perfil_seleccionado"] == null)
             {
                 Session.Add("perfil_seleccionado", "N/A");
             }
-            lista_chequeo = (cls_lista_de_chequeo)Session["lista_chequeo"];
+            lista_chequeo = new cls_lista_de_chequeo(usuariosBD);
             lista_de_chequeoBD = lista_chequeo.get_lista_de_chequeo();
             Session.Add("empleado", lista_chequeo.get_empleado(empleado.Rows[0]["id"].ToString()));
             empleado = (DataTable)Session["empleado"];

@@ -96,14 +96,7 @@ namespace paginaWeb.paginasFabrica
                 proveedorBD = (DataTable)Session["proveedorBD"];
                 usuariosBD = (DataTable)Session["usuariosBD"];
                 tipo_usuario = (DataTable)Session["tipo_usuario"];
-
-                if (!IsPostBack)
-                {
-
-                    //calcular remitos nuevos
-                    Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-                    pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
-                }
+                pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
 
                 if (Session["sucursalesBD"] == null)
                 {
@@ -115,13 +108,7 @@ namespace paginaWeb.paginasFabrica
                 {
                     sucursalesBD = (DataTable)Session["sucursalesBD"];
                 }
-
-
-                if (Session["pedidos_fabrica"] == null)
-                {
-                    Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-                }
-                pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
+                
                 pedidos_no_cargados = pedidos_fabrica.get_pedidos_no_cargados(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString());
                 cargar_sucursales();
 

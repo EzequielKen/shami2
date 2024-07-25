@@ -208,11 +208,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (Session["orden_pedido"] == null)
-            {
-                Session.Add("orden_pedido", new cls_orden_de_pedido(usuariosBD));
-            }
-            orden_pedido = (cls_orden_de_pedido)Session["orden_pedido"];
+            
+            orden_pedido = new cls_orden_de_pedido(usuariosBD);
             
             if (!IsPostBack)
             {

@@ -19,7 +19,7 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+            usuariosBD = (DataTable)Session["usuariosBD"];
 
 
             calendario_entrega = new cls_dia_de_entrega(usuariosBD);

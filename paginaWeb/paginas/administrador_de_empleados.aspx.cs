@@ -492,13 +492,9 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
+            usuariosBD = (DataTable)Session["usuariosBD"];
 
-            if (Session["administracion_de_empleados"] == null)
-            {
-                Session.Add("administracion_de_empleados", new cls_administrar_empleados(usuariosBD));
-            }
-            administrador = (cls_administrar_empleados)Session["administracion_de_empleados"];
+            administrador = new cls_administrar_empleados(usuariosBD);
             lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             if (!IsPostBack)
             {

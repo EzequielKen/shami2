@@ -217,15 +217,11 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
-            empleado = funciones.Convertir_JArray_a_DataTable((JArray)Session["empleado"]);
-            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+            usuariosBD = (DataTable)Session["usuariosBD"];
+            empleado = (DataTable)Session["empleado"];
+            sucursal = (DataTable)Session["sucursal"];
 
-            if (Session["faltantes"] == null)
-            {
-                Session.Add("faltantes", new cls_lista_de_faltantes(usuariosBD));
-            }
-            faltantes = (cls_lista_de_faltantes)Session["faltantes"];
+            faltantes = new cls_lista_de_faltantes(usuariosBD);
 
             if (!IsPostBack)
             {

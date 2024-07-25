@@ -104,11 +104,7 @@ namespace paginaWeb.paginasFabrica
                 }
 
 
-                if (Session["pedidos_fabrica"] == null)
-                {
-                    Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-                }
-                pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
+                pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
 
 
 
