@@ -249,8 +249,9 @@ namespace paginaWeb.paginasGerente
         }
         private void cargar_saldo()
         {
+            DateTime fecha = DateTime.Now;
             label_saldo.Text = "Deuda del Mes: " + formatCurrency(double.Parse(sistema_Administracion.get_deuda_total_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text)));
-            label_deuda_actual.Text = "Deuda Actual: " + formatCurrency(sistema_Administracion.get_deuda_actual(dropDown_sucursales.SelectedItem.Text));
+            label_deuda_actual.Text = "Deuda al Dia " + fecha.ToString("dd/MM/yyyy") + " : " + formatCurrency(sistema_Administracion.get_deuda_actual(dropDown_sucursales.SelectedItem.Text));
             label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.get_deuda_mes_anterior(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
             double compra_del_mes = sistema_Administracion.calcular_compra_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
