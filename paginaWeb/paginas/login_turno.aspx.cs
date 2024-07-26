@@ -25,8 +25,8 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            empleado = funciones.Convertir_JArray_a_DataTable((JArray)Session["empleado"]);
-          
+            empleado = (DataTable)Session["empleado"];
+
         }
 
         protected void boton_turno_1_Click(object sender, EventArgs e)
