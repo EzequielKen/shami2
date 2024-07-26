@@ -325,9 +325,9 @@ namespace paginaWeb.paginas
 
 
         }
-        private void registrar_chequeo(string id_actividad, string actividad, string nota, string turno)
+        private void registrar_chequeo(string id_actividad, string nota, string turno)
         {
-            actividad = id_actividad + "-" + actividad;
+            string actividad = id_actividad;//+ "-" + actividad;
             lista_chequeo.registrar_chequeo(empleado, actividad, nota,turno);
         }
         /// <summary>
@@ -428,7 +428,7 @@ namespace paginaWeb.paginas
             TextBox textbox_nota = (gridview_chequeos.Rows[fila].Cells[2].FindControl("textbox_nota") as TextBox);
 
             string id_actividad = gridview_chequeos.Rows[fila].Cells[0].Text;
-            string actividad = gridview_chequeos.Rows[fila].Cells[1].Text;
+//            string actividad = gridview_chequeos.Rows[fila].Cells[1].Text;
             string nota;
             if (textbox_nota.Text == string.Empty)
             {
@@ -438,7 +438,7 @@ namespace paginaWeb.paginas
             {
                 nota = textbox_nota.Text;
             }
-            registrar_chequeo(id_actividad, actividad, nota, empleado.Rows[0]["turno_logueado"].ToString());
+            registrar_chequeo(id_actividad, nota, empleado.Rows[0]["turno_logueado"].ToString());
             configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
 
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());

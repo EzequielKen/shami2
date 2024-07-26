@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -84,7 +85,9 @@ namespace paginaWeb
                 cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
                 cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
                 cmd.Parameters.AddWithValue("@Timeout", item.Timeout);
-                cmd.Parameters.AddWithValue("@SessionItems", SerializeSessionItems((SessionStateItemCollection)item.Items));
+                string serializedItems = SerializeSessionItems((SessionStateItemCollection)item.Items);
+                System.Diagnostics.Debug.WriteLine($"Serialized items for session {id}: {serializedItems}");
+                cmd.Parameters.AddWithValue("@SessionItems", serializedItems);
                 cmd.Parameters.AddWithValue("@Flags", 0);
 
                 cmd.ExecuteNonQuery();
@@ -111,23 +114,22 @@ namespace paginaWeb
                 return new SessionStateItemCollection();
             }
 
+            System.Diagnostics.Debug.WriteLine($"Deserializing session items: {sessionItems}");
             try
             {
                 var wrapper = JsonConvert.DeserializeObject<SessionStateItemCollectionWrapper>(sessionItems);
                 foreach (var key in wrapper.Items.Keys.ToList())
                 {
-                    if (wrapper.Items[key] is string dataTableString)
+                    if (wrapper.Items[key] is string dataTableString && IsBase64String(dataTableString))
                     {
-                        if (IsBase64String(dataTableString))
-                        {
-                            wrapper.Items[key] = DeserializeDataTable(dataTableString);
-                        }
+                        wrapper.Items[key] = DeserializeDataTable(dataTableString);
                     }
                 }
                 return wrapper.ToSessionStateItemCollection();
             }
-            catch (JsonSerializationException)
+            catch (JsonSerializationException ex)
             {
+                System.Diagnostics.Debug.WriteLine($"JSON Serialization Exception: {ex.Message}");
                 var itemList = JsonConvert.DeserializeObject<List<object>>(sessionItems);
                 var sessionItemsCollection = new SessionStateItemCollection();
                 for (int i = 0; i < itemList.Count; i++)
@@ -135,6 +137,12 @@ namespace paginaWeb
                     sessionItemsCollection[i.ToString()] = itemList[i];
                 }
                 return sessionItemsCollection;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and handle it appropriately
+                System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+                throw new SerializationException("Error deserializing session items", ex);
             }
         }
 
@@ -204,6 +212,8 @@ namespace paginaWeb
                         var timeout = (int)reader["Timeout"];
                         var sessionItems = reader["SessionItems"] as string;
 
+                        System.Diagnostics.Debug.WriteLine($"Session items from DB for session {id}: {sessionItems}");
+
                         var items = sessionItems != null ? DeserializeSessionItems(sessionItems) : new SessionStateItemCollection();
 
                         sessionData = new SessionStateStoreData(items, SessionStateUtility.GetSessionStaticObjects(context), timeout);
@@ -233,31 +243,19 @@ namespace paginaWeb
                 cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
                 cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
                 cmd.Parameters.AddWithValue("@Timeout", timeout);
-                cmd.Parameters.AddWithValue("@SessionItems", DBNull.Value);
-                cmd.Parameters.AddWithValue("@Flags", 0);
+                cmd.Parameters.AddWithValue("@SessionItems", "");
+                cmd.Parameters.AddWithValue("@Flags", 1);
 
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public override SessionStateStoreData CreateNewStoreData(HttpContext context, int timeout)
-        {
-            return new SessionStateStoreData(new SessionStateItemCollection(), SessionStateUtility.GetSessionStaticObjects(context), timeout);
-        }
-
         public override void EndRequest(HttpContext context)
         {
-            // Maneja el final de una solicitud si es necesario
-        }
-
-        public override void Dispose()
-        {
-            // Limpia cualquier recurso utilizado por el proveedor de sesiones
         }
 
         public override void InitializeRequest(HttpContext context)
         {
-            // Inicializa cualquier recurso necesario al inicio de una solicitud
         }
 
         public override void RemoveItem(HttpContext context, string id, object lockId, SessionStateStoreData item)
@@ -279,16 +277,24 @@ namespace paginaWeb
                 conn.Open();
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE Sessions SET Expires = @Expires WHERE SessionId = @SessionId";
-                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(20)); // Asume un timeout predeterminado de 20 minutos
                 cmd.Parameters.AddWithValue("@SessionId", id);
+                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(20)); // Tiempo de expiración
                 cmd.ExecuteNonQuery();
             }
         }
 
+        public override SessionStateStoreData CreateNewStoreData(HttpContext context, int timeout)
+        {
+            return new SessionStateStoreData(new SessionStateItemCollection(), SessionStateUtility.GetSessionStaticObjects(context), timeout);
+        }
+
+        public override void Dispose()
+        {
+        }
+
         public override bool SetItemExpireCallback(SessionStateItemExpireCallback expireCallback)
         {
-            // Establece el callback de expiración si es necesario
-            return true;
+            return false;
         }
     }
 }
