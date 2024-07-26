@@ -328,7 +328,7 @@ namespace paginaWeb.paginas
         private void registrar_chequeo(string id_actividad, string nota, string turno)
         {
             string actividad = id_actividad;//+ "-" + actividad;
-            lista_chequeo.registrar_chequeo(empleado, actividad, nota,turno);
+            lista_chequeo.registrar_chequeo(empleado_lista_chequeo, actividad, nota, turno);
         }
         /// <summary>
         /// ////////////////////////////////////////////////////////////
@@ -336,9 +336,9 @@ namespace paginaWeb.paginas
         #region atributos
         cls_lista_de_chequeo lista_chequeo;
         cls_funciones funciones = new cls_funciones();
-        DataTable usuariosBD;
-        DataTable empleado;
-        DataTable sucursal;
+        DataTable usuariosBD_lista_chequeo;
+        DataTable empleado_lista_chequeo;
+        DataTable sucursal_lista_chequeo;
 
         DataTable lista_de_chequeoBD;
         DataTable configuracion;
@@ -348,29 +348,29 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = (DataTable)Session["usuariosBD"];
-            empleado = (DataTable)Session["empleado"];
-            sucursal = (DataTable)Session["sucursal"];
-
-            
-            
-            
-            label_turno.Text = empleado.Rows[0]["turno_logueado"].ToString();
+            if (!IsPostBack)
+            {
+                Session.Add("usuariosBD_lista_chequeo", (DataTable)Session["usuariosBD"]);
+                Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
+                Session.Add("sucursal_lista_chequeo", (DataTable)Session["sucursal"]);
+            }
+            usuariosBD_lista_chequeo = (DataTable)Session["usuariosBD_lista_chequeo"];
+            empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
+            sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
+            label_turno.Text = empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString();
             if (Session["perfil_seleccionado"] == null)
             {
                 Session.Add("perfil_seleccionado", "N/A");
             }
-            lista_chequeo = new cls_lista_de_chequeo(usuariosBD);
+            lista_chequeo = new cls_lista_de_chequeo(usuariosBD_lista_chequeo);
             lista_de_chequeoBD = lista_chequeo.get_lista_de_chequeo();
-            Session.Add("empleado", lista_chequeo.get_empleado(empleado.Rows[0]["id"].ToString()));
-            empleado = (DataTable)Session["empleado"];
 
-            string nombre = empleado.Rows[0]["nombre"].ToString();
-            string apellido = empleado.Rows[0]["apellido"].ToString();
-            string cargos = empleado.Rows[0]["cargo"].ToString();
+            string nombre = empleado_lista_chequeo.Rows[0]["nombre"].ToString();
+            string apellido = empleado_lista_chequeo.Rows[0]["apellido"].ToString();
+            string cargos = empleado_lista_chequeo.Rows[0]["cargo"].ToString();
             label_nombre.Text = "Empleado: " + nombre + " " + apellido;
             label_fecha.Text = "Fecha: " + DateTime.Now.ToString("dd/MM/yyyyy");
-            if (!lista_chequeo.verificar_brecha_turno(DateTime.Now, empleado.Rows[0]["turno_logueado"].ToString()))
+            if (!lista_chequeo.verificar_brecha_turno(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString()))
             {
                 boton_cerrar_turno.Visible = false;
             }
@@ -380,16 +380,14 @@ namespace paginaWeb.paginas
             }
             configurar_botones_cargos(cargos);
 
-
-
         }
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             string id;
             int fila_historial;
-            empleado = (DataTable)Session["empleado"];
-            DataTable historial = lista_chequeo.get_historial(DateTime.Now, empleado.Rows[0]["turno_logueado"].ToString(), empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+            empleado_lista_chequeo = (DataTable)Session["empleado"];
+            DataTable historial = lista_chequeo.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
             for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
             {
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
@@ -419,7 +417,7 @@ namespace paginaWeb.paginas
         {
             cargar_lista_chequeo();
         }
-
+        
         protected void boton_cargar_Click(object sender, EventArgs e)
         {
             Button boton_cargar = (Button)sender;
@@ -428,24 +426,20 @@ namespace paginaWeb.paginas
             TextBox textbox_nota = (gridview_chequeos.Rows[fila].Cells[2].FindControl("textbox_nota") as TextBox);
 
             string id_actividad = gridview_chequeos.Rows[fila].Cells[0].Text;
-//            string actividad = gridview_chequeos.Rows[fila].Cells[1].Text;
             string nota;
-            if (textbox_nota.Text == string.Empty)
+            if (textbox_nota.Text==string.Empty)
             {
-                nota = "N/A";
+                nota="N/A";
             }
             else
             {
                 nota = textbox_nota.Text;
             }
-            registrar_chequeo(id_actividad, nota, empleado.Rows[0]["turno_logueado"].ToString());
+            registrar_chequeo(id_actividad, nota, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString());
             configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
 
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
-
             cargar_lista_chequeo();
-            // Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
-
         }
 
         protected void boton_encargado_Click(object sender, EventArgs e)
@@ -526,26 +520,30 @@ namespace paginaWeb.paginas
             int fila = row.RowIndex;
 
             string id_actividad = gridview_chequeos.Rows[fila].Cells[5].Text;
-            string nota;
-            if (textbox_nota.Text == string.Empty)
+            if (id_actividad!=string.Empty)
             {
-                nota = "N/A";
-            }
-            else
-            {
-                nota = textbox_nota.Text;
-            }
-            lista_chequeo.actualizar_nota(id_actividad, nota);
-            configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+                string nota;
+                if (textbox_nota.Text == string.Empty)
+                {
+                    nota = "N/A";
+                }
+                else
+                {
+                    nota = textbox_nota.Text;
+                }
+                lista_chequeo.actualizar_nota(id_actividad, nota);
+                configuracion = lista_chequeo.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
 
-            llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+                llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
 
-            cargar_lista_chequeo();
+                cargar_lista_chequeo();
+            }
+
         }
 
         protected void boton_cerrar_turno_Click(object sender, EventArgs e)
         {
-            Session.Add("empleado", lista_chequeo.cerrar_turno((DataTable)Session["empleado"], sucursal.Rows[0]["sucursal"].ToString()));
+            Session.Add("empleado", lista_chequeo.cerrar_turno((DataTable)Session["empleado"], sucursal_lista_chequeo.Rows[0]["sucursal"].ToString()));
             Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
         }
     }

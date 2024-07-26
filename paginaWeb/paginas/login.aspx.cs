@@ -34,7 +34,7 @@ namespace paginaWeb
         {
 
             borrar_pdf();
-            Session.Contents.RemoveAll();
+            
 
         }
 

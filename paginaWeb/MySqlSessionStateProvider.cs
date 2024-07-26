@@ -61,36 +61,44 @@ namespace paginaWeb
 
         public override void SetAndReleaseItemExclusive(HttpContext context, string id, SessionStateStoreData item, object lockId, bool newItem)
         {
-            using (var conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = @"
-                    INSERT INTO Sessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockOwner, Timeout, SessionItems, Flags)
-                    VALUES (@SessionId, @Created, @Expires, @LockDate, @LockDateLocal, @LockOwner, @Timeout, @SessionItems, @Flags)
-                    ON DUPLICATE KEY UPDATE 
-                    Created = VALUES(Created),
-                    Expires = VALUES(Expires),
-                    LockDate = VALUES(LockDate),
-                    LockDateLocal = VALUES(LockDateLocal),
-                    LockOwner = VALUES(LockOwner),
-                    Timeout = VALUES(Timeout),
-                    SessionItems = VALUES(SessionItems),
-                    Flags = VALUES(Flags)";
-                DateTime fecha = DateTime.Now;
-                cmd.Parameters.AddWithValue("@SessionId", id);
-                cmd.Parameters.AddWithValue("@Created", fecha);
-                cmd.Parameters.AddWithValue("@Expires", fecha.AddMinutes(item.Timeout));
-                cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
-                cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
-                cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
-                cmd.Parameters.AddWithValue("@Timeout", item.Timeout);
-                string serializedItems = SerializeSessionItems((SessionStateItemCollection)item.Items);
-                System.Diagnostics.Debug.WriteLine($"Serialized items for session {id}: {serializedItems}");
-                cmd.Parameters.AddWithValue("@SessionItems", serializedItems);
-                cmd.Parameters.AddWithValue("@Flags", 0);
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = @"
+                        INSERT INTO Sessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockOwner, Timeout, SessionItems, Flags)
+                        VALUES (@SessionId, @Created, @Expires, @LockDate, @LockDateLocal, @LockOwner, @Timeout, @SessionItems, @Flags)
+                        ON DUPLICATE KEY UPDATE 
+                        Created = VALUES(Created),
+                        Expires = VALUES(Expires),
+                        LockDate = VALUES(LockDate),
+                        LockDateLocal = VALUES(LockDateLocal),
+                        LockOwner = VALUES(LockOwner),
+                        Timeout = VALUES(Timeout),
+                        SessionItems = VALUES(SessionItems),
+                        Flags = VALUES(Flags)";
+                    DateTime fecha = DateTime.Now;
+                    cmd.Parameters.AddWithValue("@SessionId", id);
+                    cmd.Parameters.AddWithValue("@Created", fecha);
+                    cmd.Parameters.AddWithValue("@Expires", fecha.AddMinutes(item.Timeout));
+                    cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Timeout", item.Timeout);
+                    string serializedItems = SerializeSessionItems((SessionStateItemCollection)item.Items);
+                    System.Diagnostics.Debug.WriteLine($"Serialized items for session {id}: {serializedItems}");
+                    cmd.Parameters.AddWithValue("@SessionItems", serializedItems);
+                    cmd.Parameters.AddWithValue("@Flags", 0);
 
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in SetAndReleaseItemExclusive: {ex.Message}");
+                throw;
             }
         }
 
@@ -130,19 +138,17 @@ namespace paginaWeb
             catch (JsonSerializationException ex)
             {
                 System.Diagnostics.Debug.WriteLine($"JSON Serialization Exception: {ex.Message}");
-                var itemList = JsonConvert.DeserializeObject<List<object>>(sessionItems);
-                var sessionItemsCollection = new SessionStateItemCollection();
-                for (int i = 0; i < itemList.Count; i++)
-                {
-                    sessionItemsCollection[i.ToString()] = itemList[i];
-                }
-                return sessionItemsCollection;
+                return new SessionStateItemCollection();
+            }
+            catch (SerializationException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Serialization Exception: {ex.Message}");
+                return new SessionStateItemCollection();
             }
             catch (Exception ex)
             {
-                // Log the exception and handle it appropriately
                 System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
-                throw new SerializationException("Error deserializing session items", ex);
+                return new SessionStateItemCollection();
             }
         }
 
@@ -158,11 +164,19 @@ namespace paginaWeb
 
         private DataTable DeserializeDataTable(string dataTableString)
         {
-            var bytes = Convert.FromBase64String(dataTableString);
-            using (var memoryStream = new MemoryStream(bytes))
+            try
             {
-                var formatter = new BinaryFormatter();
-                return (DataTable)formatter.Deserialize(memoryStream);
+                var bytes = Convert.FromBase64String(dataTableString);
+                using (var memoryStream = new MemoryStream(bytes))
+                {
+                    var formatter = new BinaryFormatter();
+                    return (DataTable)formatter.Deserialize(memoryStream);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error deserializing DataTable: {ex.Message}");
+                throw;
             }
         }
 
@@ -175,13 +189,21 @@ namespace paginaWeb
 
         public override void ReleaseItemExclusive(HttpContext context, string id, object lockId)
         {
-            using (var conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = "UPDATE Sessions SET LockOwner = NULL, LockDate = NULL WHERE SessionId = @SessionId";
-                cmd.Parameters.AddWithValue("@SessionId", id);
-                cmd.ExecuteNonQuery();
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "UPDATE Sessions SET LockOwner = NULL, LockDate = NULL WHERE SessionId = @SessionId";
+                    cmd.Parameters.AddWithValue("@SessionId", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ReleaseItemExclusive: {ex.Message}");
+                throw;
             }
         }
 
@@ -198,29 +220,45 @@ namespace paginaWeb
             lockId = null;
             actions = SessionStateActions.None;
 
-            using (var conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT * FROM Sessions WHERE SessionId = @SessionId";
-                cmd.Parameters.AddWithValue("@SessionId", id);
-
-                using (var reader = cmd.ExecuteReader())
+                using (var conn = new MySqlConnection(connectionString))
                 {
-                    if (reader.Read())
+                    conn.Open();
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "SELECT * FROM Sessions WHERE SessionId = @SessionId";
+                    cmd.Parameters.AddWithValue("@SessionId", id);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        var timeout = (int)reader["Timeout"];
-                        var sessionItems = reader["SessionItems"] as string;
-
-                        System.Diagnostics.Debug.WriteLine($"Session items from DB for session {id}: {sessionItems}");
-
-                        var items = sessionItems != null ? DeserializeSessionItems(sessionItems) : new SessionStateItemCollection();
-
-                        sessionData = new SessionStateStoreData(items, SessionStateUtility.GetSessionStaticObjects(context), timeout);
-                        lockId = Guid.NewGuid(); // Genera un ID de bloqueo único para la sesión
-                        locked = true; // Marca la sesión como bloqueada
+                        if (reader.Read())
+                        {
+                            DateTime expires = reader.GetDateTime("Expires");
+                            if (expires < DateTime.Now)
+                            {
+                                locked = false;
+                                actions = SessionStateActions.InitializeItem;
+                                RemoveItem(context, id, lockId, sessionData);
+                            }
+                            else
+                            {
+                                string sessionItems = reader["SessionItems"] as string;
+                                sessionData = new SessionStateStoreData(DeserializeSessionItems(sessionItems), SessionStateUtility.GetSessionStaticObjects(context), (int)reader["Timeout"]);
+                                lockId = Guid.NewGuid(); // Genera un ID de bloqueo único para la sesión
+                                locked = true; // Marca la sesión como bloqueada
+                            }
+                        }
+                        else
+                        {
+                            actions = SessionStateActions.InitializeItem;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in GetItemExclusive: {ex.Message}");
+                throw;
             }
 
             return sessionData;
@@ -228,25 +266,43 @@ namespace paginaWeb
 
         public override void CreateUninitializedItem(HttpContext context, string id, int timeout)
         {
-            using (var conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = @"
-                    INSERT INTO Sessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockOwner, Timeout, SessionItems, Flags)
-                    VALUES (@SessionId, @Created, @Expires, @LockDate, @LockDateLocal, @LockOwner, @Timeout, @SessionItems, @Flags)";
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "SELECT COUNT(*) FROM Sessions WHERE SessionId = @SessionId";
+                    cmd.Parameters.AddWithValue("@SessionId", id);
 
-                cmd.Parameters.AddWithValue("@SessionId", id);
-                cmd.Parameters.AddWithValue("@Created", DateTime.UtcNow);
-                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(timeout));
-                cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
-                cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
-                cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
-                cmd.Parameters.AddWithValue("@Timeout", timeout);
-                cmd.Parameters.AddWithValue("@SessionItems", "");
-                cmd.Parameters.AddWithValue("@Flags", 1);
+                    int sessionCount = Convert.ToInt32(cmd.ExecuteScalar());
+                    if (sessionCount == 0)
+                    {
+                        cmd.CommandText = @"
+                            INSERT INTO Sessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockOwner, Timeout, SessionItems, Flags)
+                            VALUES (@SessionId, @Created, @Expires, @LockDate, @LockDateLocal, @LockOwner, @Timeout, @SessionItems, @Flags)";
 
-                cmd.ExecuteNonQuery();
+                        cmd.Parameters.AddWithValue("@Created", DateTime.UtcNow);
+                        cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(timeout));
+                        cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
+                        cmd.Parameters.AddWithValue("@Timeout", timeout);
+                        cmd.Parameters.AddWithValue("@SessionItems", "{}"); // Representa un JSON vacío
+                        cmd.Parameters.AddWithValue("@Flags", 1);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        throw new Exception("Session already exists.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in CreateUninitializedItem: {ex.Message}");
+                throw;
             }
         }
 
@@ -260,26 +316,42 @@ namespace paginaWeb
 
         public override void RemoveItem(HttpContext context, string id, object lockId, SessionStateStoreData item)
         {
-            using (var conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = "DELETE FROM Sessions WHERE SessionId = @SessionId";
-                cmd.Parameters.AddWithValue("@SessionId", id);
-                cmd.ExecuteNonQuery();
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "DELETE FROM Sessions WHERE SessionId = @SessionId";
+                    cmd.Parameters.AddWithValue("@SessionId", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in RemoveItem: {ex.Message}");
+                throw;
             }
         }
 
         public override void ResetItemTimeout(HttpContext context, string id)
         {
-            using (var conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = "UPDATE Sessions SET Expires = @Expires WHERE SessionId = @SessionId";
-                cmd.Parameters.AddWithValue("@SessionId", id);
-                cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(20)); // Tiempo de expiración
-                cmd.ExecuteNonQuery();
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    var cmd = conn.CreateCommand();
+                    cmd.CommandText = "UPDATE Sessions SET Expires = @Expires WHERE SessionId = @SessionId";
+                    cmd.Parameters.AddWithValue("@SessionId", id);
+                    cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(20)); // Tiempo de expiración
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in ResetItemTimeout: {ex.Message}");
+                throw;
             }
         }
 
