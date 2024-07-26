@@ -961,6 +961,7 @@
       <DependentUpon>Tutoriales.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="proveedor_de_sesiones.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="paginasMaestras\paginaMaestra.Master" />

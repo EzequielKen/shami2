@@ -194,10 +194,11 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_saldo()
         {
+            DateTime fecha = DateTime.Now;
             label_deuda_total_mes.Text = "Deuda Actual a Proveedores: " + funciones.formatCurrency(cuentas_Por_Pagar.deuda_total_del_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
 
             label_saldo_anterior.Text = "Deuda meses anteriores: " + funciones.formatCurrency(cuentas_Por_Pagar.deuda_total_del_mes_anterior(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
-            label_saldo.Text = "Deuda actual: " + funciones.formatCurrency(cuentas_Por_Pagar.calcular_deuda_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            label_saldo.Text = "Deuda al Dia " + fecha.ToString("dd/MM/yyyy") + " : " + funciones.formatCurrency(cuentas_Por_Pagar.calcular_deuda_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
             label_compra_mes.Text = "Compra del mes: " + funciones.formatCurrency(cuentas_Por_Pagar.calcular_Total_compra_del_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
             label_compra_mes_titulo.Text = "Compra del mes: " + funciones.formatCurrency(cuentas_Por_Pagar.calcular_Total_compra_del_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
             label_pagado_mes.Text = "Total pagado del mes: " + funciones.formatCurrency(cuentas_Por_Pagar.pago_total_del_mes(dropDown_proveedores.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
