@@ -60,9 +60,6 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasGerente/proveedores_fabrica_gerente.aspx">Proveedores</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasGerente/proveedores_fabrica_gerente.aspx">NUEVO MODULO</a>
-                    </li>
                 </ul>
                 <h1>
                     <asp:Label ID="label_sucursal" Text="Gerente" runat="server" />
