@@ -281,9 +281,9 @@ namespace paginaWeb
                         cmd.CommandText = @"
                             INSERT INTO Sessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockOwner, Timeout, SessionItems, Flags)
                             VALUES (@SessionId, @Created, @Expires, @LockDate, @LockDateLocal, @LockOwner, @Timeout, @SessionItems, @Flags)";
-
-                        cmd.Parameters.AddWithValue("@Created", DateTime.UtcNow);
-                        cmd.Parameters.AddWithValue("@Expires", DateTime.UtcNow.AddMinutes(timeout));
+                        DateTime fecha = DateTime.Now;
+                        cmd.Parameters.AddWithValue("@Created", fecha);
+                        cmd.Parameters.AddWithValue("@Expires", fecha.AddMinutes(timeout));
                         cmd.Parameters.AddWithValue("@LockDate", DBNull.Value);
                         cmd.Parameters.AddWithValue("@LockDateLocal", DBNull.Value);
                         cmd.Parameters.AddWithValue("@LockOwner", DBNull.Value);
