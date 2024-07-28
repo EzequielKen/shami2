@@ -23,6 +23,7 @@ namespace paginaWeb
             tipo_usuario.Rows[0]["rol"] = "shami empleado";
         }
         cls_sistema_login login_sistema = new cls_sistema_login();
+        cls_actualizar_deuda actualizar_deuda;
         cls_estadisticas_de_pedidos estadisticas;
         cls_stock_insumos stock_insumo;
 
@@ -53,6 +54,8 @@ namespace paginaWeb
                 }
                 Session.Add("sucursal", sucursal);
                 Session.Add("usuariosBD", usuarioBD);
+                actualizar_deuda = new cls_actualizar_deuda(usuarioBD);
+                actualizar_deuda.actualizar_deuda(sucursal, usuarioBD);
                 tipo_usuario = login_sistema.get_tipo_usuario();
                 Session.Add("tipo_usuario", tipo_usuario);
                 Session.Add("nivel_seguridad", tipo_usuario.Rows[0]["seguridad"].ToString());
@@ -137,6 +140,9 @@ namespace paginaWeb
                 }
                 Session.Add("sucursal", login_sistema.get_sucursal());
                 Session.Add("empleado", login_sistema.get_empleado());
+
+                actualizar_deuda = new cls_actualizar_deuda(usuarioBD);
+                actualizar_deuda.actualizar_deuda(sucursal, usuarioBD);
                 DataTable empleado = (DataTable)Session["empleado"];
                 Session.Add("usuariosBD", usuarioBD);
                 crear_tipo_usuario();
