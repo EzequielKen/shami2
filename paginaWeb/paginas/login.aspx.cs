@@ -141,8 +141,6 @@ namespace paginaWeb
                 Session.Add("sucursal", login_sistema.get_sucursal());
                 Session.Add("empleado", login_sistema.get_empleado());
 
-                actualizar_deuda = new cls_actualizar_deuda(usuarioBD);
-                actualizar_deuda.actualizar_deuda(sucursal, usuarioBD);
                 DataTable empleado = (DataTable)Session["empleado"];
                 Session.Add("usuariosBD", usuarioBD);
                 crear_tipo_usuario();
