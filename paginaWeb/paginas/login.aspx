@@ -21,7 +21,7 @@
     </div>
     <main class="form-signin w-100 m-auto ">
 
-        <h1>Server Shami.</h1>
+        
 
         <img class="mb-4" src="/imagenes/logo-completo.png" alt="" width="200">
         <h1 class="h3 mb-3 fw-normal text-white">Por favor, ingrese.</h1>

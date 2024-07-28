@@ -8,7 +8,7 @@ namespace paginaWeb
 {
     public partial class login : System.Web.UI.Page
     {
-        
+
         private void crear_tipo_usuario()
         {
             tipo_usuario = new DataTable();
@@ -34,7 +34,7 @@ namespace paginaWeb
         {
 
             borrar_pdf();
-            
+
 
         }
 
@@ -124,6 +124,7 @@ namespace paginaWeb
                     else
                     {
                         Response.Redirect("~/paginas/proveedores.aspx", false);
+                        //Response.Redirect("~/paginas/landing_page_local.aspx", false);
                     }
                 }
             }
