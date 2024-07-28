@@ -102,19 +102,9 @@ namespace paginaWeb
                 {
                     Response.Redirect("~/paginas/cuentas_por_pagar.aspx", false);
                 }
-                if (!IsPostBack)
-                {
-                    if (HttpContext.Current.Session["lista_proveedores"] == null)
-                    {
-                        sistema_pedidos = new cls_sistema_pedidos(usuariosBD, sucusalBD);
-                        Session.Add("lista_proveedores", sistema_pedidos.cargar_lista_proveedores());
-                    }
-                    if (HttpContext.Current.Session["productos_proveedor"] != null)
-                    {
-                        Session.Remove("productos_proveedor");
-                    }
+                sistema_pedidos = new cls_sistema_pedidos(usuariosBD, sucusalBD);
+                Session.Add("lista_proveedores", sistema_pedidos.cargar_lista_proveedores());
 
-                }
                 cargar_lista_proveedores();
 
             }
