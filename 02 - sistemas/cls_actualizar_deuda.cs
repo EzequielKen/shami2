@@ -44,20 +44,24 @@ namespace _02___sistemas
         #region actualizar deuda
         public void actualizar_deuda(DataTable sucursal, DataTable usuario)
         {
-            if (sucursal.Rows.Count>0)
+            if (sucursal != null)
             {
-                DateTime fecha_dato = new DateTime(2023, 10, 1);
-                DateTime fecha_actual = DateTime.Now;
-                string id_sucursal, sucursal_nombre, mes, año;
-                cuentas_por_pagar = new cls_sistema_cuentas_por_pagar(usuario, sucursal);
-                while (fecha_dato.Year != fecha_actual.Year && fecha_dato.Month != fecha_actual.Month)
+
+                if (sucursal.Rows.Count > 0)
                 {
-                    id_sucursal = sucursal.Rows[0]["id"].ToString();
-                    sucursal_nombre = sucursal.Rows[0]["sucursal"].ToString();
-                    mes = fecha_dato.Month.ToString();
-                    año = fecha_dato.Year.ToString();
-                    cuentas_por_pagar.actualizar_deuda_total_mes(id_sucursal, sucursal_nombre, mes, año);
-                    fecha_dato = fecha_dato.AddMonths(1);
+                    DateTime fecha_dato = new DateTime(2023, 10, 1);
+                    DateTime fecha_actual = DateTime.Now;
+                    string id_sucursal, sucursal_nombre, mes, año;
+                    cuentas_por_pagar = new cls_sistema_cuentas_por_pagar(usuario, sucursal);
+                    while (fecha_dato.Year != fecha_actual.Year && fecha_dato.Month != fecha_actual.Month)
+                    {
+                        id_sucursal = sucursal.Rows[0]["id"].ToString();
+                        sucursal_nombre = sucursal.Rows[0]["sucursal"].ToString();
+                        mes = fecha_dato.Month.ToString();
+                        año = fecha_dato.Year.ToString();
+                        cuentas_por_pagar.actualizar_deuda_total_mes(id_sucursal, sucursal_nombre, mes, año);
+                        fecha_dato = fecha_dato.AddMonths(1);
+                    }
                 }
             }
         }
