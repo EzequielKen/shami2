@@ -381,6 +381,52 @@ namespace _02___sistemas
         #endregion
 
         #region nuevo calculo de deuda
+        public string actualizar_deuda_total_mes(string id_sucursal, string sucursal, string mes, string año)
+        {
+            string deuda = "0";
+            double deuda_registrada, deuda_calculada;
+            if (deuda_mes == null)
+            {
+                consultar_deuda_mes(id_sucursal, mes, año);
+            }
+            else if (deuda_mes.Rows[0]["mes"].ToString() != mes ||
+                     deuda_mes.Rows[0]["año"].ToString() != año ||
+                     deuda_mes.Rows[0]["id_sucursal"].ToString() != id_sucursal)
+            {
+                consultar_deuda_mes(id_sucursal, mes, año);
+            }
+            if (deuda_mes.Rows.Count > 0)
+            {
+                deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                deuda_registrada = Math.Round(double.Parse(deuda), 2);
+                deuda_calculada = Math.Round(calcular_deuda_del_mes(sucursal, id_sucursal, mes, año), 2);
+                if (deuda_registrada != deuda_calculada)
+                {
+                    //actualizar deuda en bd
+                    string id_deuda = deuda_mes.Rows[0]["id"].ToString();
+                    administracion.actualizar_deuda_del_mes(id_deuda, deuda_calculada.ToString());
+                    consultar_deuda_mes(id_sucursal, mes, año);
+                    deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                }
+            }
+            else
+            {
+                administracion.crear_deuda_del_mes(id_sucursal, sucursal, mes, año, "0");
+                consultar_deuda_mes(id_sucursal, mes, año);
+                deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                deuda_registrada = Math.Round(double.Parse(deuda), 2);
+                deuda_calculada = Math.Round(calcular_deuda_del_mes(sucursal, id_sucursal, mes, año), 2);
+                if (deuda_registrada != deuda_calculada)
+                {
+                    //actualizar deuda en bd
+                    string id_deuda = deuda_mes.Rows[0]["id"].ToString();
+                    administracion.actualizar_deuda_del_mes(id_deuda, deuda_calculada.ToString());
+                    consultar_deuda_mes(id_sucursal, mes, año);
+                    deuda = deuda_mes.Rows[0]["deuda_del_mes"].ToString();
+                }
+            }
+            return deuda;
+        }
         public double get_deuda_actual(string sucursal)
         {
             double deuda = 0;

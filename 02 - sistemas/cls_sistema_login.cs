@@ -32,6 +32,7 @@ namespace _02___sistemas
 
         }
         #region atributos
+        cls_actualizar_deuda actualizar_deuda;
         cls_consultas_Mysql consultas_Mysql;
         cls_funciones funciones = new cls_funciones();
         string ip, puerto, user, userPasword, base_de_datos;
@@ -67,6 +68,8 @@ namespace _02___sistemas
                     consultar_sucursal(id);
                     id = int.Parse(this.usuario.Rows[0]["tipo_usuario"].ToString());
                     consultar_tipo_usuario(id);
+                    actualizar_deuda = new cls_actualizar_deuda(this.usuario);
+                  //  actualizar_deuda.actualizar_deuda();
                 }
 
             }
