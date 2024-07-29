@@ -7,6 +7,7 @@ using System.Data;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_crear_orden_de_compras
     {
         public cls_crear_orden_de_compras(DataTable usuario_BD)
