@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_linkear_insumos_a_proveedor_de_fabrica
     {
         public cls_linkear_insumos_a_proveedor_de_fabrica(DataTable usuario_BD)
