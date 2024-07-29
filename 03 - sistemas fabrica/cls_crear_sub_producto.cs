@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_crear_sub_producto
     {
         public cls_crear_sub_producto(DataTable usuario_BD)

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_historial_de_pedido_de_insumos
     {
         public cls_historial_de_pedido_de_insumos(DataTable usuario_BD)

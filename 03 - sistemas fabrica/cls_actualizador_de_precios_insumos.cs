@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_actualizador_de_precios_insumos
     {
         public cls_actualizador_de_precios_insumos(DataTable usuario_BD)

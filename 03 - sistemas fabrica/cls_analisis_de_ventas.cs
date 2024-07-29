@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_analisis_de_ventas
     {
         public cls_analisis_de_ventas(DataTable usuario_BD)

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_merma_y_desperdicio
     {
         public cls_merma_y_desperdicio(DataTable usuario_BD)

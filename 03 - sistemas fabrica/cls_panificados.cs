@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
+
     public class cls_panificados
     {
         public cls_panificados(DataTable usuario_BD)

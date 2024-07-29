@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_plantillas
     {
         public cls_plantillas(DataTable usuario_BD)

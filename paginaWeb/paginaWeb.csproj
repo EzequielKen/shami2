@@ -124,17 +124,26 @@
     <Content Include="assets\landing_local\assets\img\about-company-2.jpg" />
     <Content Include="assets\landing_local\assets\img\about-company-3.jpg" />
     <Content Include="assets\landing_local\assets\img\apple-touch-icon.png" />
+    <Content Include="assets\landing_local\assets\img\chica.png" />
     <Content Include="assets\landing_local\assets\img\clients\client-1.png" />
     <Content Include="assets\landing_local\assets\img\clients\client-2.png" />
     <Content Include="assets\landing_local\assets\img\clients\client-3.png" />
     <Content Include="assets\landing_local\assets\img\clients\client-4.png" />
     <Content Include="assets\landing_local\assets\img\clients\client-5.png" />
     <Content Include="assets\landing_local\assets\img\clients\client-6.png" />
+    <Content Include="assets\landing_local\assets\img\estamos-trabajando.jpg" />
     <Content Include="assets\landing_local\assets\img\favicon.png" />
     <Content Include="assets\landing_local\assets\img\features-1.jpg" />
     <Content Include="assets\landing_local\assets\img\features-2.jpg" />
     <Content Include="assets\landing_local\assets\img\features-3.jpg" />
+    <Content Include="assets\landing_local\assets\img\fondo-chica-landing.jpg" />
+    <Content Include="assets\landing_local\assets\img\gestiona-desde-celular.jpg" />
+    <Content Include="assets\landing_local\assets\img\hero-services-img.gif" />
     <Content Include="assets\landing_local\assets\img\logo.png" />
+    <Content Include="assets\landing_local\assets\img\mamul-datiles-nueva-forma.jpg" />
+    <Content Include="assets\landing_local\assets\img\mamul-de-datiles.jpg" />
+    <Content Include="assets\landing_local\assets\img\novedad-sistema.jpg" />
+    <Content Include="assets\landing_local\assets\img\nueva-forma.jpg" />
     <Content Include="assets\landing_local\assets\img\services.jpg" />
     <Content Include="assets\landing_local\assets\img\tabs-1.jpg" />
     <Content Include="assets\landing_local\assets\img\tabs-2.jpg" />
@@ -144,6 +153,7 @@
     <Content Include="assets\landing_local\assets\img\testimonials\testimonials-3.jpg" />
     <Content Include="assets\landing_local\assets\img\testimonials\testimonials-4.jpg" />
     <Content Include="assets\landing_local\assets\img\testimonials\testimonials-5.jpg" />
+    <Content Include="assets\landing_local\assets\img\trabajando.jpg" />
     <Content Include="assets\landing_local\assets\js\main.js" />
     <Content Include="assets\landing_local\assets\scss\Readme.txt" />
     <Content Include="assets\landing_local\assets\vendor\aos\aos.cjs.js" />
@@ -233,6 +243,7 @@
     <Content Include="paginasFabrica\administrar_actividades_lista_chequeo_locales.aspx" />
     <Content Include="paginasFabrica\analisis_de_produccion.aspx" />
     <Content Include="paginasFabrica\historial_temperatura.aspx" />
+    <Content Include="paginasFabrica\landing_page_local.aspx" />
     <Content Include="paginasFabrica\objetivo_de_produccion.aspx" />
     <Content Include="paginasFabrica\analisis_de_ventas.aspx" />
     <Content Include="paginasFabrica\cargar_orden_de_compra.aspx" />
@@ -283,6 +294,7 @@
     <Content Include="paginasGerente\caja_chica.aspx" />
     <Content Include="paginasGerente\cuentas_por_cobrar_gerente.aspx" />
     <Content Include="paginasGerente\cuentas_por_pagar_gerente.aspx" />
+    <Content Include="paginasGerente\landing_page_local.aspx" />
     <Content Include="paginasGerente\proveedores_fabrica_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
     <Content Include="paginas\administrador_de_empleados.aspx" />
@@ -477,6 +489,13 @@
     </Compile>
     <Compile Include="paginasFabrica\historial_temperatura.aspx.designer.cs">
       <DependentUpon>historial_temperatura.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\landing_page_local.aspx.cs">
+      <DependentUpon>landing_page_local.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\landing_page_local.aspx.designer.cs">
+      <DependentUpon>landing_page_local.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\objetivo_de_produccion.aspx.cs">
       <DependentUpon>objetivo_de_produccion.aspx</DependentUpon>
@@ -827,6 +846,13 @@
     </Compile>
     <Compile Include="paginasGerente\cuentas_por_pagar_gerente.aspx.designer.cs">
       <DependentUpon>cuentas_por_pagar_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\landing_page_local.aspx.cs">
+      <DependentUpon>landing_page_local.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\landing_page_local.aspx.designer.cs">
+      <DependentUpon>landing_page_local.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasGerente\proveedores_fabrica_gerente.aspx.cs">
       <DependentUpon>proveedores_fabrica_gerente.aspx</DependentUpon>

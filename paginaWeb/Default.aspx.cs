@@ -18,7 +18,7 @@ namespace paginaWeb
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Session.Contents.RemoveAll();
+            Session.Contents.RemoveAll();
 
         }
     }

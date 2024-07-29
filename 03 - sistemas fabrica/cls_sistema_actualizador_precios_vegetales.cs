@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_sistema_actualizador_precios_vegetales
     {
         public cls_sistema_actualizador_precios_vegetales(DataTable usuario_BD)

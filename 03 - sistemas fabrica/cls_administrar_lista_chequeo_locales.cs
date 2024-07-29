@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_administrar_lista_chequeo_locales
     {
         public cls_administrar_lista_chequeo_locales(DataTable usuario_BD)

@@ -33,7 +33,7 @@ namespace paginaWeb
         DataTable sucursal;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Session.Contents.RemoveAll();
             borrar_pdf();
 
 
@@ -64,7 +64,7 @@ namespace paginaWeb
                     Session.Add("proveedorBD", login_sistema.get_proveedor_seleccionado(usuarioBD.Rows[0]["proveedor"].ToString()));
                     proveedorBD = (DataTable)Session["proveedorBD"];
 
-                    Response.Redirect("~/paginasGerente/caja_chica.aspx", false);
+                    Response.Redirect("~/paginasGerente/landing_page_local.aspx", false);
                 }
                 else
                 {
@@ -97,7 +97,7 @@ namespace paginaWeb
                         }
                         else if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin")
                         {
-                            Response.Redirect("~/paginasFabrica/produccion.aspx", false);
+                            Response.Redirect("~/paginasFabrica/landing_page_local.aspx", false);
                         }
                         else
                         {
@@ -126,8 +126,8 @@ namespace paginaWeb
                     }
                     else
                     {
-                        Response.Redirect("~/paginas/proveedores.aspx", false);
-                        //Response.Redirect("~/paginas/landing_page_local.aspx", false);
+                        //Response.Redirect("~/paginas/proveedores.aspx", false);
+                        Response.Redirect("~/paginas/landing_page_local.aspx", false);
                     }
                 }
             }
@@ -184,7 +184,6 @@ namespace paginaWeb
                 }
             }
         }
-
 
 
 

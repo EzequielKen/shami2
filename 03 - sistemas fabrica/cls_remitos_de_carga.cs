@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_remitos_de_carga
     {
         public cls_remitos_de_carga(DataTable usuario_BD)

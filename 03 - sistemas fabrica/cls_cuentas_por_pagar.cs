@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_cuentas_por_pagar
     {
         public cls_cuentas_por_pagar(DataTable usuario_BD)

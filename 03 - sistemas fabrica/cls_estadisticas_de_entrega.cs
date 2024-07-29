@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_estadisticas_de_entrega
     {
         public cls_estadisticas_de_entrega(DataTable usuario_BD)

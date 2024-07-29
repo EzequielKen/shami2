@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public  class cls_crear_proveedor
     {
         public cls_crear_proveedor(DataTable usuario_BD)

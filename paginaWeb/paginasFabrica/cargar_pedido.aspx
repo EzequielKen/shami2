@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="cargar_pedido.aspx.cs" Inherits="paginaWeb.paginasFabrica.cargar_pedido" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="cargar_pedido.aspx.cs" Inherits="paginaWeb.paginasFabrica.cargar_pedido" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -67,6 +67,7 @@
                                 <asp:TemplateField HeaderText="Ingrese cantidad a entregar">
                                     <ItemTemplate>
                                         <asp:TextBox ID="texbox_cantidad" CssClass="input-group-text" OnTextChanged="texbox_cantidad_TextChanged" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'></asp:TextBox>
+                                        <asp:TextBox ID="textbox_unidades" CssClass="input-group-text" placeholder="Cantidad de Pinchos" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
 

@@ -1,4 +1,4 @@
-﻿<%@ Page EnableEventValidation="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="analisis_caja_chica.aspx.cs" Inherits="paginaWeb.paginasGerente.analisis_caja_chica" %>
+﻿<%@ Page Async="true"  EnableEventValidation="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="analisis_caja_chica.aspx.cs" Inherits="paginaWeb.paginasGerente.analisis_caja_chica" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

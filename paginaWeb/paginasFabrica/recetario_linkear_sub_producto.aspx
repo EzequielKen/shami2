@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="recetario_linkear_sub_producto.aspx.cs" Inherits="paginaWeb.paginasFabrica.recetario_linkear_sub_producto" %>
+﻿<%@ Page Async="true"  Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="recetario_linkear_sub_producto.aspx.cs" Inherits="paginaWeb.paginasFabrica.recetario_linkear_sub_producto" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

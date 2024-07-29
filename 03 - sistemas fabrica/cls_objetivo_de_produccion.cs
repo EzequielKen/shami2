@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica3
 {
+    [Serializable]
     public class cls_objetivo_de_produccion
     {
         public cls_objetivo_de_produccion(DataTable usuario_BD)

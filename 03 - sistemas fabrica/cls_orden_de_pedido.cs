@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
+
     public class cls_orden_de_pedido
     {
         public cls_orden_de_pedido(DataTable usuario_BD)

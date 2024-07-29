@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_administracion_de_equipos
     {
         public cls_administracion_de_equipos(DataTable usuario_BD)

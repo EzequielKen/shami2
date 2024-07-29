@@ -1,5 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="paginaMaestra.master.cs" Inherits="paginaWeb.paginasMaestras.paginaMaestra" %>
-<%@ Page Async="true" %>
+
 <!DOCTYPE html>
 
 <html>

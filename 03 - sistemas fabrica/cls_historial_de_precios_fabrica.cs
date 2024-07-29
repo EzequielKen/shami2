@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_historial_de_precios_fabrica
     {
         public cls_historial_de_precios_fabrica(DataTable usuario_BD) 

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_resumen_deuda_proveedores
     {
         public cls_resumen_deuda_proveedores(DataTable usuario_BD)

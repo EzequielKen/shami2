@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="administrar_tipo_movimiento_caja_chica.aspx.cs" Inherits="paginaWeb.paginasGerente.administrar_tipo_movimiento_caja_chica" %>
+﻿<%@ Page  Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="administrar_tipo_movimiento_caja_chica.aspx.cs" Inherits="paginaWeb.paginasGerente.administrar_tipo_movimiento_caja_chica" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

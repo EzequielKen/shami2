@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_historial_temperatura
     {
         public cls_historial_temperatura(DataTable usuario_BD)

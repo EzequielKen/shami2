@@ -25,82 +25,61 @@ namespace paginaWeb
             connectionString = ConfigurationManager.ConnectionStrings["MySqlSessionState"].ConnectionString;
         }
 
-        public override async void CreateUninitializedItem(HttpContext context, string id, int timeout)
+        public override void CreateUninitializedItem(HttpContext context, string id, int timeout)
         {
             using (var connection = new MySqlConnection(connectionString))
             {
-                await connection.OpenAsync();
+                connection.Open();
                 var command = new MySqlCommand("INSERT INTO sessions (SessionId, ApplicationName, Created, Expires, LockDate, LockId, Timeout, Locked, SessionItems, Flags) VALUES (@SessionId, @ApplicationName, @Created, @Expires, @LockDate, @LockId, @Timeout, @Locked, @SessionItems, @Flags)", connection);
                 command.Parameters.AddWithValue("@SessionId", id);
                 command.Parameters.AddWithValue("@ApplicationName", "/");
                 command.Parameters.AddWithValue("@Created", DateTime.Now);
                 command.Parameters.AddWithValue("@Expires", DateTime.Now.AddMinutes(timeout));
                 command.Parameters.AddWithValue("@LockDate", DateTime.Now);
-                command.Parameters.AddWithValue("@LockId", 0); // Asegurando que LockId tenga un valor inicial
+                command.Parameters.AddWithValue("@LockId", 0);
                 command.Parameters.AddWithValue("@Timeout", timeout);
                 command.Parameters.AddWithValue("@Locked", false);
                 command.Parameters.AddWithValue("@SessionItems", DBNull.Value);
                 command.Parameters.AddWithValue("@Flags", 0);
-                await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
         }
 
         public override SessionStateStoreData GetItem(HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
         {
-            var task = GetSessionStoreItemAsync(false, context, id);
-            task.Wait();
-            var result = task.Result;
-
-            locked = result.Locked;
-            lockAge = result.LockAge;
-            lockId = result.LockId;
-            actions = result.Actions;
-
-            return result.SessionData;
+            return GetSessionStoreItem(false, context, id, out locked, out lockAge, out lockId, out actions);
         }
 
         public override SessionStateStoreData GetItemExclusive(HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
         {
-            var task = GetSessionStoreItemAsync(true, context, id);
-            task.Wait();
-            var result = task.Result;
-
-            locked = result.Locked;
-            lockAge = result.LockAge;
-            lockId = result.LockId;
-            actions = result.Actions;
-
-            return result.SessionData;
+            return GetSessionStoreItem(true, context, id, out locked, out lockAge, out lockId, out actions);
         }
 
-        private async Task<SessionStoreItemResult> GetSessionStoreItemAsync(bool lockRecord, HttpContext context, string id)
+        private SessionStateStoreData GetSessionStoreItem(bool lockRecord, HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out SessionStateActions actions)
         {
-            bool locked = false;
-            TimeSpan lockAge = TimeSpan.Zero;
-            object lockId = null;
-            SessionStateActions actions = SessionStateActions.None;
+            locked = false;
+            lockAge = TimeSpan.Zero;
+            lockId = null;
+            actions = SessionStateActions.None;
             SessionStateStoreData item = null;
 
             using (var connection = new MySqlConnection(connectionString))
             {
-                await connection.OpenAsync();
+                connection.Open();
                 var command = new MySqlCommand("SELECT Expires, SessionItems, LockId, Locked, Flags, Timeout, LockDate FROM sessions WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName", connection);
                 command.Parameters.AddWithValue("@SessionId", id);
                 command.Parameters.AddWithValue("@ApplicationName", "/");
 
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = command.ExecuteReader())
                 {
-                    if (await reader.ReadAsync())
+                    if (reader.Read())
                     {
                         DateTime expires = reader.GetDateTime(0);
 
                         if (expires < DateTime.Now)
                         {
-                            return new SessionStoreItemResult
-                            {
-                                Locked = false,
-                                SessionData = null
-                            };
+                            locked = false;
+                            return null;
                         }
 
                         string sessionItems = reader.IsDBNull(1) ? null : reader.GetString(1);
@@ -114,19 +93,15 @@ namespace paginaWeb
 
                         if (locked && !lockRecord)
                         {
-                            return new SessionStoreItemResult
-                            {
-                                Locked = true,
-                                SessionData = null
-                            };
+                            return null;
                         }
 
                         if (lockRecord)
                         {
                             locked = true;
-                            lockId = (int)lockId + 1; // Incrementando LockId
+                            lockId = (int)lockId + 1;
 
-                            reader.Close(); // Cerrando el DataReader antes de ejecutar la actualización
+                            reader.Close();
 
                             var updateCommand = new MySqlCommand("UPDATE sessions SET Locked = @Locked, LockId = @LockId, LockDate = @LockDate WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName", connection);
                             updateCommand.Parameters.AddWithValue("@Locked", true);
@@ -134,7 +109,7 @@ namespace paginaWeb
                             updateCommand.Parameters.AddWithValue("@LockDate", DateTime.Now);
                             updateCommand.Parameters.AddWithValue("@SessionId", id);
                             updateCommand.Parameters.AddWithValue("@ApplicationName", "/");
-                            await updateCommand.ExecuteNonQueryAsync();
+                            updateCommand.ExecuteNonQuery();
                         }
 
                         if (!string.IsNullOrEmpty(sessionItems))
@@ -147,80 +122,72 @@ namespace paginaWeb
                             item = CreateNewStoreData(context, timeout);
                         }
                     }
-                    reader.Close(); // Cerrando el DataReader al final de su uso
                 }
             }
 
-            return new SessionStoreItemResult
-            {
-                Locked = locked,
-                LockAge = lockAge,
-                LockId = lockId,
-                Actions = actions,
-                SessionData = item
-            };
+            return item;
         }
 
-        public override async void ReleaseItemExclusive(HttpContext context, string id, object lockId)
+        public override void ReleaseItemExclusive(HttpContext context, string id, object lockId)
         {
             using (var connection = new MySqlConnection(connectionString))
             {
-                await connection.OpenAsync();
+                connection.Open();
                 var command = new MySqlCommand("UPDATE sessions SET Locked = @Locked WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName AND LockId = @LockId", connection);
                 command.Parameters.AddWithValue("@Locked", false);
                 command.Parameters.AddWithValue("@SessionId", id);
                 command.Parameters.AddWithValue("@ApplicationName", "/");
                 command.Parameters.AddWithValue("@LockId", lockId);
-                await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
         }
 
-        public override async void SetAndReleaseItemExclusive(HttpContext context, string id, SessionStateStoreData item, object lockId, bool newItem)
+        public override void SetAndReleaseItemExclusive(HttpContext context, string id, SessionStateStoreData item, object lockId, bool newItem)
         {
             using (var connection = new MySqlConnection(connectionString))
             {
-                await connection.OpenAsync();
+                connection.Open();
                 var command = new MySqlCommand(newItem ?
                     "INSERT INTO sessions (SessionId, ApplicationName, Created, Expires, LockDate, LockId, Timeout, Locked, SessionItems, Flags) VALUES (@SessionId, @ApplicationName, @Created, @Expires, @LockDate, @LockId, @Timeout, @Locked, @SessionItems, @Flags)" :
                     "UPDATE sessions SET Expires = @Expires, SessionItems = @SessionItems, Locked = @Locked, LockId = @LockId WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName AND LockId = @LockId", connection);
 
                 command.Parameters.AddWithValue("@SessionId", id);
                 command.Parameters.AddWithValue("@ApplicationName", "/");
-                command.Parameters.AddWithValue("@Created", DateTime.Now); // Añadido @Created
+                command.Parameters.AddWithValue("@Created", DateTime.Now);
                 command.Parameters.AddWithValue("@Expires", DateTime.Now.AddMinutes((double)item.Timeout));
                 command.Parameters.AddWithValue("@LockDate", DateTime.Now);
-                command.Parameters.AddWithValue("@LockId", lockId ?? 0); // Asegurando que LockId no sea nulo
+                command.Parameters.AddWithValue("@LockId", lockId ?? 0);
                 command.Parameters.AddWithValue("@Timeout", item.Timeout);
                 command.Parameters.AddWithValue("@Locked", false);
                 command.Parameters.AddWithValue("@SessionItems", Serialize((SessionStateItemCollection)item.Items));
                 command.Parameters.AddWithValue("@Flags", 0);
-                await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
         }
 
-        public override async void RemoveItem(HttpContext context, string id, object lockId, SessionStateStoreData item)
+        public override void RemoveItem(HttpContext context, string id, object lockId, SessionStateStoreData item)
         {
             using (var connection = new MySqlConnection(connectionString))
             {
-                await connection.OpenAsync();
+                connection.Open();
                 var command = new MySqlCommand("DELETE FROM sessions WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName AND LockId = @LockId", connection);
                 command.Parameters.AddWithValue("@SessionId", id);
                 command.Parameters.AddWithValue("@ApplicationName", "/");
                 command.Parameters.AddWithValue("@LockId", lockId);
-                await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
         }
 
-        public override async void ResetItemTimeout(HttpContext context, string id)
+        public override void ResetItemTimeout(HttpContext context, string id)
         {
             using (var connection = new MySqlConnection(connectionString))
             {
-                await connection.OpenAsync();
+                connection.Open();
                 var command = new MySqlCommand("UPDATE sessions SET Expires = @Expires WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName", connection);
                 command.Parameters.AddWithValue("@Expires", DateTime.Now.AddMinutes(20));
                 command.Parameters.AddWithValue("@SessionId", id);
                 command.Parameters.AddWithValue("@ApplicationName", "/");
-                await command.ExecuteNonQueryAsync();
+                command.ExecuteNonQuery();
             }
         }
 
@@ -270,15 +237,6 @@ namespace paginaWeb
             {
                 return SessionStateItemCollection.Deserialize(reader);
             }
-        }
-
-        private class SessionStoreItemResult
-        {
-            public bool Locked { get; set; }
-            public TimeSpan LockAge { get; set; }
-            public object LockId { get; set; }
-            public SessionStateActions Actions { get; set; }
-            public SessionStateStoreData SessionData { get; set; }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraLogin.Master" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="paginaWeb.login" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraLogin.Master" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="paginaWeb.login" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="administrar_lista_de_chequeo.aspx.cs" Inherits="paginaWeb.paginas.administrar_lista_de_chequeo" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="administrar_lista_de_chequeo.aspx.cs" Inherits="paginaWeb.paginas.administrar_lista_de_chequeo" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>

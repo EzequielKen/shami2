@@ -828,6 +828,8 @@ namespace _03___sistemas_fabrica
             pedido.Columns.Add("estado", typeof(string));
             pedido.Columns.Add("presentacion_entrega_seleccionada", typeof(string));
             pedido.Columns.Add("presentacion_extraccion_seleccionada", typeof(string)); 
+            pedido.Columns.Add("pincho", typeof(string));
+            pedido.Columns.Add("cantidad_pincho", typeof(string));
 
             pedido.Columns.Add("nota", typeof(string)); 
 
@@ -867,6 +869,7 @@ namespace _03___sistemas_fabrica
                 pedido.Rows[fila_pedido]["estado"] = resumen_pedido.Rows[fila]["estado"].ToString();
                 pedido.Rows[fila_pedido]["presentacion_entrega_seleccionada"] = resumen_pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString();
                 pedido.Rows[fila_pedido]["presentacion_extraccion_seleccionada"] = resumen_pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString();
+                pedido.Rows[fila_pedido]["equivalencia"] = resumen_pedido.Rows[fila]["equivalencia"].ToString();
                 pedido.Rows[fila_pedido]["equivalencia"] = resumen_pedido.Rows[fila]["equivalencia"].ToString();
 
 

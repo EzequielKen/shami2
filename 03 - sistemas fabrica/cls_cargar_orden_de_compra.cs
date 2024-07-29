@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_cargar_orden_de_compra
     {
         public cls_cargar_orden_de_compra(DataTable usuario_BD)

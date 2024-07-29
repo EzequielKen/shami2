@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_landing_page
     {
         public cls_landing_page(DataTable usuario_BD)

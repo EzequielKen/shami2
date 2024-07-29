@@ -353,6 +353,8 @@ namespace paginaWeb.paginasFabrica
                 pedido.Rows[fila_tabla]["sub_total"] = sub_total.ToString();
                 gridview_pedido.Rows[fila].Cells[9].Text = funciones.formatCurrency(sub_total);
 
+                TextBox textbox_unidades = (gridview_pedido.Rows[fila].Cells[4].FindControl("textbox_unidades") as TextBox);
+
             }
             Session.Add("pedido", pedido);
 

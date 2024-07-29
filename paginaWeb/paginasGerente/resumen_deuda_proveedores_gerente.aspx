@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="resumen_deuda_proveedores_gerente.aspx.cs" Inherits="paginaWeb.paginasGerente.resumen_deuda_proveedores_gerente" %>
+﻿<%@ Page Async="true"  Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="resumen_deuda_proveedores_gerente.aspx.cs" Inherits="paginaWeb.paginasGerente.resumen_deuda_proveedores_gerente" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

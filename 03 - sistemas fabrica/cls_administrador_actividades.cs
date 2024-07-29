@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_administrador_actividades
     {
         public cls_administrador_actividades(DataTable usuario_BD)
