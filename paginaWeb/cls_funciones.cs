@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace paginaWeb
 {
+    [Serializable]
     public class cls_funciones
     {
         public string get_fecha()

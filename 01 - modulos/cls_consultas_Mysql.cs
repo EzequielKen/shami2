@@ -11,6 +11,7 @@ using SkiaSharp;
 
 namespace modulos
 {
+    [Serializable]
     public class cls_consultas_Mysql
     {
         public cls_consultas_Mysql(string servidor_dato, string puerto_dato, string usuario_dato, string password_dato, string base_de_datos_dato)

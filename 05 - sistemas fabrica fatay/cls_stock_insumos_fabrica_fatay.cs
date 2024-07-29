@@ -13,6 +13,7 @@ using NLog.Internal;
 
 namespace _05___sistemas_fabrica_fatay
 {
+    [Serializable]
     public class cls_stock_insumos_fabrica_fatay
     {
         public cls_stock_insumos_fabrica_fatay(DataTable usuario_BD)

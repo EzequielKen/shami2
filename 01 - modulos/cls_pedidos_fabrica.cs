@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using acceso_a_base_de_datos;
 namespace modulos
 {
+    [Serializable]
     public class cls_pedidos_fabrica
     {
         public cls_pedidos_fabrica(DataTable usuarios_BD)

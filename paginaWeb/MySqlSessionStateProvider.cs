@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 
 namespace paginaWeb
 {
+    [Serializable]
     public class MySqlSessionStateProvider : SessionStateStoreProviderBase
     {
         private string connectionString;

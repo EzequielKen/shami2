@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _03___sistemas_fabrica
 {
+    [Serializable]
     public class cls_movimientos_stock_producto
     {
         public cls_movimientos_stock_producto(DataTable usuario_BD)

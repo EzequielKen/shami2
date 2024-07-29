@@ -6,6 +6,7 @@ using System.Web;
 
 namespace paginaWeb
 {
+    [Serializable]
     public class cls_funciones
     {
         public string get_fecha()

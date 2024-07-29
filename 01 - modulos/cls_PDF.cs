@@ -18,6 +18,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace _01___modulos
 {
+    [Serializable]
     public class cls_PDF
     {
         cls_funciones funciones = new cls_funciones();

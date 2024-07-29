@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace _01___modulos
 {
+    [Serializable]
     public class cls_whatsapp
     {
         

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace _01___modulos
 {
+    [Serializable]
     public class cls_cuentas_por_cobrar
     {
         public cls_cuentas_por_cobrar(DataTable usuarios_BD)
