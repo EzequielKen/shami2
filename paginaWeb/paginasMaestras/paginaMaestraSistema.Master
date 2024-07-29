@@ -1,5 +1,4 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="paginaMaestraSistema.Master.cs" Inherits="paginaWeb.paginaMaestra" %>
-
 <!DOCTYPE html>
 <html data-bs-theme="dark">
 <head runat="server">
