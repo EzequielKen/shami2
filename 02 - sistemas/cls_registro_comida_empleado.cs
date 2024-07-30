@@ -32,7 +32,7 @@ namespace _02___sistemas
         }
 
         #region carga a base de datos
-        public void registrar_consumo(string id_empleado, string nombre, string apellido, DataTable resumen)
+        public void registrar_consumo(string id_sucursal,string id_empleado, string nombre, string apellido, DataTable resumen)
         {
             string columnas;
             string valores;
@@ -44,6 +44,9 @@ namespace _02___sistemas
                 //id_empleado
                 columnas = funciones.armar_query_columna(columnas, "id_empleado", false);
                 valores = funciones.armar_query_valores(valores, id_empleado, false);
+                //id_sucursal
+                columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
+                valores = funciones.armar_query_valores(valores, id_sucursal, false);
                 //nombre
                 columnas = funciones.armar_query_columna(columnas, "nombre", false);
                 valores = funciones.armar_query_valores(valores, nombre, false);

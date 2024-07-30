@@ -144,6 +144,7 @@ namespace paginaWeb.paginas
         cls_registro_comida_empleado registro;
         cls_funciones funciones = new cls_funciones();
         DataTable usuariosBD;
+        DataTable sucursal;
         DataTable empleado;
 
         DataTable lista_de_empleadoBD;
@@ -157,6 +158,7 @@ namespace paginaWeb.paginas
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
+            sucursal = (DataTable)Session["sucursal"];
             lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
             
             nombre_empleado = Session["nombre_empleado"].ToString();
@@ -214,7 +216,8 @@ namespace paginaWeb.paginas
         {
           
             resumen = (DataTable)Session["resumen_comida_empleados"];
-            registro.registrar_consumo(Session["id_empleado"].ToString(), Session["nombre_empleado"].ToString(), Session["apellido_empleado"].ToString(), resumen);
+            string id_sucursal = sucursal.Rows[0]["id"].ToString();
+            registro.registrar_consumo(id_sucursal,Session["id_empleado"].ToString(), Session["nombre_empleado"].ToString(), Session["apellido_empleado"].ToString(), resumen);
             Response.Redirect("~/paginas/comida_empleados.aspx", false);
         }
 

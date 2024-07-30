@@ -38,12 +38,29 @@ namespace _02___sistemas
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
-        DataTable historial_consumo_personal;
+        DataTable consumo;
+        #endregion
+        #region metodos consulta
+        private void consulta_consumo_personal(string id_sucursal, DateTime fecha)
+        {
+            consumo = consultas.consultar_historial_consumo_personal_segun_fecha(id_sucursal, fecha.Day.ToString(), fecha.Month.ToString(), fecha.Year.ToString());
+        }
         #endregion
 
-        #region metodos consultas
-        private void consultar_historial_consumo_personal()
+        #region metodos get/set
+        public DataTable get_consumo(string id_sucursal, DateTime fecha)
         {
+            consulta_consumo_personal(id_sucursal, fecha);
+            consumo.Columns.Add("costo_total", typeof(string));
+            double costo,costo_total,cantidad;
+            for (int fila = 0; fila <=consumo.Rows.Count-1; fila++)
+            {
+                cantidad = double.Parse(consumo.Rows[fila]["cantidad"].ToString());
+                costo = double.Parse(consumo.Rows[fila]["costo"].ToString());
+                costo_total = cantidad * costo;
+                consumo.Rows[fila]["costo_total"] = funciones.formatCurrency(costo_total);
+            }
+            return consumo;
         }
         #endregion
     }

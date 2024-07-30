@@ -23,9 +23,9 @@
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="nombre" />
                                 <asp:BoundField HeaderText="Nombre" DataField="apellido" />
-                                <asp:BoundField HeaderText="Apellido" DataField="producto" />
-                                <asp:BoundField HeaderText="Apellido" DataField="cantidad" />
-                                <asp:BoundField HeaderText="Apellido" DataField="costo" />
+                                <asp:BoundField HeaderText="Producto" DataField="producto" />
+                                <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
+                                <asp:BoundField HeaderText="Costo Total" DataField="costo_total" />
                             </Columns>
                         </asp:GridView>
                     </div>
