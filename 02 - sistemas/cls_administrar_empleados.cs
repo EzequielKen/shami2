@@ -95,9 +95,14 @@ namespace _02___sistemas
             string actualizar = "`" + campo + "` = '" + dato + "' ";
             consultas.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id);
         }
-        public void eliminar_empleado(string id)
+        public void desloguear_empleado(string id)
         {
             string actualizar = "`id_sucursal` = 'N/A'";
+            consultas.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id);
+        }
+        public void eliminar_empleado(string id)
+        {
+            string actualizar = "`activa` = '0'";
             consultas.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id);
         }
         public void registrar_empleado(DataTable empleado)
@@ -105,6 +110,9 @@ namespace _02___sistemas
             string columna = "";
             string valores = "";
 
+            //id_sucursal_origen
+            columna = funciones.armar_query_columna(columna, "id_sucursal_origen", false);
+            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["id_sucursal"].ToString(), false);
             //id_sucursal
             columna = funciones.armar_query_columna(columna, "id_sucursal", false);
             valores = funciones.armar_query_valores(valores, empleado.Rows[0]["id_sucursal"].ToString(), false);
@@ -121,8 +129,11 @@ namespace _02___sistemas
             columna = funciones.armar_query_columna(columna, "telefono", false);
             valores = funciones.armar_query_valores(valores, empleado.Rows[0]["telefono"].ToString(), false);
             //cargo
-            columna = funciones.armar_query_columna(columna, "cargo", true);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["cargo"].ToString(), true);
+            columna = funciones.armar_query_columna(columna, "cargo", false);
+            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["cargo"].ToString(), false);
+            //cargo
+            columna = funciones.armar_query_columna(columna, "sueldo", true);
+            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["sueldo"].ToString(), true);
 
             consultas.insertar_en_tabla(base_de_datos, "lista_de_empleado", columna, valores);
         }
@@ -211,11 +222,46 @@ namespace _02___sistemas
                 }
             }
         }
+        private void consultar_lista_de_empleado_origen(string id_sucursal)
+        {
+            lista_de_empleado = consultas.consultar_empleados_origen(id_sucursal);
+            lista_de_empleado.Columns.Add("Encargado", typeof(string));
+            lista_de_empleado.Columns.Add("Cajero", typeof(string));
+            lista_de_empleado.Columns.Add("Shawarmero", typeof(string));
+            lista_de_empleado.Columns.Add("Atencion al Cliente", typeof(string));
+            lista_de_empleado.Columns.Add("Cocina", typeof(string));
+            lista_de_empleado.Columns.Add("Limpieza", typeof(string));
+            int iteraciones, posicion;
+            string cargo;
+            for (int fila = 0; fila <= lista_de_empleado.Rows.Count - 1; fila++)
+            {
+                lista_de_empleado.Rows[fila]["Encargado"] = "N/A";
+                lista_de_empleado.Rows[fila]["Cajero"] = "N/A";
+                lista_de_empleado.Rows[fila]["Shawarmero"] = "N/A";
+                lista_de_empleado.Rows[fila]["Atencion al Cliente"] = "N/A";
+                lista_de_empleado.Rows[fila]["Cocina"] = "N/A";
+                lista_de_empleado.Rows[fila]["Limpieza"] = "N/A";
+                iteraciones = int.Parse(funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(), 1));
+                posicion = 2;
+                for (int index = 0; index <= iteraciones; index++)
+                {
+                    cargo = funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(), posicion);
+                    lista_de_empleado.Rows[fila][cargo] = cargo;
+                    posicion++;
+                }
+            }
+        }
         #endregion
         #region metodos get/set
         public DataTable get_lista_de_empleado(string id_sucursal, DateTime fecha)
         {
             consultar_lista_de_empleado(id_sucursal);
+            //limpiar_lista_empleados(fecha);
+            return lista_de_empleado;
+        }
+        public DataTable get_lista_de_empleado_origen(string id_sucursal, DateTime fecha)
+        {
+            consultar_lista_de_empleado_origen(id_sucursal);
             //limpiar_lista_empleados(fecha);
             return lista_de_empleado;
         }

@@ -17,7 +17,7 @@ namespace paginaWeb.paginas
         private void modificar_cargo(string id_empleado, string cargo)
         {
             int fila_empleado = funciones.buscar_fila_por_id(id_empleado, lista_de_empleadoBD);
-            if (lista_de_empleadoBD.Rows[fila_empleado][cargo].ToString()=="N/A")
+            if (lista_de_empleadoBD.Rows[fila_empleado][cargo].ToString() == "N/A")
             {
                 lista_de_empleadoBD.Rows[fila_empleado][cargo] = cargo;
             }
@@ -173,12 +173,7 @@ namespace paginaWeb.paginas
                     limpieza++;
                 }
             }
-            label_total_encargado.Text = "Total Encargado: " + encargado.ToString();
-            label_total_cajeros.Text = "Total Cajeros: " + cajeros.ToString();
-            label_total_shawarmero.Text = "Total Shawarmero: " + Shawarmero.ToString();
-            label_total_atencion_al_cliente.Text = "Total Atencion Cliente: " + atencion_cliente.ToString();
-            label_total_cocina.Text = "Total Empleados Cocina: " + cocina.ToString();
-            label_total_limpieza.Text = "Total Empleados Limpieza: " + limpieza.ToString();
+           
             total = encargado + cajeros + Shawarmero + atencion_cliente + cocina + limpieza;
             label_total.Text = "Total Plantilla de Personal: " + total.ToString();
 
@@ -195,41 +190,7 @@ namespace paginaWeb.paginas
             empleado.Columns.Add("telefono", typeof(string));
             empleado.Columns.Add("cargo", typeof(string));
         }
-        private void cargar_datos_empleado()
-        {
-            if (verificar_carga())
-            {
-                crear_tabla_empleado();
-                empleado.Rows.Add();
-                empleado.Rows[0]["id_sucursal"] = usuariosBD.Rows[0]["sucursal"].ToString();
-                empleado.Rows[0]["nombre"] = textbox_nombre.Text;
-                empleado.Rows[0]["apellido"] = textbox_apellido.Text;
-                empleado.Rows[0]["dni"] = textbox_dni.Text;
-                empleado.Rows[0]["telefono"] = textbox_telefono.Text;
-                empleado.Rows[0]["cargo"] = configurar_cargo();
-                if (administrador.verificar_si_empleado_existe(empleado))
-                {
-                    label_advertencia.Text = "El DNI ya esta registrado";
-                    label_advertencia.Visible = true;
-                }
-                else
-                {
-                    label_advertencia.Visible = false;
-                    administrador.registrar_empleado(empleado);
-                    textbox_nombre.Text = string.Empty;
-                    textbox_apellido.Text = string.Empty;
-                    textbox_dni.Text = string.Empty;
-                    textbox_telefono.Text = string.Empty;
-                    Session.Add("encargado", false);
-                    Session.Add("cajero", false);
-                    Session.Add("shawarmero", false);
-                    Session.Add("atencion", false);
-                    Session.Add("cocina", false);
-                    Session.Add("limpieza", false);
-                    configurar_cargos();
-                }
-            }
-        }
+        
         private string configurar_cargo()
         {
             string retorno = string.Empty;
@@ -273,75 +234,7 @@ namespace paginaWeb.paginas
             retorno = cantidad_cargos.ToString() + cargos;
             return retorno;
         }
-        private bool verificar_carga()
-        {
-            bool retorno = true;
-            string mensaje = string.Empty;
-            if (textbox_nombre.Text == string.Empty)
-            {
-                mensaje = mensaje + "Falta ingresar nombre. ";
-            }
-            if (textbox_apellido.Text == string.Empty)
-            {
-                mensaje = mensaje + "Falta ingresar apellido. ";
-            }
-            if (textbox_dni.Text == string.Empty)
-            {
-                mensaje = mensaje + "Falta ingresar DNI. ";
-            }
-            if (textbox_telefono.Text == string.Empty)
-            {
-                mensaje = mensaje + "Falta ingresar telefono. ";
-            }
-
-            int cantidad_cargos = 0;
-            if ((bool)Session["Encargado"])
-            {
-                cantidad_cargos++;
-            }
-
-            if ((bool)Session["Cajero"])
-            {
-                cantidad_cargos++;
-            }
-
-            if ((bool)Session["Shawarmero"])
-            {
-                cantidad_cargos++;
-            }
-
-            if ((bool)Session["atencion"])
-            {
-                cantidad_cargos++;
-            }
-
-            if ((bool)Session["Cocina"])
-            {
-                cantidad_cargos++;
-            }
-
-            if ((bool)Session["Limpieza"])
-            {
-                cantidad_cargos++;
-            }
-
-            if (cantidad_cargos == 0)
-            {
-                mensaje = mensaje + "Falta asignar cargo. ";
-            }
-
-            if (mensaje != string.Empty)
-            {
-                label_advertencia.Text = mensaje;
-                label_advertencia.Visible = true;
-                retorno = false;
-            }
-            else
-            {
-                label_advertencia.Visible = false;
-            }
-            return retorno;
-        }
+       
         #endregion
         #region configurar controles
         private void configurar_controles()
@@ -419,59 +312,6 @@ namespace paginaWeb.paginas
                 Session.Add("limpieza", limpieza);
             }
 
-            if ((bool)Session["encargado"])
-            {
-                boton_encargado.CssClass = "btn btn-success";
-            }
-            else
-            {
-                boton_encargado.CssClass = "btn btn-primary";
-            }
-
-            if ((bool)Session["cajero"])
-            {
-                boton_cajero.CssClass = "btn btn-success";
-            }
-            else
-            {
-                boton_cajero.CssClass = "btn btn-primary";
-            }
-
-            if ((bool)Session["shawarmero"])
-            {
-                boton_shawarmero.CssClass = "btn btn-success";
-            }
-            else
-            {
-                boton_shawarmero.CssClass = "btn btn-primary";
-            }
-
-            if ((bool)Session["atencion"])
-            {
-                boton_atencion.CssClass = "btn btn-success";
-            }
-            else
-            {
-                boton_atencion.CssClass = "btn btn-primary";
-            }
-
-            if ((bool)Session["cocina"])
-            {
-                boton_cocina.CssClass = "btn btn-success";
-            }
-            else
-            {
-                boton_cocina.CssClass = "btn btn-primary";
-            }
-
-            if ((bool)Session["limpieza"])
-            {
-                boton_limpieza.CssClass = "btn btn-success";
-            }
-            else
-            {
-                boton_limpieza.CssClass = "btn btn-primary";
-            }
         }
         #endregion
         /// <summary>
@@ -504,13 +344,7 @@ namespace paginaWeb.paginas
             }
         }
 
-        protected void boton_cargar_Click(object sender, EventArgs e)
-        {
-            cargar_datos_empleado();
-            lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
-            configurar_controles();
-            cargar_lista_empleados();
-        }
+      
 
         protected void textbox_nombre_empleado_TextChanged(object sender, EventArgs e)
         {
@@ -586,16 +420,7 @@ namespace paginaWeb.paginas
         {
             for (int fila = 0; fila <= gridview_empleados.Rows.Count - 1; fila++)
             {
-                TextBox textbox_nombre_empleado = (gridview_empleados.Rows[fila].Cells[0].FindControl("textbox_nombre_empleado") as TextBox);
-                TextBox textbox_apellido_empleado = (gridview_empleados.Rows[fila].Cells[0].FindControl("textbox_apellido_empleado") as TextBox);
-                TextBox textbox_dni_empleado = (gridview_empleados.Rows[fila].Cells[0].FindControl("textbox_dni_empleado") as TextBox);
-                TextBox textbox_telefono_empleado = (gridview_empleados.Rows[fila].Cells[0].FindControl("textbox_telefono_empleado") as TextBox);
-
-                textbox_nombre_empleado.Text = lista_de_empleado.Rows[fila]["nombre"].ToString();
-                textbox_apellido_empleado.Text = lista_de_empleado.Rows[fila]["apellido"].ToString();
-                textbox_dni_empleado.Text = lista_de_empleado.Rows[fila]["dni"].ToString();
-                textbox_telefono_empleado.Text = lista_de_empleado.Rows[fila]["telefono"].ToString();
-
+              
                 Button boton_encargado_empleado = (gridview_empleados.Rows[fila].Cells[0].FindControl("boton_encargado_empleado") as Button);
                 Button boton_cajero_empleado = (gridview_empleados.Rows[fila].Cells[0].FindControl("boton_cajero_empleado") as Button);
                 Button boton_shawarmero_empleado = (gridview_empleados.Rows[fila].Cells[0].FindControl("boton_shawarmero_empleado") as Button);
@@ -648,7 +473,7 @@ namespace paginaWeb.paginas
             Button boton_eliminar = (Button)sender;
             GridViewRow row = (GridViewRow)boton_eliminar.NamingContainer;
             int rowIndex = row.RowIndex;
-            administrador.eliminar_empleado(gridview_empleados.Rows[rowIndex].Cells[0].Text);
+            administrador.desloguear_empleado(gridview_empleados.Rows[rowIndex].Cells[0].Text);
             lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();
@@ -757,7 +582,7 @@ namespace paginaWeb.paginas
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
             string cargo = "Limpieza";
             modificar_cargo(id_empleado, cargo);
-          
+
         }
     }
 }

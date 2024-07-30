@@ -420,9 +420,9 @@ namespace paginaWeb.paginasFabrica
             if (!IsPostBack)
             {
                 proveedores_de_fabrica_seleccionado = historial.get_proveedores_de_fabrica_seleccionado(nombre_proveedores_de_fabrica_seleccionado);
-                Session.Add("proveedores_de_fabrica_seleccionado", proveedores_de_fabrica_seleccionado);
+                Session.Add("proveedores_de_fabrica_seleccionado_datatable", proveedores_de_fabrica_seleccionado);
             }
-            proveedores_de_fabrica_seleccionado = (DataTable)Session["proveedores_de_fabrica_seleccionado"];
+            proveedores_de_fabrica_seleccionado = (DataTable)Session["proveedores_de_fabrica_seleccionado_datatable"];
             label_num_orden_de_compra.Text = "N° orden de compra: " + num_orden_de_compra_seleccionada;
             label_proveedor_de_fabrica_seleeccionado.Text = proveedores_de_fabrica_seleccionado.Rows[0]["proveedor"].ToString();
             if (!IsPostBack)

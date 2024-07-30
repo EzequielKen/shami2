@@ -297,17 +297,19 @@
     <Content Include="paginasGerente\landing_page_local.aspx" />
     <Content Include="paginasGerente\proveedores_fabrica_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
-    <Content Include="paginas\administrador_de_empleados.aspx" />
-    <Content Include="paginas\administrador_de_empleados_cajero.aspx" />
+    <Content Include="paginasLanding\landing_local.aspx" />
+    <Content Include="paginas\asignador_de_cargos.aspx" />
+    <Content Include="paginas\asignador_de_cargos_cajero.aspx" />
     <Content Include="paginas\administrar_lista_de_chequeo.aspx" />
     <Content Include="paginas\administrar_tabla_produccion.aspx" />
+    <Content Include="paginas\alta_de_empleados.aspx" />
     <Content Include="paginas\calendario_de_entrega.aspx" />
     <Content Include="paginas\comida_empleados.aspx" />
     <Content Include="paginas\cuentas_por_pagar.aspx" />
     <Content Include="paginas\estadisticas_de_pedido.aspx" />
+    <Content Include="paginas\historial_consumo_personal.aspx" />
     <Content Include="paginas\historial_lista_chequeo.aspx" />
     <Content Include="paginas\historial_pedido.aspx" />
-    <Content Include="paginas\landing_local.html" />
     <Content Include="paginas\landing_page_local.aspx" />
     <Content Include="paginas\lista_de_chequeo.aspx" />
     <Content Include="paginas\lista_de_faltantes.aspx" />
@@ -868,6 +870,20 @@
     <Compile Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx.designer.cs">
       <DependentUpon>resumen_deuda_proveedores_gerente.aspx</DependentUpon>
     </Compile>
+    <Compile Include="paginasLanding\landing_local.aspx.cs">
+      <DependentUpon>landing_local.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasLanding\landing_local.aspx.designer.cs">
+      <DependentUpon>landing_local.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasLanding\landing_local.Master.cs">
+      <DependentUpon>landing_local.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasLanding\landing_local.Master.designer.cs">
+      <DependentUpon>landing_local.Master</DependentUpon>
+    </Compile>
     <Compile Include="paginasMaestras\paginaMaestra.Master.cs">
       <DependentUpon>paginaMaestra.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -910,19 +926,19 @@
     <Compile Include="paginasMaestras\paginaMaestraLogin.Master.designer.cs">
       <DependentUpon>paginaMaestraLogin.Master</DependentUpon>
     </Compile>
-    <Compile Include="paginas\administrador_de_empleados.aspx.cs">
-      <DependentUpon>administrador_de_empleados.aspx</DependentUpon>
+    <Compile Include="paginas\asignador_de_cargos.aspx.cs">
+      <DependentUpon>asignador_de_cargos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="paginas\administrador_de_empleados.aspx.designer.cs">
-      <DependentUpon>administrador_de_empleados.aspx</DependentUpon>
+    <Compile Include="paginas\asignador_de_cargos.aspx.designer.cs">
+      <DependentUpon>asignador_de_cargos.aspx</DependentUpon>
     </Compile>
-    <Compile Include="paginas\administrador_de_empleados_cajero.aspx.cs">
-      <DependentUpon>administrador_de_empleados_cajero.aspx</DependentUpon>
+    <Compile Include="paginas\asignador_de_cargos_cajero.aspx.cs">
+      <DependentUpon>asignador_de_cargos_cajero.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="paginas\administrador_de_empleados_cajero.aspx.designer.cs">
-      <DependentUpon>administrador_de_empleados_cajero.aspx</DependentUpon>
+    <Compile Include="paginas\asignador_de_cargos_cajero.aspx.designer.cs">
+      <DependentUpon>asignador_de_cargos_cajero.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\administrar_lista_de_chequeo.aspx.cs">
       <DependentUpon>administrar_lista_de_chequeo.aspx</DependentUpon>
@@ -937,6 +953,13 @@
     </Compile>
     <Compile Include="paginas\administrar_tabla_produccion.aspx.designer.cs">
       <DependentUpon>administrar_tabla_produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\alta_de_empleados.aspx.cs">
+      <DependentUpon>alta_de_empleados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\alta_de_empleados.aspx.designer.cs">
+      <DependentUpon>alta_de_empleados.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\calendario_de_entrega.aspx.cs">
       <DependentUpon>calendario_de_entrega.aspx</DependentUpon>
@@ -965,6 +988,13 @@
     </Compile>
     <Compile Include="paginas\estadisticas_de_pedido.aspx.designer.cs">
       <DependentUpon>estadisticas_de_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\historial_consumo_personal.aspx.cs">
+      <DependentUpon>historial_consumo_personal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\historial_consumo_personal.aspx.designer.cs">
+      <DependentUpon>historial_consumo_personal.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\historial_lista_chequeo.aspx.cs">
       <DependentUpon>historial_lista_chequeo.aspx</DependentUpon>
@@ -1120,6 +1150,7 @@
     <Content Include="Scripts\bootstrap.bundle.min.js.map" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="paginasMaestras\paginaMaestraGerente.Master" />
+    <Content Include="paginasLanding\landing_local.Master" />
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCCION.pubxml" />
     <None Include="Web.Debug.config">

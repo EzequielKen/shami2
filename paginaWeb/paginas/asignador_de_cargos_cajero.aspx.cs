@@ -537,7 +537,7 @@ namespace paginaWeb.paginas
             Button boton_eliminar = (Button)sender;
             GridViewRow row = (GridViewRow)boton_eliminar.NamingContainer;
             int rowIndex = row.RowIndex;
-            administrador.eliminar_empleado(gridview_empleados.Rows[rowIndex].Cells[0].Text);
+            administrador.desloguear_empleado(gridview_empleados.Rows[rowIndex].Cells[0].Text);
             lista_de_empleadoBD = administrador.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             configurar_controles();
             cargar_lista_empleados();

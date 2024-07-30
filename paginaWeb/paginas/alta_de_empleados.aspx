@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="administrador_de_empleados.aspx.cs" Inherits="paginaWeb.paginas.administrador_de_empleados" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="alta_de_empleados.aspx.cs" Inherits="paginaWeb.paginas.alta_de_empleados" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -32,7 +32,14 @@
                             </div>
                             <div>
                                 <h4>
-                                    <asp:Label CssClass="form-label" Text="cargo" runat="server" />
+                                    <asp:Label CssClass="form-label" Text="Sueldo Mensual" runat="server" />
+                                </h4>
+                                <asp:TextBox placeholder="Ingrese sueldo" ID="textbox_sueldo" CssClass="form-control" runat="server" OnTextChanged="textbox_sueldo_TextChanged" AutoPostBack="true" />
+                                <asp:Label ID="label_ingreso_sueldo" Text="$0.00" CssClass="form-control" runat="server" />
+                            </div>
+                            <div>
+                                <h4>
+                                    <asp:Label CssClass="form-label" Text="Posicion" runat="server" />
                                 </h4>
                                 <div class="row">
                                     <div class="col">
@@ -63,7 +70,7 @@
                     </div>
                     <div class="col">
                         <h2>
-                            <asp:Label Text="Administrador de empleados." runat="server" />
+                            <asp:Label Text="Alta de empleados." runat="server" />
                         </h2>
                         <h2>
                             <asp:Label Visible="false" ID="label_total_encargado" Text="text" runat="server" />
@@ -101,8 +108,6 @@
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
-                            <span class="badge rounded-pill text-bg-primary">Azul = No Seleccionado</span>
-                            <span class="badge rounded-pill text-bg-success">Verde = Seleccionado</span>
                             <h2>
                                 <asp:Label ID="label_total" Text="text" runat="server" />
                             </h2>
@@ -121,9 +126,11 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="DNI">
+                                    <asp:BoundField HeaderText="DNI" DataField="dni" />
+
+                                    <asp:TemplateField HeaderText="Contraseña">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_dni_empleado" CssClass="form-control-sm" runat="server" OnTextChanged="textbox_dni_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_contraseña_empleado" CssClass="form-control-sm" runat="server" OnTextChanged="textbox_contraseña_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
@@ -133,45 +140,17 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Encargado">
+                                    <asp:TemplateField HeaderText="Sueldo Mensual">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_encargado_empleado" CssClass="btn btn-primary" Text="Encargado" runat="server" OnClick="boton_encargado_empleado_Click" />
+                                            <asp:TextBox ID="textbox_sueldo_empleado" CssClass="form-control-sm" runat="server" OnTextChanged="textbox_sueldo_empleado_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:Label ID="label_sueldo" Text="text" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Cajero">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_cajero_empleado" CssClass="btn btn-primary" Text="Cajero" runat="server" OnClick="boton_cajero_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Shawarmero">
+                                    <asp:TemplateField HeaderText="Dar de baja">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_shawarmero_empleado" CssClass="btn btn-primary" Text="Shawarmero" runat="server" OnClick="boton_shawarmero_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Atencion a cliente">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_atencion_empleado" CssClass="btn btn-primary" Text="Atencion a Cliente" runat="server" OnClick="boton_atencion_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Cocina">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_cocina_empleado" CssClass="btn btn-primary" Text="Cocina" runat="server" OnClick="boton_cocina_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Limpieza">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_limpieza_empleado" CssClass="btn btn-primary" Text="Limpieza" runat="server" OnClick="boton_limpieza_empleado_Click" />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
-                                    <asp:TemplateField HeaderText="Eliminar">
-                                        <ItemTemplate>
-                                            <asp:Button ID="boton_eliminar" CssClass="btn btn-danger" Text="Eliminar" runat="server" OnClick="boton_eliminar_Click" />
+                                            <asp:Button ID="boton_eliminar" CssClass="btn btn-danger" Text="Dar de baja" runat="server" OnClick="boton_eliminar_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

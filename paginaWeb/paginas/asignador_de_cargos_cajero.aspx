@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="administrador_de_empleados_cajero.aspx.cs" Inherits="paginaWeb.paginas.administrador_de_empleados_cajero" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="asignador_de_cargos_cajero.aspx.cs" Inherits="paginaWeb.paginas.administrador_de_empleados_cajero" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -7,6 +7,7 @@
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <div class="container-fluid">
+                <h1>Asignador de Posiciones</h1>
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-light">

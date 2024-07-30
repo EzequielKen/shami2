@@ -1,4 +1,5 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="paginaMaestraSistema.Master.cs" Inherits="paginaWeb.paginaMaestra" %>
+
 <!DOCTYPE html>
 <html data-bs-theme="dark">
 <head runat="server">
@@ -23,9 +24,11 @@
             display: flex;
             flex-direction: column;
         }
+
         .container-fluid {
             flex: 1;
         }
+
         footer {
             text-align: center;
             padding: 1rem;
@@ -96,7 +99,7 @@
                         if (dato.Contains("Encargado") || dato.Contains("Cajero"))
                         {%>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/administrador_de_empleados_cajero.aspx">Administrar Empleados</a>
+                        <a class="nav-link btn btn-primary" href="/paginas/asignador_de_cargos_cajero.aspx">Asignar Cargos a Empleados</a>
                     </li>
                     <%}%>
                     <li class="nav-item">
@@ -124,12 +127,13 @@
                     </li>
                 </ul>
                 <%}
-                    else
+                    else //MENU ENCARGADO
                     {%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Proveedor Fabrica
                         </a>
+                        <!--Proveedor Fabrica-->
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
                                 {%>
@@ -146,8 +150,12 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administracion del Local
                         </a>
+                        <!--Administracion del Local-->
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="/paginas/registro_venta_local.aspx">Registro de Ventas del Local</a></li>
+                            <li><a class="dropdown-item" href="/paginas/alta_de_empleados.aspx">Alta de Empleados</a></li>
+                            <li><a class="dropdown-item" href="/paginas/asignador_de_cargos.aspx">Asignar Posicion a Empleados</a></li>
+                            <li><a class="dropdown-item" href="/paginas/comida_empleados.aspx">Comida de Empleados</a></li>
                         </ul>
                     </li>
                     <%    } %>
@@ -156,9 +164,8 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Operaciones del Local
                         </a>
+                        <!--Operaciones del Local-->
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/paginas/administrador_de_empleados.aspx">Administrar Empleados</a></li>
-                            <li><a class="dropdown-item" href="/paginas/comida_empleados.aspx">Comida de Empleados</a></li>
                             <li><a class="dropdown-item" href="/paginas/historial_lista_chequeo.aspx">Historial de Lista de Chequeo</a></li>
                             <li><a class="dropdown-item" href="/paginas/administrar_tabla_produccion.aspx">Administrar Tabla de Produccion</a></li>
                             <li><a class="dropdown-item" href="/paginas/lista_de_faltantes.aspx">Lista de Faltantes</a></li>

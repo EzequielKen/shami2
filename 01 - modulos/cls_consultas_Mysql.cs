@@ -52,7 +52,7 @@ namespace modulos
         public DataTable login_empleado(string contraseña)
         {
             DataTable usuarios;
-            string query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado where activa=1 and dni ='" + contraseña + "';";
+            string query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado where activa=1 and contraseña ='" + contraseña + "';";
             cls_conexion login = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             try
             {
@@ -205,6 +205,25 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_insumos_fabrica_venta_para_actualizar(string base_de_datos, string tabla)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + "." + tabla + " where activa=1 and venta!=0";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_insumos_fabrica_venta(string base_de_datos, string tabla)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
@@ -252,6 +271,25 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + "." + tabla + " where activa=1 and (venta=1 or venta=2 or venta=3)";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_insumos_fabrica_venta_nivel4(string base_de_datos, string tabla)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + "." + tabla + " where activa=1 and (venta=1 or venta=2 or venta=3 or venta=4)";
                 retorno = base_datos.READ(query);
             }
             catch (Exception ex)
@@ -1487,6 +1525,27 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado WHERE activa=1 and id_sucursal='" + id_sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_empleados_origen(string id_sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado WHERE activa=1 and id_sucursal_origen='" + id_sucursal + "';";
 
 
                 retorno = base_datos.READ(query);

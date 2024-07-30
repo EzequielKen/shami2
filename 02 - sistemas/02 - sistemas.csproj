@@ -51,6 +51,7 @@
     <Compile Include="cls_administrar_lista_de_chequeo.cs" />
     <Compile Include="cls_administrar_tabla_produccion.cs" />
     <Compile Include="cls_estadisticas_de_entrega.cs" />
+    <Compile Include="cls_historial_consumo_personal.cs" />
     <Compile Include="cls_historial_lista_chequeo.cs" />
     <Compile Include="cls_lista_de_chequeo.cs" />
     <Compile Include="cls_lista_de_faltantes.cs" />
