@@ -56,7 +56,7 @@ namespace _02___sistemas
             DataTable categoria = new DataTable();
             categoria.Columns.Add("id", typeof(string));
             categoria.Columns.Add("categoria", typeof(string));
-            lista.DefaultView.Sort = "categoria ASC";
+            lista.DefaultView.Sort = "categoria ASC, orden ASC";
             lista = lista.DefaultView.ToTable();
             string categoria_dato;
             for (int fila = 0; fila <= lista.Rows.Count - 1; fila++)
@@ -76,7 +76,7 @@ namespace _02___sistemas
         {
             DataTable categoria = new DataTable();
             categoria.Columns.Add("categoria", typeof(string));
-            lista.DefaultView.Sort = "categoria ASC";
+            lista.DefaultView.Sort = "categoria ASC, orden ASC";
             lista = lista.DefaultView.ToTable();
             categoria.Rows.Add();
             categoria.Rows[categoria.Rows.Count - 1]["categoria"] = categoria_dato;

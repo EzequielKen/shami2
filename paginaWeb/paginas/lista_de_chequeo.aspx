@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="input-group">
-                                        <asp:Button ID="boton_atencion" Visible="false" CssClass="btn btn-primary" Text="Area de Servicio" runat="server" OnClick="boton_atencion_Click" />
+                                        <asp:Button ID="boton_atencion" Visible="false" CssClass="btn btn-primary" Text="Area Servicio" runat="server" OnClick="boton_atencion_Click" />
                                         <asp:Button ID="boton_atencion_pdf" Visible="false" Text="PDF" CssClass="btn btn-success" runat="server" OnClick="boton_atencion_pdf_Click"/>
                                     </div>
                                 </div>
