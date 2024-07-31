@@ -1,5 +1,4 @@
-﻿
-using paginaWeb;
+﻿using paginaWeb;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -2227,7 +2226,7 @@ namespace _01___modulos
                 });
             }).GeneratePdf(ruta_archivo);
         }
-        public void GenerarPDF_resumen_de_faltantes(string ruta_archivo, byte[] logo, DataTable resumen,string sucursal)
+        public void GenerarPDF_resumen_de_faltantes(string ruta_archivo, byte[] logo, DataTable resumen, string sucursal)
         {
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
@@ -2324,6 +2323,111 @@ namespace _01___modulos
                 });
             }).GeneratePdf(ruta_archivo);
         }
+        public void GenerarPDF_lista_de_chequeo(string ruta_archivo, byte[] logo, DataTable categoria, DataTable lista)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+            Document.Create(document =>
+            {
+                for (int fila_categoria = 0; fila_categoria <= categoria.Rows.Count - 1; fila_categoria++)
+                {
+                    document.Page(page =>
+                    {
+                        page.Margin(30);
+
+                        page.Header().ShowOnce().Row(row =>
+                        {
+
+                            row.ConstantItem(150).Image(logo);
+
+                            row.RelativeItem().Column(col =>
+                            {
+                                col.Item().AlignCenter().Text("Lista de Chequeo").FontSize(9);
+                                //col.Item().AlignCenter().Text(telefono_seleccionado).FontSize(9);
+
+                            });
+
+                            row.RelativeItem().Column(col =>
+                            {
+
+                            });
+                        });
+
+                        page.Content().PaddingVertical(10).Column(col =>
+                        {
+
+
+                            col.Item().AlignCenter().Text(categoria.Rows[fila_categoria]["categoria"].ToString()).Bold().FontSize(14);
+
+
+                            DateTime fecha_dato = DateTime.Now;
+                            string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString();
+
+                            
+
+                            col.Item().LineHorizontal(0.5f);
+
+
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Categoria: " + categoria.Rows[fila_categoria]["categoria"].ToString()).Bold().FontSize(14);
+                            col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("Lista de Chequeo").Bold().FontSize(14).FontColor("#fff");
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("FECHA: " + fecha).Bold().FontSize(14);
+
+
+                            col.Item().Table(tabla =>
+                            {
+                                tabla.ColumnsDefinition(columns =>
+                                {
+                                    columns.ConstantColumn(50);
+                                    columns.RelativeColumn();
+                                });
+
+                                tabla.Header(header =>
+                                {
+                                    header.Cell().Background("#257272").Padding(2).Text("id").FontColor("#fff");
+                                    header.Cell().Background("#257272").Padding(2).Text("actividad").FontColor("#fff");
+
+                                });
+
+                                for (int fila = 0; fila <= lista.Rows.Count - 1; fila++)
+                                {
+                                    if (categoria.Rows[fila_categoria]["categoria"].ToString() == lista.Rows[fila]["categoria"].ToString())
+                                    {
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                        .Text(lista.Rows[fila]["id"].ToString()).FontSize(10);
+
+                                        tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                        .Text(lista.Rows[fila]["actividad"].ToString()).FontSize(10);
+
+                                    }
+
+                                }
+                            });
+                            col.Item().LineHorizontal(0.5f);
+
+                            col.Item().Background(Colors.Grey.Lighten3).Padding(10)
+                            .Column(column =>
+                            {
+                                column.Item().Text("Entrega conforme / firma:").FontSize(12);
+                                column.Item().Text("recibe conforme / firma:").FontSize(12);
+                                column.Spacing(20);
+                            });
+
+                            col.Spacing(10);
+                        });
+
+
+                        page.Footer().AlignRight().Text(txt =>
+                        {
+                            txt.Span("pagina ").FontSize(10);
+                            txt.CurrentPageNumber().FontSize(10);
+                            txt.Span(" de ").FontSize(10);
+                            txt.TotalPages().FontSize(10);
+                        });
+                    });
+                }
+
+            }).GeneratePdf(ruta_archivo);
+        }
+
         #endregion
 
         private string formatCurrency(object valor)

@@ -67,7 +67,6 @@
                                 <asp:TemplateField HeaderText="Ingrese cantidad a entregar">
                                     <ItemTemplate>
                                         <asp:TextBox ID="texbox_cantidad" CssClass="input-group-text" OnTextChanged="texbox_cantidad_TextChanged" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'></asp:TextBox>
-                                        <asp:TextBox ID="textbox_unidades" CssClass="input-group-text" placeholder="Cantidad de Pinchos" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'></asp:TextBox>
                                     </ItemTemplate>
                                 </asp:TemplateField>
 

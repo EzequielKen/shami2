@@ -152,31 +152,37 @@ namespace paginaWeb.paginas
                 if (cargo == "Encargado")
                 {
                     boton_encargado.Visible = true;
+                    boton_encargado_pdf.Visible = true;
                 }
 
                 if (cargo == "Cajero")
                 {
                     boton_cajero.Visible = true;
+                    boton_cajero_pdf.Visible = true;
                 }
 
                 if (cargo == "Shawarmero")
                 {
                     boton_shawarmero.Visible = true;
+                    boton_shawarmero_pdf.Visible = true;
                 }
 
                 if (cargo == "Atencion al Cliente")
                 {
                     boton_atencion.Visible = true;
+                    boton_atencion_pdf.Visible = true;
                 }
 
                 if (cargo == "Cocina")
                 {
                     boton_cocina.Visible = true;
+                    boton_cocina_pdf.Visible = true;
                 }
 
                 if (cargo == "Limpieza")
                 {
                     boton_limpieza.Visible = true;
+                    boton_limpieza_pdf.Visible = true;
                 }
                 posicion++;
             }
@@ -545,6 +551,181 @@ namespace paginaWeb.paginas
         {
             Session.Add("empleado", lista_chequeo.cerrar_turno((DataTable)Session["empleado"], sucursal_lista_chequeo.Rows[0]["sucursal"].ToString()));
             Response.Redirect("~/paginas/lista_de_chequeo.aspx", false);
+        }
+
+        protected void boton_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            lista_chequeo.crear_pdf(ruta_archivo,imgdata,lista_de_chequeoBD);
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
+
+        protected void boton_encargado_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "ADMINISTRACION");
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
+
+        protected void boton_cajero_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "CAJERO");
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
+
+        protected void boton_shawarmero_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "SHAWARMERO");
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
+
+        protected void boton_atencion_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "AREA DE SERVICIO");
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
+
+        protected void boton_cocina_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "COCINA");
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
+
+        protected void boton_limpieza_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "LIMPIEZA");
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
         }
     }
 }

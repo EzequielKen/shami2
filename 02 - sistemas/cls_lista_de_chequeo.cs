@@ -1,4 +1,5 @@
-﻿using modulos;
+﻿using _01___modulos;
+using modulos;
 using paginaWeb;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace _02___sistemas
         #region atributos
         cls_consultas_Mysql consultas;
         cls_funciones funciones = new cls_funciones();
+        cls_PDF PDF = new cls_PDF();
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
@@ -48,6 +50,40 @@ namespace _02___sistemas
         DataTable empleado;
         #endregion
 
+        #region PDF
+        public void crear_pdf(string ruta_archivo, byte[] logo, DataTable lista)
+        {
+            DataTable categoria = new DataTable();
+            categoria.Columns.Add("id", typeof(string));
+            categoria.Columns.Add("categoria", typeof(string));
+            lista.DefaultView.Sort = "categoria ASC";
+            lista = lista.DefaultView.ToTable();
+            string categoria_dato;
+            for (int fila = 0; fila <= lista.Rows.Count - 1; fila++)
+            {
+                categoria_dato = lista.Rows[fila]["categoria"].ToString();
+                if (!funciones.verificar_si_cargo_dato(categoria_dato, "categoria", categoria))
+                {
+                    categoria.Rows.Add();
+                    categoria.Rows[categoria.Rows.Count - 1]["id"] = categoria_dato;
+                    categoria.Rows[categoria.Rows.Count - 1]["categoria"] = lista.Rows[fila]["categoria"].ToString();
+                }
+            }
+            PDF.GenerarPDF_lista_de_chequeo(ruta_archivo, logo, categoria, lista);
+        }
+
+        public void crear_pdf_segun_categoria(string ruta_archivo, byte[] logo, DataTable lista,string categoria_dato)
+        {
+            DataTable categoria = new DataTable();
+            categoria.Columns.Add("categoria", typeof(string));
+            lista.DefaultView.Sort = "categoria ASC";
+            lista = lista.DefaultView.ToTable();
+            categoria.Rows.Add();
+            categoria.Rows[categoria.Rows.Count - 1]["categoria"] = categoria_dato;
+            PDF.GenerarPDF_lista_de_chequeo(ruta_archivo, logo, categoria, lista);
+        }
+        #endregion
+
         #region carga a base de datos
         public DataTable cerrar_turno(DataTable empleado, string sucursal)
         {
@@ -55,7 +91,7 @@ namespace _02___sistemas
             login.login_empleado(sucursal, empleado.Rows[0]["dni"].ToString());
             return login.get_empleado();
         }
-        public void registrar_chequeo(DataTable empleado, string actividad, string nota,string turno)
+        public void registrar_chequeo(DataTable empleado, string actividad, string nota, string turno)
         {
             string columnas = string.Empty;
             string valores = string.Empty;
@@ -233,11 +269,11 @@ namespace _02___sistemas
         {
             empleado = consultas.consultar_empleado(id_empleado);
         }
-        private void consultar_historial(DateTime fecha, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal,string turno)
+        private void consultar_historial(DateTime fecha, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal, string turno)
         {
-            historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal,turno);
+            historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
         }
-        private void consultar_historial_turno2(DateTime fecha, string id_empleado, string id_sucursal,string turno)
+        private void consultar_historial_turno2(DateTime fecha, string id_empleado, string id_sucursal, string turno)
         {
             DateTime fecha_nueva;
             DataTable historial_turno2 = new DataTable();
@@ -260,7 +296,7 @@ namespace _02___sistemas
                 fecha_nueva = fecha_nueva.AddDays(-1);
                 hora_inicio = "00:00";
                 hora_fin = "04:59";
-                historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal,turno);
+                historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
                 hora_inicio = "17:00";
                 hora_fin = "23:59";
                 historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
@@ -324,7 +360,7 @@ namespace _02___sistemas
                 else if ("rango 2" == verificar_horario(fecha) || "rango 3" == verificar_horario(fecha))// 
                 {
 
-                    consultar_historial_turno2(fecha, id_empleado, id_sucursal,turno);
+                    consultar_historial_turno2(fecha, id_empleado, id_sucursal, turno);
                 }
 
             }
@@ -332,7 +368,7 @@ namespace _02___sistemas
             {
                 if (turno == "Turno 1")// "rango 1" == verificar_horario(fecha)
                 {
-                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal,turno);
+                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
                 }
                 else if (turno == "Turno 2")// "rango 2" == verificar_horario(fecha) ||"rango 3" == verificar_horario(fecha)
                 {
@@ -340,7 +376,7 @@ namespace _02___sistemas
                                                         fecha.Month,
                                                         fecha.Day,
                                                         18, 0, 0);
-                    consultar_historial_turno2(nueva_fecha, id_empleado, id_sucursal,turno);
+                    consultar_historial_turno2(nueva_fecha, id_empleado, id_sucursal, turno);
                 }
 
             }

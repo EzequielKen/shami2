@@ -159,7 +159,7 @@ namespace paginaWeb
                 command.Parameters.AddWithValue("@LockId", lockId ?? 0);
                 command.Parameters.AddWithValue("@Timeout", item.Timeout);
                 command.Parameters.AddWithValue("@Locked", false);
-                command.Parameters.AddWithValue("@SessionItems", Serialize((SessionStateItemCollection)item.Items));
+                command.Parameters.AddWithValue("@SessionItems", SerializeSelectedItems((SessionStateItemCollection)item.Items));
                 command.Parameters.AddWithValue("@Flags", 0);
                 command.ExecuteNonQuery();
             }
@@ -217,13 +217,22 @@ namespace paginaWeb
             // No implementation required for this example
         }
 
-        private string Serialize(SessionStateItemCollection items)
+        private string SerializeSelectedItems(SessionStateItemCollection items)
         {
             using (var ms = new MemoryStream())
             using (var writer = new BinaryWriter(ms))
             {
-                if (items != null)
-                    items.Serialize(writer);
+                var filteredItems = new SessionStateItemCollection();
+
+                foreach (string key in items.Keys)
+                {
+                    if (key == "sucursal" || key == "empleado" || key == "usuariosBD" || key == "tipo_usuario" || key == "nivel_seguridad" || key == "proveedorBD")
+                    {
+                        filteredItems[key] = items[key];
+                    }
+                }
+
+                filteredItems.Serialize(writer);
 
                 writer.Close();
                 return Convert.ToBase64String(ms.ToArray());

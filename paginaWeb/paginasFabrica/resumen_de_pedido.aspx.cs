@@ -78,13 +78,13 @@ namespace paginaWeb.paginasFabrica
         private void cargar_sucursal_segun_dia_de_enrega(string dia)
         {
             resumen_sucursales.Rows.Clear();
-            string sucursal="";
-            for (int fila_dia = 0; fila_dia <= calendario_entrega.Rows.Count-1; fila_dia++)
+            string sucursal = "";
+            for (int fila_dia = 0; fila_dia <= calendario_entrega.Rows.Count - 1; fila_dia++)
             {
-                if (calendario_entrega.Rows[fila_dia][dia].ToString()!="N/A")
+                if (calendario_entrega.Rows[fila_dia][dia].ToString() != "N/A")
                 {
-                   sucursal = calendario_entrega.Rows[fila_dia][dia].ToString();
-                    for (int fila_lista = 0; fila_lista <= gridView_sucursales.Rows.Count-1; fila_lista++)
+                    sucursal = calendario_entrega.Rows[fila_dia][dia].ToString();
+                    for (int fila_lista = 0; fila_lista <= gridView_sucursales.Rows.Count - 1; fila_lista++)
                     {
                         if (sucursal == gridView_sucursales.Rows[fila_lista].Cells[1].Text)
                         {
@@ -281,29 +281,16 @@ namespace paginaWeb.paginasFabrica
             proveedorBD = (DataTable)Session["proveedorBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
             usuariosBD = (DataTable)Session["usuariosBD"];
-            if (!IsPostBack)
-            {
 
-                //calcular remitos nuevos
-                Session.Add("pedidos_fabrica", new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]));
-
-                pedidos_fabrica = (cls_sistema_pedidos_fabrica)Session["pedidos_fabrica"];
-
-            }
-
-            if (Session["sucursalesBD"] == null)
-            {
-                sucursalesBD = pedidos_fabrica.get_sucursales();
-
-                Session.Add("sucursalesBD", sucursalesBD);
-            }
-            else
-            {
-                sucursalesBD = (DataTable)Session["sucursalesBD"];
-            }
-
+            //calcular remitos nuevos
 
             pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
+
+
+                sucursalesBD = pedidos_fabrica.get_sucursales();
+
+
+
 
             dia_entrega = new cls_dia_de_entrega(usuariosBD);
             calendario_entrega = dia_entrega.get_dias_de_entrega();
@@ -423,6 +410,6 @@ namespace paginaWeb.paginasFabrica
         {
 
         }
-        
+
     }
 }
