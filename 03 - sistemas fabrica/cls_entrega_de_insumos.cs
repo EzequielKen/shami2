@@ -92,10 +92,10 @@ namespace _03___sistemas_fabrica
                         actualizar = "`" + pedido_de_insumos.Columns[columna].ColumnName + "` = '" + dato + "'";
                         consultas.actualizar_tabla(base_de_datos, "pedido_de_insumos", actualizar, id_pedido_insumo_seleccionado);
 
-                        if ("19-Sub Productos"==resumen.Rows[fila]["tipo_producto"].ToString())//
+                        if ("19-Sub Productos" == resumen.Rows[fila]["tipo_producto"].ToString())//
                         {
                             fila_insumo = funciones.buscar_fila_por_id(id, sub_productos);
-                            actualizar_stock_en_sub_producto(fila_insumo,  cantidad_entrega);
+                            actualizar_stock_en_sub_producto(fila_insumo, cantidad_entrega);
                         }
                         else
                         {
@@ -123,10 +123,10 @@ namespace _03___sistemas_fabrica
             insumos_fabricaBD.Rows[fila_insumo][columna_presentacion] = dato;
             insumos_fabricaBD.Rows[fila_insumo]["nuevo_stock"] = "si";
         }
-        private void actualizar_stock_en_sub_producto(int fila_insumo,string cantidad_entrega_dato)
+        private void actualizar_stock_en_sub_producto(int fila_insumo, string cantidad_entrega_dato)
         {
             double cantidad_entrega, stock_actual, nuevo_stock;
-             stock_actual = double.Parse(sub_productos.Rows[fila_insumo]["stock_expedicion"].ToString());
+            stock_actual = double.Parse(sub_productos.Rows[fila_insumo]["stock_expedicion"].ToString());
             cantidad_entrega = double.Parse(cantidad_entrega_dato);
             nuevo_stock = stock_actual - cantidad_entrega;
             sub_productos.Rows[fila_insumo]["stock_expedicion"] = nuevo_stock;
@@ -173,8 +173,8 @@ namespace _03___sistemas_fabrica
             insumos_fabrica.Columns.Add("producto", typeof(string));
             insumos_fabrica.Columns.Add("pedido", typeof(string));
             insumos_fabrica.Columns.Add("dato", typeof(string));
-            insumos_fabrica.Columns.Add("tipo_producto", typeof(string)); 
-            insumos_fabrica.Columns.Add("unidad_medida", typeof(string)); 
+            insumos_fabrica.Columns.Add("tipo_producto", typeof(string));
+            insumos_fabrica.Columns.Add("unidad_medida", typeof(string));
         }
 
         private void llenar_tabla_insumos()
@@ -190,17 +190,20 @@ namespace _03___sistemas_fabrica
                     id_insumo = funciones.obtener_dato(pedido_de_insumos.Rows[0][columna].ToString(), 1);
                     producto = funciones.obtener_dato(pedido_de_insumos.Rows[0][columna].ToString(), 2);
                     fila_insumo = funciones.buscar_fila_por_id_nombre(id_insumo, producto, insumos_fabricaBD);
-                    insumos_fabrica.Rows.Add();
-                    insumos_fabrica.Rows[fila_tabla]["id"] = insumos_fabricaBD.Rows[fila_insumo]["id"].ToString();
-                    insumos_fabrica.Rows[fila_tabla]["producto"] = insumos_fabricaBD.Rows[fila_insumo]["producto"].ToString();
-                    insumos_fabrica.Rows[fila_tabla]["tipo_producto"] = insumos_fabricaBD.Rows[fila_insumo]["tipo_producto"].ToString();
-                    insumos_fabrica.Rows[fila_tabla]["pedido"] = funciones.obtener_dato(pedido_de_insumos.Rows[0][columna].ToString(), 3) + " " + funciones.obtener_dato(pedido_de_insumos.Rows[0][columna].ToString(), 4);
-                    insumos_fabrica.Rows[fila_tabla]["dato"] = pedido_de_insumos.Rows[0][columna].ToString();
-                    if ("19-Sub Productos" == insumos_fabricaBD.Rows[fila_insumo]["tipo_producto"].ToString())//unidad_medida
+                    if (fila_insumo!=-1)
                     {
-                        insumos_fabrica.Rows[fila_tabla]["unidad_medida"] = insumos_fabricaBD.Rows[fila_insumo]["unidad_medida"].ToString();
+                        insumos_fabrica.Rows.Add();
+                        insumos_fabrica.Rows[fila_tabla]["id"] = insumos_fabricaBD.Rows[fila_insumo]["id"].ToString();
+                        insumos_fabrica.Rows[fila_tabla]["producto"] = insumos_fabricaBD.Rows[fila_insumo]["producto"].ToString();
+                        insumos_fabrica.Rows[fila_tabla]["tipo_producto"] = insumos_fabricaBD.Rows[fila_insumo]["tipo_producto"].ToString();
+                        insumos_fabrica.Rows[fila_tabla]["pedido"] = funciones.obtener_dato(pedido_de_insumos.Rows[0][columna].ToString(), 3) + " " + funciones.obtener_dato(pedido_de_insumos.Rows[0][columna].ToString(), 4);
+                        insumos_fabrica.Rows[fila_tabla]["dato"] = pedido_de_insumos.Rows[0][columna].ToString();
+                        if ("19-Sub Productos" == insumos_fabricaBD.Rows[fila_insumo]["tipo_producto"].ToString())//unidad_medida
+                        {
+                            insumos_fabrica.Rows[fila_tabla]["unidad_medida"] = insumos_fabricaBD.Rows[fila_insumo]["unidad_medida"].ToString();
+                        }
+                        fila_tabla++;
                     }
-                    fila_tabla++;
                 }
             }
         }

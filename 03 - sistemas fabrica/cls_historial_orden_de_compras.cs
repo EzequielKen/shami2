@@ -192,7 +192,11 @@ namespace _03___sistemas_fabrica
         private void consultar_ordenes_de_compra(string mes, string año)
         {
             ordenes_de_compra = consultas.consultar_orden_de_compras_incompletas_segun_mes(mes,año);
-        } 
+        }
+        private void consultar_ordenes_de_compra_abiertas()
+        {
+            ordenes_de_compra = consultas.consultar_orden_de_compras_abiertas();
+        }
         private void consultar_orden_de_compra_por_id(string id)
         {
             orden_compra = consultas.consultar_ordenes_de_compra_de_proveedor_por_id(id);
@@ -220,6 +224,11 @@ namespace _03___sistemas_fabrica
         public DataTable get_ordenes_de_compra(string mes,string año)
         {
             consultar_ordenes_de_compra(mes,año);
+            return ordenes_de_compra;
+        }
+        public DataTable get_ordenes_de_compra_abiertas()
+        {
+            consultar_ordenes_de_compra_abiertas();
             return ordenes_de_compra;
         }
         public DataTable get_ordenes_de_compra_de_proveedor(string nombre_proveedor)

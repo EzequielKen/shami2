@@ -2356,7 +2356,7 @@ namespace _01___modulos
                         {
 
 
-                            col.Item().AlignCenter().Text(categoria.Rows[fila_categoria]["categoria"].ToString()).Bold().FontSize(14);
+                            col.Item().AlignCenter().Text(categoria.Rows[fila_categoria]["area"].ToString()).Bold().FontSize(14);
 
 
                             DateTime fecha_dato = DateTime.Now;

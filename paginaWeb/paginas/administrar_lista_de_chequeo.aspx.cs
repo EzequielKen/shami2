@@ -222,8 +222,8 @@ namespace paginaWeb.paginas
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            usuariosBD = funciones.Convertir_JArray_a_DataTable((JArray)Session["usuariosBD"]);
-            sucursal = funciones.Convertir_JArray_a_DataTable((JArray)Session["sucursal"]);
+            usuariosBD =(DataTable)Session["usuariosBD"];
+            sucursal = (DataTable)Session["sucursal"];
 
             if (Session["administracion_de_chequeo"] == null)
             {

@@ -55,7 +55,8 @@ namespace _02___sistemas
         {
             DataTable categoria = new DataTable();
             categoria.Columns.Add("id", typeof(string));
-            categoria.Columns.Add("categoria", typeof(string));
+            categoria.Columns.Add("categoria", typeof(string)); 
+            categoria.Columns.Add("area", typeof(string)); 
             lista.DefaultView.Sort = "categoria ASC, orden ASC";
             lista = lista.DefaultView.ToTable();
             string categoria_dato;
@@ -66,20 +67,23 @@ namespace _02___sistemas
                 {
                     categoria.Rows.Add();
                     categoria.Rows[categoria.Rows.Count - 1]["id"] = categoria_dato;
-                    categoria.Rows[categoria.Rows.Count - 1]["categoria"] = lista.Rows[fila]["categoria"].ToString();
+                    categoria.Rows[categoria.Rows.Count - 1]["categoria"] = lista.Rows[fila]["categoria"].ToString(); 
+                    categoria.Rows[categoria.Rows.Count - 1]["area"] = lista.Rows[fila]["area"].ToString(); 
                 }
             }
             PDF.GenerarPDF_lista_de_chequeo(ruta_archivo, logo, categoria, lista);
         }
 
-        public void crear_pdf_segun_categoria(string ruta_archivo, byte[] logo, DataTable lista,string categoria_dato)
+        public void crear_pdf_segun_categoria(string ruta_archivo, byte[] logo, DataTable lista,string categoria_dato,string area)
         {
             DataTable categoria = new DataTable();
-            categoria.Columns.Add("categoria", typeof(string));
-            lista.DefaultView.Sort = "categoria ASC, orden ASC";
+            categoria.Columns.Add("categoria", typeof(string)); 
+            categoria.Columns.Add("area", typeof(string)); 
+            lista.DefaultView.Sort = "categoria ASC, orden ASC"; 
             lista = lista.DefaultView.ToTable();
             categoria.Rows.Add();
-            categoria.Rows[categoria.Rows.Count - 1]["categoria"] = categoria_dato;
+            categoria.Rows[categoria.Rows.Count - 1]["categoria"] = categoria_dato; 
+            categoria.Rows[categoria.Rows.Count - 1]["area"] = area; 
             PDF.GenerarPDF_lista_de_chequeo(ruta_archivo, logo, categoria, lista);
         }
         #endregion

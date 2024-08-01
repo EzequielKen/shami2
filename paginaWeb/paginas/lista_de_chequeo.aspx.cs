@@ -588,7 +588,7 @@ namespace paginaWeb.paginas
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "ADMINISTRACION");
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "ADMINISTRACION", "Encargado");
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try
@@ -613,7 +613,7 @@ namespace paginaWeb.paginas
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "CAJERO");
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "CAJERO", "Operaciones");
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try
@@ -638,7 +638,7 @@ namespace paginaWeb.paginas
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "SHAWARMERO");
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "SHAWARMERO", "Operaciones");
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try
@@ -663,7 +663,7 @@ namespace paginaWeb.paginas
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "AREA DE SERVICIO");
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "AREA DE SERVICIO", "Operaciones");
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try
@@ -688,7 +688,7 @@ namespace paginaWeb.paginas
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "COCINA");
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "COCINA", "Operaciones");
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try
@@ -713,7 +713,7 @@ namespace paginaWeb.paginas
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "LIMPIEZA");
+            lista_chequeo.crear_pdf_segun_categoria(ruta_archivo, imgdata, lista_de_chequeoBD, "LIMPIEZA", "Operaciones");
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try

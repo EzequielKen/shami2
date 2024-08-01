@@ -55,6 +55,7 @@
     <Compile Include="cls_historial_lista_chequeo.cs" />
     <Compile Include="cls_lista_de_chequeo.cs" />
     <Compile Include="cls_lista_de_faltantes.cs" />
+    <Compile Include="cls_planificador_de_horarios.cs" />
     <Compile Include="cls_registro_comida_empleado.cs" />
     <Compile Include="cls_registro_venta_local.cs" />
     <Compile Include="cls_sistema_cuentas_por_pagar.cs" />

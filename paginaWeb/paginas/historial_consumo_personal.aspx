@@ -26,6 +26,7 @@
                                 <asp:BoundField HeaderText="Producto" DataField="producto" />
                                 <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
                                 <asp:BoundField HeaderText="Costo Total" DataField="costo_total" />
+                                <asp:BoundField HeaderText="Nota" DataField="nota" />
                             </Columns>
                         </asp:GridView>
                     </div>

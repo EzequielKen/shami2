@@ -1366,6 +1366,8 @@ namespace _03___sistemas_fabrica
         public DataTable get_sucursales()
         {
             consultar_sucursales();
+            sucursales.DefaultView.Sort = "sucursal ASC";
+            sucursales = sucursales.DefaultView.ToTable();
             return sucursales;
         }
         public DataTable get_proveedores_fabrica()

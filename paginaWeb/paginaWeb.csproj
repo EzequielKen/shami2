@@ -316,6 +316,7 @@
     <Content Include="paginas\login.aspx" />
     <Content Include="paginas\login_turno.aspx" />
     <Content Include="paginas\pedido.aspx" />
+    <Content Include="paginas\planificador_de_horarios.aspx" />
     <Content Include="paginas\proveedores.aspx" />
     <Content Include="paginas\registro_comida_empleado.aspx" />
     <Content Include="paginas\registro_venta_local.aspx" />
@@ -1051,6 +1052,13 @@
     </Compile>
     <Compile Include="paginas\pedido.aspx.designer.cs">
       <DependentUpon>pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\planificador_de_horarios.aspx.cs">
+      <DependentUpon>planificador_de_horarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\planificador_de_horarios.aspx.designer.cs">
+      <DependentUpon>planificador_de_horarios.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\proveedores.aspx.cs">
       <DependentUpon>proveedores.aspx</DependentUpon>

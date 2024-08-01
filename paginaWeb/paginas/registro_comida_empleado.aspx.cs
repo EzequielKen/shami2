@@ -19,9 +19,10 @@ namespace paginaWeb.paginas
             resumen.Columns.Add("producto", typeof(string));
             resumen.Columns.Add("cantidad", typeof(string)); 
             resumen.Columns.Add("costo", typeof(string)); 
+            resumen.Columns.Add("nota", typeof(string));
             Session.Add("resumen_comida_empleados", resumen);
         }
-        private void cargar_producto_en_resumen(string id_producto, string cantidad)
+        private void cargar_producto_en_resumen(string id_producto, string cantidad,string nota)
         {
             resumen = (DataTable)Session["resumen_comida_empleados"];
             int ultima_fila, fila_producto;
@@ -34,6 +35,7 @@ namespace paginaWeb.paginas
                 resumen.Rows[ultima_fila]["producto"] = productosBD.Rows[fila_producto]["producto"].ToString();
                 resumen.Rows[ultima_fila]["cantidad"] = cantidad; 
                 resumen.Rows[ultima_fila]["costo"] = productosBD.Rows[fila_producto]["costo"].ToString();
+                resumen.Rows[ultima_fila]["nota"] = nota;
 
             }
             Session.Add("resumen_comida_empleados", resumen);
@@ -227,15 +229,17 @@ namespace paginaWeb.paginas
             GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
             int rowIndex = row.RowIndex;
 
-            TextBox textbox_cantidad = (gridview_productos.Rows[rowIndex].Cells[0].FindControl("textbox_cantidad") as TextBox);
+            TextBox textbox_cantidad = (gridview_productos.Rows[rowIndex].Cells[2].FindControl("textbox_cantidad") as TextBox);
+            TextBox textbox_nota = (gridview_productos.Rows[rowIndex].Cells[3].FindControl("textbox_nota") as TextBox);
 
 
             string id = gridview_productos.Rows[rowIndex].Cells[0].Text;
             double cantidad;
             if (double.TryParse(textbox_cantidad.Text, out cantidad))
             {
-                cargar_producto_en_resumen(id, cantidad.ToString());
+                cargar_producto_en_resumen(id, cantidad.ToString(), textbox_nota.Text);
             }
+
             if (textbox_buscar.Text == string.Empty)
             {
                 cargar_productos();
@@ -248,7 +252,22 @@ namespace paginaWeb.paginas
 
         protected void boton_eliminar_Click(object sender, EventArgs e)
         {
+            Button boton_cargar = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
+            int rowIndex = row.RowIndex;
+            string id = gridview_RESUMEN.Rows[rowIndex].Cells[0].Text;
 
+            resumen = (DataTable)Session["resumen_comida_empleados"];
+            int fila = funciones.buscar_fila_por_id(id, resumen);
+            resumen.Rows[fila].Delete();
+            if (textbox_buscar.Text == string.Empty)
+            {
+                cargar_productos();
+            }
+            else
+            {
+                cargar_productos_busqueda();
+            }
         }
         #endregion
 

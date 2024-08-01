@@ -66,6 +66,11 @@ namespace paginaWeb.paginasFabrica
             ordenes_de_compra_de_proveedorBD = historial.get_ordenes_de_compra(dropDown_mes.SelectedItem.Text,dropDown_año.SelectedItem.Text);
             Session.Add("ordenes_de_compra_de_proveedorBD", ordenes_de_compra_de_proveedorBD);
         }
+        private void consultar_ordenes_de_compra_abiertas_de_proveedor()
+        {
+            ordenes_de_compra_de_proveedorBD = historial.get_ordenes_de_compra_abiertas();
+            Session.Add("ordenes_de_compra_de_proveedorBD", ordenes_de_compra_de_proveedorBD);
+        }
         #endregion
 
 
@@ -477,11 +482,13 @@ namespace paginaWeb.paginasFabrica
 
         protected void boton_solo_abiertas_Click(object sender, EventArgs e)
         {
+            consultar_ordenes_de_compra_abiertas_de_proveedor();
             cargar_ordenes_abiertas();
         }
 
         protected void boton_solo_recibidas_Click(object sender, EventArgs e)
         {
+            consultar_ordenes_de_compra_de_proveedor();
             cargar_ordenes_recibidas();
         }
     }

@@ -36,6 +36,12 @@
 
                                     <asp:TemplateField HeaderText="Cargar Consumo de Comida">
                                         <ItemTemplate>
+                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese nota..." CssClass="form-control" runat="server"/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
+                                    <asp:TemplateField HeaderText="Cargar Consumo de Comida">
+                                        <ItemTemplate>
                                             <asp:Button ID="boton_cargar" CssClass="btn btn-primary" Text="Cargar" runat="server" OnClick="boton_cargar_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -55,6 +61,7 @@
                                     <asp:BoundField HeaderText="id" DataField="id" />
                                     <asp:BoundField HeaderText="Producto" DataField="producto" />
                                     <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
+                                    <asp:BoundField HeaderText="Nota" DataField="nota" />
 
                                     <asp:TemplateField HeaderText="Eliminar">
                                         <ItemTemplate>

@@ -66,8 +66,11 @@ namespace _02___sistemas
                 columnas = funciones.armar_query_columna(columnas, "cantidad", false);
                 valores = funciones.armar_query_valores(valores, resumen.Rows[fila]["cantidad"].ToString(), false);
                 //costo
-                columnas = funciones.armar_query_columna(columnas, "costo", true);
-                valores = funciones.armar_query_valores(valores, resumen.Rows[fila]["costo"].ToString(), true);
+                columnas = funciones.armar_query_columna(columnas, "costo", false);
+                valores = funciones.armar_query_valores(valores, resumen.Rows[fila]["costo"].ToString(), false);
+                //nota
+                columnas = funciones.armar_query_columna(columnas, "nota", true);
+                valores = funciones.armar_query_valores(valores, resumen.Rows[fila]["nota"].ToString(), true);
 
                 consultas.insertar_en_tabla(base_de_datos, "historial_consumo_personal", columnas, valores);
             }
