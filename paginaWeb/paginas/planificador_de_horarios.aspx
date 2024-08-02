@@ -21,8 +21,27 @@
         <ContentTemplate>
             <div class="container-fluid">
                 <div class="row">
+                    <div class="col">
+                        <h1>Planificador de Horarios</h1>
+                        <div class="row">
+                            <div class="col">
+                                <div class=" input-group">
+                                    <div class="col">
+                                        <label>Fecha de Inicio de Rango:</label>
+                                        <asp:TextBox ID="textbox_fecha_inicio" CssClass="form-control" type="date" runat="server" OnTextChanged="textbox_fecha_inicio_TextChanged" AutoPostBack="true" />
+                                    </div>
+
+                                    <div class="col">
+                                        <label>Fecha de Fin de Rango:</label>
+                                        <asp:TextBox ID="textbox_fecha_fin" CssClass="form-control" type="date" runat="server" OnTextChanged="textbox_fecha_fin_TextChanged" AutoPostBack="true" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                    </div>
                     <asp:GridView Caption="LISTA DE EMPLEADOS" CaptionAlign="Top" runat="server" ID="gridview_empleados" AutoGenerateColumns="false" CssClass="table table-dark table-striped gridview-custom" OnRowDataBound="gridview_empleados_RowDataBound">
-                            <Columns>
+                        <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
                             <asp:BoundField HeaderText="Nombre" DataField="nombre" />
                             <asp:BoundField HeaderText="Apellido" DataField="apellido" />
