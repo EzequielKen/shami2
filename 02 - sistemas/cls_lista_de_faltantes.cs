@@ -47,18 +47,18 @@ namespace _02___sistemas
         #endregion
 
         #region PDF
-        public void crear_pdf(string ruta, byte[] logo, DataTable productosBD,string sucursal)
+        public void crear_pdf(string ruta, byte[] logo, DataTable productosBD, string sucursal)
         {
             llenar_resumen_carga(productosBD);
-            PDF.GenerarPDF_resumen_de_faltantes(ruta, logo, resumen_carga,sucursal);
+            PDF.GenerarPDF_resumen_de_faltantes(ruta, logo, resumen_carga, sucursal);
         }
         #endregion
 
         #region carga a base de datos
         public void desactivar_lista_faltante(string id)
         {
-            string actualizar= "`activa` = '0'";
-            consultas.actualizar_tabla(base_de_datos, "lista_de_faltantes", actualizar,id); 
+            string actualizar = "`activa` = '0'";
+            consultas.actualizar_tabla(base_de_datos, "lista_de_faltantes", actualizar, id);
         }
         public void cargar_lista_faltante(string id_sucursal, string sucursal, DataTable productosBD)
         {
@@ -74,7 +74,7 @@ namespace _02___sistemas
             //fecha
             columnas = funciones.armar_query_columna(columnas, "fecha", false);
             valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
-            string id, producto, proveedor,nota, dato = string.Empty;
+            string id, producto, proveedor, nota, dato = string.Empty;
             int index = 1;
             for (int fila = 0; fila < resumen_carga.Rows.Count - 1; fila++)
             {
@@ -82,13 +82,13 @@ namespace _02___sistemas
                 producto = resumen_carga.Rows[fila]["producto"].ToString();
                 proveedor = resumen_carga.Rows[fila]["proveedor"].ToString();
                 nota = resumen_carga.Rows[fila]["nota"].ToString();
-                dato = id + "-" + producto + "-" + proveedor +"-"+nota;
+                dato = id + "-" + producto + "-" + proveedor + "-" + nota;
                 columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), false);
                 valores = funciones.armar_query_valores(valores, dato, false);
                 index++;
             }
             int ultima_fila = resumen_carga.Rows.Count - 1;
-            if (ultima_fila>=0)
+            if (ultima_fila >= 0)
             {
                 id = resumen_carga.Rows[ultima_fila]["id"].ToString();
                 producto = resumen_carga.Rows[ultima_fila]["producto"].ToString();
@@ -208,13 +208,16 @@ namespace _02___sistemas
                         id_producto = funciones.obtener_dato(lista_de_faltantes.Rows[0][columna].ToString(), 1);
                         proveedor = funciones.obtener_dato(lista_de_faltantes.Rows[0][columna].ToString(), 3);
                         fila_producto = funciones.buscar_fila_por_id_proveedor(id_producto, proveedor, resumen);
-                        resumen.Rows[fila_producto]["faltante"] = "Si";
-                        resumen.Rows[fila_producto]["nota"] = funciones.obtener_dato(lista_de_faltantes.Rows[0][columna].ToString(), 5);
+                        if (fila_producto != -1)
+                        {
+                            resumen.Rows[fila_producto]["faltante"] = "Si";
+                            resumen.Rows[fila_producto]["nota"] = funciones.obtener_dato(lista_de_faltantes.Rows[0][columna].ToString(), 5);
+                        }
                     }
                 }
-                for (int fila = 0; fila <= resumen.Rows.Count-1; fila++)
+                for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
                 {
-                        resumen.Rows[fila]["id_faltante"] = lista_de_faltantes.Rows[0]["id"].ToString();
+                    resumen.Rows[fila]["id_faltante"] = lista_de_faltantes.Rows[0]["id"].ToString();
                 }
             }
 

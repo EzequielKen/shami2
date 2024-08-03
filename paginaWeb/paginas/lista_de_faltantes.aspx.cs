@@ -38,6 +38,7 @@ namespace paginaWeb.paginas
                 faltantes.desactivar_lista_faltante(id_faltante);
             }
             faltantes.cargar_lista_faltante(id_sucursal, nombre_sucursal, productosBD);
+            Session.Add("productosBD", productosBD);
         }
         private void cargar_nota(string id, string nota)
         {
@@ -223,10 +224,14 @@ namespace paginaWeb.paginas
 
             faltantes = new cls_lista_de_faltantes(usuariosBD);
 
-            if (!IsPostBack)
+            if (Session["productosBD"] == null)
             {
                 productosBD = faltantes.get_lista_producto(sucursal.Rows[0]["id"].ToString());
                 Session.Add("productosBD", productosBD);
+            }
+            productosBD = (DataTable)Session["productosBD"];
+            if (!IsPostBack)
+            {
                 configurar_controles();
                 cargar_productos();
             }
@@ -252,9 +257,7 @@ namespace paginaWeb.paginas
                 nota = textbox_nota.Text;
             }
             cambiar_estado_producto(id, nota);
-            productosBD = faltantes.get_lista_producto(sucursal.Rows[0]["id"].ToString());
-            Session.Add("productosBD", productosBD);
-
+         
             Response.Redirect("~/paginas/lista_de_faltantes.aspx", false);
 
         }
@@ -335,8 +338,6 @@ namespace paginaWeb.paginas
 
             string id = gridview_resumen.Rows[rowIndex].Cells[0].Text;
             cambiar_estado_producto(id, "N/A");
-            productosBD = faltantes.get_lista_producto(sucursal.Rows[0]["id"].ToString());
-            Session.Add("productosBD", productosBD);
             Response.Redirect("~/paginas/lista_de_faltantes.aspx", false);
 
         }
