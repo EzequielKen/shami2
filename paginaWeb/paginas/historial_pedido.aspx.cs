@@ -164,7 +164,7 @@ namespace paginaWeb.paginas
 
                 if (!IsPostBack)
                 {
-
+                    Session.Add("lista_proveedores",sistema_Administracion.get_lista_proveedores());
                     //calcular remitos nuevos
                     sistema_Administracion.actualizar_remitos();
                     configurar_controles();

@@ -175,7 +175,7 @@
                             <li><a class="dropdown-item" href="/paginas/asignador_de_cargos.aspx">Asignar Posicion a Empleados</a></li>
                             <li><a class="dropdown-item" href="/paginas/comida_empleados.aspx">Comida de Empleados</a></li>
                             <li><a class="dropdown-item" href="/paginas/historial_consumo_personal.aspx">Historial de Consumo de Empleados</a></li>
-                            <li><a class="dropdown-item" href="/paginas/planificador_de_horarios.aspx">Planificador de Horario</a></li>
+                            <li><a class="dropdown-item" href="/paginas/planificador_de_horarios.aspx">Planificador de Horarios</a></li>
                         </ul>
                     </li>
                     <%    } %>

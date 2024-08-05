@@ -37,91 +37,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col"></div>
+                            <div class="col">
+                                <h3>
+                                    <label class="badge rounded-pill text-bg-success">Verde = Horario Asignado</label>
+                                </h3>
+                                <h3>
+                                    <label class="badge rounded-pill text-bg-warning">Amarillo = Franco Asignado</label>
+                                </h3>
+                                <h3>
+                                    <label class="badge rounded-pill text-bg-danger">Rojo = Horario no Asignado</label>
+                                </h3>
+                            </div>
                         </div>
                     </div>
                     <asp:GridView Caption="LISTA DE EMPLEADOS" CaptionAlign="Top" runat="server" ID="gridview_empleados" AutoGenerateColumns="false" CssClass="table table-dark table-striped gridview-custom" OnRowDataBound="gridview_empleados_RowDataBound">
                         <Columns>
-                            <asp:BoundField HeaderText="id" DataField="id" />
-                            <asp:BoundField HeaderText="Nombre" DataField="nombre" />
-                            <asp:BoundField HeaderText="Apellido" DataField="apellido" />
-
-                            <asp:TemplateField HeaderText="Lunes">
-                                <ItemTemplate>
-                                    <div class="form-group">
-                                        <label for="timePickerLunes">Hora Entrada:</label>
-                                        <asp:TextBox ID="textbox_lunes_entrada" CssClass="form-control" type="time" runat="server" />
-                                        <label for="timePickerLunes">Hora Salida:</label>
-                                        <asp:TextBox ID="textbox_lunes_salida" CssClass="form-control" type="time" runat="server" />
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Martes">
-                                <ItemTemplate>
-                                    <div class="form-group">
-                                        <label for="timePickerLunes">Hora Entrada:</label>
-                                        <asp:TextBox ID="textbox_martes_entrada" CssClass="form-control" type="time" runat="server" />
-                                        <label for="timePickerLunes">Hora Salida:</label>
-                                        <asp:TextBox ID="textbox_martes_salida" CssClass="form-control" type="time" runat="server" />
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Miercoles">
-                                <ItemTemplate>
-                                    <div class="form-group">
-                                        <label for="timePickerLunes">Hora Entrada:</label>
-                                        <asp:TextBox ID="textbox_miercoles_entrada" CssClass="form-control" type="time" runat="server" />
-                                        <label for="timePickerLunes">Hora Salida:</label>
-                                        <asp:TextBox ID="textbox_miercoles_salida" CssClass="form-control" type="time" runat="server" />
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Jueves">
-                                <ItemTemplate>
-                                    <div class="form-group">
-                                        <label for="timePickerLunes">Hora Entrada:</label>
-                                        <asp:TextBox ID="textbox_jueves_entrada" CssClass="form-control" type="time" runat="server" />
-                                        <label for="timePickerLunes">Hora Salida:</label>
-                                        <asp:TextBox ID="textbox_jueves_salida" CssClass="form-control" type="time" runat="server" />
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Viernes">
-                                <ItemTemplate>
-                                    <div class="form-group">
-                                        <label for="timePickerLunes">Hora Entrada:</label>
-                                        <asp:TextBox ID="textbox_viernes_entrada" CssClass="form-control" type="time" runat="server" />
-                                        <label for="timePickerLunes">Hora Salida:</label>
-                                        <asp:TextBox ID="textbox_viernes_salida" CssClass="form-control" type="time" runat="server" />
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Sabado">
-                                <ItemTemplate>
-                                    <div class="form-group">
-                                        <label for="timePickerLunes">Hora Entrada:</label>
-                                        <asp:TextBox ID="textbox_sabado_entrada" CssClass="form-control" type="time" runat="server" />
-                                        <label for="timePickerLunes">Hora Salida:</label>
-                                        <asp:TextBox ID="textbox_sabado_salida" CssClass="form-control" type="time" runat="server" />
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-
-                            <asp:TemplateField HeaderText="Domingo">
-                                <ItemTemplate>
-                                    <div class="form-group">
-                                        <label for="timePickerLunes">Hora Entrada:</label>
-                                        <asp:TextBox ID="textbox_domingo_entrada" CssClass="form-control" type="time" runat="server" />
-                                        <label for="timePickerLunes">Hora Salida:</label>
-                                        <asp:TextBox ID="textbox_lunes_entrada" CssClass="form-control" type="time" runat="server" />
-                                    </div>
-                                </ItemTemplate>
-                            </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
                 </div>

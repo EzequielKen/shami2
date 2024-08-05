@@ -1932,6 +1932,48 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_horarios_de_empleados_segun_fecha(string id_sucursal, string fecha_inicio, string fecha_fin)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".horarios_de_empleados WHERE  activa ='1' and id_sucursal='" + id_sucursal + "' AND (fecha >= '" + fecha_inicio + "' AND fecha < DATE_ADD('" + fecha_fin + "', INTERVAL 1 DAY))";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_horarios_de_empleado_segun_fecha(string id_sucursal,string id_empleado, string fecha_inicio, string fecha_fin)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".horarios_de_empleados WHERE  activa ='1' and id_sucursal='" + id_sucursal + "' and id_empleado='" + id_empleado + "' AND (fecha >= '" + fecha_inicio + "' AND fecha < DATE_ADD('" + fecha_fin + "', INTERVAL 1 DAY))";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region consultas fabrica a proveedor
