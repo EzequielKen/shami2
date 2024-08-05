@@ -212,18 +212,22 @@ namespace paginaWeb.paginas
                     }
                     else
                     {
-                        
+                        TextBox textbox_entrada = (gridview_empleados.Rows[fila].Cells[columna].FindControl($"{fecha.ToString("dd-MM-yyyy")}-entrada-{id_empleado}") as TextBox);
+                        TextBox textbox_salida = (gridview_empleados.Rows[fila].Cells[columna].FindControl($"{fecha.ToString("dd-MM-yyyy")}-salida-{id_empleado}") as TextBox);
+                        CheckBox checbox = (gridview_empleados.Rows[fila].Cells[columna].FindControl($"{fecha.ToString("dd-MM-yyyy")}-franco-{id_empleado}") as CheckBox);
+
                         if (horarios_de_empleados.Rows[fila_horario]["franco"].ToString() == "Si")
                         {
                             gridview_empleados.Rows[fila].Cells[columna].CssClass = "table table-warning table-striped gridview-custom";
+                            textbox_entrada.Visible=false;
+                            textbox_salida.Visible=false;
                         }
                         else
                         {
                             gridview_empleados.Rows[fila].Cells[columna].CssClass = "table table-success table-striped gridview-custom";
+                            textbox_entrada.Visible = true;
+                            textbox_salida.Visible = true;
                         }
-                        TextBox textbox_entrada = (gridview_empleados.Rows[fila].Cells[columna].FindControl($"{fecha.ToString("dd-MM-yyyy")}-entrada-{id_empleado}") as TextBox);
-                        TextBox textbox_salida = (gridview_empleados.Rows[fila].Cells[columna].FindControl($"{fecha.ToString("dd-MM-yyyy")}-salida-{id_empleado}") as TextBox);
-                        CheckBox checbox = (gridview_empleados.Rows[fila].Cells[columna].FindControl($"{fecha.ToString("dd-MM-yyyy")}-franco-{id_empleado}") as CheckBox);
                         DateTime hora_entrada = DateTime.Parse(horarios_de_empleados.Rows[fila_horario]["horario_entrada"].ToString());
                         DateTime hora_salida = DateTime.Parse(horarios_de_empleados.Rows[fila_horario]["horario_salida"].ToString());
 
