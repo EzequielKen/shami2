@@ -97,13 +97,13 @@ namespace _02___sistemas
             columnas = funciones.armar_query_columna(columnas, "dia", false);
             valores = funciones.armar_query_valores(valores, fecha.DayOfWeek.ToString(), false);
             //horario_entrada
-            if (horario_entrada != "N/A" || franco=="Si")
+            if (horario_entrada != "N/A" && franco!="Si")
             {
                 columnas = funciones.armar_query_columna(columnas, "horario_entrada", false);
                 valores = funciones.armar_query_valores(valores, horario_entrada, false);
             }
             //horario_salida
-            if (horario_salida != "N/A" || franco == "Si")
+            if (horario_salida != "N/A" && franco != "Si")
             {
                 columnas = funciones.armar_query_columna(columnas, "horario_salida", false);
                 valores = funciones.armar_query_valores(valores, horario_salida, false);

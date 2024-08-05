@@ -60,6 +60,8 @@ namespace paginaWeb.paginas
             {
                 fecha_inicio = DateTime.Now;
                 fecha_fin = DateTime.Now.AddDays(6);
+                Session.Add("fecha_inicio", fecha_inicio);
+                Session.Add("fecha_fin", fecha_fin);
                 textbox_fecha_inicio.Text = fecha_inicio.ToString("yyyy-MM-dd");
                 textbox_fecha_fin.Text = fecha_fin.ToString("yyyy-MM-dd");
                 horarios_de_empleados = planificador.get_horarios_de_empleados(sucursal.Rows[0]["id"].ToString(), fecha_inicio, fecha_fin);
@@ -80,22 +82,44 @@ namespace paginaWeb.paginas
         #region rango de fechas
         protected void textbox_fecha_inicio_TextChanged(object sender, EventArgs e)
         {
-            horarios_de_empleados = planificador.get_horarios_de_empleados(sucursal.Rows[0]["id"].ToString(), fecha_inicio, fecha_fin);
-            Session["horarios_de_empleados"] = horarios_de_empleados;
-            empleados = planificador.get_lista_de_empleado(sucursal.Rows[0]["id"].ToString());
-            Session["lista_empleados"] = empleados;
-            generar_columna_segun_rango();
-            cargar_empleados();
+            DateTime fecha_inicio_dato = DateTime.Parse(textbox_fecha_inicio.Text);
+            DateTime fecha_fin_dato = DateTime.Parse(textbox_fecha_fin.Text);
+            if (fecha_inicio_dato <= fecha_fin_dato)
+            {
+                Session.Add("fecha_inicio", fecha_inicio_dato);
+                horarios_de_empleados = planificador.get_horarios_de_empleados(sucursal.Rows[0]["id"].ToString(), fecha_inicio, fecha_fin);
+                Session["horarios_de_empleados"] = horarios_de_empleados;
+                empleados = planificador.get_lista_de_empleado(sucursal.Rows[0]["id"].ToString());
+                Session["lista_empleados"] = empleados;
+                generar_columna_segun_rango();
+                cargar_empleados();
+            }
+            else
+            {
+                fecha_inicio = (DateTime)Session["fecha_inicio"];
+                textbox_fecha_inicio.Text = fecha_inicio.ToString("yyyy-MM-dd");
+            }
         }
 
         protected void textbox_fecha_fin_TextChanged(object sender, EventArgs e)
         {
-            horarios_de_empleados = planificador.get_horarios_de_empleados(sucursal.Rows[0]["id"].ToString(), fecha_inicio, fecha_fin);
-            Session["horarios_de_empleados"] = horarios_de_empleados;
-            empleados = planificador.get_lista_de_empleado(sucursal.Rows[0]["id"].ToString());
-            Session["lista_empleados"] = empleados;
-            generar_columna_segun_rango();
-            cargar_empleados();
+            DateTime fecha_inicio_dato = DateTime.Parse(textbox_fecha_inicio.Text);
+            DateTime fecha_fin_dato = DateTime.Parse(textbox_fecha_fin.Text);
+            if (fecha_inicio_dato <= fecha_fin_dato)
+            {
+                Session.Add("fecha_fin", fecha_fin_dato);
+                horarios_de_empleados = planificador.get_horarios_de_empleados(sucursal.Rows[0]["id"].ToString(), fecha_inicio, fecha_fin);
+                Session["horarios_de_empleados"] = horarios_de_empleados;
+                empleados = planificador.get_lista_de_empleado(sucursal.Rows[0]["id"].ToString());
+                Session["lista_empleados"] = empleados;
+                generar_columna_segun_rango();
+                cargar_empleados();
+            }
+            else
+            {
+                fecha_fin = (DateTime)Session["fecha_fin"];
+                textbox_fecha_fin.Text = fecha_fin.ToString("yyyy-MM-dd");
+            }
         }
         #endregion
 
@@ -219,20 +243,34 @@ namespace paginaWeb.paginas
                         if (horarios_de_empleados.Rows[fila_horario]["franco"].ToString() == "Si")
                         {
                             gridview_empleados.Rows[fila].Cells[columna].CssClass = "table table-warning table-striped gridview-custom";
-                            textbox_entrada.Visible=false;
-                            textbox_salida.Visible=false;
+                            textbox_entrada.Visible = false;
+                            textbox_salida.Visible = false;
                         }
                         else
                         {
-                            gridview_empleados.Rows[fila].Cells[columna].CssClass = "table table-success table-striped gridview-custom";
+                            if (funciones.IsNotDBNull(horarios_de_empleados.Rows[fila_horario]["horario_entrada"]) ||
+                            funciones.IsNotDBNull(horarios_de_empleados.Rows[fila_horario]["horario_salida"]))
+                            {
+                                gridview_empleados.Rows[fila].Cells[columna].CssClass = "table table-success table-striped gridview-custom";
+                            }
+                            else
+                            {
+                                gridview_empleados.Rows[fila].Cells[columna].CssClass = "table table-danger table-striped gridview-custom";
+                            }
                             textbox_entrada.Visible = true;
                             textbox_salida.Visible = true;
+                          
                         }
-                        DateTime hora_entrada = DateTime.Parse(horarios_de_empleados.Rows[fila_horario]["horario_entrada"].ToString());
-                        DateTime hora_salida = DateTime.Parse(horarios_de_empleados.Rows[fila_horario]["horario_salida"].ToString());
-
-                        textbox_entrada.Text = hora_entrada.ToString("HH:mm");
-                        textbox_salida.Text = hora_salida.ToString("HH:mm");
+                        if (funciones.IsNotDBNull(horarios_de_empleados.Rows[fila_horario]["horario_entrada"]))
+                        {
+                            DateTime hora_entrada = DateTime.Parse(horarios_de_empleados.Rows[fila_horario]["horario_entrada"].ToString());
+                            textbox_entrada.Text = hora_entrada.ToString("HH:mm");
+                        }
+                        if (funciones.IsNotDBNull(horarios_de_empleados.Rows[fila_horario]["horario_salida"]))
+                        {
+                            DateTime hora_salida = DateTime.Parse(horarios_de_empleados.Rows[fila_horario]["horario_salida"].ToString());
+                            textbox_salida.Text = hora_salida.ToString("HH:mm");
+                        }
                         if (horarios_de_empleados.Rows[fila_horario]["franco"].ToString() == "Si")
                         {
                             checbox.Checked = true;
