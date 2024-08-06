@@ -41,6 +41,7 @@ namespace _02___sistemas
         DataTable lista_de_empleado;
         DataTable horarios_de_empleados;
         DataTable horarios_de_empleado;
+        DataTable empleado;
         #endregion
 
         #region carga a base de datos
@@ -129,6 +130,10 @@ namespace _02___sistemas
         {
             lista_de_empleado = consultas.consultar_empleados(id_sucursal);
         }
+        private void consultar_empleado(string id_empleado)
+        {
+            empleado = consultas.consultar_empleado(id_empleado);
+        }
         #endregion
 
         #region metodos get/set
@@ -143,6 +148,18 @@ namespace _02___sistemas
                 lista_de_empleado.Rows[fila]["cargo_original"] = funciones.obtener_dato(lista_de_empleado.Rows[fila]["cargo"].ToString(), 2);
             }
             return lista_de_empleado;
+        }
+        public DataTable get_empleado(string id_empleado)
+        {
+            consultar_empleado(id_empleado);
+            empleado.Columns.Add("cargo_original", typeof(string));
+            empleado.Columns.Add("nombre_completo", typeof(string));
+            for (int fila = 0; fila <= empleado.Rows.Count - 1; fila++)
+            {
+                empleado.Rows[fila]["nombre_completo"] = empleado.Rows[fila]["nombre"].ToString() + " " + empleado.Rows[fila]["apellido"].ToString();
+                empleado.Rows[fila]["cargo_original"] = funciones.obtener_dato(empleado.Rows[fila]["cargo"].ToString(), 2);
+            }
+            return empleado;
         }
         public DataTable get_horarios_de_empleados(string id_sucursal, DateTime fecha_inicio, DateTime fecha_fin)
         {

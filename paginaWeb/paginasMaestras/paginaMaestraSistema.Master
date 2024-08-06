@@ -24,7 +24,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-21C4MLTPJS"></script>
 
     <!-- Font Awesome -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -71,10 +71,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Aquí va el código del menú según el tipo de usuario -->
                 <% System.Data.DataTable tipo_usuario = (System.Data.DataTable)Session["tipo_usuario"];
-                   System.Data.DataTable sucursal = (System.Data.DataTable)Session["sucursal"];
+                    System.Data.DataTable sucursal = (System.Data.DataTable)Session["sucursal"];
 
-                   if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Fabrica Fatay")
-                   {%>
+                    if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Fabrica Fatay")
+                    {%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/proveedores.aspx">Realizar Pedidos a Fabrica</a>
@@ -109,13 +109,13 @@
                 </ul>
                 <% }
 
-                   else if (tipo_usuario.Rows[0]["rol"].ToString() == "shami empleado")
-                   {%>
+                    else if (tipo_usuario.Rows[0]["rol"].ToString() == "shami empleado")
+                    {%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <% System.Data.DataTable empleado = (System.Data.DataTable)Session["empleado"];
-                       string dato = empleado.Rows[0]["cargo"].ToString();
-                       if (dato.Contains("Encargado") || dato.Contains("Cajero"))
-                       {%>
+                        string dato = empleado.Rows[0]["cargo"].ToString();
+                        if (dato.Contains("Encargado") || dato.Contains("Cajero"))
+                        {%>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/asignador_de_cargos_cajero.aspx">Asignar Cargos a Empleados</a>
                     </li>
@@ -124,9 +124,9 @@
                         <a class="nav-link btn btn-primary" href="/paginas/lista_de_chequeo.aspx">Lista de Chequeo</a>
                     </li>
                     <% 
-                       dato = empleado.Rows[0]["cargo"].ToString();
-                       if (dato.Contains("Encargado") || dato.Contains("Cajero"))
-                       {%>
+                        dato = empleado.Rows[0]["cargo"].ToString();
+                        if (dato.Contains("Encargado") || dato.Contains("Cajero"))
+                        {%>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/historial_lista_chequeo.aspx">Historial de Lista de Chequeo</a>
                     </li>
@@ -141,12 +141,15 @@
                         <a class="nav-link btn btn-primary" href="/paginas/lista_de_faltantes.aspx">Lista de Faltante</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/horario_de_empleado.aspx">Horarios de Empleado</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/tutoriales.aspx">Procedimientos de Preparacion de Productos</a>
                     </li>
                 </ul>
                 <%}
-                   else //MENU ENCARGADO
-                   {%>
+                    else //MENU ENCARGADO
+                    {%>
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false">Proveedor Fabrica
@@ -154,7 +157,7 @@
                         <!--Proveedor Fabrica-->
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
-                              {%>
+                                {%>
                             <li><a class="dropdown-item" href="/paginas/proveedores.aspx">Realizar Pedidos</a></li>
                             <li><a class="dropdown-item" href="/paginas/historial_pedido.aspx">Historial de pedidos</a></li>
                             <li><a class="dropdown-item" href="/paginas/estadisticas_de_pedido.aspx">Analisis de pedidos</a></li>
@@ -164,7 +167,7 @@
                         </ul>
                     </li>
                     <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
-                      {%>
+                        {%>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administracion del Local
                         </a>
@@ -180,7 +183,7 @@
                     </li>
                     <%    } %>
                     <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
-                      {%>
+                        {%>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Operaciones del Local
                         </a>
@@ -193,7 +196,7 @@
                     </li>
                     <%    } %>
                     <%if (sucursal.Rows[0]["bloquear_por_deuda"].ToString() == "0")
-                      {%>
+                        {%>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink4" role="button" data-bs-toggle="dropdown" aria-expanded="false">Capacitacion
                         </a>

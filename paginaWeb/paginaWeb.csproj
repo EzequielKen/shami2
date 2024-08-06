@@ -310,6 +310,7 @@
     <Content Include="paginas\historial_consumo_personal.aspx" />
     <Content Include="paginas\historial_lista_chequeo.aspx" />
     <Content Include="paginas\historial_pedido.aspx" />
+    <Content Include="paginas\horario_de_empleado.aspx" />
     <Content Include="paginas\landing_page_local.aspx" />
     <Content Include="paginas\lista_de_chequeo.aspx" />
     <Content Include="paginas\lista_de_faltantes.aspx" />
@@ -1010,6 +1011,13 @@
     </Compile>
     <Compile Include="paginas\historial_pedido.aspx.designer.cs">
       <DependentUpon>historial_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\horario_de_empleado.aspx.cs">
+      <DependentUpon>horario_de_empleado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\horario_de_empleado.aspx.designer.cs">
+      <DependentUpon>horario_de_empleado.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\landing_page_local.aspx.cs">
       <DependentUpon>landing_page_local.aspx</DependentUpon>
