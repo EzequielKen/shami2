@@ -17,6 +17,9 @@
                             <SelectedDayStyle BackColor="LightGray"
                                 Font-Bold="True"></SelectedDayStyle>
                         </asp:Calendar>
+                        <h3>
+                            <asp:Label ID="label_fecha_seleccionada" runat="server" Text="Label"></asp:Label>
+                        </h3>
                     </div>
                     <div class="col">
                         <asp:GridView Caption="LISTA DE CONSUMO" CaptionAlign="Top" runat="server" ID="gridview_consumo" AutoGenerateColumns="false" CssClass="table table-dark table-striped">

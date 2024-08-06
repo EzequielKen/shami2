@@ -238,10 +238,11 @@ namespace paginaWeb.paginas
 
             registro_venta_localBD = tabla_produccion.get_ventas(sucursal.Rows[0]["id"].ToString());
             sumar_ventas();
+            lista_productosBD = tabla_produccion.get_lista_productos();
+            Session.Add("lista_productosBD", lista_productosBD);
             if (!IsPostBack)
             {
-                lista_productosBD = tabla_produccion.get_lista_productos();
-                Session.Add("lista_productosBD", lista_productosBD);
+                
                 configurar_controles();
                 configurar_estados_de_dias();
                 cargar_lista_producto();

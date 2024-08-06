@@ -6,6 +6,20 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
+            <!-- Modal -->
+            <div class="modal fade" id="spinnerModal" tabindex="-1" aria-labelledby="spinnerModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col">
@@ -22,7 +36,6 @@
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
-                            <asp:Button ID="boton_registrar" CssClass="btn btn-primary" Text="Registrar Consumo" runat="server" OnClick="boton_registrar_Click" />
                             <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped">
                                 <Columns>
                                     <asp:BoundField HeaderText="id" DataField="id" />
@@ -36,7 +49,7 @@
 
                                     <asp:TemplateField HeaderText="Cargar Consumo de Comida">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese nota..." CssClass="form-control" runat="server"/>
+                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese nota..." CssClass="form-control" runat="server" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
@@ -51,6 +64,13 @@
                     </div>
                 </div>
                 <div class="container">
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col">
+                            <asp:Button ID="boton_registrar" CssClass="btn btn-warning" Text="Registrar Consumo" runat="server" OnClick="boton_registrar_Click" data-bs-toggle="modal" data-bs-target="#spinnerModal" />
+                        </div>
+                    </div>
                     <hr />
                 </div>
                 <div class="row">

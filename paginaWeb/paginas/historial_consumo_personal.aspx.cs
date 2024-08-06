@@ -26,10 +26,17 @@ namespace paginaWeb.paginas
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucursal = (DataTable)Session["sucursal"];
             historial_consumo = new cls_historial_consumo_personal(usuariosBD);
+            if (!IsPostBack)
+            {
+                label_fecha_seleccionada.Text = "Fecha Seleccionada: " + DateTime.Now.ToString("dd/MM/yyyy");
+                gridview_consumo.DataSource = historial_consumo.get_consumo(sucursal.Rows[0]["id"].ToString(), DateTime.Now);
+                gridview_consumo.DataBind();
+            }
         }
 
         protected void calendario_SelectionChanged(object sender, EventArgs e)
         {
+            label_fecha_seleccionada.Text = "Fecha Seleccionada: " + calendario.SelectedDate.ToString("dd/MM/yyyy");
             gridview_consumo.DataSource = historial_consumo.get_consumo(sucursal.Rows[0]["id"].ToString(), calendario.SelectedDate);
             gridview_consumo.DataBind();
         }

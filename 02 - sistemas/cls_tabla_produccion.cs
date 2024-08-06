@@ -278,8 +278,10 @@ namespace _02___sistemas
         #endregion
 
         #region metodos get/set
-        public bool get_dia_alto_o_bajo()
+        public bool get_dia_alto_o_bajo(string id_sucursal)
         {
+            consultar_tabla_produccion(id_sucursal);
+
             DateTime fecha = DateTime.Now;
             string dia_de_hoy = ObtenerDiaDeLaSemanaEnEspanol(fecha);
             string dias = tabla_produccion.Rows[0]["dias"].ToString();

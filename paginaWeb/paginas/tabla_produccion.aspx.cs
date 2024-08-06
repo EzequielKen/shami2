@@ -29,7 +29,7 @@ namespace paginaWeb.paginas
         private void llenar_tabla_resumen()
         {
             crear_tabla_resumen();
-            bool estado_de_dia = tabla_produccion_empleado.get_dia_alto_o_bajo();
+            bool estado_de_dia = tabla_produccion_empleado.get_dia_alto_o_bajo(sucursal.Rows[0]["id"].ToString());
             int ultima_fila;
             double stock, venta, objetivo_produccion;
             for (int fila = 0; fila <= lista_productosBD.Rows.Count - 1; fila++)

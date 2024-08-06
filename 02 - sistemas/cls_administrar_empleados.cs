@@ -125,6 +125,9 @@ namespace _02___sistemas
             //dni
             columna = funciones.armar_query_columna(columna, "dni", false);
             valores = funciones.armar_query_valores(valores, empleado.Rows[0]["dni"].ToString(), false);
+            //contraseña
+            columna = funciones.armar_query_columna(columna, "contraseña", false);
+            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["dni"].ToString(), false);
             //telefono
             columna = funciones.armar_query_columna(columna, "telefono", false);
             valores = funciones.armar_query_valores(valores, empleado.Rows[0]["telefono"].ToString(), false);
