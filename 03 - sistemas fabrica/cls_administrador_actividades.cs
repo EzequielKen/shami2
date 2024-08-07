@@ -43,12 +43,12 @@ namespace _03___sistemas_fabrica
         DataTable resumen;
         #endregion
         #region carga a base de datos
-        public void registrar_chequeo( DataTable resumen, string perfil)
+        public void registrar_chequeo(DataTable resumen, string perfil)
         {
-            desactivar_configuracion_activa(get_id_chequeo_activo( perfil));
+            desactivar_configuracion_activa(get_id_chequeo_activo(perfil));
             string columna = "";
             string valores = "";
-            
+
             //perfil
             columna = funciones.armar_query_columna(columna, "perfil", false);
             valores = funciones.armar_query_valores(valores, perfil, false);
@@ -85,6 +85,11 @@ namespace _03___sistemas_fabrica
         {
             string actualizar = "`activa` = '0'";
             consultas.actualizar_tabla(base_de_datos, "configuracion_de_chequeo", actualizar, id);
+        }
+        public void cambiar_puntaje(string id, string punto)
+        {
+            string actualizar = "`punto` = '" + punto + "'";
+            consultas.actualizar_tabla(base_de_datos, "lista_de_chequeo", actualizar, id);
         }
         #endregion
         #region metodos privados
@@ -126,9 +131,9 @@ namespace _03___sistemas_fabrica
         }
         #endregion
         #region metodos consultas
-        private void consultar_configuracion_de_chequeo( string perfil)
+        private void consultar_configuracion_de_chequeo(string perfil)
         {
-            configuracion_de_chequeo = consultas.consultar_configuracion_chequeo( perfil);
+            configuracion_de_chequeo = consultas.consultar_configuracion_chequeo(perfil);
         }
         private void consultar_lista_de_chequeo()
         {
@@ -137,19 +142,19 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region metodos get/set
-        public string get_id_chequeo_activo( string perfil)
+        public string get_id_chequeo_activo(string perfil)
         {
             string retorno = "N/A";
-            consultar_configuracion_de_chequeo( perfil);
+            consultar_configuracion_de_chequeo(perfil);
             if (configuracion_de_chequeo.Rows.Count > 0)
             {
                 retorno = configuracion_de_chequeo.Rows[0]["id"].ToString();
             }
             return retorno;
         }
-        public DataTable get_configuracion_de_chequeo( string perfil)
+        public DataTable get_configuracion_de_chequeo(string perfil)
         {
-            consultar_configuracion_de_chequeo( perfil);
+            consultar_configuracion_de_chequeo(perfil);
             llenar_resumen();
             return resumen;
         }

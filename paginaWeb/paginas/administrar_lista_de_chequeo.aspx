@@ -36,17 +36,19 @@
                 <div class="row">
                     <div class="col">
                         <asp:Button ID="boton_guardar" Text="Guardar" CssClass="btn btn-primary" runat="server" OnClick="boton_guardar_Click" />
-                        <asp:Button ID="boton_cargar_todo" Text="Cargar Todo" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_todo_Click" style="float: right;" />
+                        <asp:Button ID="boton_cargar_todo" Text="Cargar Todo" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_todo_Click" Style="float: right;" />
                         <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark  table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="actividad" DataField="actividad" />
+
                                 <asp:TemplateField HeaderText="Cargar">
                                     <ItemTemplate>
                                         <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
+                              
                             </Columns>
                         </asp:GridView>
                     </div>

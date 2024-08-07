@@ -22,6 +22,7 @@ namespace paginaWeb.paginasFabrica
             resumen.Columns.Add("actividad", typeof(string));
             resumen.Columns.Add("categoria", typeof(string));
             resumen.Columns.Add("area", typeof(string));
+            resumen.Columns.Add("punto", typeof(string));
             Session.Add("resumen_chequeo", resumen);
         }
         private void cargar_actividad_en_resumen(string id)
@@ -38,10 +39,11 @@ namespace paginaWeb.paginasFabrica
                 resumen.Rows[ultima_fila]["actividad"] = lista_de_chequeoBD.Rows[fila_actividad]["actividad"].ToString();
                 resumen.Rows[ultima_fila]["categoria"] = lista_de_chequeoBD.Rows[fila_actividad]["categoria"].ToString();
                 resumen.Rows[ultima_fila]["area"] = lista_de_chequeoBD.Rows[fila_actividad]["area"].ToString();
+                resumen.Rows[ultima_fila]["punto"] = lista_de_chequeoBD.Rows[fila_actividad]["punto"].ToString();
             }
-            else if (fila_resumen!=-1)
+            else if (fila_resumen != -1)
             {
-               resumen.Rows[fila_resumen].Delete();
+                resumen.Rows[fila_resumen].Delete();
             }
 
             Session.Add("resumen_chequeo", resumen);
@@ -84,7 +86,7 @@ namespace paginaWeb.paginasFabrica
         {
             string id_actividad;
             string perfil = dropdown_perfil.SelectedItem.Text;
-            configuracion = administrador.get_configuracion_de_chequeo( perfil);
+            configuracion = administrador.get_configuracion_de_chequeo(perfil);
             for (int fila = 0; fila <= configuracion.Rows.Count - 1; fila++)
             {
                 id_actividad = configuracion.Rows[fila]["id"].ToString();
@@ -241,18 +243,20 @@ namespace paginaWeb.paginasFabrica
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             resumen = (DataTable)Session["resumen_chequeo"];
-            int fila_resumen;
+            int fila_resumen, fila_actividad;
             string id;
             for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
             {
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
                 fila_resumen = funciones.buscar_fila_por_id(id, resumen);
+                TextBox textbox_puntuacion = (TextBox)gridview_chequeos.Rows[fila].Cells[3].Controls[0].FindControl("textbox_puntuacion");
                 if (fila_resumen != -1)
                 {
                     gridview_chequeos.Rows[fila].CssClass = "table-success";
                     Button boton_cargar = (Button)gridview_chequeos.Rows[fila].Cells[2].Controls[0].FindControl("boton_cargar");
                     boton_cargar.Text = "Eliminar";
                     boton_cargar.CssClass = "btn btn-primary btn-sm btn-danger";
+                    textbox_puntuacion.Text = resumen.Rows[fila_resumen]["punto"].ToString();
                 }
                 else
                 {
@@ -286,7 +290,7 @@ namespace paginaWeb.paginasFabrica
 
         protected void boton_guardar_Click(object sender, EventArgs e)
         {
-            administrador.registrar_chequeo( (DataTable)Session["resumen_chequeo"], dropdown_perfil.SelectedItem.Text);
+            administrador.registrar_chequeo((DataTable)Session["resumen_chequeo"], dropdown_perfil.SelectedItem.Text);
         }
 
         protected void boton_cargar_todo_Click(object sender, EventArgs e)
@@ -301,6 +305,25 @@ namespace paginaWeb.paginasFabrica
             crear_tabla_resumen();
             llenar_resumen_con_configuracion();
             cargar_lista_chequeo();
+        }
+
+        protected void textbox_puntuacion_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_puntuacion = (TextBox)sender;
+            GridViewRow row = (GridViewRow)textbox_puntuacion.NamingContainer;
+            int fila = row.RowIndex;
+
+            double punto;
+            if (double.TryParse(textbox_puntuacion.Text, out punto))
+            {
+                string id = gridview_chequeos.Rows[fila].Cells[0].Text;
+                administrador.cambiar_puntaje(id, punto.ToString());    
+            }
+            lista_de_chequeoBD = administrador.get_lista_de_chequeo();
+            crear_tabla_resumen();
+            llenar_resumen_con_configuracion();
+            cargar_lista_chequeo();
+
         }
     }
 }

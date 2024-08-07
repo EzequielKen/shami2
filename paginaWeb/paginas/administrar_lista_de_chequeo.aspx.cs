@@ -304,5 +304,10 @@ namespace paginaWeb.paginas
             llenar_resumen_con_configuracion();
             cargar_lista_chequeo();
         }
+
+        protected void textbox_puntuacion_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

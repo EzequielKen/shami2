@@ -48,6 +48,11 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
+                                <asp:TemplateField HeaderText="Puntuacion">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="textbox_puntuacion" CssClass="form-control" runat="server" OnTextChanged="textbox_puntuacion_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
                     </div>
