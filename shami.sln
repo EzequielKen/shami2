@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "06 - sistemas gerente", "06
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "paginaLocales", "paginaLocales\paginaLocales.csproj", "{C7492072-D432-4AFD-B66B-A0192C0DE356}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07 - sistemas supervision", "07-sistemas supervision\07 - sistemas supervision.csproj", "{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{C7492072-D432-4AFD-B66B-A0192C0DE356}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7492072-D432-4AFD-B66B-A0192C0DE356}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7492072-D432-4AFD-B66B-A0192C0DE356}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

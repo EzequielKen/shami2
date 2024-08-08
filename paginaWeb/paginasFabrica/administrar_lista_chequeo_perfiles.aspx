@@ -38,6 +38,11 @@
                     <div class="col">
                         <asp:Button ID="boton_guardar" Text="Guardar" CssClass="btn btn-primary" runat="server" OnClick="boton_guardar_Click" />
                         <asp:Button ID="boton_cargar_todo" Text="Cargar Todo" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_todo_Click" Style="float: right;" />
+                        <h3 class="d-flex justify-content-end">
+                            <asp:Label ID="label_puntos" Text="Puntos: N/A" runat="server" />
+                            <asp:Button ID="Boton_calcular_puntos" Text="Calcular Puntos" CssClass="btn btn-warning" runat="server" OnClick="Boton_calcular_puntos_Click" Style="float: right;" />
+                        </h3>
+
                         <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark  table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
@@ -51,6 +56,12 @@
                                 <asp:TemplateField HeaderText="Puntuacion">
                                     <ItemTemplate>
                                         <asp:TextBox ID="textbox_puntuacion" CssClass="form-control" runat="server" OnTextChanged="textbox_puntuacion_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Tarea Critica">
+                                    <ItemTemplate>
+                                        <asp:Button ID="boton_tarea_critica" Text="Marcar como critico" CssClass="btn btn-primary" runat="server" OnClick="boton_tarea_critica_Click" CommandArgument='<%# Container.DataItemIndex %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

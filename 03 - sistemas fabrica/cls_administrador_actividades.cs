@@ -91,6 +91,12 @@ namespace _03___sistemas_fabrica
             string actualizar = "`punto` = '" + punto + "'";
             consultas.actualizar_tabla(base_de_datos, "lista_de_chequeo", actualizar, id);
         }
+
+        public void marcar_desmarcar_tarea_critica(string id, string estado)
+        {
+            string actualizar = "`tarea_critica` = '" + estado + "'";
+            consultas.actualizar_tabla(base_de_datos, "lista_de_chequeo", actualizar, id);
+        }
         #endregion
         #region metodos privados
         private void crear_tabla_resumen()

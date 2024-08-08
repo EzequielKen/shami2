@@ -14,7 +14,49 @@ namespace paginaWeb.paginasFabrica
     public partial class administrador_de_actividades : System.Web.UI.Page
     {
         #region resumen
+        private void calcular_total_puntos()
+        {
+            resumen = (DataTable)Session["resumen_chequeo"];
+            string id;
+            double punto = 0;
+            for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
+            {
 
+                punto = punto + double.Parse(resumen.Rows[fila]["punto"].ToString());
+
+            }
+            punto = Math.Round(punto);
+            label_puntos.Text = "Total de puntos: " + punto.ToString();
+        }
+        private void calcular_puntos()
+        {
+            resumen = (DataTable)Session["resumen_chequeo"];
+            string id;
+            double tarea_no_critica = 0;
+            double puntos_no_criticos = 0;
+            double puntos_criticos=0;
+            for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
+            {
+                id = resumen.Rows[fila]["id"].ToString();
+                if (resumen.Rows[fila]["tarea_critica"].ToString() == "0")
+                {
+                    tarea_no_critica++;
+                }
+                else
+                {
+                    puntos_criticos = puntos_criticos + double.Parse(resumen.Rows[fila]["punto"].ToString());
+                }
+            }
+            puntos_no_criticos = (100 - puntos_criticos) / tarea_no_critica;
+            for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
+            {
+                id = resumen.Rows[fila]["id"].ToString();
+                if (resumen.Rows[fila]["tarea_critica"].ToString() == "0")
+                {
+                    administrador.cambiar_puntaje(id, puntos_no_criticos.ToString());
+                }
+            }
+        }
         private void crear_tabla_resumen()
         {
             resumen = new DataTable();
@@ -23,6 +65,7 @@ namespace paginaWeb.paginasFabrica
             resumen.Columns.Add("categoria", typeof(string));
             resumen.Columns.Add("area", typeof(string));
             resumen.Columns.Add("punto", typeof(string));
+            resumen.Columns.Add("tarea_critica", typeof(string));
             Session.Add("resumen_chequeo", resumen);
         }
         private void cargar_actividad_en_resumen(string id)
@@ -40,6 +83,7 @@ namespace paginaWeb.paginasFabrica
                 resumen.Rows[ultima_fila]["categoria"] = lista_de_chequeoBD.Rows[fila_actividad]["categoria"].ToString();
                 resumen.Rows[ultima_fila]["area"] = lista_de_chequeoBD.Rows[fila_actividad]["area"].ToString();
                 resumen.Rows[ultima_fila]["punto"] = lista_de_chequeoBD.Rows[fila_actividad]["punto"].ToString();
+                resumen.Rows[ultima_fila]["tarea_critica"] = lista_de_chequeoBD.Rows[fila_actividad]["tarea_critica"].ToString();
             }
             else if (fila_resumen != -1)
             {
@@ -63,6 +107,9 @@ namespace paginaWeb.paginasFabrica
                 resumen.Rows[ultima_fila]["actividad"] = lista_de_chequeoBD.Rows[fila_actividad]["actividad"].ToString();
                 resumen.Rows[ultima_fila]["categoria"] = lista_de_chequeoBD.Rows[fila_actividad]["categoria"].ToString();
                 resumen.Rows[ultima_fila]["area"] = lista_de_chequeoBD.Rows[fila_actividad]["area"].ToString();
+                resumen.Rows[ultima_fila]["punto"] = lista_de_chequeoBD.Rows[fila_actividad]["punto"].ToString();
+                resumen.Rows[ultima_fila]["tarea_critica"] = lista_de_chequeoBD.Rows[fila_actividad]["tarea_critica"].ToString();
+
             }
 
             Session.Add("resumen_chequeo", resumen);
@@ -125,6 +172,8 @@ namespace paginaWeb.paginasFabrica
             lista_de_chequeoBD = lista_de_chequeo.DefaultView.ToTable();
             gridview_chequeos.DataSource = lista_de_chequeo;
             gridview_chequeos.DataBind();
+
+            calcular_total_puntos();
         }
         #endregion
         #region configurar controles
@@ -257,6 +306,18 @@ namespace paginaWeb.paginasFabrica
                     boton_cargar.Text = "Eliminar";
                     boton_cargar.CssClass = "btn btn-primary btn-sm btn-danger";
                     textbox_puntuacion.Text = resumen.Rows[fila_resumen]["punto"].ToString();
+
+                    Button boton_tarea_critica = (Button)gridview_chequeos.Rows[fila].Cells[4].Controls[0].FindControl("boton_tarea_critica");
+                    if (resumen.Rows[fila_resumen]["tarea_critica"].ToString() == "1")
+                    {
+                        boton_tarea_critica.CssClass = "btn btn-warning";
+                        boton_tarea_critica.Text = "Desmarcar como critico";
+                    }
+                    else
+                    {
+                        boton_tarea_critica.CssClass = "btn btn-primary";
+                        boton_tarea_critica.Text = "Marcar como critico";
+                    }
                 }
                 else
                 {
@@ -317,13 +378,53 @@ namespace paginaWeb.paginasFabrica
             if (double.TryParse(textbox_puntuacion.Text, out punto))
             {
                 string id = gridview_chequeos.Rows[fila].Cells[0].Text;
-                administrador.cambiar_puntaje(id, punto.ToString());    
+                administrador.cambiar_puntaje(id, punto.ToString());
+
+                lista_de_chequeoBD = administrador.get_lista_de_chequeo();
+                crear_tabla_resumen();
+                llenar_resumen_con_configuracion();
+                calcular_puntos();
             }
             lista_de_chequeoBD = administrador.get_lista_de_chequeo();
             crear_tabla_resumen();
             llenar_resumen_con_configuracion();
             cargar_lista_chequeo();
 
+        }
+
+        protected void boton_tarea_critica_Click(object sender, EventArgs e)
+        {
+            Button boton_tarea_critica = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_tarea_critica.NamingContainer;
+            int fila = row.RowIndex;
+
+            string id = gridview_chequeos.Rows[fila].Cells[0].Text;
+            int fila_tarea = funciones.buscar_fila_por_id(id, lista_de_chequeoBD);
+            if (lista_de_chequeoBD.Rows[fila_tarea]["tarea_critica"].ToString() == "1")
+            {
+                administrador.marcar_desmarcar_tarea_critica(id, "0");
+            }
+            else
+            {
+                administrador.marcar_desmarcar_tarea_critica(id, "1");
+            }
+
+            lista_de_chequeoBD = administrador.get_lista_de_chequeo();
+            crear_tabla_resumen();
+            llenar_resumen_con_configuracion();
+            cargar_lista_chequeo();
+        }
+
+        protected void Boton_calcular_puntos_Click(object sender, EventArgs e)
+        {
+            lista_de_chequeoBD = administrador.get_lista_de_chequeo();
+            crear_tabla_resumen();
+            llenar_resumen_con_configuracion();
+            calcular_puntos();
+            lista_de_chequeoBD = administrador.get_lista_de_chequeo();
+            crear_tabla_resumen();
+            llenar_resumen_con_configuracion();
+            cargar_lista_chequeo();
         }
     }
 }
