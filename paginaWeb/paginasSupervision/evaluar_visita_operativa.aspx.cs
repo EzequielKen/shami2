@@ -324,6 +324,7 @@ namespace paginaWeb.paginasSupervision
 
             registrar_todo();
             calcular_puntaje();
+            historial_evaluacion = Visita.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
             historial_evaluacion = (DataTable)Session["historial_evaluacion"];
             if (historial_evaluacion.Rows.Count == 0)
             {

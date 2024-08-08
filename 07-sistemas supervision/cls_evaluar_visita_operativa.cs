@@ -98,7 +98,7 @@ namespace _07_sistemas_supervision
             login.login_empleado(sucursal, empleado.Rows[0]["dni"].ToString());
             return login.get_empleado();
         }
-        public void registrar_chequeo(DataTable empleado, string actividad, string nota, string punto_teorico,string punto_real)
+        public void registrar_chequeo(DataTable empleado, string actividad, string nota, string punto_teorico, string punto_real)
         {
             string columnas = string.Empty;
             string valores = string.Empty;
@@ -288,9 +288,9 @@ namespace _07_sistemas_supervision
         {
             empleado = consultas.consultar_empleado(id_empleado);
         }
-        private void consultar_historial(DateTime fecha, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal, string turno)
+        private void consultar_historial(DateTime fecha, string id_empleado, string id_sucursal, string turno)
         {
-            historial = consultas.consultar_historial_evaluacion_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
+            historial = consultas.consultar_historial_evaluacion_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), id_empleado, id_sucursal, turno);
         }
         private void consultar_historial_turno2(DateTime fecha, string id_empleado, string id_sucursal, string turno)
         {
@@ -368,26 +368,9 @@ namespace _07_sistemas_supervision
         #region metodos get/set
         public DataTable get_historial(DateTime fecha, string turno, string id_empleado, string id_sucursal)
         {
-            string hora_inicio = "07:00";
-            string hora_fin = "18:59";
-            if (turno == "N/A")
-            {
-                if ("rango 1" == verificar_horario(fecha))// 
-                {
-                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
-                }
-                else if ("rango 2" == verificar_horario(fecha) || "rango 3" == verificar_horario(fecha))// 
-                {
 
-                    consultar_historial_turno2(fecha, id_empleado, id_sucursal, turno);
-                }
+            consultar_historial(fecha, id_empleado, id_sucursal, turno);
 
-            }
-            else
-            {
-                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
-
-            }
 
             llenar_historial_resumen();
             return historial_resumen;
