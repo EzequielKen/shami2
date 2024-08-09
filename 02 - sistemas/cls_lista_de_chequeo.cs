@@ -245,12 +245,12 @@ namespace _02___sistemas
             {
                 retorno = "rango 2";
             }
-            DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 00, 0, 0); // 8:00 AM
+          /*  DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 00, 0, 0); // 8:00 AM
             DateTime horaFin_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 04, 0, 0); // 12:00 PM
             if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
             {
                 retorno = "rango 3";
-            }
+            }*/
             return retorno;
         }
         public bool verificar_brecha_turno(DateTime miFecha, string turno)
@@ -283,7 +283,7 @@ namespace _02___sistemas
             DataTable historial_turno2 = new DataTable();
             int ultima_fila;
             string hora_inicio, hora_fin;
-            if ("rango 1" == verificar_horario_turno2(fecha))
+            if ("rango 1" == verificar_horario_turno2(DateTime.Now))
             {
                 fecha_nueva = fecha;
                 fecha_nueva = fecha_nueva.AddDays(1);
@@ -294,7 +294,7 @@ namespace _02___sistemas
                 hora_fin = "04:59";
                 historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
             }
-            else if ("rango 2" == verificar_horario_turno2(fecha))//
+            else if ("rango 2" == verificar_horario_turno2(DateTime.Now))//
             {
                 fecha_nueva = fecha;
                 fecha_nueva = fecha_nueva.AddDays(-1);
@@ -380,6 +380,7 @@ namespace _02___sistemas
                                                         fecha.Month,
                                                         fecha.Day,
                                                         18, 0, 0);
+                        
                     consultar_historial_turno2(nueva_fecha, id_empleado, id_sucursal, turno);
                 }
 
