@@ -24,6 +24,11 @@
             <div class=" container">
                 <div class=" row">
                     <div class="col">
+                        <h3>
+                            <asp:Label Text="Seleccione empleado:" runat="server" />
+                        </h3>
+                        <asp:DropDownList id="dropdown_empleado" CssClass="form-control" OnSelectedIndexChanged="dropdown_empleado_SelectedIndexChanged" runat="server" AutoPostBack="true">
+                        </asp:DropDownList>
                         <h1>
                             <asp:Label ID="label_nombre" Text="Empleado:" runat="server" />
                         </h1>
@@ -31,7 +36,7 @@
                             <asp:Label ID="label_fecha" Text="Fecha:" runat="server" />
                         </h2>
                         <h2>
-                            <asp:Label ID="label_puntaje" Text="text" runat="server" />
+                            <asp:Label ID="label_puntaje" Text="" runat="server" />
                         </h2>
                         <div class="alert alert-light">
                             <div class="row">

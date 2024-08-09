@@ -138,7 +138,21 @@ namespace paginaWeb
             }
             return retorno;
         }
-      
+        public int buscar_fila_empleado_por_nombre(string nombre, DataTable dt)
+        {
+            int retorno = -1;
+            int fila = 0;
+            while (fila <= dt.Rows.Count - 1)
+            {
+                if (nombre == dt.Rows[fila]["nombre"].ToString())
+                {
+                    retorno = fila;
+                    break;
+                }
+                fila++;
+            }
+            return retorno;
+        }
         public bool verificar_si_cargo(string id, DataTable dt)
         {
             bool retorno = false;

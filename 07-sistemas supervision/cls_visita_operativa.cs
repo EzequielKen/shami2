@@ -281,6 +281,11 @@ namespace _07_sistemas_supervision
         {
             consultar_lista_de_empleado_origen(id_sucursal);
             //limpiar_lista_empleados(fecha);
+            lista_de_empleado.Columns.Add("seleccionado", typeof(string));
+            for (int fila = 0; fila <= lista_de_empleado.Rows.Count - 1; fila++)
+            {
+                lista_de_empleado.Rows[fila]["seleccionado"] = "0";
+            }
             return lista_de_empleado;
         }
         public DataTable get_sucursales()

@@ -134,14 +134,36 @@ namespace paginaWeb.paginasSupervision
         }
         #endregion
         #region configurar controles
+        private void configurar_control_empleados()
+        {
+            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
+            for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count-1; fila++)
+            {
+                if (lista_de_empleadoBD.Rows[fila]["seleccionado"].ToString()=="1")
+                {
+                    dropdown_empleado.Items.Add(lista_de_empleadoBD.Rows[fila]["nombre"].ToString());
+                }
+            }
+        }
         private void configurar_controles()
         {
 
             llenar_dropDownList(resumenBD);
             llenar_dropDownList_categiria(resumenBD, dropDown_tipo.SelectedItem.Text);
         }
+        private void reinicar_botones_cargos()
+        {
+            boton_encargado.Visible = false;
+            boton_atencion.Visible = false;
+            boton_cajero.Visible = false;
+            boton_cocina.Visible = false;
+            boton_limpieza.Visible = false;
+            boton_shawarmero.Visible = false;
+
+        }
         private void configurar_botones_cargos(string cargos)
         {
+            reinicar_botones_cargos();
             int iteraciones = int.Parse(funciones.obtener_dato(cargos, 1));
             int posicion = 2;
             string cargo;
@@ -390,6 +412,7 @@ namespace paginaWeb.paginasSupervision
         DataTable empleado_lista_chequeo;
         DataTable sucursal_lista_chequeo;
 
+        DataTable lista_de_empleadoBD;
         DataTable lista_de_chequeoBD;
         DataTable configuracion;
         DataTable resumenBD;
@@ -402,17 +425,27 @@ namespace paginaWeb.paginasSupervision
             if (!IsPostBack)
             {
                 Session.Add("usuariosBD_lista_chequeo", (DataTable)Session["usuariosBD"]);
-                Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
                 Session.Add("sucursal_lista_chequeo", (DataTable)Session["sucursal"]);
             }
+            
             usuariosBD_lista_chequeo = (DataTable)Session["usuariosBD_lista_chequeo"];
+            Visita = new cls_evaluar_visita_operativa(usuariosBD_lista_chequeo);
+          
+            if (!IsPostBack)
+            {
+                configurar_control_empleados();
+                lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
+                int fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
+                Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
+                Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
+            }
+            
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
             sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
             if (Session["perfil_seleccionado"] == null)
             {
                 Session.Add("perfil_seleccionado", "N/A");
             }
-            Visita = new cls_evaluar_visita_operativa(usuariosBD_lista_chequeo);
             lista_de_chequeoBD = Visita.get_lista_de_chequeo();
 
             string nombre = empleado_lista_chequeo.Rows[0]["nombre"].ToString();
@@ -794,6 +827,33 @@ namespace paginaWeb.paginasSupervision
 
                 Response.Redirect(strUrl, false);
             }
+        }
+
+        protected void dropdown_empleado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
+            int fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
+            Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
+            Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
+
+            empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
+            sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
+            if (Session["perfil_seleccionado"] == null)
+            {
+                Session.Add("perfil_seleccionado", "N/A");
+            }
+            lista_de_chequeoBD = Visita.get_lista_de_chequeo();
+
+            string nombre = empleado_lista_chequeo.Rows[0]["nombre"].ToString();
+            string apellido = empleado_lista_chequeo.Rows[0]["apellido"].ToString();
+            string cargos = empleado_lista_chequeo.Rows[0]["cargo"].ToString();
+            label_nombre.Text = "Empleado: " + nombre + " " + apellido;
+            label_fecha.Text = "Fecha: " + DateTime.Now.ToString("dd/MM/yyyyy");
+
+            configurar_botones_cargos(cargos);
+            gridview_chequeos.DataSource = null;
+            gridview_chequeos.DataBind();
+            label_puntaje.Text = "";
         }
     }
 }

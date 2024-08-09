@@ -31,6 +31,9 @@
                             <h2>
                                 <asp:Label ID="label_total" Text="text" runat="server" />
                             </h2>
+                            <div class="d-flex justify-content-end">
+                                <asp:Button ID="boton_evaluar" Text="Evaluar" Visible="false" CssClass="btn btn-warning" OnClick="boton_evaluar_Click" runat="server" />
+                            </div>
                             <asp:GridView Caption="LISTA DE EMPLEADOS" CaptionAlign="Top" runat="server" ID="gridview_empleados" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_empleados_RowDataBound">
                                 <Columns>
                                     <asp:BoundField HeaderText="id" DataField="id" />
@@ -78,9 +81,11 @@
 
                                     <asp:TemplateField HeaderText="Evaluar">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_evaluar" CssClass="btn btn-warning" Text="Evaluar" runat="server" OnClick="boton_evaluar_Click"/>
+                                            <asp:CheckBox ID="checkbox_evaluar" Text="Seleccionar" CssClass="form-control" OnCheckedChanged="checkbox_evaluar_CheckedChanged" runat="server" AutoPostBack="true"/>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+
+
                                 </Columns>
                             </asp:GridView>
                         </div>

@@ -16,6 +16,7 @@ namespace paginaWeb.paginasSupervision
         #region modificar empleado
         private void modificar_cargo(string id_empleado, string cargo)
         {
+            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
             int fila_empleado = funciones.buscar_fila_por_id(id_empleado, lista_de_empleadoBD);
             if (lista_de_empleadoBD.Rows[fila_empleado][cargo].ToString() == "N/A")
             {
@@ -318,7 +319,12 @@ namespace paginaWeb.paginasSupervision
         {
             sucursal = (DataTable)Session["sucursal"];
 
-            lista_de_empleadoBD = visita.get_lista_de_empleado_origen(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
+            if (!IsPostBack)
+            {
+                lista_de_empleadoBD = visita.get_lista_de_empleado_origen(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
+                Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
+            }
+            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
             configurar_cargos();
             configurar_controles();
             cargar_lista_empleados();
@@ -329,6 +335,22 @@ namespace paginaWeb.paginasSupervision
             for (int fila = 0; fila <= sucursales.Rows.Count - 1; fila++)
             {
                 DropDown_sucursal.Items.Add(sucursales.Rows[fila]["sucursal"].ToString());
+            }
+        }
+        private void habilitar_boton_evaluar()
+        {
+            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
+            for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count - 1; fila++)
+            {
+                if (lista_de_empleadoBD.Rows[fila]["seleccionado"].ToString() == "1")
+                {
+                    boton_evaluar.Visible = true;
+                    break;
+                }
+                else
+                {
+                    boton_evaluar.Visible = false;
+                }
             }
         }
         /// <summary>
@@ -557,6 +579,8 @@ namespace paginaWeb.paginasSupervision
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
             string cargo = "Encargado";
             modificar_cargo(id_empleado, cargo);
+            cargar_pagina();
+
         }
 
         protected void boton_cajero_empleado_Click(object sender, EventArgs e)
@@ -567,6 +591,8 @@ namespace paginaWeb.paginasSupervision
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
             string cargo = "Cajero";
             modificar_cargo(id_empleado, cargo);
+            cargar_pagina();
+
         }
 
         protected void boton_shawarmero_empleado_Click(object sender, EventArgs e)
@@ -577,6 +603,8 @@ namespace paginaWeb.paginasSupervision
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
             string cargo = "Shawarmero";
             modificar_cargo(id_empleado, cargo);
+            cargar_pagina();
+
         }
 
         protected void boton_atencion_empleado_Click(object sender, EventArgs e)
@@ -587,6 +615,8 @@ namespace paginaWeb.paginasSupervision
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
             string cargo = "Atencion al Cliente";
             modificar_cargo(id_empleado, cargo);
+            cargar_pagina();
+
         }
 
         protected void boton_cocina_empleado_Click(object sender, EventArgs e)
@@ -597,6 +627,8 @@ namespace paginaWeb.paginasSupervision
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
             string cargo = "Cocina";
             modificar_cargo(id_empleado, cargo);
+            cargar_pagina();
+
         }
 
         protected void boton_limpieza_empleado_Click(object sender, EventArgs e)
@@ -607,23 +639,43 @@ namespace paginaWeb.paginasSupervision
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
             string cargo = "Limpieza";
             modificar_cargo(id_empleado, cargo);
+            cargar_pagina();
 
         }
 
         protected void DropDown_sucursal_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session.Add("sucursal", visita.get_sucursal(DropDown_sucursal.SelectedItem.Text));
+            sucursal = (DataTable)Session["sucursal"];
+            lista_de_empleadoBD = visita.get_lista_de_empleado_origen(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
+            Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
             cargar_pagina();
         }
 
         protected void boton_evaluar_Click(object sender, EventArgs e)
         {
-            Button boton = (Button)sender;
-            GridViewRow row = (GridViewRow)boton.NamingContainer;
+            Response.Redirect("/paginasSupervision/evaluar_visita_operativa.aspx");
+        }
+
+        protected void checkbox_evaluar_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox check = (CheckBox)sender;
+            GridViewRow row = (GridViewRow)check.NamingContainer;
             int rowIndex = row.RowIndex;
             string id_empleado = gridview_empleados.Rows[rowIndex].Cells[0].Text;
-            Session.Add("empleado", visita.get_empleado(id_empleado));
-            Response.Redirect("/paginasSupervision/evaluar_visita_operativa.aspx");
+
+            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
+            int fila_empleado = funciones.buscar_fila_por_id(id_empleado, lista_de_empleadoBD);
+            if (lista_de_empleadoBD.Rows[fila_empleado]["seleccionado"].ToString() == "0")
+            {
+                lista_de_empleadoBD.Rows[fila_empleado]["seleccionado"] = "1";
+            }
+            else
+            {
+                lista_de_empleadoBD.Rows[fila_empleado]["seleccionado"] = "0";
+            }
+            Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
+            habilitar_boton_evaluar();
         }
     }
 }

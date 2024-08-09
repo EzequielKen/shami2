@@ -42,6 +42,15 @@ namespace paginaWeb.paginasSupervision
         protected global::System.Web.UI.WebControls.Label label_total;
 
         /// <summary>
+        /// Control boton_evaluar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_evaluar;
+
+        /// <summary>
         /// Control gridview_empleados.
         /// </summary>
         /// <remarks>

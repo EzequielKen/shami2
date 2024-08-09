@@ -15,6 +15,15 @@ namespace paginaWeb.paginasSupervision
     {
 
         /// <summary>
+        /// Control dropdown_empleado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList dropdown_empleado;
+
+        /// <summary>
         /// Control label_nombre.
         /// </summary>
         /// <remarks>
