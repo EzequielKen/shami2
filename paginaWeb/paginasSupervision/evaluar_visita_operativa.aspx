@@ -5,46 +5,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:ScriptManager runat="server" />
 
-    <script type="text/javascript">
-        // Función que se ejecuta al hacer clic en el botón "Subir Foto"
-        function TriggerFileUpload(button) {
-            var fileUploadControl = button.parentElement.querySelector('input[type="file"]');
-            if (fileUploadControl) {
-                fileUploadControl.click(); // Simula un clic en el FileUpload
-            }
-        }
-
-        // Función que se ejecuta cuando se selecciona un archivo
-        function UploadFile(fileInput) {
-            if (fileInput.files.length > 0) {
-                // Encuentra el botón de subida asociado al control
-                var uploadButton = fileInput.parentElement.querySelector('input[type="submit"], button[type="submit"]');
-                if (uploadButton) {
-                    uploadButton.click(); // Simula un clic en el botón de subida para enviar el formulario
-                }
-            }
-        }
-    </script>
 
 
-    <!-- Modal Foto-->
-    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="uploadModalLabel">Subir Foto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <asp:FileUpload ID="fileUploadFoto" runat="server" accept="image/*;capture=camera" />
-                </div>
-                <div class="modal-footer">
-                    <asp:HiddenField ID="hiddenFieldHistorialID" runat="server" />
-                    <asp:Button ID="btnUploadFoto" runat="server" CssClass="btn btn-primary" Text="Subir Foto" OnClick="btnUploadFoto_Click" />
-                </div>
-            </div>
-        </div>
-    </div>
 
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
@@ -143,9 +105,10 @@
                                     <asp:BoundField HeaderText="Punto Real" />
                                     <asp:TemplateField HeaderText="Subir Foto">
                                         <ItemTemplate>
-                                            <asp:HiddenField ID="hiddenHistorialId" runat="server" Value='<%# Eval("id") %>' />
-                                            <asp:FileUpload ID="fileUpload_foto" runat="server" Style="display: none;" OnChange="javascript:UploadFile(this);" />
-                                            <asp:Button ID="btnSubirFoto" Text="Subir Foto" CssClass="btn btn-primary" runat="server" OnClientClick="TriggerFileUpload(this); return false;" />
+                                            <asp:LinkButton ID="btnSubirFoto" CssClass="btn btn-primary" runat="server"
+                                                PostBackUrl='<%# "subir_foto.aspx?id=" + Eval("id") + "&returnUrl=" + HttpUtility.UrlEncode(Request.RawUrl) %>'>
+                                                <i class="bi bi-camera"></i>
+                                            </asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

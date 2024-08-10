@@ -900,14 +900,22 @@ namespace paginaWeb.paginasSupervision
             label_puntaje.Text = "";
         }
 
-        protected void btnUploadFoto_Click(object sender, EventArgs e)
+        protected void btnSubirFoto_Click(object sender, EventArgs e)
         {
-            if (fileUploadFoto.HasFile)
+            // Identificar la fila que contiene el botón que fue clicado
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            // Obtener el control FileUpload y el HiddenField de la fila actual
+            FileUpload fileUploadFoto = (FileUpload)row.FindControl("fileUpload_foto");
+            HiddenField hiddenId = (HiddenField)row.FindControl("hiddenId");
+
+            if (fileUploadFoto != null && fileUploadFoto.HasFile)
             {
                 try
                 {
-                    string idHistorial = hiddenFieldHistorialID.Value;
-                    string fileName = $"{idHistorial}{Path.GetExtension(fileUploadFoto.FileName)}";
+                    string id = hiddenId.Value;
+                    string fileName = $"{id}{Path.GetExtension(fileUploadFoto.FileName)}";
                     string folderPath = Server.MapPath("~/FotosSubidas/visitas_operativas/");
 
                     // Crea la carpeta si no existe
@@ -934,6 +942,7 @@ namespace paginaWeb.paginasSupervision
                 ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Por favor selecciona una foto.');", true);
             }
         }
+
 
 
     }
