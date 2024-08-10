@@ -463,52 +463,79 @@ namespace paginaWeb.paginasSupervision
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                string id;
-                int fila_historial;
+                // Obtener la información del empleado desde la sesión
                 empleado_lista_chequeo = (DataTable)Session["empleado"];
-                historial_evaluacion = Visita.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
-                Session.Add("historial_evaluacion", historial_evaluacion);
+                historial_evaluacion = Visita.get_historial(
+                    DateTime.Now,
+                    empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(),
+                    empleado_lista_chequeo.Rows[0]["id"].ToString(),
+                    empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString()
+                );
+                Session["historial_evaluacion"] = historial_evaluacion;
 
-                id = e.Row.Cells[0].Text; // Suponiendo que la columna 0 contiene el ID
-                fila_historial = funciones.buscar_fila_por_id(id, historial_evaluacion);
+                // Asignar el valor de ID desde la celda 0 del GridView
+                string id = e.Row.Cells[0].Text;
+
+                // Buscar la fila correspondiente en el historial
+                int fila_historial = funciones.buscar_fila_por_id(id, historial_evaluacion);
 
                 if (fila_historial != -1)
                 {
                     // Configurar los controles de la fila
-                    Button boton_cargar = (e.Row.FindControl("boton_cargar") as Button);
-                    HiddenField hiddenHistorialId = (e.Row.FindControl("hiddenHistorialId") as HiddenField);
-                    Button btnOpenModal = (e.Row.FindControl("btnOpenModal") as Button);
+                    Button boton_cargar = e.Row.FindControl("boton_cargar") as Button;
+                    HiddenField hiddenHistorialId = e.Row.FindControl("hiddenHistorialId") as HiddenField;
+                    FileUpload fileUploadFoto = e.Row.FindControl("fileUpload_foto") as FileUpload;
+                    Button btnSubirFoto = e.Row.FindControl("btnSubirFoto") as Button;
 
                     // Actualizar el estado del botón 'Cargar'
                     if (historial_evaluacion.Rows[fila_historial]["punto_real"].ToString() != "0")
                     {
                         e.Row.CssClass = "table-success";
                         e.Row.Cells[4].Text = historial_evaluacion.Rows[fila_historial]["nota"].ToString();
-                        boton_cargar.CssClass = "btn btn-danger";
-                        boton_cargar.Text = "Desmarcar";
+                        if (boton_cargar != null)
+                        {
+                            boton_cargar.CssClass = "btn btn-danger";
+                            boton_cargar.Text = "Desmarcar";
+                        }
                     }
                     else
                     {
                         e.Row.CssClass = "table-danger";
                         e.Row.Cells[4].Text = historial_evaluacion.Rows[fila_historial]["nota"].ToString();
-                        boton_cargar.CssClass = "btn btn-primary";
-                        boton_cargar.Text = "Marcar";
+                        if (boton_cargar != null)
+                        {
+                            boton_cargar.CssClass = "btn btn-primary";
+                            boton_cargar.Text = "Marcar";
+                        }
                     }
 
-                    // Configurar otros campos
+                    // Configurar otros campos en la fila del GridView
                     e.Row.Cells[5].Text = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
                     e.Row.Cells[6].Text = historial_evaluacion.Rows[fila_historial]["punto_teorico"].ToString();
                     e.Row.Cells[7].Text = historial_evaluacion.Rows[fila_historial]["punto_real"].ToString();
 
-                    // Configurar el HiddenField y el botón para abrir el modal
-                    if (hiddenHistorialId != null && btnOpenModal != null)
+                    // Configurar el HiddenField con id_historial
+                    if (hiddenHistorialId != null)
                     {
-                        hiddenHistorialId.Value = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
-                        btnOpenModal.OnClientClick = $"openModal('{hiddenHistorialId.Value}'); return false;";
+                        hiddenHistorialId.Value = historial_evaluacion.Rows[fila_historial]["id"].ToString();
+                    }
+
+                    // Configurar el botón para subir la foto automáticamente al seleccionar un archivo
+                    if (fileUploadFoto != null)
+                    {
+                        // Asignar un evento de cambio (OnChange) al control FileUpload para disparar la subida automática
+                        fileUploadFoto.Attributes["onchange"] = "this.form.submit();"; // Hace que el formulario se envíe automáticamente
+                    }
+
+                    if (btnSubirFoto != null && fileUploadFoto != null)
+                    {
+                        btnSubirFoto.OnClientClick = $"document.getElementById('{fileUploadFoto.ClientID}').click(); return false;";
                     }
                 }
             }
         }
+
+
 
 
         protected void dropDown_tipo_SelectedIndexChanged(object sender, EventArgs e)

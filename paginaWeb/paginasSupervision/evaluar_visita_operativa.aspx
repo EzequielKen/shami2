@@ -6,12 +6,26 @@
     <asp:ScriptManager runat="server" />
 
     <script type="text/javascript">
-        function openModal(idHistorial) {
-            document.getElementById('<%= hiddenFieldHistorialID.ClientID %>').value = idHistorial;
-            var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
-            uploadModal.show();
+        // Función que se ejecuta al hacer clic en el botón "Subir Foto"
+        function TriggerFileUpload(button) {
+            var fileUploadControl = button.parentElement.querySelector('input[type="file"]');
+            if (fileUploadControl) {
+                fileUploadControl.click(); // Simula un clic en el FileUpload
+            }
+        }
+
+        // Función que se ejecuta cuando se selecciona un archivo
+        function UploadFile(fileInput) {
+            if (fileInput.files.length > 0) {
+                // Encuentra el botón de subida asociado al control
+                var uploadButton = fileInput.parentElement.querySelector('input[type="submit"], button[type="submit"]');
+                if (uploadButton) {
+                    uploadButton.click(); // Simula un clic en el botón de subida para enviar el formulario
+                }
+            }
         }
     </script>
+
 
     <!-- Modal Foto-->
     <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
@@ -129,8 +143,9 @@
                                     <asp:BoundField HeaderText="Punto Real" />
                                     <asp:TemplateField HeaderText="Subir Foto">
                                         <ItemTemplate>
-                                            <asp:HiddenField ID="hiddenHistorialId" runat="server" />
-                                            <asp:Button ID="btnOpenModal" Text="Subir Foto" CssClass="btn btn-primary" runat="server" OnClientClick="openModal('<%# Eval('id_historial') %>'); return false;" />
+                                            <asp:HiddenField ID="hiddenHistorialId" runat="server" Value='<%# Eval("id") %>' />
+                                            <asp:FileUpload ID="fileUpload_foto" runat="server" Style="display: none;" OnChange="javascript:UploadFile(this);" />
+                                            <asp:Button ID="btnSubirFoto" Text="Subir Foto" CssClass="btn btn-primary" runat="server" OnClientClick="TriggerFileUpload(this); return false;" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
