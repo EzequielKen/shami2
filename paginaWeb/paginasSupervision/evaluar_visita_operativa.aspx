@@ -4,6 +4,34 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:ScriptManager runat="server" />
+
+    <script type="text/javascript">
+        function openModal(idHistorial) {
+            document.getElementById('<%= hiddenFieldHistorialID.ClientID %>').value = idHistorial;
+            var uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+            uploadModal.show();
+        }
+    </script>
+
+    <!-- Modal Foto-->
+    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Subir Foto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <asp:FileUpload ID="fileUploadFoto" runat="server" accept="image/*;capture=camera" />
+                </div>
+                <div class="modal-footer">
+                    <asp:HiddenField ID="hiddenFieldHistorialID" runat="server" />
+                    <asp:Button ID="btnUploadFoto" runat="server" CssClass="btn btn-primary" Text="Subir Foto" OnClick="btnUploadFoto_Click" />
+                </div>
+            </div>
+        </div>
+    </div>
+
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <!-- Modal -->
@@ -27,7 +55,7 @@
                         <h3>
                             <asp:Label Text="Seleccione empleado:" runat="server" />
                         </h3>
-                        <asp:DropDownList id="dropdown_empleado" CssClass="form-control" OnSelectedIndexChanged="dropdown_empleado_SelectedIndexChanged" runat="server" AutoPostBack="true">
+                        <asp:DropDownList ID="dropdown_empleado" CssClass="form-control" OnSelectedIndexChanged="dropdown_empleado_SelectedIndexChanged" runat="server" AutoPostBack="true">
                         </asp:DropDownList>
                         <h1>
                             <asp:Label ID="label_nombre" Text="Empleado:" runat="server" />
@@ -99,6 +127,12 @@
                                     <asp:BoundField HeaderText="id historial" />
                                     <asp:BoundField HeaderText="Punto Teorico" />
                                     <asp:BoundField HeaderText="Punto Real" />
+                                    <asp:TemplateField HeaderText="Subir Foto">
+                                        <ItemTemplate>
+                                            <asp:HiddenField ID="hiddenHistorialId" runat="server" />
+                                            <asp:Button ID="btnOpenModal" Text="Subir Foto" CssClass="btn btn-primary" runat="server" OnClientClick="openModal('<%# Eval('id_historial') %>'); return false;" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
                         </div>

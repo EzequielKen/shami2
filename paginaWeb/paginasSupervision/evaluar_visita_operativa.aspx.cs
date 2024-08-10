@@ -3,6 +3,7 @@ using _07_sistemas_supervision;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -137,9 +138,9 @@ namespace paginaWeb.paginasSupervision
         private void configurar_control_empleados()
         {
             lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
-            for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count - 1; fila++)
             {
-                if (lista_de_empleadoBD.Rows[fila]["seleccionado"].ToString()=="1")
+                if (lista_de_empleadoBD.Rows[fila]["seleccionado"].ToString() == "1")
                 {
                     dropdown_empleado.Items.Add(lista_de_empleadoBD.Rows[fila]["nombre"].ToString());
                 }
@@ -381,7 +382,7 @@ namespace paginaWeb.paginasSupervision
                     registrar_chequeo(id_actividad, nota, punto_teorico, punto_real);
                 }
             }
-            
+
         }
         private void calcular_puntaje()
         {
@@ -427,10 +428,10 @@ namespace paginaWeb.paginasSupervision
                 Session.Add("usuariosBD_lista_chequeo", (DataTable)Session["usuariosBD"]);
                 Session.Add("sucursal_lista_chequeo", (DataTable)Session["sucursal"]);
             }
-            
+
             usuariosBD_lista_chequeo = (DataTable)Session["usuariosBD_lista_chequeo"];
             Visita = new cls_evaluar_visita_operativa(usuariosBD_lista_chequeo);
-          
+
             if (!IsPostBack)
             {
                 configurar_control_empleados();
@@ -439,7 +440,7 @@ namespace paginaWeb.paginasSupervision
                 Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
                 Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
             }
-            
+
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
             sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
             if (Session["perfil_seleccionado"] == null)
@@ -460,39 +461,55 @@ namespace paginaWeb.paginasSupervision
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            string id;
-            int fila_historial;
-            empleado_lista_chequeo = (DataTable)Session["empleado"];
-            historial_evaluacion = Visita.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
-            Session.Add("historial_evaluacion", historial_evaluacion);
-            for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
+            if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                id = gridview_chequeos.Rows[fila].Cells[0].Text;
+                string id;
+                int fila_historial;
+                empleado_lista_chequeo = (DataTable)Session["empleado"];
+                historial_evaluacion = Visita.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
+                Session.Add("historial_evaluacion", historial_evaluacion);
+
+                id = e.Row.Cells[0].Text; // Suponiendo que la columna 0 contiene el ID
                 fila_historial = funciones.buscar_fila_por_id(id, historial_evaluacion);
+
                 if (fila_historial != -1)
                 {
-                    Button boton_cargar = (gridview_chequeos.Rows[fila].Cells[0].FindControl("boton_cargar") as Button);
+                    // Configurar los controles de la fila
+                    Button boton_cargar = (e.Row.FindControl("boton_cargar") as Button);
+                    HiddenField hiddenHistorialId = (e.Row.FindControl("hiddenHistorialId") as HiddenField);
+                    Button btnOpenModal = (e.Row.FindControl("btnOpenModal") as Button);
+
+                    // Actualizar el estado del botón 'Cargar'
                     if (historial_evaluacion.Rows[fila_historial]["punto_real"].ToString() != "0")
                     {
-                        gridview_chequeos.Rows[fila].CssClass = "table-success";
-                        gridview_chequeos.Rows[fila].Cells[4].Text = historial_evaluacion.Rows[fila_historial]["nota"].ToString();
+                        e.Row.CssClass = "table-success";
+                        e.Row.Cells[4].Text = historial_evaluacion.Rows[fila_historial]["nota"].ToString();
                         boton_cargar.CssClass = "btn btn-danger";
                         boton_cargar.Text = "Desmarcar";
                     }
                     else
                     {
-                        gridview_chequeos.Rows[fila].CssClass = "table-danger";
-                        gridview_chequeos.Rows[fila].Cells[4].Text = historial_evaluacion.Rows[fila_historial]["nota"].ToString();
+                        e.Row.CssClass = "table-danger";
+                        e.Row.Cells[4].Text = historial_evaluacion.Rows[fila_historial]["nota"].ToString();
                         boton_cargar.CssClass = "btn btn-primary";
                         boton_cargar.Text = "Marcar";
                     }
-                    gridview_chequeos.Rows[fila].Cells[5].Text = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
-                    gridview_chequeos.Rows[fila].Cells[6].Text = historial_evaluacion.Rows[fila_historial]["punto_teorico"].ToString();
-                    gridview_chequeos.Rows[fila].Cells[7].Text = historial_evaluacion.Rows[fila_historial]["punto_real"].ToString();
 
+                    // Configurar otros campos
+                    e.Row.Cells[5].Text = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
+                    e.Row.Cells[6].Text = historial_evaluacion.Rows[fila_historial]["punto_teorico"].ToString();
+                    e.Row.Cells[7].Text = historial_evaluacion.Rows[fila_historial]["punto_real"].ToString();
+
+                    // Configurar el HiddenField y el botón para abrir el modal
+                    if (hiddenHistorialId != null && btnOpenModal != null)
+                    {
+                        hiddenHistorialId.Value = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
+                        btnOpenModal.OnClientClick = $"openModal('{hiddenHistorialId.Value}'); return false;";
+                    }
                 }
             }
         }
+
 
         protected void dropDown_tipo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -855,5 +872,42 @@ namespace paginaWeb.paginasSupervision
             gridview_chequeos.DataBind();
             label_puntaje.Text = "";
         }
+
+        protected void btnUploadFoto_Click(object sender, EventArgs e)
+        {
+            if (fileUploadFoto.HasFile)
+            {
+                try
+                {
+                    string idHistorial = hiddenFieldHistorialID.Value;
+                    string fileName = $"{idHistorial}{Path.GetExtension(fileUploadFoto.FileName)}";
+                    string folderPath = Server.MapPath("~/FotosSubidas/visitas_operativas/");
+
+                    // Crea la carpeta si no existe
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    // Guarda el archivo en el servidor
+                    string filePath = Path.Combine(folderPath, fileName);
+                    fileUploadFoto.SaveAs(filePath);
+
+                    // Mensaje de confirmación
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Foto subida exitosamente!');", true);
+                }
+                catch (Exception ex)
+                {
+                    // Manejo de errores
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", $"alert('Error al subir la foto: {ex.Message}');", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "showalert", "alert('Por favor selecciona una foto.');", true);
+            }
+        }
+
+
     }
 }
