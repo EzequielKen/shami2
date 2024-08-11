@@ -18,6 +18,7 @@
                                 <asp:DropDownList ID="DropDown_sucursal" CssClass="form-control" runat="server" OnSelectedIndexChanged="DropDown_sucursal_SelectedIndexChanged" AutoPostBack="true">
                                 </asp:DropDownList>
                             </div>
+                            <asp:Button ID="boton_historial" CssClass="btn btn-primary" Text="Historial Visita Operativa" OnClick="boton_historial_Click" runat="server" />
                         </div>
                         <hr />
                         <div class="alert alert-light">

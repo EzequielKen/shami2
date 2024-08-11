@@ -1995,6 +1995,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_historial_visita_operativa_segun_fecha(string id_sucursal, string año, string mes, string dia)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".historial_evaluacion_chequeo WHERE activa=1 and id_sucursal='" + id_sucursal + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region consultas fabrica a proveedor

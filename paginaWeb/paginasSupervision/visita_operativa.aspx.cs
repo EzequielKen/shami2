@@ -677,5 +677,10 @@ namespace paginaWeb.paginasSupervision
             Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
             habilitar_boton_evaluar();
         }
+
+        protected void boton_historial_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/paginasSupervision/historial_visita_operativa.aspx",false);
+        }
     }
 }

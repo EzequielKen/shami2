@@ -299,6 +299,7 @@
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
     <Content Include="paginasLanding\landing_local.aspx" />
     <Content Include="paginasSupervision\evaluar_visita_operativa.aspx" />
+    <Content Include="paginasSupervision\historial_visita_operativa.aspx" />
     <Content Include="paginasSupervision\subir_foto.aspx" />
     <Content Include="paginasSupervision\visita_operativa.aspx" />
     <Content Include="paginas\asignador_de_cargos.aspx" />
@@ -937,6 +938,13 @@
     </Compile>
     <Compile Include="paginasSupervision\evaluar_visita_operativa.aspx.designer.cs">
       <DependentUpon>evaluar_visita_operativa.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasSupervision\historial_visita_operativa.aspx.cs">
+      <DependentUpon>historial_visita_operativa.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasSupervision\historial_visita_operativa.aspx.designer.cs">
+      <DependentUpon>historial_visita_operativa.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasSupervision\subir_foto.aspx.cs">
       <DependentUpon>subir_foto.aspx</DependentUpon>
