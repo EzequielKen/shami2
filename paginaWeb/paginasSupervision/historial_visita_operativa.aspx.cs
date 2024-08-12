@@ -3,6 +3,7 @@ using _07_sistemas_supervision;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -64,7 +65,7 @@ namespace paginaWeb.paginasSupervision
             llenar_tabla_evaluados();
             gridview_empleados.DataSource = lista_de_evaluados;
             gridview_empleados.DataBind();
-
+            Session.Add("lista_de_evaluados", lista_de_evaluados);
             calcular_promedio_evaluados();
         }
 
@@ -78,6 +79,8 @@ namespace paginaWeb.paginasSupervision
             }
             promedio = suma / lista_de_evaluados.Rows.Count;
             label_promedio_evaluados.Text = "Promedio de puntajes: " + promedio.ToString("0.00");
+            Session.Add("promedio_local", promedio.ToString("0.00"));
+
         }
         #endregion
 
@@ -292,6 +295,7 @@ namespace paginaWeb.paginasSupervision
             gridview_chequeos.DataSource = actividades_evaluadas;
             gridview_chequeos.DataBind();
 
+            string promedio_local = historial.get_total_actividades_evaluadas(actividades_evaluadas);
             label_puntaje_promedio.Text = "Puntaje: " + historial.get_total_actividades_evaluadas(actividades_evaluadas);
         }
         /// <summary>
@@ -332,6 +336,7 @@ namespace paginaWeb.paginasSupervision
 
                 label_fecha.Text = "fecha seleccionada: " + fecha_de_hoy.ToString("dd/MM/yyyy");
                 Session.Add("fecha_historial_chequeo", fecha_de_hoy);
+                Session.Add("fecha_pdf", fecha_de_hoy.ToString("dd/MM/yyyy"));
                 lista_de_evaluadosBD = historial.get_lista_de_evaluados(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
                 historial_evaluacion_chequeo = lista_de_evaluadosBD;
                 Session.Add("historial_evaluacion_chequeo", historial_evaluacion_chequeo);
@@ -341,7 +346,7 @@ namespace paginaWeb.paginasSupervision
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            string id;
+            string id, idHistorial;
             int fila_historial;
             actividades_evaluadas = (DataTable)Session["actividades_evaluadas"];
             for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
@@ -356,7 +361,46 @@ namespace paginaWeb.paginasSupervision
                 {
                     gridview_chequeos.Rows[fila].CssClass = "table-success";
                 }
+
+                // Obtén la ID del historial desde la fila (suponiendo que está en la columna 5)
+                idHistorial =id;
+
+                // Definir las extensiones de archivo que deseas verificar
+                string[] fileExtensions = { ".jpg", ".png", ".gif", ".mp4", ".pdf" };
+
+                // Ruta base donde se almacenan los archivos
+                string folderPath = Server.MapPath("~/FotosSubidas/visitas_operativas/");
+
+                // Variable para guardar si se encontró algún archivo
+                bool fileExists = false;
+
+                // Verificar si existe un archivo con alguna de las extensiones
+                foreach (string extension in fileExtensions)
+                {
+                    string filePath = Path.Combine(folderPath, idHistorial + extension);
+                    if (File.Exists(filePath))
+                    {
+                        fileExists = true;
+                        break; // Si se encuentra el archivo, sal del bucle
+                    }
+                }
+
+                // Configurar el botón o indicador si se encontró un archivo
+                Button botonVerFoto = gridview_chequeos.Rows[fila].Cells[6].FindControl("boton_ver_foto") as Button;
+                if (botonVerFoto != null)
+                {
+                    if (fileExists)
+                    {
+                        botonVerFoto.Visible = true; // Habilitar el botón si el archivo existe
+                    }
+                    else
+                    {
+                        botonVerFoto.Visible = false; // Deshabilitar si no existe
+                    }
+                }
             }
+
+
         }
         protected void boton_historial_Click(object sender, EventArgs e)
         {
@@ -422,6 +466,8 @@ namespace paginaWeb.paginasSupervision
             DateTime fecha = calendario.SelectedDate.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second);
             label_fecha.Text = "fecha seleccionada: " + fecha.ToString("dd/MM/yyyy");
             Session.Add("fecha_historial_chequeo", fecha);
+            Session.Add("fecha_pdf", fecha.ToString("dd/MM/yyyy"));
+
             lista_de_evaluadosBD = historial.get_lista_de_evaluados(sucursal.Rows[0]["id"].ToString(), (DateTime)Session["fecha_historial_chequeo"]);
             historial_evaluacion_chequeo = lista_de_evaluadosBD;
             Session.Add("historial_evaluacion_chequeo", historial_evaluacion_chequeo);
@@ -504,6 +550,29 @@ namespace paginaWeb.paginasSupervision
             cargar_lista_chequeo();
         }
 
+        protected void boton_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " evaluacion lista chequeo - id-" + dato_hora + ".pdf";
+            string ruta = "/paginas/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
 
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            
+            historial.crear_pdf_evaluacion(ruta_archivo, imgdata, (DataTable)Session["lista_de_evaluados"], (DataTable)Session["historial_evaluacion_chequeo"], sucursal.Rows[0]["sucursal"].ToString(), Session["fecha_pdf"].ToString(), Session["promedio_local"].ToString());   
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginas/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
     }
 }

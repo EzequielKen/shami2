@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Xml.Schema;
 using static QuestPDF.Helpers.Colors;
 using static System.Net.Mime.MediaTypeNames;
+using System.Collections;
 
 
 namespace _01___modulos
@@ -2362,7 +2363,7 @@ namespace _01___modulos
                             DateTime fecha_dato = DateTime.Now;
                             string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString();
 
-                            
+
 
                             col.Item().LineHorizontal(0.5f);
 
@@ -2428,6 +2429,259 @@ namespace _01___modulos
             }).GeneratePdf(ruta_archivo);
         }
 
+        public void GenerarPDF_evaluacion_de_chequeo(string ruta_archivo, byte[] logo, DataTable lista_de_evaluados, DataTable historial_evaluacion_chequeo, string sucursal, string fecha, string evaluacion_local)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+            Document.Create(document =>
+            {
+                document.Page(page =>
+                {
+                    page.Margin(30);
+
+                    page.Header().ShowOnce().Row(row =>
+                    {
+
+                        row.ConstantItem(150).Image(logo);
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().AlignCenter().Text("Visita Operativa").FontSize(9);
+                            //col.Item().AlignCenter().Text(telefono_seleccionado).FontSize(9);
+
+                        });
+
+                        row.RelativeItem().Column(col =>
+                        {
+
+                        });
+                    });
+
+                    page.Content().PaddingVertical(10).Column(col =>
+                    {
+
+
+                        //col.Item().AlignCenter().Text(historial_evaluacion_chequeo.Rows[fila_categoria]["area"].ToString()).Bold().FontSize(14);
+
+
+                        //   DateTime fecha_dato = DateTime.Now;
+                        // string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString();
+
+
+
+                        col.Item().LineHorizontal(0.5f);
+
+
+                        col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Sucursal: " + sucursal).Bold().FontSize(14);
+                        col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("Visita Operativa").Bold().FontSize(14).FontColor("#fff");
+                        col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("FECHA: " + fecha).Bold().FontSize(14);
+                        col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("PUNTAJE: " + evaluacion_local).Bold().FontSize(14);
+
+
+                        col.Item().Table(tabla =>
+                        {
+                            tabla.ColumnsDefinition(columns =>
+                            {
+                                columns.ConstantColumn(50);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
+
+                            tabla.Header(header =>
+                            {
+                                header.Cell().Background("#257272").Padding(2).Text("id").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Nombre").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Apellido").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Promedio").FontColor("#fff");
+                            });
+
+                            for (int fila = 0; fila <= lista_de_evaluados.Rows.Count - 1; fila++)
+                            {
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(lista_de_evaluados.Rows[fila]["id"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(lista_de_evaluados.Rows[fila]["nombre"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(lista_de_evaluados.Rows[fila]["apellido"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(lista_de_evaluados.Rows[fila]["promedio"].ToString()).FontSize(10);
+                            }
+                        });
+                        col.Item().LineHorizontal(0.5f);
+
+                        col.Item().Background(Colors.Grey.Lighten3).Padding(10)
+                        .Column(column =>
+                        {
+                            column.Item().Text("Entrega conforme / firma:").FontSize(12);
+                            column.Item().Text("recibe conforme / firma:").FontSize(12);
+                            column.Spacing(20);
+                        });
+
+                        col.Spacing(10);
+                    });
+
+
+                    page.Footer().AlignRight().Text(txt =>
+                    {
+                        txt.Span("pagina ").FontSize(10);
+                        txt.CurrentPageNumber().FontSize(10);
+                        txt.Span(" de ").FontSize(10);
+                        txt.TotalPages().FontSize(10);
+                    });
+                });
+
+                historial_evaluacion_chequeo.DefaultView.Sort = "cargo ASC, orden ASC";
+                historial_evaluacion_chequeo = historial_evaluacion_chequeo.DefaultView.ToTable();
+
+                string id_empleado;
+                string nombre_empleado;
+                string cargo = historial_evaluacion_chequeo.Rows[0]["cargo"].ToString();
+                string cargo_nombre;
+
+
+                for (int fila_evaluado = 0; fila_evaluado <= lista_de_evaluados.Rows.Count - 1; fila_evaluado++)
+                {
+                    DataTable cargos_del_empleado = new DataTable();
+                    cargos_del_empleado.Columns.Add("cargo", typeof(string));
+
+                    id_empleado = lista_de_evaluados.Rows[fila_evaluado]["id"].ToString();
+                    for (int fila_historial = 0; fila_historial <= historial_evaluacion_chequeo.Rows.Count - 1; fila_historial++)
+                    {
+                        if (!funciones.verificar_si_cargo_dato(historial_evaluacion_chequeo.Rows[fila_historial]["cargo"].ToString(), "cargo", cargos_del_empleado) &&
+                            id_empleado == historial_evaluacion_chequeo.Rows[fila_historial]["id_empleado"].ToString())
+                        {
+                            DataRow fila_nueva = cargos_del_empleado.NewRow();
+                            fila_nueva["cargo"] = historial_evaluacion_chequeo.Rows[fila_historial]["cargo"].ToString();
+                            cargos_del_empleado.Rows.Add(fila_nueva);
+                        }
+                    }
+                    nombre_empleado = lista_de_evaluados.Rows[fila_evaluado]["nombre"].ToString() + " " + lista_de_evaluados.Rows[fila_evaluado]["apellido"].ToString();
+                    for (int fila_cargos = 0; fila_cargos <= cargos_del_empleado.Rows.Count - 1; fila_cargos++)
+                    {
+                        cargo = cargos_del_empleado.Rows[fila_cargos]["cargo"].ToString();
+                        cargo_nombre = funciones.obtener_dato(cargo,2);
+                        document.Page(page =>
+                        {
+                            page.Margin(30);
+
+                            page.Header().ShowOnce().Row(row =>
+                            {
+
+                                row.ConstantItem(150).Image(logo);
+
+                                row.RelativeItem().Column(col =>
+                                {
+                                    col.Item().AlignCenter().Text("Visita Operativa").FontSize(9);
+                                    col.Item().AlignCenter().Text(nombre_empleado).FontSize(9);
+
+                                });
+
+                                row.RelativeItem().Column(col =>
+                                {
+
+                                });
+                            });
+
+                            page.Content().PaddingVertical(10).Column(col =>
+                            {
+
+
+                                // col.Item().AlignCenter().Text(historial_evaluacion_chequeo.Rows[fila_evaluado]["area"].ToString()).Bold().FontSize(14);
+
+
+                                DateTime fecha_dato = DateTime.Now;
+                                // string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString();
+
+
+
+                                col.Item().LineHorizontal(0.5f);
+
+
+                                col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Sucursal: " + sucursal).Bold().FontSize(14);
+                                col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Empleado: " + nombre_empleado).Bold().FontSize(14);
+                                col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Cargo: " + cargo_nombre).Bold().FontSize(14);
+                                col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("Visita Operativa").Bold().FontSize(14).FontColor("#fff");
+                                col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("FECHA: " + fecha).Bold().FontSize(14);
+
+
+                                col.Item().Table(tabla =>
+                                {
+                                    tabla.ColumnsDefinition(columns =>
+                                    {
+                                        columns.ConstantColumn(50);
+                                        columns.RelativeColumn();
+                                        columns.RelativeColumn();
+                                        columns.RelativeColumn();
+                                        columns.RelativeColumn();
+                                    });
+
+                                    tabla.Header(header =>
+                                    {
+                                        header.Cell().Background("#257272").Padding(2).Text("id").FontColor("#fff");
+                                        header.Cell().Background("#257272").Padding(2).Text("Actividad").FontColor("#fff");
+                                        header.Cell().Background("#257272").Padding(2).Text("Nota").FontColor("#fff");
+                                        header.Cell().Background("#257272").Padding(2).Text("Punto Teorico").FontColor("#fff");
+                                        header.Cell().Background("#257272").Padding(2).Text("Punto Real").FontColor("#fff");
+
+                                    });
+
+
+
+                                    for (int fila = 0; fila <= historial_evaluacion_chequeo.Rows.Count - 1; fila++)
+                                    {
+                                        if (id_empleado == historial_evaluacion_chequeo.Rows[fila]["id_empleado"].ToString() &&
+                                            cargo == historial_evaluacion_chequeo.Rows[fila]["cargo"].ToString())
+                                        {
+                                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                            .Text(historial_evaluacion_chequeo.Rows[fila]["id"].ToString()).FontSize(10);
+
+                                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                            .Text(historial_evaluacion_chequeo.Rows[fila]["actividad"].ToString()).FontSize(10);
+
+                                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                            .Text(historial_evaluacion_chequeo.Rows[fila]["nota"].ToString()).FontSize(10);
+
+                                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                            .Text(historial_evaluacion_chequeo.Rows[fila]["punto_teorico"].ToString()).FontSize(10);
+
+                                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                            .Text(historial_evaluacion_chequeo.Rows[fila]["punto_real"].ToString()).FontSize(10);
+
+                                        }
+
+                                    }
+                                });
+                                col.Item().LineHorizontal(0.5f);
+
+                                col.Item().Background(Colors.Grey.Lighten3).Padding(10)
+                                .Column(column =>
+                                {
+                                    column.Item().Text("Entrega conforme / firma:").FontSize(12);
+                                    column.Item().Text("recibe conforme / firma:").FontSize(12);
+                                    column.Spacing(20);
+                                });
+
+                                col.Spacing(10);
+                            });
+
+
+                            page.Footer().AlignRight().Text(txt =>
+                            {
+                                txt.Span("pagina ").FontSize(10);
+                                txt.CurrentPageNumber().FontSize(10);
+                                txt.Span(" de ").FontSize(10);
+                                txt.TotalPages().FontSize(10);
+                            });
+                        });
+
+                    }
+                }
+
+            }).GeneratePdf(ruta_archivo);
+        }
         #endregion
 
         private string formatCurrency(object valor)

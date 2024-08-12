@@ -1,4 +1,5 @@
-﻿using modulos;
+﻿using _01___modulos;
+using modulos;
 using paginaWeb;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace _07_sistemas_supervision
         #region atributos
         cls_consultas_Mysql consultas;
         cls_funciones funciones = new cls_funciones();
+        cls_PDF PDF = new cls_PDF();
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
@@ -42,6 +44,13 @@ namespace _07_sistemas_supervision
         DataTable configuracion_de_chequeo;
         DataTable empleado;
         DataTable resumen;
+        #endregion
+
+        #region PDF
+        public void crear_pdf_evaluacion(string ruta_archivo, byte[] logo, DataTable lista_de_evaluados, DataTable historial_evaluacion_chequeo, string sucursal, string fecha, string evaluacion_local)
+        {
+            PDF.GenerarPDF_evaluacion_de_chequeo(ruta_archivo, logo, lista_de_evaluados, historial_evaluacion_chequeo, sucursal, fecha, evaluacion_local);
+        }
         #endregion
         #region carga a base de datos
         public void eliminar_empleado(string id)
@@ -188,6 +197,8 @@ namespace _07_sistemas_supervision
         public DataTable get_lista_de_evaluados(string id_sucursal, DateTime fecha)
         {
             consultar_lista_de_evaluados(id_sucursal, fecha);
+            historial_evaluacion_chequeo.DefaultView.Sort = "cargo ASC,orden ASC";
+            historial_evaluacion_chequeo = historial_evaluacion_chequeo.DefaultView.ToTable();
             //  limpiar_lista_empleados(fecha);
             return historial_evaluacion_chequeo;
         }
@@ -245,7 +256,7 @@ namespace _07_sistemas_supervision
             int cant_cargos = Convert.ToInt32(funciones.obtener_dato(cargos, 1));
             for (int i = 1; i <= cant_cargos; i++)
             {
-                cargo = funciones.obtener_dato(cargos, i+1);
+                cargo = funciones.obtener_dato(cargos, i + 1);
                 puntos = 0;
                 for (int fila = 0; fila <= historial_del_dia.Rows.Count - 1; fila++)
                 {
@@ -269,7 +280,7 @@ namespace _07_sistemas_supervision
         public string get_total_actividades_evaluadas(DataTable actividades_evaluadas)
         {
             double punto_real = 0;
-            for (int fila = 0; fila <= actividades_evaluadas.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= actividades_evaluadas.Rows.Count - 1; fila++)
             {
                 punto_real += double.Parse(actividades_evaluadas.Rows[fila]["punto_real"].ToString());
             }

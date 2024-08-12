@@ -98,7 +98,7 @@ namespace _07_sistemas_supervision
             login.login_empleado(sucursal, empleado.Rows[0]["dni"].ToString());
             return login.get_empleado();
         }
-        public void registrar_chequeo(DataTable empleado, string actividad, string nota, string punto_teorico, string punto_real)
+        public void registrar_chequeo(DataTable empleado, string actividad, string nota, string punto_teorico, string punto_real,string cargo,string orden)
         {
             string columnas = string.Empty;
             string valores = string.Empty;
@@ -116,7 +116,7 @@ namespace _07_sistemas_supervision
             valores = funciones.armar_query_valores(valores, empleado.Rows[0]["apellido"].ToString(), false);
             //cargo
             columnas = funciones.armar_query_columna(columnas, "cargo", false);
-            valores = funciones.armar_query_valores(valores, empleado.Rows[0]["cargo"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, "1-" + cargo, false);
             //fecha
             columnas = funciones.armar_query_columna(columnas, "fecha", false);
             valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
@@ -130,8 +130,11 @@ namespace _07_sistemas_supervision
             columnas = funciones.armar_query_columna(columnas, "punto_teorico", false);
             valores = funciones.armar_query_valores(valores, punto_teorico, false);
             //punto_real
-            columnas = funciones.armar_query_columna(columnas, "punto_real", true);
-            valores = funciones.armar_query_valores(valores, punto_real, true);
+            columnas = funciones.armar_query_columna(columnas, "punto_real", false);
+            valores = funciones.armar_query_valores(valores, punto_real, false);
+            //orden
+            columnas = funciones.armar_query_columna(columnas, "orden", true);
+            valores = funciones.armar_query_valores(valores, orden, true);
             consultas.insertar_en_tabla(base_de_datos, "historial_evaluacion_chequeo", columnas, valores);
         }
         public void actualizar_nota(string id, string nota)
@@ -288,9 +291,9 @@ namespace _07_sistemas_supervision
         {
             empleado = consultas.consultar_empleado(id_empleado);
         }
-        private void consultar_historial(DateTime fecha, string id_empleado, string id_sucursal, string turno)
+        private void consultar_historial(DateTime fecha, string id_empleado, string id_sucursal, string cargo)
         {
-            historial = consultas.consultar_historial_evaluacion_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), id_empleado, id_sucursal, turno);
+            historial = consultas.consultar_historial_evaluacion_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), id_empleado, id_sucursal, cargo);
         }
         private void consultar_historial_turno2(DateTime fecha, string id_empleado, string id_sucursal, string turno)
         {
@@ -366,10 +369,10 @@ namespace _07_sistemas_supervision
         #endregion
 
         #region metodos get/set
-        public DataTable get_historial(DateTime fecha, string turno, string id_empleado, string id_sucursal)
+        public DataTable get_historial(DateTime fecha, string cargo, string id_empleado, string id_sucursal)
         {
-
-            consultar_historial(fecha, id_empleado, id_sucursal, turno);
+            cargo = "1-" + cargo;
+            consultar_historial(fecha, id_empleado, id_sucursal, cargo);
 
 
             llenar_historial_resumen();

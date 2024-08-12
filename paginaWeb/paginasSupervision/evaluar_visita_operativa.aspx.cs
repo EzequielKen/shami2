@@ -31,6 +31,7 @@ namespace paginaWeb.paginasSupervision
             resumenBD.Columns.Add("nota", typeof(string));
             resumenBD.Columns.Add("area", typeof(string));
             resumenBD.Columns.Add("orden", typeof(int));
+            resumenBD.Columns.Add("id_historial", typeof(int));
             Session.Add("resumen_chequeo", resumenBD);
         }
         private void crear_tabla_resumen()
@@ -41,6 +42,7 @@ namespace paginaWeb.paginasSupervision
             resumen.Columns.Add("categoria", typeof(string));
             resumen.Columns.Add("nota", typeof(string));
             resumen.Columns.Add("orden", typeof(int));
+            resumen.Columns.Add("id_historial", typeof(int));
             Session.Add("resumen_chequeo_local", resumen);
         }
         private void llenar_tabla_resumen_local()
@@ -49,6 +51,7 @@ namespace paginaWeb.paginasSupervision
 
             crear_tabla_resumen();
             int ultima_fila;
+            int fila_historial;
             for (int fila = 0; fila <= resumenBD.Rows.Count - 1; fila++)
             {
                 if (resumenBD.Rows[fila]["categoria"].ToString() == dropDown_categoria.SelectedItem.Text)
@@ -58,9 +61,31 @@ namespace paginaWeb.paginasSupervision
                     resumen.Rows[ultima_fila]["id"] = resumenBD.Rows[fila]["id"].ToString();
                     resumen.Rows[ultima_fila]["actividad"] = resumenBD.Rows[fila]["actividad"].ToString();
                     resumen.Rows[ultima_fila]["orden"] = int.Parse(resumenBD.Rows[fila]["orden"].ToString());
+
+                    if (historial_evaluacion.Rows.Count != 0)
+                    {
+                        fila_historial = buscar_fila_historial(resumenBD.Rows[fila]["id"].ToString(), Session["perfil_seleccionado"].ToString(), historial_evaluacion);
+                        resumen.Rows[ultima_fila]["id_historial"] = historial_evaluacion.Rows[fila]["id_historial"].ToString();
+                    }
                 }
             }
             Session.Add("resumen", resumen);
+        }
+        private int buscar_fila_historial(string id, string cargo, DataTable dt)
+        {
+            int retorno = -1;
+            int fila = 0;
+            while (fila <= dt.Rows.Count - 1)
+            {
+                if (id == dt.Rows[fila]["id"].ToString() &&
+                    cargo == dt.Rows[fila]["cargo"].ToString())
+                {
+                    retorno = fila;
+                    break;
+                }
+                fila++;
+            }
+            return retorno;
         }
         private void cargar_actividad_en_resumen(string id)
         {
@@ -336,28 +361,35 @@ namespace paginaWeb.paginasSupervision
         #endregion
         private void cargar_lista_chequeo()
         {
-
-
-            crear_tabla_resumen();
-            llenar_tabla_resumen_local();
-            resumen.DefaultView.Sort = "orden asc";
-            resumen = resumen.DefaultView.ToTable();
-            gridview_chequeos.DataSource = resumen;
-            gridview_chequeos.DataBind();
-
-            registrar_todo();
-            calcular_puntaje();
-            historial_evaluacion = Visita.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
-            historial_evaluacion = (DataTable)Session["historial_evaluacion"];
+           
+            empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
+            historial_evaluacion = Visita.get_historial(DateTime.Now, Session["perfil_seleccionado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
+            //  historial_evaluacion = (DataTable)Session["historial_evaluacion"];
+            Session.Add("historial_evaluacion", historial_evaluacion);
             if (historial_evaluacion.Rows.Count == 0)
             {
+                crear_tabla_resumen();
+                llenar_tabla_resumen_local();
+                registrar_todo();
                 cargar_lista_chequeo();
             }
+            else
+            {
+                historial_evaluacion = (DataTable)Session["historial_evaluacion"];
+                crear_tabla_resumen();
+                llenar_tabla_resumen_local();
+                resumen.DefaultView.Sort = "orden asc";
+                resumen = resumen.DefaultView.ToTable();
+                gridview_chequeos.DataSource = resumen;
+                gridview_chequeos.DataBind();
+
+                calcular_puntaje();
+            }
         }
-        private void registrar_chequeo(string id_actividad, string nota, string punto_teorico, string punto_real)
+        private void registrar_chequeo(string id_actividad, string nota, string punto_teorico, string punto_real, string orden)
         {
             string actividad = id_actividad;//+ "-" + actividad;
-            Visita.registrar_chequeo(empleado_lista_chequeo, actividad, nota, punto_teorico, punto_real);
+            Visita.registrar_chequeo((DataTable)Session["empleado_lista_chequeo"], actividad, nota, punto_teorico, punto_real, Session["perfil_seleccionado"].ToString(), orden);
         }
         private void modificar_chequeo(string id_actividad_historial, string punto_real)
         {
@@ -376,10 +408,11 @@ namespace paginaWeb.paginasSupervision
                 int fila_actividad = funciones.buscar_fila_por_id(id_actividad, lista_de_chequeoBD);
                 int fila_historial = funciones.buscar_fila_por_id(id_actividad, historial_evaluacion);
                 string punto_teorico = lista_de_chequeoBD.Rows[fila_actividad]["punto"].ToString();
+                string orden = lista_de_chequeoBD.Rows[fila_actividad]["orden"].ToString();
                 string punto_real = punto_teorico;
                 if (fila_historial == -1)
                 {
-                    registrar_chequeo(id_actividad, nota, punto_teorico, punto_real);
+                    registrar_chequeo(id_actividad, nota, punto_teorico, punto_real, orden);
                 }
             }
 
@@ -432,14 +465,23 @@ namespace paginaWeb.paginasSupervision
             usuariosBD_lista_chequeo = (DataTable)Session["usuariosBD_lista_chequeo"];
             Visita = new cls_evaluar_visita_operativa(usuariosBD_lista_chequeo);
 
+            int fila;
             if (!IsPostBack)
             {
                 configurar_control_empleados();
                 lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
-                int fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
+                fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
                 Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
                 Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
+                empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
+                Session.Add("id_empleado_lista_chequeo", empleado_lista_chequeo.Rows[0]["id"].ToString());
             }
+            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
+            fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
+            Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
+
+            Session.Remove("empleado_lista_chequeo");
+            Session.Add("empleado_lista_chequeo", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
 
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
             sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
@@ -461,13 +503,14 @@ namespace paginaWeb.paginasSupervision
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            string idHistorial;
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 // Obtener la información del empleado desde la sesión
                 empleado_lista_chequeo = (DataTable)Session["empleado"];
                 historial_evaluacion = Visita.get_historial(
                     DateTime.Now,
-                    empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(),
+                    Session["perfil_seleccionado"].ToString(),
                     empleado_lista_chequeo.Rows[0]["id"].ToString(),
                     empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString()
                 );
@@ -485,7 +528,7 @@ namespace paginaWeb.paginasSupervision
                     Button boton_cargar = e.Row.FindControl("boton_cargar") as Button;
                     HiddenField hiddenHistorialId = e.Row.FindControl("hiddenHistorialId") as HiddenField;
                     FileUpload fileUploadFoto = e.Row.FindControl("fileUpload_foto") as FileUpload;
-                    Button btnSubirFoto = e.Row.FindControl("btnSubirFoto") as Button;
+                    LinkButton btnSubirFoto = (LinkButton)e.Row.FindControl("btnSubirFoto");
 
                     // Actualizar el estado del botón 'Cargar'
                     if (historial_evaluacion.Rows[fila_historial]["punto_real"].ToString() != "0")
@@ -510,9 +553,14 @@ namespace paginaWeb.paginasSupervision
                     }
 
                     // Configurar otros campos en la fila del GridView
-                    e.Row.Cells[5].Text = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
+                    //  e.Row.Cells[5].Text = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
                     e.Row.Cells[6].Text = historial_evaluacion.Rows[fila_historial]["punto_teorico"].ToString();
                     e.Row.Cells[7].Text = historial_evaluacion.Rows[fila_historial]["punto_real"].ToString();
+
+                    idHistorial = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString(); // Suponiendo que id_historial está en la tercera columna (índice 2)
+
+                    // Asignar la URL de destino con el id_historial
+                    btnSubirFoto.PostBackUrl = $"subir_foto.aspx?id={idHistorial}&returnUrl={HttpUtility.UrlEncode(Request.RawUrl)}";
 
                     // Configurar el HiddenField con id_historial
                     if (hiddenHistorialId != null)
@@ -530,6 +578,42 @@ namespace paginaWeb.paginasSupervision
                     if (btnSubirFoto != null && fileUploadFoto != null)
                     {
                         btnSubirFoto.OnClientClick = $"document.getElementById('{fileUploadFoto.ClientID}').click(); return false;";
+                    }
+                }
+                // Obtén la ID del historial desde la fila (suponiendo que está en la columna 5)
+                idHistorial = historial_evaluacion.Rows[fila_historial]["id_historial"].ToString();
+
+                // Definir las extensiones de archivo que deseas verificar
+                string[] fileExtensions = { ".jpg", ".png", ".gif", ".mp4", ".pdf" };
+
+                // Ruta base donde se almacenan los archivos
+                string folderPath = Server.MapPath("~/FotosSubidas/visitas_operativas/");
+
+                // Variable para guardar si se encontró algún archivo
+                bool fileExists = false;
+
+                // Verificar si existe un archivo con alguna de las extensiones
+                foreach (string extension in fileExtensions)
+                {
+                    string filePath = Path.Combine(folderPath, idHistorial + extension);
+                    if (File.Exists(filePath))
+                    {
+                        fileExists = true;
+                        break; // Si se encuentra el archivo, sal del bucle
+                    }
+                }
+
+                // Configurar el botón o indicador si se encontró un archivo
+                LinkButton botonVerFoto = e.Row.FindControl("boton_ver_foto") as LinkButton;
+                if (botonVerFoto != null)
+                {
+                    if (fileExists)
+                    {
+                        botonVerFoto.Visible = true; // Habilitar el botón si el archivo existe
+                    }
+                    else
+                    {
+                        botonVerFoto.Visible = false; // Deshabilitar si no existe
                     }
                 }
             }
@@ -878,7 +962,9 @@ namespace paginaWeb.paginasSupervision
             lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
             int fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
             Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
-            Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
+
+            Session.Remove("empleado_lista_chequeo");
+            Session.Add("empleado_lista_chequeo", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
 
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
             sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
@@ -888,6 +974,7 @@ namespace paginaWeb.paginasSupervision
             }
             lista_de_chequeoBD = Visita.get_lista_de_chequeo();
 
+            Session.Add("id_empleado_lista_chequeo", empleado_lista_chequeo.Rows[0]["id"].ToString());
             string nombre = empleado_lista_chequeo.Rows[0]["nombre"].ToString();
             string apellido = empleado_lista_chequeo.Rows[0]["apellido"].ToString();
             string cargos = empleado_lista_chequeo.Rows[0]["cargo"].ToString();
@@ -943,7 +1030,26 @@ namespace paginaWeb.paginasSupervision
             }
         }
 
+        protected void boton_ver_foto_Click(object sender, EventArgs e)
+        {
+            // Obtén el botón que disparó el evento
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int fila = row.RowIndex;
 
 
+            // Obtén la ID del historial desde el CommandArgument del botón
+            string idHistorial = gridview_chequeos.Rows[fila].Cells[5].Text;
+
+            // Guarda la ID en el HiddenField
+            hiddenFieldHistorialID.Value = idHistorial;
+
+            // Registra un script para abrir el modal y pasar la ID del historial
+            string script = $"openModal('{idHistorial}');";
+
+            // Ejecuta el script
+            ScriptManager.RegisterStartupScript(this, GetType(), "OpenFotoModal", script, true);
+
+        }
     }
 }
