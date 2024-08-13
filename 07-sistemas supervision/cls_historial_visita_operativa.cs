@@ -44,12 +44,13 @@ namespace _07_sistemas_supervision
         DataTable configuracion_de_chequeo;
         DataTable empleado;
         DataTable resumen;
+        DataTable observacion;
         #endregion
 
         #region PDF
-        public void crear_pdf_evaluacion(string ruta_archivo, byte[] logo, DataTable lista_de_evaluados, DataTable historial_evaluacion_chequeo, string sucursal, string fecha, string evaluacion_local)
+        public void crear_pdf_evaluacion(string ruta_archivo, byte[] logo, DataTable lista_de_evaluados, DataTable historial_evaluacion_chequeo, string sucursal, string fecha, string evaluacion_local,string observacion)
         {
-            PDF.GenerarPDF_evaluacion_de_chequeo(ruta_archivo, logo, lista_de_evaluados, historial_evaluacion_chequeo, sucursal, fecha, evaluacion_local);
+            PDF.GenerarPDF_evaluacion_de_chequeo(ruta_archivo, logo, lista_de_evaluados, historial_evaluacion_chequeo, sucursal, fecha, evaluacion_local, observacion);
         }
         #endregion
         #region carga a base de datos
@@ -57,6 +58,31 @@ namespace _07_sistemas_supervision
         {
             string actualizar = "`id_sucursal` = 'N/A'";
             consultas.actualizar_tabla(base_de_datos, "lista_de_empleado", actualizar, id);
+        }
+
+        public void actualizar_observaciones(string id, string texto)
+        {
+            string actualizar = "`observacion` = '"+texto+"'";
+            consultas.actualizar_tabla(base_de_datos, "observaciones_visita_operativa", actualizar, id);
+        }
+
+        public void crear_observacion(DataTable sucursal, DateTime fecha, string observacion)
+        {
+            string columna = "";
+            string valores = "";
+            columna = funciones.armar_query_columna(columna,"id_sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["id"].ToString(), false);
+
+            columna = funciones.armar_query_columna(columna, "sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["sucursal"].ToString(), false);
+
+            columna = funciones.armar_query_columna(columna, "fecha", false);
+            valores = funciones.armar_query_valores(valores, fecha.Year.ToString() + "-" + fecha.Month.ToString() + "-" + fecha.Day.ToString(), false);
+
+            columna = funciones.armar_query_columna(columna, "observacion", true);
+            valores = funciones.armar_query_valores(valores, observacion, true);
+
+            consultas.insertar_en_tabla(base_de_datos, "observaciones_visita_operativa", columna, valores);
         }
         #endregion
         #region metodos privados
@@ -171,6 +197,10 @@ namespace _07_sistemas_supervision
         }
         #endregion
         #region metodos consultas
+        private void consultar_observaciones(string id_sucursal, DateTime fecha)
+        {
+            observacion = consultas.consultar_observaciones_visita_operativa_segun_fecha(id_sucursal,fecha.Year.ToString(),fecha.Month.ToString(),fecha.Day.ToString());
+        }
         private void consultar_empleado(string id_empleado)
         {
             empleado = consultas.consultar_empleado(id_empleado);
@@ -189,6 +219,11 @@ namespace _07_sistemas_supervision
         }
         #endregion
         #region metodos get/set
+        public DataTable get_observaciones(string id_sucursal, DateTime fecha)
+        {
+            consultar_observaciones(id_sucursal, fecha);
+            return observacion;
+        }
         public DataTable get_empleado(string id_empleado)
         {
             consultar_empleado(id_empleado);

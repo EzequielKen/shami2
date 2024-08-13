@@ -32,10 +32,9 @@ namespace paginaWeb.paginasFabrica
                 textbox_mes.Text != string.Empty &&
                 textbox_año.Text != string.Empty)
             {
-                retorno = textbox_año.Text + "-" + textbox_mes.Text + "-" + textbox_dia.Text;
+                retorno = textbox_año.Text + "-" + textbox_mes.Text + "-" + textbox_dia.Text + " "+ DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString() + ":" + DateTime.Now.Second.ToString();
                 DateTime fecha = DateTime.Parse(retorno);
 
-                fecha = fecha.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second);
                 retorno = fecha.ToString("yyyy-MM-dd hh-mm-ss");
             }
             return retorno;
@@ -405,7 +404,11 @@ namespace paginaWeb.paginasFabrica
             }
             // gridview_pedido.Columns[7].Visible = false;//6
             //  gridview_pedido.Columns[8].Visible = false;//7
-
+            if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Administrativo" ||
+                    tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Compras")
+            {
+                gridview_pedido.Columns[3].Visible = false;//5 
+            }
             if (Session["historial_orden"] == null)
             {
                 Session.Add("historial_orden", new cls_historial_orden_de_compras(usuariosBD));

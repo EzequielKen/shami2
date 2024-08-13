@@ -459,6 +459,8 @@ namespace paginaWeb.paginasFabrica
         {
             for (int fila = 0; fila <= gridView_ordenes.Rows.Count - 1; fila++)
             {
+                
+
                 if ("Recibido" == gridView_ordenes.Rows[fila].Cells[7].Text)
                 {
                     gridView_ordenes.Rows[fila].Cells[8].Controls[0].Visible = false;

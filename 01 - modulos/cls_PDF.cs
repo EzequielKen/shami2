@@ -2429,7 +2429,7 @@ namespace _01___modulos
             }).GeneratePdf(ruta_archivo);
         }
 
-        public void GenerarPDF_evaluacion_de_chequeo(string ruta_archivo, byte[] logo, DataTable lista_de_evaluados, DataTable historial_evaluacion_chequeo, string sucursal, string fecha, string evaluacion_local)
+        public void GenerarPDF_evaluacion_de_chequeo(string ruta_archivo, byte[] logo, DataTable lista_de_evaluados, DataTable historial_evaluacion_chequeo, string sucursal, string fecha, string evaluacion_local,string observacion)
         {
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
@@ -2510,6 +2510,9 @@ namespace _01___modulos
                                 .Text(lista_de_evaluados.Rows[fila]["promedio"].ToString()).FontSize(10);
                             }
                         });
+
+                        col.Item().AlignCenter().Text(observacion).FontSize(15).Bold();
+
                         col.Item().LineHorizontal(0.5f);
 
                         col.Item().Background(Colors.Grey.Lighten3).Padding(10)

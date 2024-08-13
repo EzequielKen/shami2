@@ -298,6 +298,27 @@ namespace paginaWeb.paginasSupervision
             string promedio_local = historial.get_total_actividades_evaluadas(actividades_evaluadas);
             label_puntaje_promedio.Text = "Puntaje: " + historial.get_total_actividades_evaluadas(actividades_evaluadas);
         }
+        private void primeras_ejecuciones()
+        {
+            label_fecha.Text = "fecha seleccionada: " + fecha_de_hoy.ToString("dd/MM/yyyy");
+            Session.Add("fecha_historial_chequeo", fecha_de_hoy);
+            Session.Add("fecha_pdf", fecha_de_hoy.ToString("dd/MM/yyyy"));
+            observaciones = historial.get_observaciones(sucursal.Rows[0]["id"].ToString(), DateTime.Now);
+            Session.Add("observaciones", observaciones);
+            if (observaciones.Rows.Count != 0)
+            {
+                textbox_observaciones.Text = observaciones.Rows[0]["observacion"].ToString();
+
+            }
+            else
+            {
+                textbox_observaciones.Text = "";
+            }
+            lista_de_evaluadosBD = historial.get_lista_de_evaluados(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
+            historial_evaluacion_chequeo = lista_de_evaluadosBD;
+            Session.Add("historial_evaluacion_chequeo", historial_evaluacion_chequeo);
+            cargar_lista_evaluados();
+        }
         /// <summary>
         /// ////////////////////////////////////////////////////////////
         /// </summary>
@@ -315,7 +336,7 @@ namespace paginaWeb.paginasSupervision
         DataTable resumenBD;
         DataTable resumen;
         DataTable historial_chequeo;
-
+        DataTable observaciones;
         DateTime fecha_de_hoy = DateTime.Now;
 
         string tipo_seleccionado;
@@ -333,14 +354,18 @@ namespace paginaWeb.paginasSupervision
             lista_de_chequeoBD = historial.get_lista_de_chequeo();
             if (!IsPostBack)
             {
+                if (Session["fecha_pdf"] == null)
+                {
+                    primeras_ejecuciones();
+                }
+                else
+                {
+                    if (Session["fecha_pdf"].ToString() == fecha_de_hoy.ToString("dd/MM/yyyy"))
+                    {
+                        primeras_ejecuciones();
+                    }
+                }
 
-                label_fecha.Text = "fecha seleccionada: " + fecha_de_hoy.ToString("dd/MM/yyyy");
-                Session.Add("fecha_historial_chequeo", fecha_de_hoy);
-                Session.Add("fecha_pdf", fecha_de_hoy.ToString("dd/MM/yyyy"));
-                lista_de_evaluadosBD = historial.get_lista_de_evaluados(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
-                historial_evaluacion_chequeo = lista_de_evaluadosBD;
-                Session.Add("historial_evaluacion_chequeo", historial_evaluacion_chequeo);
-                cargar_lista_evaluados();
             }
         }
 
@@ -353,7 +378,7 @@ namespace paginaWeb.paginasSupervision
             {
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
                 fila_historial = funciones.buscar_fila_por_id(id, actividades_evaluadas);
-                if (actividades_evaluadas.Rows[fila]["punto_real"].ToString()=="0")
+                if (actividades_evaluadas.Rows[fila]["punto_real"].ToString() == "0")
                 {
                     gridview_chequeos.Rows[fila].CssClass = "table-danger";
                 }
@@ -363,7 +388,7 @@ namespace paginaWeb.paginasSupervision
                 }
 
                 // Obtén la ID del historial desde la fila (suponiendo que está en la columna 5)
-                idHistorial =id;
+                idHistorial = id;
 
                 // Definir las extensiones de archivo que deseas verificar
                 string[] fileExtensions = { ".jpg", ".png", ".gif", ".mp4", ".pdf" };
@@ -468,6 +493,17 @@ namespace paginaWeb.paginasSupervision
             Session.Add("fecha_historial_chequeo", fecha);
             Session.Add("fecha_pdf", fecha.ToString("dd/MM/yyyy"));
 
+            observaciones = historial.get_observaciones(sucursal.Rows[0]["id"].ToString(), fecha);
+            Session.Add("observaciones", observaciones);
+            if (observaciones.Rows.Count != 0)
+            {
+                textbox_observaciones.Text = observaciones.Rows[0]["observacion"].ToString();
+
+            }
+            else
+            {
+                textbox_observaciones.Text = "";
+            }
             lista_de_evaluadosBD = historial.get_lista_de_evaluados(sucursal.Rows[0]["id"].ToString(), (DateTime)Session["fecha_historial_chequeo"]);
             historial_evaluacion_chequeo = lista_de_evaluadosBD;
             Session.Add("historial_evaluacion_chequeo", historial_evaluacion_chequeo);
@@ -559,8 +595,20 @@ namespace paginaWeb.paginasSupervision
             string ruta_archivo = Server.MapPath(ruta);
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
-            
-            historial.crear_pdf_evaluacion(ruta_archivo, imgdata, (DataTable)Session["lista_de_evaluados"], (DataTable)Session["historial_evaluacion_chequeo"], sucursal.Rows[0]["sucursal"].ToString(), Session["fecha_pdf"].ToString(), Session["promedio_local"].ToString());   
+
+            observaciones = (DataTable)Session["observaciones"];
+            string observacion;
+            if (observaciones.Rows.Count != 0)
+            {
+                observacion = observaciones.Rows[0]["observacion"].ToString();
+
+            }
+            else
+            {
+                observacion = "";
+            }
+
+            historial.crear_pdf_evaluacion(ruta_archivo, imgdata, (DataTable)Session["lista_de_evaluados"], (DataTable)Session["historial_evaluacion_chequeo"], sucursal.Rows[0]["sucursal"].ToString(), Session["fecha_pdf"].ToString(), Session["promedio_local"].ToString(), observacion);
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
             try
@@ -573,6 +621,26 @@ namespace paginaWeb.paginasSupervision
 
                 Response.Redirect(strUrl, false);
             }
+        }
+
+        protected void textbox_observaciones_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_observaciones = (TextBox)sender;
+
+            observaciones = (DataTable)Session["observaciones"];
+
+            if (observaciones.Rows.Count != 0)
+            {
+                string id_observacion = observaciones.Rows[0]["id"].ToString();
+
+                historial.actualizar_observaciones(id_observacion, textbox_observaciones.Text);
+            }
+            else
+            {
+                historial.crear_observacion(sucursal, (DateTime)Session["fecha_historial_chequeo"], textbox_observaciones.Text);
+            }
+
+
         }
     }
 }

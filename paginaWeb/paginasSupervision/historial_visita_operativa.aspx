@@ -97,6 +97,7 @@
                     <asp:Button id="boton_pdf" Text="PDF" CssClass="btn btn-success" OnClick="boton_pdf_Click" runat="server" />
                         </div>
                     </div>
+                    <asp:TextBox ID="textbox_observaciones" CssClass="form-control" TextMode="MultiLine" runat="server" OnTextChanged="textbox_observaciones_TextChanged" />
                     <asp:GridView Caption="LISTA DE EVALUADOS" CaptionAlign="Top" runat="server" ID="gridview_empleados" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_empleados_RowDataBound">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />

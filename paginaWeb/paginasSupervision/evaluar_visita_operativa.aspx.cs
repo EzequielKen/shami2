@@ -499,6 +499,15 @@ namespace paginaWeb.paginasSupervision
 
             configurar_botones_cargos(cargos);
 
+            if (Session["perfil_seleccionado"].ToString()!="N/A" &&
+                !IsPostBack)
+            {
+                configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+                configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+                llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+                configurar_controles();
+                cargar_lista_chequeo();
+            }
         }
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
