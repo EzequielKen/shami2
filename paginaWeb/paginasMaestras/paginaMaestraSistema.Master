@@ -193,6 +193,7 @@
                             <li><a class="dropdown-item" href="/paginas/administrar_tabla_produccion.aspx">Administrar Tabla de Produccion</a></li>
                             <li><a class="dropdown-item" href="/paginas/lista_de_faltantes.aspx">Lista de Faltantes</a></li>
                             <li><a class="dropdown-item" href="/paginas/desperdicio_merma.aspx">Desperdicio y Merma</a></li>
+                            <li><a class="dropdown-item" href="/paginas/historial_desperdicio_merma.aspx">Historial Desperdicio y Merma</a></li>
                         </ul>
                     </li>
                     <%    } %>

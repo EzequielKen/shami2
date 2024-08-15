@@ -313,6 +313,7 @@
     <Content Include="paginas\desperdicio_merma.aspx" />
     <Content Include="paginas\estadisticas_de_pedido.aspx" />
     <Content Include="paginas\historial_consumo_personal.aspx" />
+    <Content Include="paginas\historial_desperdicio_merma.aspx" />
     <Content Include="paginas\historial_lista_chequeo.aspx" />
     <Content Include="paginas\historial_pedido.aspx" />
     <Content Include="paginas\horario_de_empleado.aspx" />
@@ -1036,6 +1037,13 @@
     </Compile>
     <Compile Include="paginas\historial_consumo_personal.aspx.designer.cs">
       <DependentUpon>historial_consumo_personal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\historial_desperdicio_merma.aspx.cs">
+      <DependentUpon>historial_desperdicio_merma.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\historial_desperdicio_merma.aspx.designer.cs">
+      <DependentUpon>historial_desperdicio_merma.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\historial_lista_chequeo.aspx.cs">
       <DependentUpon>historial_lista_chequeo.aspx</DependentUpon>
