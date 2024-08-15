@@ -310,6 +310,7 @@
     <Content Include="paginas\calendario_de_entrega.aspx" />
     <Content Include="paginas\comida_empleados.aspx" />
     <Content Include="paginas\cuentas_por_pagar.aspx" />
+    <Content Include="paginas\desperdicio_merma.aspx" />
     <Content Include="paginas\estadisticas_de_pedido.aspx" />
     <Content Include="paginas\historial_consumo_personal.aspx" />
     <Content Include="paginas\historial_lista_chequeo.aspx" />
@@ -1015,6 +1016,13 @@
     </Compile>
     <Compile Include="paginas\cuentas_por_pagar.aspx.designer.cs">
       <DependentUpon>cuentas_por_pagar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\desperdicio_merma.aspx.cs">
+      <DependentUpon>desperdicio_merma.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\desperdicio_merma.aspx.designer.cs">
+      <DependentUpon>desperdicio_merma.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\estadisticas_de_pedido.aspx.cs">
       <DependentUpon>estadisticas_de_pedido.aspx</DependentUpon>
