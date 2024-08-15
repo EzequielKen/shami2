@@ -42,6 +42,43 @@ namespace _02___sistemas
         DataTable insumos;
         #endregion
 
+        #region carga a base de datos
+        public void registrar_merma_desperdicio(DataTable sucursal, DataTable producto, int fila_producto, string cantidad,string nota,string proveedor,string categoria)
+        {
+            string columna="";
+            string valor="";
+            //id_sucursal
+            columna = funciones.armar_query_columna(columna, "id_sucursal",false);
+            valor = funciones.armar_query_valores(valor, sucursal.Rows[0]["id"].ToString(), false);
+            //sucursal
+            columna = funciones.armar_query_columna(columna, "sucursal", false);
+            valor = funciones.armar_query_valores(valor, sucursal.Rows[0]["sucursal"].ToString(), false);
+            //fecha
+            columna = funciones.armar_query_columna(columna, "fecha", false);
+            valor = funciones.armar_query_valores(valor, funciones.get_fecha(), false);
+            //id_producto
+            columna = funciones.armar_query_columna(columna, "id_producto", false);
+            valor = funciones.armar_query_valores(valor, producto.Rows[fila_producto]["id"].ToString(), false);
+            //producto
+            columna = funciones.armar_query_columna(columna, "producto", false);
+            valor = funciones.armar_query_valores(valor, producto.Rows[fila_producto]["producto"].ToString(), false);
+            //cantidad
+            columna = funciones.armar_query_columna(columna, "cantidad", false);
+            valor = funciones.armar_query_valores(valor, cantidad, false);
+            //nota
+            columna = funciones.armar_query_columna(columna, "nota", false);
+            valor = funciones.armar_query_valores(valor, nota, false);
+            //proveedor
+            columna = funciones.armar_query_columna(columna, "proveedor", false);
+            valor = funciones.armar_query_valores(valor, proveedor, false);
+            //categoria
+            columna = funciones.armar_query_columna(columna, "categoria", true);
+            valor = funciones.armar_query_valores(valor, categoria, true);
+
+            consultas.insertar_en_tabla(base_de_datos, "desperdicio_merma_local", columna, valor);
+        }
+        #endregion
+
         #region metodos consultas
         private void consultar_productos_terminados()
         {

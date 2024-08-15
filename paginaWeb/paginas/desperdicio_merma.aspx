@@ -12,12 +12,18 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-header">
+                                <h3>
+                                    Categoría
+                                </h3>
                                 <asp:DropDownList ID="dropdown_categoria" CssClass="form-control" OnSelectedIndexChanged="dropdown_categoria_SelectedIndexChanged" runat="server" AutoPostBack="true">
                                     <asp:ListItem Text="Desperdicio" />
                                     <asp:ListItem Text="Merma" />
                                 </asp:DropDownList>
                             </div>
                             <div class="card-body">
+                                <h3>
+                                    Tipo Producto
+                                </h3>
                                 <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" runat="server" AutoPostBack="true">
                                 </asp:DropDownList>
                                 <asp:GridView ID="gridview_productos" runat="server" AutoGenerateColumns="False" CssClass="table table-striped table-hover">
@@ -26,7 +32,7 @@
                                         <asp:BoundField DataField="producto" HeaderText="producto" />
                                         <asp:TemplateField HeaderText="cantidad">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="textbox_cantidad" CssClass=" form-control" runat="server" CommandArgument='<%# Container.DataItemIndex %>' />
+                                                <asp:TextBox ID="textbox_cantidad" CssClass=" form-control" runat="server" OnTextChanged="textbox_cantidad_TextChanged" CommandArgument='<%# Container.DataItemIndex %>' AutoPostBack="true" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="nota">
