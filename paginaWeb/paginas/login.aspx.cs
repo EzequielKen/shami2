@@ -163,24 +163,41 @@ namespace paginaWeb
 
         private void borrar_pdf()
         {
+            string[] files;
             string directorio = Server.MapPath("~/paginas/pdf");
             string extension = ".pdf";
-            string[] files = Directory.GetFiles(directorio, "*" + extension);
-            foreach (string file in files)
+            directorio = Server.MapPath("~/paginas/pdf");
+            if (Directory.Exists(directorio))
             {
-                if (File.Exists(file))
+                files = Directory.GetFiles(directorio, "*.pdf");
+                foreach (string file in files)
                 {
-                    File.Delete(file);
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                    }
+                }
+                foreach (string file in files)
+                {
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                    }
                 }
             }
+
             directorio = Server.MapPath("~/paginasFabrica/pdf");
             extension = ".pdf";
-            files = Directory.GetFiles(directorio, "*" + extension);
-            foreach (string file in files)
+            if (Directory.Exists(directorio))
             {
-                if (File.Exists(file))
+                files = Directory.GetFiles(directorio, "*.pdf");
+
+                foreach (string file in files)
                 {
-                    File.Delete(file);
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                    }
                 }
             }
         }
