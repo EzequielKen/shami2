@@ -88,7 +88,6 @@ namespace modulos
             {
                 if (id_sucursal == "17" ||
                     id_sucursal == "18" ||
-                    id_sucursal == "19" ||
                     id_sucursal == "22" )
                 {
                     productos_proveedor = consultas.consultar_insumos_fabrica_venta_vip(base_de_datos, proveedor_seleccionado);
@@ -103,7 +102,8 @@ namespace modulos
                     productos_proveedor = consultas.consultar_insumos_fabrica_fatay(base_de_datos, "insumos_fabrica");
 
                 }
-                else if (id_sucursal == "28")
+                else if (id_sucursal == "28" ||
+                         id_sucursal == "19")
                 {
                     productos_proveedor = consultas.consultar_insumos_fabrica_venta_nivel4(base_de_datos, "insumos_fabrica");
 

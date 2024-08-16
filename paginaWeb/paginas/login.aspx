@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraLogin.Master" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="paginaWeb.login" %>
+﻿<%@ Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraLogin.Master" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="paginaWeb.login" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <main class="form-signin w-100 m-auto ">
-
+        <h3>.</h3>
         <img class="mb-4" src="/imagenes/logo-completo.png" alt="" width="200">
         <h1 class="h3 mb-3 fw-normal text-white">Por favor, ingrese.</h1>
 

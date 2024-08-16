@@ -82,7 +82,7 @@ namespace _02___sistemas
         #region metodos consultas
         private void consultar_productos_terminados()
         {
-            productos_terminados = consultas.consultar_tabla(base_de_datos, "proveedor_villamaipu");
+            productos_terminados = consultas.consultar_producto_terminado_venta(base_de_datos, "proveedor_villamaipu");
         }
 
         private void consultar_insumos()

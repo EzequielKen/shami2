@@ -167,16 +167,13 @@ namespace paginaWeb
             string directorio = Server.MapPath("~/paginas/pdf");
             string extension = ".pdf";
             directorio = Server.MapPath("~/paginas/pdf");
+            if (!Directory.Exists(directorio))
+            {
+                Directory.CreateDirectory(directorio);
+            }
             if (Directory.Exists(directorio))
             {
                 files = Directory.GetFiles(directorio, "*.pdf");
-                foreach (string file in files)
-                {
-                    if (File.Exists(file))
-                    {
-                        File.Delete(file);
-                    }
-                }
                 foreach (string file in files)
                 {
                     if (File.Exists(file))
@@ -188,6 +185,10 @@ namespace paginaWeb
 
             directorio = Server.MapPath("~/paginasFabrica/pdf");
             extension = ".pdf";
+            if (!Directory.Exists(directorio))
+            {
+                Directory.CreateDirectory(directorio);
+            }
             if (Directory.Exists(directorio))
             {
                 files = Directory.GetFiles(directorio, "*.pdf");
