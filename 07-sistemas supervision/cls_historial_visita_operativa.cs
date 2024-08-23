@@ -166,6 +166,7 @@ namespace _07_sistemas_supervision
             resumen.Columns.Add("nota", typeof(string));
             resumen.Columns.Add("punto_teorico", typeof(string));
             resumen.Columns.Add("punto_real", typeof(string));
+            resumen.Columns.Add("url_fotos", typeof(string));
         }
         private void llenar_resumen(DataTable empleado_historial, string perfil)
         {
@@ -173,6 +174,15 @@ namespace _07_sistemas_supervision
             string id_empleado = empleado_historial.Rows[0]["id"].ToString();
             string cargo;
             int ultima_fila;
+            string folderPath;
+            if ("1" == ConfigurationManager.AppSettings["desarrollo"])
+            {
+                folderPath = @ConfigurationManager.AppSettings["folderPath_desarrollo"];
+            }
+            else
+            {
+                folderPath = @ConfigurationManager.AppSettings["folderPath"];
+            }
             for (int fila = 0; fila <= historial_evaluacion_chequeo.Rows.Count - 1; fila++)
             {
                 cargo = funciones.obtener_dato(historial_evaluacion_chequeo.Rows[fila]["cargo"].ToString(), 2);
@@ -191,7 +201,8 @@ namespace _07_sistemas_supervision
                     resumen.Rows[ultima_fila]["actividad"] = historial_evaluacion_chequeo.Rows[fila]["actividad"].ToString();
                     resumen.Rows[ultima_fila]["nota"] = historial_evaluacion_chequeo.Rows[fila]["nota"].ToString();
                     resumen.Rows[ultima_fila]["punto_teorico"] = historial_evaluacion_chequeo.Rows[fila]["punto_teorico"].ToString();
-                    resumen.Rows[ultima_fila]["punto_real"] = historial_evaluacion_chequeo.Rows[fila]["punto_real"].ToString();
+                    resumen.Rows[ultima_fila]["punto_real"] = historial_evaluacion_chequeo.Rows[fila]["punto_real"].ToString(); 
+                    resumen.Rows[ultima_fila]["url_fotos"] = folderPath; 
                 }
             }
         }

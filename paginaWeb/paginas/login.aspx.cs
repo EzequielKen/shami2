@@ -50,7 +50,7 @@ namespace paginaWeb
                 sucursal = login_sistema.get_sucursal();
                 if ("1" == ConfigurationManager.AppSettings["desarrollo"])
                 {
-                    usuarioBD.Rows[0]["servidor"] = "201.235.217.38";
+                    usuarioBD.Rows[0]["servidor"] = "181.90.159.14";
                 }
                 Session.Add("sucursal", sucursal);
                 Session.Add("usuariosBD", usuarioBD);

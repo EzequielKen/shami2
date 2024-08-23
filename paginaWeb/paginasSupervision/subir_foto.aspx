@@ -12,7 +12,7 @@
             const previewVideo = document.getElementById('previewVideo');
             const file = fileUpload.files[0];
             const reader = new FileReader();
-
+    
             if (file) {
                 reader.onloadend = function () {
                     const fileType = file.type.split('/')[0];

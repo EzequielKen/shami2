@@ -5,70 +5,91 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <asp:ScriptManager runat="server" />
+    <asp:HiddenField ID="hiddenFolderPath" runat="server" />
+    <style>
+        .modal .modal-dialog {
+            max-width: 800px;
+        }
 
-       <script type="text/javascript">
-           function openModal(id) {
-               var extensions = [".jpg", ".png", ".gif", ".mp4"];
-               var found = false;
+        .modal .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
 
-               for (var i = 0; i < extensions.length; i++) {
-                   var fileUrl = '/FotosSubidas/visitas_operativas/' + id + extensions[i];
-                   var request = new XMLHttpRequest();
-                   request.open('HEAD', fileUrl, false);
-                   request.send();
+        .modal .modal-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+    </style>
+    <script type="text/javascript">
+        function openModal(id) {
+            var folderPath = document.getElementById('<%= hiddenFolderPath.ClientID %>').value;
+            var extensions = [".png", ".jpg", ".gif", ".mp4"];
+            var found = false;
+            var fileUrl = '';
 
-                   if (request.status === 200) {
-                       if (extensions[i] === ".mp4") {
-                           document.getElementById('modalVideo').src = fileUrl;
-                           document.getElementById('modalVideo').classList.remove('d-none');
-                           document.getElementById('modalImage').classList.add('d-none');
-                       } else {
-                           document.getElementById('modalImage').src = fileUrl;
-                           document.getElementById('modalImage').classList.remove('d-none');
-                           document.getElementById('modalVideo').classList.add('d-none');
-                       }
-                       found = true;
-                       break;
-                   }
-               }
+            for (var i = 0; i < extensions.length; i++) {
+                fileUrl = folderPath + id + extensions[i];
+                
+                var request = new XMLHttpRequest();
+                request.open('HEAD', fileUrl, false); // Sincrónico
+                request.send();
 
-               if (found) {
-                   var myModal = new bootstrap.Modal(document.getElementById('fotoModal'), {
-                       keyboard: false
-                   });
-                   myModal.show();
+                if (request.status === 200) {
+                    if (extensions[i] === ".mp4") {
+                        document.getElementById('modalVideo').src = fileUrl;
+                        document.getElementById('modalVideo').classList.remove('d-none');
+                        document.getElementById('modalImage').classList.add('d-none');
+                    } else {
+                        document.getElementById('modalImage').src = fileUrl;
+                        document.getElementById('modalImage').classList.remove('d-none');
+                        document.getElementById('modalVideo').classList.add('d-none');
+                    }
+                    found = true;
+                    break;
+                }
+            }
 
-                   var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                   document.querySelector('.modal-dialog').style.top = scrollTop + 'px';
-               } else {
-                   alert("El archivo no existe.");
-               }
-           }
+            if (found) {
+                var myModal = new bootstrap.Modal(document.getElementById('fotoModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                document.querySelector('.modal-dialog').style.top = scrollTop + 'px';
+            } else {
+                alert("El archivo no existe.");
+            }
+        }
 
 
-       </script>
+    </script>
 
-<!-- Modal Foto-->
-<div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="fotoModalLabel">Archivo de la Visita Operativa</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <img id="modalImage" class="img-fluid d-none" src="#" alt="Archivo de la Visita Operativa" />
-                <video id="modalVideo" class="img-fluid d-none" controls>
-                    <source src="#" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    <!-- Modal Foto -->
+    <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fotoModalLabel">Archivo de la Visita Operativa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" class="img-fluid d-none" src="#" alt="Archivo de la Visita Operativa" />
+                    <video id="modalVideo" class="img-fluid d-none" controls>
+                        <source src="#" type="video/mp4">
+                        Tu navegador no soporta la reproducción de videos.
+                    </video>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <div class="container-fluid">
@@ -76,25 +97,22 @@
             <div class="col">
                 <div class="alert alert-light">
                     <div class="row">
-                        <div class=" col">
-                            <asp:Calendar ID="calendario" CssClass="  table-bordered " OnSelectionChanged="calendario_SelectionChanged" runat="server">
+                        <div class="col">
+                            <asp:Calendar ID="calendario" CssClass="table-bordered" OnSelectionChanged="calendario_SelectionChanged" runat="server">
                                 <OtherMonthDayStyle ForeColor="LightGray"></OtherMonthDayStyle>
-                                <TitleStyle BackColor="gray"
-                                    ForeColor="White"></TitleStyle>
+                                <TitleStyle BackColor="gray" ForeColor="White"></TitleStyle>
                                 <DayStyle BackColor="gray"></DayStyle>
-                                <SelectedDayStyle BackColor="LightGray"
-                                    Font-Bold="True"></SelectedDayStyle>
+                                <SelectedDayStyle BackColor="LightGray" Font-Bold="True"></SelectedDayStyle>
                             </asp:Calendar>
-
                         </div>
-                        <div class=" col">
+                        <div class="col">
                             <h2>
                                 <asp:Label ID="label_fecha" Text="text" runat="server" />
                             </h2>
                             <h3>
                                 <asp:Label ID="label_promedio_evaluados" Text="Promedio Evaluados: N/A" runat="server" />
                             </h3>
-                    <asp:Button id="boton_pdf" Text="PDF" CssClass="btn btn-success" OnClick="boton_pdf_Click" runat="server" />
+                            <asp:Button ID="boton_pdf" Text="PDF" CssClass="btn btn-success" OnClick="boton_pdf_Click" runat="server" />
                         </div>
                     </div>
                     <asp:TextBox ID="textbox_observaciones" CssClass="form-control" TextMode="MultiLine" runat="server" OnTextChanged="textbox_observaciones_TextChanged" />
@@ -146,10 +164,9 @@
                         </div>
                     </div>
 
-
                     <asp:Label ID="label_alerta_registro" CssClass="alert alert-danger" Visible="false" Text="No hay registros" runat="server" />
 
-                    <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
+                    <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
                             <asp:BoundField HeaderText="Actividad" DataField="actividad" />
@@ -160,7 +177,12 @@
 
                             <asp:TemplateField HeaderText="Ver Foto">
                                 <ItemTemplate>
-                                    <asp:Button ID="boton_ver_foto" Text="Ver Foto" CssClass="btn btn-primary" runat="server" OnClientClick='<%# "openModal(\"" + Eval("id") + "\"); return false;" %>' />
+                                    <asp:Button
+                                        ID="boton_ver_foto"
+                                        Text="Ver Foto"
+                                        CssClass="btn btn-primary"
+                                        runat="server"
+                                        OnClientClick='<%# "openModal(\"" + Eval("id") + "\"); return false;" %>' />
                                 </ItemTemplate>
                             </asp:TemplateField>
 

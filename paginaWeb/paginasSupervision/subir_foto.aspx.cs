@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -29,7 +30,15 @@ namespace paginaWeb.paginasSupervision
                 {
                     string id = hiddenId.Value;
                     string fileName = $"{id}{Path.GetExtension(fileUploadFoto.FileName)}";
-                    string folderPath = Server.MapPath("~/FotosSubidas/visitas_operativas/");
+                    string folderPath;
+                    if ("1" == ConfigurationManager.AppSettings["desarrollo"])
+                    {
+                        folderPath = @ConfigurationManager.AppSettings["folderPath_desarrollo"];
+                    }
+                    else
+                    {
+                        folderPath = @ConfigurationManager.AppSettings["folderPath"];
+                    }
 
                     // Crea la carpeta si no existe
                     if (!Directory.Exists(folderPath))
