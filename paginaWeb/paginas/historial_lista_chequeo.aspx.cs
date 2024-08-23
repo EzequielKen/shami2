@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -107,6 +108,7 @@ namespace paginaWeb.paginas
         {
             resumen = new DataTable();
             resumen.Columns.Add("id", typeof(string));
+            resumen.Columns.Add("id_historial", typeof(string));
             resumen.Columns.Add("actividad", typeof(string));
             resumen.Columns.Add("categoria", typeof(string));
             resumen.Columns.Add("area", typeof(string));
@@ -114,13 +116,15 @@ namespace paginaWeb.paginas
             resumen.Columns.Add("fecha", typeof(string));
             resumen.Columns.Add("orden", typeof(int));
             Session.Add("resumen_chequeo_local", resumen);
+
         }
         private void llenar_tabla_resumen_local()
         {
             resumenBD = (DataTable)Session["resumen_chequeo"];
-
+            historial_chequeo = (DataTable)Session["historial_chequeo"];
             crear_tabla_resumen();
-            int ultima_fila;
+            string id;          
+            int ultima_fila, fila_historial;
             for (int fila = 0; fila <= resumenBD.Rows.Count - 1; fila++)
             {
                 if (resumenBD.Rows[fila]["categoria"].ToString() == dropDown_categoria.SelectedItem.Text)
@@ -130,6 +134,12 @@ namespace paginaWeb.paginas
                     resumen.Rows[ultima_fila]["id"] = resumenBD.Rows[fila]["id"].ToString();
                     resumen.Rows[ultima_fila]["actividad"] = resumenBD.Rows[fila]["actividad"].ToString();
                     resumen.Rows[ultima_fila]["orden"] = int.Parse(resumenBD.Rows[fila]["orden"].ToString());
+                    id = resumenBD.Rows[fila]["id"].ToString();
+                    fila_historial = funciones.buscar_fila_por_dato(id, "actividad", historial_chequeo);
+                    if (fila_historial != -1)
+                    {
+                        resumen.Rows[ultima_fila]["id_historial"] = historial_chequeo.Rows[fila_historial]["id_historial"].ToString();
+                    }
                 }
             }
         }
@@ -198,9 +208,9 @@ namespace paginaWeb.paginas
             for (int fila = 0; fila <= configuracion.Rows.Count - 1; fila++)
             {
                 id_actividad = configuracion.Rows[fila]["id"].ToString();
-                if (id_actividad=="")
+                if (id_actividad == "")
                 {
-                    string stop="da";
+                    string stop = "da";
                 }
                 cargar_actividad_en_resumen(id_actividad);
             }
@@ -440,7 +450,7 @@ namespace paginaWeb.paginas
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            
+
             historial = new cls_historial_lista_chequeo(usuariosBD);
             if (Session["perfil_seleccionado"] == null)
             {
@@ -473,21 +483,67 @@ namespace paginaWeb.paginas
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            string id;
+            string id, idHistorial;
             int fila_historial;
             empleado = (DataTable)Session["empleado_historial"];
             historial_chequeo = (DataTable)Session["historial_chequeo"];
             for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
             {
+                Button botonVerFoto = gridview_chequeos.Rows[fila].Cells[4].FindControl("boton_ver_foto") as Button;
+
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
-                fila_historial = funciones.buscar_fila_por_id(id, historial_chequeo);
+                fila_historial = funciones.buscar_fila_por_dato(id, "actividad", historial_chequeo);
                 if (fila_historial != -1)
                 {
                     gridview_chequeos.Rows[fila].CssClass = "table-success";
                     gridview_chequeos.Rows[fila].Cells[2].Text = historial_chequeo.Rows[fila_historial]["nota"].ToString();
                     gridview_chequeos.Rows[fila].Cells[3].Text = historial_chequeo.Rows[fila_historial]["fecha"].ToString();
 
+
+
+                    // Obtén la ID del historial desde la fila (suponiendo que está en la columna 5)
+                    idHistorial = historial_chequeo.Rows[fila_historial]["id_historial"].ToString();
+
+                    // Definir las extensiones de archivo que deseas verificar
+                    string[] fileExtensions = { ".jpg", ".png", ".gif", ".mp4", ".pdf" };
+
+                    // Ruta base donde se almacenan los archivos
+                    string folderPath = Server.MapPath("/FotosSubidas/lista_chequeo/");
+
+
+                    // Variable para guardar si se encontró algún archivo
+                    bool fileExists = false;
+
+                    // Verificar si existe un archivo con alguna de las extensiones
+                    foreach (string extension in fileExtensions)
+                    {
+                        string filePath = Path.Combine(folderPath, idHistorial + extension);
+                        if (File.Exists(filePath))
+                        {
+                            fileExists = true;
+                            break; // Si se encuentra el archivo, sal del bucle
+                        }
+                    }
+
+                    // Configurar el botón o indicador si se encontró un archivo
+                    if (botonVerFoto != null)
+                    {
+                        if (fileExists)
+                        {
+                            botonVerFoto.Visible = true; // Habilitar el botón si el archivo existe
+                        }
+                        else
+                        {
+                            botonVerFoto.Visible = false; // Deshabilitar si no existe
+                        }
+                    }
                 }
+                else
+                {
+                    botonVerFoto.Visible = false; // Deshabilitar si no existe
+                }
+
+
             }
         }
         protected void boton_historial_Click(object sender, EventArgs e)

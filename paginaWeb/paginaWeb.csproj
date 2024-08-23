@@ -327,6 +327,7 @@
     <Content Include="paginas\proveedores.aspx" />
     <Content Include="paginas\registro_comida_empleado.aspx" />
     <Content Include="paginas\registro_venta_local.aspx" />
+    <Content Include="paginas\subir_foto_local.aspx" />
     <Content Include="paginas\tabla_produccion.aspx" />
     <Content Include="paginas\Tutoriales.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -1135,6 +1136,13 @@
     </Compile>
     <Compile Include="paginas\registro_venta_local.aspx.designer.cs">
       <DependentUpon>registro_venta_local.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\subir_foto_local.aspx.cs">
+      <DependentUpon>subir_foto_local.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\subir_foto_local.aspx.designer.cs">
+      <DependentUpon>subir_foto_local.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\tabla_produccion.aspx.cs">
       <DependentUpon>tabla_produccion.aspx</DependentUpon>

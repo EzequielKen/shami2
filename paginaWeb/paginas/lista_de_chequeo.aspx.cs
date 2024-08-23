@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -38,6 +39,7 @@ namespace paginaWeb.paginas
         {
             resumen = new DataTable();
             resumen.Columns.Add("id", typeof(string));
+            resumen.Columns.Add("id_historial", typeof(string));
             resumen.Columns.Add("actividad", typeof(string));
             resumen.Columns.Add("categoria", typeof(string));
             resumen.Columns.Add("nota", typeof(string));
@@ -46,10 +48,12 @@ namespace paginaWeb.paginas
         }
         private void llenar_tabla_resumen_local()
         {
-            resumenBD = (DataTable)Session["resumen_chequeo"];
-
             crear_tabla_resumen();
-            int ultima_fila;
+            resumenBD = (DataTable)Session["resumen_chequeo"];
+            empleado_lista_chequeo = (DataTable)Session["empleado"];
+            DataTable historial = lista_chequeo.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
+            string id;
+            int ultima_fila, fila_historial;
             for (int fila = 0; fila <= resumenBD.Rows.Count - 1; fila++)
             {
                 if (resumenBD.Rows[fila]["categoria"].ToString() == dropDown_categoria.SelectedItem.Text)
@@ -59,6 +63,13 @@ namespace paginaWeb.paginas
                     resumen.Rows[ultima_fila]["id"] = resumenBD.Rows[fila]["id"].ToString();
                     resumen.Rows[ultima_fila]["actividad"] = resumenBD.Rows[fila]["actividad"].ToString();
                     resumen.Rows[ultima_fila]["orden"] = int.Parse(resumenBD.Rows[fila]["orden"].ToString());
+
+                    id = resumenBD.Rows[fila]["id"].ToString();
+                    fila_historial = funciones.buscar_fila_por_dato(id, "actividad", historial);
+                    if (fila_historial != -1)
+                    {
+                        resumen.Rows[ultima_fila]["id_historial"] = historial.Rows[fila_historial]["id_historial"].ToString();
+                    }
                 }
             }
         }
@@ -396,6 +407,9 @@ namespace paginaWeb.paginas
             DataTable historial = lista_chequeo.get_historial(DateTime.Now, empleado_lista_chequeo.Rows[0]["turno_logueado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
             for (int fila = 0; fila <= gridview_chequeos.Rows.Count - 1; fila++)
             {
+                LinkButton btnSubirFoto = (gridview_chequeos.Rows[fila].Cells[6].FindControl("btnSubirFoto") as LinkButton);
+                Button boton_ver_foto = (gridview_chequeos.Rows[fila].Cells[7].FindControl("boton_ver_foto") as Button);
+
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
                 fila_historial = funciones.buscar_fila_por_id(id, historial);
                 if (fila_historial != -1)
@@ -406,6 +420,16 @@ namespace paginaWeb.paginas
                     boton_cargar.Visible = false;
                     gridview_chequeos.Rows[fila].Cells[5].Text = historial.Rows[fila_historial]["id_historial"].ToString();
 
+                    string idHistorial = historial.Rows[fila_historial]["id_historial"].ToString(); // Suponiendo que id_historial está en la tercera columna (índice 2)
+
+                    // Asignar la URL de destino con el id_historial
+                    btnSubirFoto.PostBackUrl = $"subir_foto_local.aspx?id={idHistorial}&returnUrl={HttpUtility.UrlEncode(Request.RawUrl)}";
+
+                }
+                else
+                {
+                    btnSubirFoto.Visible=false;
+                    boton_ver_foto.Visible=false;
                 }
             }
         }
@@ -726,6 +750,29 @@ namespace paginaWeb.paginas
 
                 Response.Redirect(strUrl, false);
             }
+        }
+
+
+        protected void boton_ver_foto_Click(object sender, EventArgs e)
+        {
+            // Obtén el botón que disparó el evento
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int fila = row.RowIndex;
+
+
+            // Obtén la ID del historial desde el CommandArgument del botón
+            string idHistorial = gridview_chequeos.Rows[fila].Cells[5].Text;
+
+            // Guarda la ID en el HiddenField
+            hiddenFieldHistorialID.Value = idHistorial;
+
+            // Registra un script para abrir el modal y pasar la ID del historial
+            string script = $"openModal('{idHistorial}');";
+
+            // Ejecuta el script
+            ScriptManager.RegisterStartupScript(this, GetType(), "OpenFotoModal", script, true);
+
         }
     }
 }

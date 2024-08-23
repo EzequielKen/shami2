@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace paginaWeb.paginasSupervision
+namespace paginaWeb.paginas
 {
-    public partial class subir_foto : System.Web.UI.Page
+    public partial class subir_foto_local : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,8 +29,8 @@ namespace paginaWeb.paginasSupervision
                 {
                     string id = hiddenId.Value;
                     string fileName = $"{id}{Path.GetExtension(fileUploadFoto.FileName)}";
-                    string folderPath = Server.MapPath("/FotosSubidas/visitas_operativas/");
-                    
+                    string folderPath = Server.MapPath("/FotosSubidas/lista_chequeo/");
+
 
                     // Crea la carpeta si no existe
                     if (!Directory.Exists(folderPath))

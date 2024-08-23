@@ -90,6 +90,21 @@ namespace paginaWeb
             }
             return retorno;
         }
+        public int buscar_fila_por_dato(string dato, string columna, DataTable dt)
+        {
+            int retorno = -1;
+            int fila = 0;
+            while (fila <= dt.Rows.Count - 1)
+            {
+                if (dato == dt.Rows[fila][columna].ToString())
+                {
+                    retorno = fila;
+                    break;
+                }
+                fila++;
+            }
+            return retorno;
+        }
         public int buscar_fila_por_id_nombre(string id, string nombre,  DataTable dt)
         {
             int retorno = -1;

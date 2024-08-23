@@ -3,6 +3,72 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:ScriptManager runat="server" />
+
+    <script type="text/javascript">
+        function openModal(id) {
+            var extensions = [".jpg", ".png", ".gif", ".mp4"];
+            var found = false;
+
+            for (var i = 0; i < extensions.length; i++) {
+                var fileUrl = '/FotosSubidas/lista_chequeo/' + id + extensions[i];
+                var request = new XMLHttpRequest();
+                request.open('HEAD', fileUrl, false);
+                request.send();
+
+                if (request.status === 200) {
+                    if (extensions[i] === ".mp4") {
+                        document.getElementById('modalVideo').src = fileUrl;
+                        document.getElementById('modalVideo').classList.remove('d-none');
+                        document.getElementById('modalImage').classList.add('d-none');
+                    } else {
+                        document.getElementById('modalImage').src = fileUrl;
+                        document.getElementById('modalImage').classList.remove('d-none');
+                        document.getElementById('modalVideo').classList.add('d-none');
+                    }
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                var myModal = new bootstrap.Modal(document.getElementById('fotoModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                document.querySelector('.modal-dialog').style.top = scrollTop + 'px';
+            } else {
+                alert("El archivo no existe.");
+            }
+        }
+
+
+    </script>
+
+    <!-- Modal Foto-->
+    <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fotoModalLabel">Archivo de la Lista de Chequeo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" class="img-fluid d-none" src="#" alt="Archivo de la Visita Operativa" />
+                    <video id="modalVideo" class="img-fluid d-none" controls>
+                        <source src="#" type="video/mp4">
+                        Tu navegador no soporta la reproducción de videos.
+                    </video>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col">
@@ -102,7 +168,17 @@
                             <asp:BoundField HeaderText="Actividad" DataField="actividad" />
                             <asp:BoundField HeaderText="Nota" DataField="nota" />
                             <asp:BoundField HeaderText="Fecha" DataField="fecha" />
-
+                            <asp:BoundField HeaderText="id" DataField="id_historial" />
+                            <asp:TemplateField HeaderText="Ver Foto">
+                                <ItemTemplate>
+                                    <asp:Button
+                                        ID="boton_ver_foto"
+                                        Text="Ver Foto"
+                                        CssClass="btn btn-primary"
+                                        runat="server"
+                                        OnClientClick='<%# "openModal(\"" + Eval("id_historial") + "\"); return false;" %>' />
+                                </ItemTemplate>
+                            </asp:TemplateField>
 
                         </Columns>
                     </asp:GridView>

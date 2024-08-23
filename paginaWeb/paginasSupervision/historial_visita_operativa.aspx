@@ -6,36 +6,16 @@
 
     <asp:ScriptManager runat="server" />
     <asp:HiddenField ID="hiddenFolderPath" runat="server" />
-    <style>
-        .modal .modal-dialog {
-            max-width: 800px;
-        }
-
-        .modal .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .modal .modal-body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0;
-        }
-    </style>
+   
     <script type="text/javascript">
         function openModal(id) {
-            var folderPath = document.getElementById('<%= hiddenFolderPath.ClientID %>').value;
-            var extensions = [".png", ".jpg", ".gif", ".mp4"];
+            var extensions = [".jpg", ".png", ".gif", ".mp4"];
             var found = false;
-            var fileUrl = '';
 
             for (var i = 0; i < extensions.length; i++) {
-                fileUrl = folderPath + id + extensions[i];
-                
+                var fileUrl = '/FotosSubidas/visitas_operativas/' + id + extensions[i];
                 var request = new XMLHttpRequest();
-                request.open('HEAD', fileUrl, false); // Sincrónico
+                request.open('HEAD', fileUrl, false);
                 request.send();
 
                 if (request.status === 200) {
@@ -69,27 +49,27 @@
 
     </script>
 
-    <!-- Modal Foto -->
-    <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="fotoModalLabel">Archivo de la Visita Operativa</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <img id="modalImage" class="img-fluid d-none" src="#" alt="Archivo de la Visita Operativa" />
-                    <video id="modalVideo" class="img-fluid d-none" controls>
-                        <source src="#" type="video/mp4">
-                        Tu navegador no soporta la reproducción de videos.
-                    </video>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+ <!-- Modal Foto-->
+ <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg modal-dialog-centered">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="fotoModalLabel">Archivo de la Visita Operativa</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+             <div class="modal-body text-center">
+                 <img id="modalImage" class="img-fluid d-none" src="#" alt="Archivo de la Visita Operativa" />
+                 <video id="modalVideo" class="img-fluid d-none" controls>
+                     <source src="#" type="video/mp4">
+                     Tu navegador no soporta la reproducción de videos.
+                 </video>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+             </div>
+         </div>
+     </div>
+ </div>
 
 
     <div class="container-fluid">

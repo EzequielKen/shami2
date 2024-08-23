@@ -370,17 +370,7 @@ namespace paginaWeb.paginasSupervision
             }
 
 
-            string folderPath;
-            if ("1" == ConfigurationManager.AppSettings["desarrollo"])
-            {
-                folderPath = ConfigurationManager.AppSettings["folderPath_desarrollo"];
-            }
-            else
-            {
-                folderPath = ConfigurationManager.AppSettings["folderPath"];
-            }
-
-            hiddenFolderPath.Value = folderPath;
+            
         }
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -408,15 +398,8 @@ namespace paginaWeb.paginasSupervision
                 string[] fileExtensions = { ".jpg", ".png", ".gif", ".mp4", ".pdf" };
 
                 // Ruta base donde se almacenan los archivos
-                string folderPath;
-                if ("1" == ConfigurationManager.AppSettings["desarrollo"])
-                {
-                    folderPath = @ConfigurationManager.AppSettings["folderPath_desarrollo"];
-                }
-                else
-                {
-                    folderPath = @ConfigurationManager.AppSettings["folderPath"];
-                }
+                string folderPath = Server.MapPath("/FotosSubidas/visitas_operativas/");
+                
 
                 // Variable para guardar si se encontró algún archivo
                 bool fileExists = false;
