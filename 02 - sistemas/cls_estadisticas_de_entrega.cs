@@ -258,7 +258,6 @@ namespace _02___sistemas
         }
         private void cargar_estadistica(int fila, int columna, string id_producto, DataTable productos_seleccionados, string proveedor, DataTable pedido, int posicion)
         {
-
             int fila_resumen = 0;
             int fila_producto;
             double cantidad_pedida, cantidad_entregada, venta_teorica, venta_real, precio, venta_teorica_historico, venta_real_historico;
@@ -278,6 +277,8 @@ namespace _02___sistemas
                     if ("" == funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion))
                     {
                         resumen.Rows[fila_resumen]["cantidad_pedida"] = "0";
+                        resumen.Rows[fila_resumen]["venta_teorica"] = "0";
+                        resumen.Rows[fila_resumen]["venta_real"] = "0";
                     }
                     else
                     {
@@ -307,9 +308,9 @@ namespace _02___sistemas
                     resumen.Rows[fila_resumen]["cantidad_pedida"] = cantidad_pedida + double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion));
                     cantidad_pedida = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion));
                     venta_teorica = cantidad_pedida * precio;
-                    venta_teorica_historico = double.Parse(resumen.Rows[fila_resumen]["venta_real"].ToString());
-                    venta_teorica = venta_teorica_historico + venta_teorica;
-                    resumen.Rows[fila_resumen]["venta_teorica"] = venta_teorica.ToString();
+                    venta_teorica_historico = double.Parse(resumen.Rows[fila_resumen]["venta_teorica"].ToString());
+                    double venta_teorica_nueva = venta_teorica_historico + venta_teorica;
+                    resumen.Rows[fila_resumen]["venta_teorica"] = venta_teorica_nueva.ToString();
                     if (pedido.Rows[fila]["estado"].ToString() == "Entregado" && "" != resumen.Rows[fila_resumen]["cantidad_entregada"].ToString())
                     {
                         if ("N/A" != funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1))
