@@ -47,6 +47,7 @@ namespace _02___sistemas
         DataTable sucursal;
         DataTable pedido_de_insumos;
         List<DataTable> lista_pedidos_sucursales = new List<DataTable>();
+        DataTable acuerdo_de_precios;
         #endregion
 
         #region crear tabla resumen
@@ -64,6 +65,8 @@ namespace _02___sistemas
             resumen.Columns.Add("stock", typeof(string));
             resumen.Columns.Add("incremento", typeof(string));
             resumen.Columns.Add("objetivo", typeof(string));
+            resumen.Columns.Add("venta_teorica", typeof(string));
+            resumen.Columns.Add("venta_real", typeof(string));
         }
         #endregion
         #region analisis de produccion
@@ -180,7 +183,7 @@ namespace _02___sistemas
         private void calcular_estadisticas_segun_sucursal()
         {
             crear_tabla_resumen();
-
+            string tipo_de_acuerdo, acuerdo_de_precios_dato, proveedor;
             string id_producto;
             int columna;
             for (int fila_pedidos = 0; fila_pedidos <= lista_pedidos_sucursales.Count - 1; fila_pedidos++)
@@ -189,6 +192,10 @@ namespace _02___sistemas
                 columna = pedidos.Columns["producto_1"].Ordinal;
                 for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
                 {
+                    tipo_de_acuerdo = pedidos.Rows[fila]["tipo_de_acuerdo"].ToString();
+                    acuerdo_de_precios_dato = pedidos.Rows[fila]["acuerdo_de_precios"].ToString();
+                    proveedor = pedidos.Rows[fila]["proveedor"].ToString();
+                    consultar_acuerdo_de_precios(proveedor, acuerdo_de_precios_dato, tipo_de_acuerdo);
                     if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu" ||
                     pedidos.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                     {
@@ -197,10 +204,6 @@ namespace _02___sistemas
                         while (columna <= pedidos.Columns.Count - 1 &&
                         funciones.IsNotDBNull(pedidos.Rows[fila][columna]))
                         {
-                            if (fila == 13 && fila_pedidos == 3 && columna == 22)
-                            {
-                                string stop = "";
-                            }
                             id_producto = funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 2);
                             if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu")
                             {
@@ -258,8 +261,9 @@ namespace _02___sistemas
 
             int fila_resumen = 0;
             int fila_producto;
-            double cantidad_pedida, cantidad_entregada;
+            double cantidad_pedida, cantidad_entregada, venta_teorica, venta_real, precio, venta_teorica_historico, venta_real_historico;
             fila_producto = funciones.buscar_fila_por_id(id_producto, productos_seleccionados);
+            precio = double.Parse(acuerdo_de_precios.Rows[0]["producto_" + id_producto.ToString()].ToString());
             if (fila_producto != -1)
             {
                 // cantidad_entregada porcentaje_satisfaccion
@@ -277,13 +281,21 @@ namespace _02___sistemas
                     }
                     else
                     {
-                        resumen.Rows[fila_resumen]["cantidad_pedida"] = funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion);
+                        cantidad_pedida = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion));
+                        resumen.Rows[fila_resumen]["cantidad_pedida"] = cantidad_pedida.ToString();
+                        venta_teorica = cantidad_pedida * precio;
+                        resumen.Rows[fila_resumen]["venta_teorica"] = venta_teorica.ToString();
+                        resumen.Rows[fila_resumen]["venta_real"] = "0";
+
                     }
                     if (pedido.Rows[fila]["estado"].ToString() == "Entregado")
                     {
                         if ("N/A" != funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1))
                         {
-                            resumen.Rows[fila_resumen]["cantidad_entregada"] = funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1);
+                            cantidad_entregada = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1));
+                            resumen.Rows[fila_resumen]["cantidad_entregada"] = cantidad_entregada.ToString();
+                            venta_real = cantidad_entregada * precio;
+                            resumen.Rows[fila_resumen]["venta_real"] = venta_real.ToString();
                         }
                     }
                     resumen.Rows[fila_resumen]["presentacion"] = productos_seleccionados.Rows[fila_producto]["unidad_de_medida_local"].ToString();
@@ -293,6 +305,11 @@ namespace _02___sistemas
                 {
                     cantidad_pedida = double.Parse(resumen.Rows[fila_resumen]["cantidad_pedida"].ToString());
                     resumen.Rows[fila_resumen]["cantidad_pedida"] = cantidad_pedida + double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion));
+                    cantidad_pedida = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion));
+                    venta_teorica = cantidad_pedida * precio;
+                    venta_teorica_historico = double.Parse(resumen.Rows[fila_resumen]["venta_real"].ToString());
+                    venta_teorica = venta_teorica_historico + venta_teorica;
+                    resumen.Rows[fila_resumen]["venta_teorica"] = venta_teorica.ToString();
                     if (pedido.Rows[fila]["estado"].ToString() == "Entregado" && "" != resumen.Rows[fila_resumen]["cantidad_entregada"].ToString())
                     {
                         if ("N/A" != funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1))
@@ -300,6 +317,12 @@ namespace _02___sistemas
                             string dato = resumen.Rows[fila_resumen]["cantidad_entregada"].ToString();
                             cantidad_entregada = double.Parse(resumen.Rows[fila_resumen]["cantidad_entregada"].ToString());
                             resumen.Rows[fila_resumen]["cantidad_entregada"] = cantidad_entregada + double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1));
+
+                            cantidad_entregada = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1));
+                            venta_real_historico = double.Parse(resumen.Rows[fila_resumen]["venta_real"].ToString());
+                            venta_real = cantidad_entregada * precio;
+                            venta_real = venta_real_historico + venta_real;
+                            resumen.Rows[fila_resumen]["venta_real"] = venta_real.ToString();
                         }
                     }
 
@@ -338,6 +361,10 @@ namespace _02___sistemas
         #endregion
 
         #region metodos consultas
+        private void consultar_acuerdo_de_precios(string proveedor, string acuerdo_de_precios_dato, string tipo_de_acuerdo)
+        {
+            acuerdo_de_precios = consultas.consultar_acuerdo_de_precios_segun_parametros(base_de_datos, "acuerdo_de_precios", proveedor, acuerdo_de_precios_dato, tipo_de_acuerdo);
+        }
         private void consultar_insumos_fabrica()
         {
             insumos_fabrica = consultas.consultar_tabla_completa(base_de_datos, "insumos_fabrica");

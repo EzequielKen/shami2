@@ -90,10 +90,12 @@ namespace paginaWeb.paginasFabrica
             resumen.Columns.Add("cantidad_pedida", typeof(string)); 
             resumen.Columns.Add("presentacion", typeof(string));
             resumen.Columns.Add("proveedor", typeof(string));
+            resumen.Columns.Add("venta_teorica", typeof(string));
         }
         private void llenar_tabla_resumen()
         {
             crear_tabla_resumen();
+            double venta_teorica = 0;
             int fila_resumen;
             estadisticas_de_pedidos_seleccionados = (DataTable)Session["estadisticas_de_pedidos"];
             for (int fila = 0; fila <= estadisticas_de_pedidos_seleccionados.Rows.Count - 1; fila++)
@@ -108,13 +110,17 @@ namespace paginaWeb.paginasFabrica
                     resumen.Rows[fila_resumen]["cantidad_pedida"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["cantidad_pedida"].ToString(); 
                     resumen.Rows[fila_resumen]["presentacion"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["presentacion"].ToString();
                     resumen.Rows[fila_resumen]["proveedor"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["proveedor"].ToString();
+                    resumen.Rows[fila_resumen]["venta_teorica"] = funciones.formatCurrency(double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString()));
+                    venta_teorica = venta_teorica + double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString());
                 }
             }
+            label_total.Text = "Total: " + funciones.formatCurrency(venta_teorica);
         }
         private void llenar_tabla_resumen_buscar()
         {
             crear_tabla_resumen();
             int fila_resumen;
+            double venta_teorica = 0;
             estadisticas_de_pedidos_seleccionados = (DataTable)Session["estadisticas_de_pedidos"];
             for (int fila = 0; fila <= estadisticas_de_pedidos_seleccionados.Rows.Count - 1; fila++)
             {
@@ -128,8 +134,11 @@ namespace paginaWeb.paginasFabrica
                     resumen.Rows[fila_resumen]["cantidad_pedida"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["cantidad_pedida"].ToString();
                     resumen.Rows[fila_resumen]["presentacion"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["presentacion"].ToString();
                     resumen.Rows[fila_resumen]["proveedor"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["proveedor"].ToString();
+                    resumen.Rows[fila_resumen]["venta_teorica"] = funciones.formatCurrency(double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString()));
+                    venta_teorica = venta_teorica + double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString());
                 }
             }
+            label_total.Text = "Total: " + funciones.formatCurrency(venta_teorica);
         }
         private void cargar_resumen()
         {

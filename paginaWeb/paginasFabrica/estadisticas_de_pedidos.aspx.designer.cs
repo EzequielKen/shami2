@@ -114,6 +114,15 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
 
         /// <summary>
+        /// Control label_total.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_total;
+
+        /// <summary>
         /// Control gridView_productos.
         /// </summary>
         /// <remarks>
