@@ -32,8 +32,7 @@ namespace paginaWeb.paginas
             int ultima_fila = 0;
             for (int fila = 0; fila <= lista_de_empleadoBD.Rows.Count - 1; fila++)
             {
-                if (dropdown_turno.SelectedItem.Text == historial.verificar_horario_turno((DateTime)lista_de_empleadoBD.Rows[fila]["fecha_logueo"]) ||
-                    dropdown_turno.SelectedItem.Text == "Todos")
+                if (dropdown_turno.SelectedItem.Text == "Todos")
                 {
                     if (!verificar_si_cargo(lista_de_empleadoBD.Rows[fila]["id_empleado"].ToString()))
                     {
@@ -47,6 +46,24 @@ namespace paginaWeb.paginas
                         lista_de_empleado.Rows[ultima_fila]["telefono"] = lista_de_empleadoBD.Rows[fila]["telefono"].ToString();
                         lista_de_empleado.Rows[ultima_fila]["cargo"] = lista_de_empleadoBD.Rows[fila]["cargo"].ToString();
                     }
+                }
+                else if (dropdown_turno.SelectedItem.Text == historial.verificar_horario_turno((DateTime)lista_de_empleadoBD.Rows[fila]["fecha_logueo"]))
+                {
+                    if (!verificar_si_cargo(lista_de_empleadoBD.Rows[fila]["id_empleado"].ToString()))
+                    {
+                        lista_de_empleado.Rows.Add();
+                        ultima_fila = lista_de_empleado.Rows.Count - 1;
+                        lista_de_empleado.Rows[ultima_fila]["id"] = lista_de_empleadoBD.Rows[fila]["id_empleado"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["id_sucursal"] = lista_de_empleadoBD.Rows[fila]["id_sucursal"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["nombre"] = lista_de_empleadoBD.Rows[fila]["nombre"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["apellido"] = lista_de_empleadoBD.Rows[fila]["apellido"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["dni"] = lista_de_empleadoBD.Rows[fila]["dni"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["telefono"] = lista_de_empleadoBD.Rows[fila]["telefono"].ToString();
+                        lista_de_empleado.Rows[ultima_fila]["cargo"] = lista_de_empleadoBD.Rows[fila]["cargo"].ToString();
+                    }
+                }
+                {
+                     
                 }
             }
         }
@@ -123,7 +140,7 @@ namespace paginaWeb.paginas
             resumenBD = (DataTable)Session["resumen_chequeo"];
             historial_chequeo = (DataTable)Session["historial_chequeo"];
             crear_tabla_resumen();
-            string id;          
+            string id;
             int ultima_fila, fila_historial;
             for (int fila = 0; fila <= resumenBD.Rows.Count - 1; fila++)
             {
@@ -462,7 +479,7 @@ namespace paginaWeb.paginas
             {
 
                 label_fecha.Text = "fecha seleccionada: " + fecha_de_hoy.ToString("dd/MM/yyyy");
-                Session.Add("fecha_historial_chequeo", fecha_de_hoy);
+                //Session.Add("fecha_historial_chequeo", fecha_de_hoy);
                 lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
                 cargar_lista_empleados();
             }

@@ -233,7 +233,7 @@ namespace _02___sistemas
             string retorno = "fuera de rango";
 
             // Definir los límites de tiempo
-            DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 17, 0, 0); // 8:00 AM
+            DateTime horaInicio_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 05, 0, 0); // 8:00 AM
             DateTime horaFin_rango1 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 23, 59, 0); // 12:00 PM
             if (miFecha >= horaInicio_rango1 && miFecha <= horaFin_rango1)
             {
