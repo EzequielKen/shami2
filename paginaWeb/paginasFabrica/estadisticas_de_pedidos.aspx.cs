@@ -1,5 +1,6 @@
 ﻿using _02___sistemas;
 using _03___sistemas_fabrica;
+using paginaWeb.paginas;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -87,10 +88,14 @@ namespace paginaWeb.paginasFabrica
             resumen.Columns.Add("id", typeof(string));
             resumen.Columns.Add("producto", typeof(string));
             resumen.Columns.Add("tipo_producto", typeof(string));
-            resumen.Columns.Add("cantidad_pedida", typeof(string)); 
+            resumen.Columns.Add("cantidad_pedida", typeof(string));
             resumen.Columns.Add("presentacion", typeof(string));
             resumen.Columns.Add("proveedor", typeof(string));
             resumen.Columns.Add("venta_teorica", typeof(string));
+            resumen.Columns.Add("cantidad_entregada", typeof(string));
+            resumen.Columns.Add("venta_real", typeof(string)); 
+            resumen.Columns.Add("porcentaje_satisfaccion", typeof(string)); 
+
         }
         private void llenar_tabla_resumen()
         {
@@ -107,14 +112,19 @@ namespace paginaWeb.paginasFabrica
                     resumen.Rows[fila_resumen]["id"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["id"].ToString();
                     resumen.Rows[fila_resumen]["producto"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["producto"].ToString();
                     resumen.Rows[fila_resumen]["tipo_producto"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["tipo_producto"].ToString();
-                    resumen.Rows[fila_resumen]["cantidad_pedida"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["cantidad_pedida"].ToString(); 
+                    resumen.Rows[fila_resumen]["cantidad_pedida"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["cantidad_pedida"].ToString();
                     resumen.Rows[fila_resumen]["presentacion"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["presentacion"].ToString();
                     resumen.Rows[fila_resumen]["proveedor"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["proveedor"].ToString();
                     resumen.Rows[fila_resumen]["venta_teorica"] = funciones.formatCurrency(double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString()));
+                    resumen.Rows[fila_resumen]["cantidad_entregada"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["cantidad_entregada"].ToString();
+                    resumen.Rows[fila_resumen]["venta_real"] = funciones.formatCurrency(double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_real"].ToString()));
+                    resumen.Rows[fila_resumen]["porcentaje_satisfaccion"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["porcentaje_satisfaccion"].ToString();
+
                     venta_teorica = venta_teorica + double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString());
                 }
             }
             label_total.Text = "Total: " + funciones.formatCurrency(venta_teorica);
+            Session.Add("resumen_estadistica_de_pedido", resumen);
         }
         private void llenar_tabla_resumen_buscar()
         {
@@ -135,10 +145,15 @@ namespace paginaWeb.paginasFabrica
                     resumen.Rows[fila_resumen]["presentacion"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["presentacion"].ToString();
                     resumen.Rows[fila_resumen]["proveedor"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["proveedor"].ToString();
                     resumen.Rows[fila_resumen]["venta_teorica"] = funciones.formatCurrency(double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString()));
+                    resumen.Rows[fila_resumen]["cantidad_entregada"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["cantidad_entregada"].ToString();
+                    resumen.Rows[fila_resumen]["venta_real"] = funciones.formatCurrency(double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_real"].ToString()));
+                    resumen.Rows[fila_resumen]["porcentaje_satisfaccion"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["porcentaje_satisfaccion"].ToString();
+
                     venta_teorica = venta_teorica + double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString());
                 }
             }
             label_total.Text = "Total: " + funciones.formatCurrency(venta_teorica);
+            Session.Add("resumen_estadistica_de_pedido", resumen);
         }
         private void cargar_resumen()
         {
@@ -229,7 +244,7 @@ namespace paginaWeb.paginasFabrica
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucursal = (DataTable)Session["sucursal"];
-            
+
             estadisticas = new _02___sistemas.cls_estadisticas_de_entrega(usuariosBD);
             sucursales = estadisticas.get_sucursal();
             if (!IsPostBack)
@@ -264,7 +279,7 @@ namespace paginaWeb.paginasFabrica
                 Session["fecha_estadistica_fin"].ToString() != "N/A")
             {
                 resumen_sucursales = (DataTable)Session["resumen_sucursal"];
-
+                boton_pdf.Visible = true;
                 estadisticas_de_pedidos_seleccionados = estadisticas.obtener_estadisticas_de_pedido_segun_sucursales(resumen_sucursales, Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString());
                 Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
                 llenar_dropDownList(estadisticas_de_pedidos_seleccionados);
@@ -301,6 +316,31 @@ namespace paginaWeb.paginasFabrica
             id_sucursal = gridview_resumen.SelectedRow.Cells[0].Text;
             eliminar_sucursal_en_resumen();
             cargar_sucursales();
+        }
+
+        protected void boton_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = "Estadistica de Pedidos - id -" + dato_hora + ".pdf";
+            string ruta = "/paginasFabrica/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            estadisticas.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"]);
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginasFabrica/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
         }
     }
 }

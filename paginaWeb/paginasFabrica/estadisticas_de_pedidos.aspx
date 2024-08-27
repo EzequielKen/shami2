@@ -74,6 +74,7 @@
                         <asp:DropDownList runat="server" CssClass="form-select" ID="dropDown_tipo" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                         <asp:Label ID="label_total" CssClass="form-control" Text="" runat="server" />
+                        <asp:Button ID="boton_pdf" Visible="false" CssClass="btn btn-success" Text="PDF" OnClick="boton_pdf_Click" runat="server" />
                     </div>
                     <asp:GridView ID="gridView_productos" runat="server" Caption="Estadisticas" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped">
                         <Columns>
@@ -82,6 +83,9 @@
                             <asp:BoundField HeaderText="cantidad pedida" DataField="cantidad_pedida" />
                             <asp:BoundField HeaderText="presentacion" DataField="presentacion" />
                             <asp:BoundField HeaderText="Venta Teorica" DataField="venta_teorica" />
+                            <asp:BoundField HeaderText="cantidad entregada" DataField="cantidad_entregada" />
+                            <asp:BoundField HeaderText="Venta Real" DataField="venta_real" />
+                            <asp:BoundField HeaderText="% Satisfaccion" DataField="porcentaje_satisfaccion" />
                         </Columns>
                     </asp:GridView>
                 </div>

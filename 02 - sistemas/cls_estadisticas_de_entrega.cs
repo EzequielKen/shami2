@@ -50,6 +50,13 @@ namespace _02___sistemas
         DataTable acuerdo_de_precios;
         #endregion
 
+        #region PDF
+        public void crear_pdf(string ruta_archivo, byte[] logo, DataTable resumen)
+        {
+            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos(ruta_archivo, logo, resumen);
+        }
+        #endregion
+
         #region crear tabla resumen
         private void crear_tabla_resumen()
         {

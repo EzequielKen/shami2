@@ -123,6 +123,15 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.Label label_total;
 
         /// <summary>
+        /// Control boton_pdf.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_pdf;
+
+        /// <summary>
         /// Control gridView_productos.
         /// </summary>
         /// <remarks>

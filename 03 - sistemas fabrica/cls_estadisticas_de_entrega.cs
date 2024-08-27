@@ -49,6 +49,8 @@ namespace _03___sistemas_fabrica
         List<DataTable> lista_pedidos_sucursales = new List<DataTable>();
         #endregion
 
+
+
         #region crear tabla resumen
         private void crear_tabla_resumen()
         {
