@@ -574,6 +574,10 @@ namespace paginaWeb.paginas
             string apellido = gridview_empleados.Rows[fila].Cells[2].Text;
             empleado = historial.get_empleado(id_empleado);
             Session.Add("empleado_historial", empleado);
+            if (Session["fecha_historial_chequeo"]==null)
+            {
+                Session.Add("fecha_historial_chequeo",DateTime.Now);
+            }
             DateTime fecha = (DateTime)Session["fecha_historial_chequeo"];
             if (dropdown_turno.SelectedItem.Text != "Todos")
             {
