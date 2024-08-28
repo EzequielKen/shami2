@@ -2686,7 +2686,7 @@ namespace _01___modulos
             }).GeneratePdf(ruta_archivo);
         }
 
-        public void GenerarPDF_resumen_de_estadisticas_de_pedidos(string ruta_archivo, byte[] logo, DataTable resumen)
+        public void GenerarPDF_resumen_de_estadisticas_de_pedidos(string ruta_archivo, byte[] logo, DataTable resumen,string fecha_inicio,string fecha_fin,string total_teorico)
         {
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
@@ -2704,8 +2704,8 @@ namespace _01___modulos
                         row.RelativeItem().Column(col =>
                         {
                             col.Item().AlignCenter().Text("Resumen de estadisticas de pedidos.").Bold().FontSize(14);
-                            //col.Item().AlignCenter().Text(direccion_seleccionado).FontSize(9);
-                            //col.Item().AlignCenter().Text(telefono_seleccionado).FontSize(9);
+                            col.Item().AlignCenter().Text(fecha_inicio).FontSize(9);
+                            col.Item().AlignCenter().Text(fecha_fin).FontSize(9);
 
                         });
 
@@ -2772,6 +2772,7 @@ namespace _01___modulos
                         col.Item().Background(Colors.Grey.Lighten3).Padding(10)
                         .Column(column =>
                         {
+                            column.Item().Text("Venta Teorica " + total_teorico).FontSize(12);
                             column.Item().Text("Entrega conforme / firma:").FontSize(12);
                             column.Item().Text("recibe conforme / firma:").FontSize(12);
                             column.Spacing(20);

@@ -51,9 +51,9 @@ namespace _02___sistemas
         #endregion
 
         #region PDF
-        public void crear_pdf(string ruta_archivo, byte[] logo, DataTable resumen)
+        public void crear_pdf(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin, string total_teorico)
         {
-            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos(ruta_archivo, logo, resumen);
+            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos(ruta_archivo, logo, resumen,fecha_inicio,fecha_fin,total_teorico);
         }
         #endregion
 

@@ -328,7 +328,7 @@ namespace paginaWeb.paginasFabrica
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            estadisticas.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"]);
+            estadisticas.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"],label_fecha_inicio.Text,label_fecha_final.Text,label_total.Text);
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginasFabrica/pdf/" + id_pedido;
             try
