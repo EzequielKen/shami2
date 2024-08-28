@@ -479,7 +479,10 @@ namespace paginaWeb.paginas
             {
 
                 label_fecha.Text = "fecha seleccionada: " + fecha_de_hoy.ToString("dd/MM/yyyy");
-                //Session.Add("fecha_historial_chequeo", fecha_de_hoy);
+                if (Session["fecha_historial_chequeo"] == null)
+                {
+                    Session.Add("fecha_historial_chequeo", DateTime.Now);
+                }
                 lista_de_empleadoBD = historial.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
                 cargar_lista_empleados();
             }
