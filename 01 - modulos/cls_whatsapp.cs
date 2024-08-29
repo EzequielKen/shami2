@@ -11,7 +11,7 @@ namespace _01___modulos
     [Serializable]
     public class cls_whatsapp
     {
-        
+
         #region atributos
         private DataTable usuario;
         private DataTable sucursal;
@@ -19,7 +19,7 @@ namespace _01___modulos
         private DataTable lista_proveedores;
         private string proveedor_seleccionado;
         #endregion
-        public string enviar_pedido(DataTable pedido, DataTable usuarioBD, DataTable sucursalBD  )
+        public string enviar_pedido(DataTable pedido, DataTable usuarioBD, DataTable sucursalBD)
         {
             usuario = usuarioBD;
             sucursal = sucursalBD;
@@ -57,7 +57,7 @@ namespace _01___modulos
                 }
 
             }*/
-            return enviar_pedido(body);
+            return enviar_pedido(body, sucursalBD);
 
         }
 
@@ -81,9 +81,9 @@ namespace _01___modulos
             {
                 body += pedido.Rows[fila]["producto"].ToString() + " |" + pedido.Rows[fila]["cantidad"].ToString() + " " + pedido.Rows[fila]["unidad de medida"].ToString() + "|" + salto_de_linea + salto_de_linea;
             }
-            return enviar_pedido(body);
+            return enviar_pedido_proveedores(body);
         }
-        public string cancelar_pedido(string num_pedido, DataTable lista_de_proveedores,DataTable sucursal)
+        public string cancelar_pedido(string num_pedido, DataTable lista_de_proveedores, DataTable sucursal)
         {
             lista_proveedores = lista_de_proveedores;
             string salto_de_linea = "%0A"; //
@@ -91,7 +91,7 @@ namespace _01___modulos
 
             body = "FRANQUICIA: " + sucursal.Rows[0]["franquicia"].ToString() + salto_de_linea;
             body += "SUCURSAL: " + sucursal.Rows[0]["sucursal"].ToString() + salto_de_linea;
-            body += "Cancelo el pedido N°: "+ num_pedido + salto_de_linea;
+            body += "Cancelo el pedido N°: " + num_pedido + salto_de_linea;
 
             return enviar_pedido(body);
         }
@@ -100,7 +100,7 @@ namespace _01___modulos
             string salto_de_linea = "%0A"; //
             string body = "";
 
-            body = "Se ha registrado en sistema una nueva orden de compras."+ salto_de_linea;
+            body = "Se ha registrado en sistema una nueva orden de compras." + salto_de_linea;
 
             return enviar_orden(body);
 
@@ -111,7 +111,7 @@ namespace _01___modulos
             //string salto_de_linea = "%0A";
             string body = "";
 
-            body = "Se ha registrado en sistema una nueva orden de pedido." ;
+            body = "Se ha registrado en sistema una nueva orden de pedido.";
 
             return enviar_orden(body);
 
@@ -137,9 +137,24 @@ namespace _01___modulos
             return enviar_aviso(body);
 
         }
-        private string enviar_pedido(string body)
+        private string enviar_pedido(string body, DataTable sucursalBD)
         {
-            
+            string telefono = string.Empty;
+            if (sucursalBD.Rows[0]["id"].ToString() == "22")
+            {
+                 telefono = ConfigurationManager.AppSettings["telefono_fabrica_oficina"];
+            }
+            else
+            {
+                 telefono = ConfigurationManager.AppSettings["telefono_pedidos"];
+            }
+            string url = "https://api.whatsapp.com/send?phone=" + telefono + "&text=" + body.Replace(" ", "%20");
+
+            return url;
+        }
+        private string enviar_pedido_proveedores(string body)
+        {
+
 
             string telefono = ConfigurationManager.AppSettings["telefono_pedidos"];
             string url = "https://api.whatsapp.com/send?phone=" + telefono + "&text=" + body.Replace(" ", "%20");
