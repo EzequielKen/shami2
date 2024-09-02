@@ -57,7 +57,7 @@ namespace _01___modulos
                 }
 
             }*/
-            return enviar_pedido(body, sucursalBD);
+            return enviar_pedido_whatsapp(body, sucursalBD);
 
         }
 
@@ -93,7 +93,7 @@ namespace _01___modulos
             body += "SUCURSAL: " + sucursal.Rows[0]["sucursal"].ToString() + salto_de_linea;
             body += "Cancelo el pedido N°: " + num_pedido + salto_de_linea;
 
-            return enviar_pedido(body);
+            return enviar_pedido_whatsapp(body,sucursal);
         }
         public string notificar_nueva_orden_de_compra()
         {
@@ -137,7 +137,7 @@ namespace _01___modulos
             return enviar_aviso(body);
 
         }
-        private string enviar_pedido(string body, DataTable sucursalBD)
+        private string enviar_pedido_whatsapp(string body, DataTable sucursalBD)
         {
             string telefono = string.Empty;
             if (sucursalBD.Rows[0]["id"].ToString() == "22")
