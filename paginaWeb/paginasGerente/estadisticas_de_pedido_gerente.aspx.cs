@@ -1,16 +1,14 @@
-﻿using _02___sistemas;
-using _03___sistemas_fabrica;
-using paginaWeb.paginas;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace paginaWeb.paginasFabrica
+namespace paginaWeb.paginasGerente
 {
-    public partial class estadisticas_de_pedidos : System.Web.UI.Page
+    public partial class estadisticas_de_pedido_gerente : System.Web.UI.Page
     {
         #region cargar tabla sucursales
         private void eliminar_sucursal_en_resumen()
@@ -96,8 +94,8 @@ namespace paginaWeb.paginasFabrica
             resumen.Columns.Add("proveedor", typeof(string));
             resumen.Columns.Add("venta_teorica", typeof(string));
             resumen.Columns.Add("cantidad_entregada", typeof(string));
-            resumen.Columns.Add("venta_real", typeof(string)); 
-            resumen.Columns.Add("porcentaje_satisfaccion", typeof(string)); 
+            resumen.Columns.Add("venta_real", typeof(string));
+            resumen.Columns.Add("porcentaje_satisfaccion", typeof(string));
 
         }
         private void llenar_tabla_resumen()
@@ -335,7 +333,7 @@ namespace paginaWeb.paginasFabrica
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            estadisticas.crear_pdf_completo(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"], label_fecha_inicio.Text, label_fecha_final.Text, label_total.Text, dropDown_tipo.SelectedItem.Text,label_total_real.Text);
+            estadisticas.crear_pdf_completo(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"], label_fecha_inicio.Text, label_fecha_final.Text, label_total.Text, dropDown_tipo.SelectedItem.Text, label_total_real.Text);
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginasFabrica/pdf/" + id_pedido;
             try
@@ -356,8 +354,8 @@ namespace paginaWeb.paginasFabrica
               Session["fecha_estadistica_fin"].ToString() != "N/A")
             {
                 resumen_sucursales = (DataTable)Session["resumen_sucursal"];
-              //  estadisticas_de_pedidos_seleccionados = estadisticas.obtener_estadisticas_de_pedido_segun_sucursales(resumen_sucursales, Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString());
-              //  Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
+                //  estadisticas_de_pedidos_seleccionados = estadisticas.obtener_estadisticas_de_pedido_segun_sucursales(resumen_sucursales, Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString());
+                //  Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
 
                 DateTime hora = DateTime.Now;
                 string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
@@ -394,7 +392,7 @@ namespace paginaWeb.paginasFabrica
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            estadisticas.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"],label_fecha_inicio.Text,label_fecha_final.Text,label_total.Text,dropDown_tipo.SelectedItem.Text);
+            estadisticas.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"], label_fecha_inicio.Text, label_fecha_final.Text, label_total.Text, dropDown_tipo.SelectedItem.Text);
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginasFabrica/pdf/" + id_pedido;
             try

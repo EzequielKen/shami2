@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="estadisticas_de_pedidos.aspx.cs" Inherits="paginaWeb.paginasFabrica.estadisticas_de_pedidos" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="estadisticas_de_pedido_gerente.aspx.cs" Inherits="paginaWeb.paginasGerente.estadisticas_de_pedido_gerente" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -70,7 +70,7 @@
             <div class="row">
                 <div class="col">
                     <div class="input-group">
-                        <asp:TextBox ID="textbox_buscar"  CssClass="form-control" AutoPostBack="true" OnTextChanged="textbox_buscar_TextChanged" placeholder="Buscar" runat="server" />
+                        <asp:TextBox ID="textbox_buscar" CssClass="form-control" AutoPostBack="true" OnTextChanged="textbox_buscar_TextChanged" placeholder="Buscar" runat="server" />
                         <asp:Label Text="Tipo Producto" runat="server" CssClass=" form-control" />
                         <asp:DropDownList runat="server" CssClass="form-select" ID="dropDown_tipo" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>

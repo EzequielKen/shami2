@@ -295,6 +295,7 @@
     <Content Include="paginasGerente\caja_chica.aspx" />
     <Content Include="paginasGerente\cuentas_por_cobrar_gerente.aspx" />
     <Content Include="paginasGerente\cuentas_por_pagar_gerente.aspx" />
+    <Content Include="paginasGerente\estadisticas_de_pedido_gerente.aspx" />
     <Content Include="paginasGerente\landing_page_local.aspx" />
     <Content Include="paginasGerente\proveedores_fabrica_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
@@ -865,6 +866,13 @@
     </Compile>
     <Compile Include="paginasGerente\cuentas_por_pagar_gerente.aspx.designer.cs">
       <DependentUpon>cuentas_por_pagar_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\estadisticas_de_pedido_gerente.aspx.cs">
+      <DependentUpon>estadisticas_de_pedido_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\estadisticas_de_pedido_gerente.aspx.designer.cs">
+      <DependentUpon>estadisticas_de_pedido_gerente.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasGerente\landing_page_local.aspx.cs">
       <DependentUpon>landing_page_local.aspx</DependentUpon>

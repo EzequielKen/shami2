@@ -181,10 +181,6 @@
                     </li>
 
 
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de pedido</a>
-                    </li>
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Stock
                         </a>
@@ -398,10 +394,6 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de Compras a Proveedores</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por Pagar a Proveedores</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deudas a Proveedores</a></li>
-                            <li><a class="dropdown-item" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a></li>
-                            <li><a class="dropdown-item" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a></li>
-                            <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Entrega a Cliente</a></li>
-                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por Cobrar</a></li>
                         </ul>
                     </li>
 
@@ -411,11 +403,21 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="/paginasFabrica/sucursales.aspx">Pedidos de Locales</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/remitos_de_carga.aspx">Remitos de carga</a></li>
-                            <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Pedidos</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdcio</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Producto</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial Stock</a></li>
-                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Historial de Pedidos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">historial de Solicitud a Fabrica</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink11" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ventas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por Cobrar</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Entrega a Cliente</a></li>
+
                         </ul>
                     </li>
                     <li class="nav-item">

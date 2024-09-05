@@ -68,7 +68,12 @@ namespace _02___sistemas
             consultar_pedidos_segun_sucursal(resumen_sucursales, fecha_estadistica_inicio, fecha_estadistica_fin);
             //consultar_orden_de_pedido_segun_sucursal(resumen_sucursales, fecha_inicio, fecha_fin);  Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString()
             calcular_estadisticas_por_fecha();
-            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos_segun_fecha(ruta_archivo, logo, resumen_fecha, fecha_inicio, fecha_fin);
+            string sucursales_seleccionadas = string.Empty;
+            for (int fila = 0; fila <= resumen_sucursales.Rows.Count - 1; fila++)
+            {
+                sucursales_seleccionadas = sucursales_seleccionadas + resumen_sucursales.Rows[fila]["sucursal"].ToString() + ". ";
+            }
+            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos_segun_fecha(ruta_archivo, logo, resumen_fecha, fecha_inicio, fecha_fin, sucursales_seleccionadas);
         }
         #endregion
 
@@ -80,6 +85,7 @@ namespace _02___sistemas
             resumen.Columns.Add("producto", typeof(string));
             resumen.Columns.Add("tipo_producto", typeof(string));
             resumen.Columns.Add("cantidad_pedida", typeof(string));
+            resumen.Columns.Add("cantidad_kilos", typeof(string));
             resumen.Columns.Add("cantidad_entregada", typeof(string));
             resumen.Columns.Add("porcentaje_satisfaccion", typeof(string));
             resumen.Columns.Add("presentacion", typeof(string));
@@ -337,28 +343,40 @@ namespace _02___sistemas
                 {
 
                     id = resumen.Rows[filas]["id"].ToString();
-                    if (id == "45" && resumen.Rows[filas]["proveedor"].ToString() == "proveedor_villaMaipu")
-                    {
-                        string stop = "";
-                    }
-                    /*if (resumen.Rows[filas]["proveedor"].ToString() == "insumos_fabrica")
-                    {
 
-                        fila_producto = funciones.buscar_fila_por_id(id, insumos_fabrica);
-                        cantidad_pedida = double.Parse(resumen.Rows[filas]["cantidad_pedida"].ToString());
-                        cantidad_pedida = cantidad_pedida / double.Parse(funciones.obtener_dato(insumos_fabrica.Rows[fila_producto]["unidad_de_medida_local"].ToString(), 2));
-                        resumen.Rows[filas]["cantidad_pedida"] = Math.Ceiling(cantidad_pedida);
-                    }*/
 
                     string datop = resumen.Rows[filas]["cantidad_entregada"].ToString();
                     cantidad_pedida = double.Parse(resumen.Rows[filas]["cantidad_pedida"].ToString());
                     if (resumen.Rows[filas]["cantidad_entregada"].ToString() != "")
                     {
-
-                        cantidad_entrega = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
-                        porcentaje_satisfaccion = (cantidad_entrega * 100) / cantidad_pedida;
-                        porcentaje_satisfaccion = Math.Round(porcentaje_satisfaccion, 2);
-                        resumen.Rows[filas]["porcentaje_satisfaccion"] = porcentaje_satisfaccion.ToString() + "%";
+                        if (resumen.Rows[filas]["proveedor"].ToString() == "proveedor_villaMaipu")
+                        {
+                            fila_producto = funciones.buscar_fila_por_id(id, productos_terminados);
+                            if (productos_terminados.Rows[fila_producto]["pincho"].ToString() == "si")
+                            {
+                                double equivalencia_pincho = double.Parse(productos_terminados.Rows[fila_producto]["equivalencia_pincho"].ToString());
+                                cantidad_entrega = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
+                                cantidad_pedida = cantidad_pedida * equivalencia_pincho;
+                                resumen.Rows[filas]["cantidad_kilos"] = cantidad_pedida.ToString() + "Kg";
+                                porcentaje_satisfaccion = (cantidad_entrega * 100) / cantidad_pedida;
+                                porcentaje_satisfaccion = Math.Round(porcentaje_satisfaccion, 2);
+                                resumen.Rows[filas]["porcentaje_satisfaccion"] = porcentaje_satisfaccion.ToString() + "%";
+                            }
+                            else
+                            {
+                                cantidad_entrega = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
+                                porcentaje_satisfaccion = (cantidad_entrega * 100) / cantidad_pedida;
+                                porcentaje_satisfaccion = Math.Round(porcentaje_satisfaccion, 2);
+                                resumen.Rows[filas]["porcentaje_satisfaccion"] = porcentaje_satisfaccion.ToString() + "%";
+                            }
+                        }
+                        else
+                        {
+                            cantidad_entrega = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
+                            porcentaje_satisfaccion = (cantidad_entrega * 100) / cantidad_pedida;
+                            porcentaje_satisfaccion = Math.Round(porcentaje_satisfaccion, 2);
+                            resumen.Rows[filas]["porcentaje_satisfaccion"] = porcentaje_satisfaccion.ToString() + "%";
+                        }
                     }
                 }
 

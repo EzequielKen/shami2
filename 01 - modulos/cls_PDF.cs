@@ -2917,7 +2917,7 @@ namespace _01___modulos
             }).GeneratePdf(ruta_archivo);
         }
 
-        public void GenerarPDF_resumen_de_estadisticas_de_pedidos_segun_fecha(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin)
+        public void GenerarPDF_resumen_de_estadisticas_de_pedidos_segun_fecha(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin,string sucursales_seleccionadas)
         {
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
@@ -2935,6 +2935,7 @@ namespace _01___modulos
                         row.RelativeItem().Column(col =>
                         {
                             col.Item().AlignCenter().Text("Estadisticas Segun Fecha").Bold().FontSize(14);
+                            col.Item().AlignCenter().Text(sucursales_seleccionadas).Bold().FontSize(14);
                             col.Item().AlignCenter().Text(fecha_inicio).FontSize(9);
                             col.Item().AlignCenter().Text(fecha_fin).FontSize(9);
 
