@@ -54,6 +54,7 @@
                         </h2>
 
                         <asp:Button ID="boton_calcular" CssClass="btn btn-primary" Text="Calcular Analisis" OnClick="boton_calcular_Click" runat="server" />
+                        <asp:Button ID="boton_analisis_por_fecha" CssClass="btn btn-warning" Text="Analisis Facturacion por Fecha" OnClick="boton_analisis_por_fecha_Click" runat="server" />
                     </div>
                     <div class="col d-flex justify-content-center">
                         <asp:Calendar ID="calendario_rango_final" CssClass="table-bordered" OnSelectionChanged="calendario_rango_final_SelectionChanged" runat="server">
@@ -74,7 +75,9 @@
                         <asp:DropDownList runat="server" CssClass="form-select" ID="dropDown_tipo" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                         <asp:Label ID="label_total" CssClass="form-control" Text="" runat="server" />
+                        <asp:Label ID="label_total_real" CssClass="form-control" Text="" runat="server" />
                         <asp:Button ID="boton_pdf" Visible="false" CssClass="btn btn-success" Text="PDF" OnClick="boton_pdf_Click" runat="server" />
+                        <asp:Button ID="boton_pdf_completo" Visible="false" CssClass="btn btn-warning" Text="PDF Completo" OnClick="boton_pdf_completo_Click" runat="server" />
                     </div>
                     <asp:GridView ID="gridView_productos" runat="server" Caption="Estadisticas" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped">
                         <Columns>

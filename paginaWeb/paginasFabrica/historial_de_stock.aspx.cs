@@ -125,6 +125,7 @@ namespace paginaWeb.paginasFabrica
         cls_movimientos_stock_producto historial_stock;
         cls_funciones funciones = new cls_funciones();
         DataTable usuariosBD;
+        DataTable tipo_usuario;
         DataTable proveedorBD;
         DataTable tipo_usuarioBD;
 
@@ -137,7 +138,7 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
-            
+            tipo_usuario = (DataTable)Session["tipo_usuario"];
             historial_stock = new cls_movimientos_stock_producto(usuariosBD);
             productos_proveedorBD= historial_stock.get_productos_proveedor();
             if (!IsPostBack)
@@ -171,6 +172,33 @@ namespace paginaWeb.paginasFabrica
         protected void DropDown_año_SelectedIndexChanged(object sender, EventArgs e)
         {
             cargar_historial();
+        }
+
+        protected void texbox_nuevo_stock_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_nuevo_stock = (TextBox)sender;
+            double cantidad;
+            if (!double.TryParse(textbox_nuevo_stock.Text,out cantidad))
+            {
+                textbox_nuevo_stock.Text =string.Empty;
+            }
+        }
+
+        protected void boton_cargar_Click(object sender, EventArgs e)
+        {
+            Button boton_cargar = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
+            int fila = row.RowIndex;
+
+            TextBox texbox_nuevo_stock = (gridview_productos.Rows[fila].Cells[3].FindControl("texbox_nuevo_stock") as TextBox);
+            TextBox texbox_nota = (gridview_productos.Rows[fila].Cells[3].FindControl("texbox_nota") as TextBox);
+            string rol_usuario = tipo_usuario.Rows[0]["rol"].ToString();
+            string id_producto = gridview_productos.Rows[fila].Cells[0].Text;
+            historial_stock.cargar_historial_stock(rol_usuario,id_producto, "conteo stock",texbox_nuevo_stock.Text,texbox_nota.Text);
+            Session.Add("id_producto_historial", id_producto);
+            cargar_historial();
+            texbox_nuevo_stock.Text=string.Empty;
+            texbox_nota.Text = string.Empty;
         }
     }
 }

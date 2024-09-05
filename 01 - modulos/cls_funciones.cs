@@ -105,6 +105,21 @@ namespace paginaWeb
             }
             return retorno;
         }
+        public int buscar_columna_por_nombre_columna(string nombre_columna, DataTable dt)
+        {
+            int retorno = -1;
+            int columna = 0;
+            while (columna <= dt.Columns.Count - 1)
+            {
+                if (nombre_columna == dt.Columns[columna].ColumnName)
+                {
+                    retorno = columna;
+                    break;
+                }
+                columna++;
+            }
+            return retorno;
+        }
         public bool verificar_si_cargo(string id, DataTable dt)
         {
             bool retorno = false;

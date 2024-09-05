@@ -44,16 +44,31 @@ namespace _02___sistemas
         DataTable productos_terminados;
         DataTable pedidos;
         DataTable resumen;
-        DataTable sucursal;
+        DataTable resumen_fecha;
+        DataTable sucursales;
         DataTable pedido_de_insumos;
         List<DataTable> lista_pedidos_sucursales = new List<DataTable>();
         DataTable acuerdo_de_precios;
         #endregion
 
         #region PDF
-        public void crear_pdf(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin, string total_teorico)
+
+        public void crear_pdf(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin, string total_teorico, string categoria)
         {
-            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos(ruta_archivo, logo, resumen,fecha_inicio,fecha_fin,total_teorico);
+            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos(ruta_archivo, logo, resumen, fecha_inicio, fecha_fin, total_teorico, categoria);
+        }
+        public void crear_pdf_completo(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin, string total_teorico, string categoria, string total_real)
+        {
+            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos_completo(ruta_archivo, logo, resumen, fecha_inicio, fecha_fin, total_teorico, categoria, total_real);
+        }
+        public void crear_pdf_por_fecha(string ruta_archivo, byte[] logo, DataTable resumen_sucursales, string fecha_inicio, string fecha_fin, string fecha_estadistica_inicio, string fecha_estadistica_fin)
+        {
+            consultar_insumos_fabrica();
+            consultar_productos_terminados();
+            consultar_pedidos_segun_sucursal(resumen_sucursales, fecha_estadistica_inicio, fecha_estadistica_fin);
+            //consultar_orden_de_pedido_segun_sucursal(resumen_sucursales, fecha_inicio, fecha_fin);  Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString()
+            calcular_estadisticas_por_fecha();
+            PDF.GenerarPDF_resumen_de_estadisticas_de_pedidos_segun_fecha(ruta_archivo, logo, resumen_fecha, fecha_inicio, fecha_fin);
         }
         #endregion
 
@@ -74,6 +89,23 @@ namespace _02___sistemas
             resumen.Columns.Add("objetivo", typeof(string));
             resumen.Columns.Add("venta_teorica", typeof(string));
             resumen.Columns.Add("venta_real", typeof(string));
+        }
+        private void crear_resumen_fecha()
+        {
+            resumen_fecha = new DataTable();
+            resumen_fecha.Columns.Add("id", typeof(string));
+            resumen_fecha.Columns.Add("producto", typeof(string));
+            resumen_fecha.Columns.Add("tipo_producto", typeof(string));
+            resumen_fecha.Columns.Add("cantidad_pedida", typeof(string));
+            resumen_fecha.Columns.Add("cantidad_entregada", typeof(string));
+            resumen_fecha.Columns.Add("porcentaje_satisfaccion", typeof(string));
+            resumen_fecha.Columns.Add("presentacion", typeof(string));
+            resumen_fecha.Columns.Add("proveedor", typeof(string));
+            resumen_fecha.Columns.Add("stock", typeof(string));
+            resumen_fecha.Columns.Add("venta_teorica", typeof(string));
+            resumen_fecha.Columns.Add("venta_real", typeof(string));
+            resumen_fecha.Columns.Add("total", typeof(string));
+            resumen_fecha.Columns.Add("inicio", typeof(string));
         }
         #endregion
         #region analisis de produccion
@@ -187,6 +219,75 @@ namespace _02___sistemas
                 }
             }
         }
+        private void calcular_estadisticas_por_fecha()
+        {
+            crear_resumen_fecha();
+            string tipo_de_acuerdo, acuerdo_de_precios_dato, proveedor;
+            string id_producto;
+            int columna;
+
+            for (int fila_pedidos = 0; fila_pedidos <= lista_pedidos_sucursales.Count - 1; fila_pedidos++)
+            {
+                pedidos = lista_pedidos_sucursales[fila_pedidos];
+                for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
+                {
+
+                    DateTime fecha = DateTime.Parse(pedidos.Rows[fila]["fecha"].ToString());
+                    string fecha_dato = fecha.ToString("dd/MM/yyyy");
+                    int columna_fecha = funciones.buscar_columna_por_nombre_columna(fecha_dato, resumen_fecha);
+                    if (columna_fecha == -1)
+                    {
+                        resumen_fecha.Columns.Add(fecha_dato, typeof(double));
+                    }
+                }
+            }
+            for (int fila_pedidos = 0; fila_pedidos <= lista_pedidos_sucursales.Count - 1; fila_pedidos++)
+            {
+                pedidos = lista_pedidos_sucursales[fila_pedidos];
+                columna = pedidos.Columns["producto_1"].Ordinal;
+                for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
+                {
+                    tipo_de_acuerdo = pedidos.Rows[fila]["tipo_de_acuerdo"].ToString();
+                    acuerdo_de_precios_dato = pedidos.Rows[fila]["acuerdo_de_precios"].ToString();
+                    proveedor = pedidos.Rows[fila]["proveedor"].ToString();
+                    consultar_acuerdo_de_precios(proveedor, acuerdo_de_precios_dato, tipo_de_acuerdo);
+                    if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu" ||
+                    pedidos.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
+                    {
+                        columna = pedidos.Columns["producto_1"].Ordinal;
+                        while (columna <= pedidos.Columns.Count - 1 &&
+                        funciones.IsNotDBNull(pedidos.Rows[fila][columna]))
+                        {
+                            id_producto = funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 2);
+                            if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu")
+                            {
+                                cargar_estadistica_fecha(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4);
+                            }
+                            else if (pedidos.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
+                            {
+                                cargar_estadistica_fecha(fila, columna, id_producto, insumos_fabrica, "insumos_fabrica", pedidos, 4);
+                            }
+                            columna++;
+                        }
+                    }
+                }
+            }
+
+            double total = 0;
+            double cantidad;
+            for (int fila = 0; fila <= resumen_fecha.Rows.Count - 1; fila++)
+            {
+                total = 0;
+                for (int column = resumen_fecha.Columns["inicio"].Ordinal + 1; column <= resumen_fecha.Columns.Count - 1; column++)
+                {
+                    if (double.TryParse(resumen_fecha.Rows[fila][column].ToString(), out cantidad))
+                    {
+                        total = total + cantidad;
+                    }
+                }
+                resumen_fecha.Rows[fila]["total"] = total.ToString();
+            }
+        }
         private void calcular_estadisticas_segun_sucursal()
         {
             crear_tabla_resumen();
@@ -261,6 +362,73 @@ namespace _02___sistemas
                     }
                 }
 
+            }
+        }
+        private void cargar_estadistica_fecha(int fila, int columna, string id_producto, DataTable productos_seleccionados, string proveedor, DataTable pedido, int posicion)
+        {
+            DateTime fecha = DateTime.Parse(pedido.Rows[fila]["fecha"].ToString());
+            string fecha_dato = fecha.ToString("dd/MM/yyyy");
+            int fila_resumen = 0;
+            int fila_producto;
+            double cantidad_pedida, cantidad_entregada, venta_teorica, venta_real, precio, venta_teorica_historico, venta_real_historico;
+            fila_producto = funciones.buscar_fila_por_id(id_producto, productos_seleccionados);
+            precio = double.Parse(acuerdo_de_precios.Rows[0]["producto_" + id_producto.ToString()].ToString());
+            if (fila_producto != -1)
+            {
+                // cantidad_entregada porcentaje_satisfaccion
+                fila_resumen = funciones.buscar_fila_por_id_nombre(id_producto, productos_seleccionados.Rows[fila_producto]["producto"].ToString(), resumen_fecha);
+                if (fila_resumen == -1)
+                {
+                    resumen_fecha.Rows.Add();
+                    fila_resumen = resumen_fecha.Rows.Count - 1;
+                    resumen_fecha.Rows[fila_resumen]["id"] = productos_seleccionados.Rows[fila_producto]["id"].ToString();
+                    resumen_fecha.Rows[fila_resumen]["producto"] = productos_seleccionados.Rows[fila_producto]["producto"].ToString();
+                    resumen_fecha.Rows[fila_resumen]["tipo_producto"] = productos_seleccionados.Rows[fila_producto]["tipo_producto"].ToString();
+
+                    if (pedido.Rows[fila]["estado"].ToString() == "Entregado")
+                    {
+                        if ("N/A" != funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1))
+                        {
+                            int columna_fecha = funciones.buscar_columna_por_nombre_columna(fecha_dato, resumen_fecha);
+
+                            cantidad_entregada = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1));
+                            resumen_fecha.Rows[fila_resumen][columna_fecha] = cantidad_entregada.ToString();
+                            //  venta_real = cantidad_entregada * precio;
+                            //  resumen_fecha.Rows[fila_resumen]["venta_real"] = venta_real.ToString();
+                        }
+                    }
+                    resumen_fecha.Rows[fila_resumen]["presentacion"] = productos_seleccionados.Rows[fila_producto]["unidad_de_medida_local"].ToString();
+                    resumen_fecha.Rows[fila_resumen]["proveedor"] = proveedor;
+                }
+                else
+                {
+                    int columna_fecha = funciones.buscar_columna_por_nombre_columna(fecha_dato, resumen_fecha);
+
+                    if (pedido.Rows[fila]["estado"].ToString() == "Entregado")
+                    {
+                        if ("N/A" != funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1))
+                        {
+
+                            string dato = resumen_fecha.Rows[fila_resumen][columna_fecha].ToString();
+                            if (resumen_fecha.Rows[fila_resumen][columna_fecha].ToString() == "")
+                            {
+                                cantidad_entregada = 0;
+                            }
+                            else
+                            {
+                                cantidad_entregada = double.Parse(resumen_fecha.Rows[fila_resumen][columna_fecha].ToString());
+                            }
+                            resumen_fecha.Rows[fila_resumen][columna_fecha] = cantidad_entregada + double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1));
+
+                            //    cantidad_entregada = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), posicion + 1));
+                            //    venta_real_historico = double.Parse(resumen.Rows[fila_resumen]["venta_real"].ToString());
+                            //    venta_real = cantidad_entregada * precio;
+                            //    venta_real = venta_real_historico + venta_real;
+                            //    resumen.Rows[fila_resumen]["venta_real"] = venta_real.ToString();
+                        }
+                    }
+
+                }
             }
         }
         private void cargar_estadistica(int fila, int columna, string id_producto, DataTable productos_seleccionados, string proveedor, DataTable pedido, int posicion)
@@ -406,7 +574,7 @@ namespace _02___sistemas
 
         private void consultar_sucursal()
         {
-            sucursal = consultas.consultar_tabla(base_de_datos, "sucursal");
+            sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
         }
         #endregion
 
@@ -434,7 +602,7 @@ namespace _02___sistemas
 
             //consultar_insumos_fabrica();
             consultar_productos_terminados();
-            consultar_pedidos_segun_sucursal(sucursal, fecha_inicio, fecha_fin);
+            consultar_pedidos_segun_sucursal(sucursales, fecha_inicio, fecha_fin);
             calcular_analisis_de_producccion();
             return resumen;
         }
@@ -445,16 +613,16 @@ namespace _02___sistemas
 
             //consultar_insumos_fabrica();
             consultar_productos_terminados_fabrica_fatay();
-            consultar_pedidos_segun_sucursal(sucursal, fecha_inicio, fecha_fin);
+            consultar_pedidos_segun_sucursal(sucursales, fecha_inicio, fecha_fin);
             calcular_analisis_de_producccion();
             return resumen;
         }
         public DataTable get_sucursal()
         {
             consultar_sucursal();
-            sucursal.DefaultView.Sort = "sucursal asc";
-            sucursal = sucursal.DefaultView.ToTable();
-            return sucursal;
+            sucursales.DefaultView.Sort = "sucursal asc";
+            sucursales = sucursales.DefaultView.ToTable();
+            return sucursales;
         }
         #endregion
     }

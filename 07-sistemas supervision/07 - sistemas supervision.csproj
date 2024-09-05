@@ -89,6 +89,7 @@
   <ItemGroup>
     <Compile Include="cls_evaluar_visita_operativa.cs" />
     <Compile Include="cls_historial_visita_operativa.cs" />
+    <Compile Include="cls_migracion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="cls_visita_operativa.cs" />
   </ItemGroup>

@@ -320,7 +320,6 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a></li>
-                            <li><a class="dropdown-item" href="/paginasFabrica/stock.aspx">Analisis de Stock Producto</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/stock_insumos.aspx">Stock Insumos</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Productos</a></li>

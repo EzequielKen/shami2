@@ -24,18 +24,33 @@
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="producto" DataField="producto" />
                                 <asp:CommandField ShowSelectButton="true" SelectText="Cargar Historial" HeaderText="Cargar Historial" ControlStyle-CssClass="btn btn-primary btn-sm" />
+
+                                <asp:TemplateField HeaderText="Nuevo Stock">
+                                    <ItemTemplate>
+                                        <asp:TextBox ID="texbox_nuevo_stock" placeholder="Cantidad" CssClass="input-group-text" runat="server" OnTextChanged="texbox_nuevo_stock_TextChanged" AutoPostBack="true">
+                                        </asp:TextBox>
+                                        <asp:TextBox ID="texbox_nota" placeholder="nota" CssClass="input-group-text" runat="server">
+                                        </asp:TextBox>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Cargar">
+                                    <ItemTemplate>
+                                        <asp:Button ID="boton_cargar" CssClass="input-group btn btn-primary" Text="Cargar" OnClick="boton_cargar_Click" runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
                     </div>
                     <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
                         <div class="alert alert-light">
                             <div class="input-group">
-                                    <label class="form-control" >mes</label>
+                                <label class="form-control">mes</label>
                                 <div>
                                     <asp:DropDownList runat="server" CssClass="form-select" ID="DropDown_mes" OnSelectedIndexChanged="DropDown_mes_SelectedIndexChanged" AutoPostBack="true">
                                     </asp:DropDownList>
                                 </div>
-                                    <label class="form-control">año</label>
+                                <label class="form-control">año</label>
                                 <div>
                                     <asp:DropDownList runat="server" CssClass="form-select" ID="DropDown_año" OnSelectedIndexChanged="DropDown_año_SelectedIndexChanged" AutoPostBack="true">
                                     </asp:DropDownList>

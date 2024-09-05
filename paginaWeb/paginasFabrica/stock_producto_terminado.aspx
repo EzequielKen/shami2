@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="actualizar_precio_stock.aspx.cs" Inherits="paginaWeb.paginasFabrica.actualizar_precio_stock" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="stock_producto_terminado.aspx.cs" Inherits="paginaWeb.paginasFabrica.stock_producto_terminado" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -7,7 +7,7 @@
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
             <div class="container">
-        <h2>Actualizador de Precios de Productos Terminados</h2>
+                <h2>Actualizador de Stock</h2>
                 <div class="row">
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                     </div>
@@ -30,18 +30,6 @@
                 <div class=" row  ">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <div class=" alert alert-light">
-                            <div class="input-group mb-3 ">
-
-                                <asp:Label ID="label_cartel" CssClass="form-control" Text="Ingrese porcentaje de aumento:" runat="server" />
-                                <asp:TextBox runat="server" CssClass="form-control form-control" ID="textbox_porcentaje_aumento" />
-
-
-                                <asp:Button Text="cargar" CssClass="btn btn-outline-secondary" runat="server" ID="boton_aumentar_porcentaje" OnClick="boton_aumentar_porcentaje_Click" />
-
-                            </div>
-                        </div>
-
-                        <div class=" alert alert-light">
                             <div class="input-group">
                                 <asp:TextBox runat="server" CssClass="form-control" ID="textbox_busqueda" OnTextChanged="textbox_busqueda_TextChanged" AutoPostBack="true" />
                                 <asp:Button Text="buscar" CssClass="btn btn-outline-secondary" runat="server" />
@@ -52,19 +40,12 @@
 
                             </div>
                         </div>
-
-
-
-
-
-                        <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" OnSelectedIndexChanged="gridview_productos_SelectedIndexChanged" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
+                        <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
 
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="producto" DataField="producto" />
                                 <asp:BoundField HeaderText="unidad de medida" DataField="unidad_de_medida" />
-
-                                <asp:BoundField HeaderText="precio actual" DataField="precio" />
                                 <asp:TemplateField HeaderText="Ingrese nuevo precio">
                                     <ItemTemplate>
                                         <asp:TextBox ID="texbox_precio" CssClass="input-group-text" runat="server"></asp:TextBox>

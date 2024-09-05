@@ -87,6 +87,15 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.Button boton_calcular;
 
         /// <summary>
+        /// Control boton_analisis_por_fecha.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_analisis_por_fecha;
+
+        /// <summary>
         /// Control calendario_rango_final.
         /// </summary>
         /// <remarks>
@@ -123,6 +132,15 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.Label label_total;
 
         /// <summary>
+        /// Control label_total_real.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_total_real;
+
+        /// <summary>
         /// Control boton_pdf.
         /// </summary>
         /// <remarks>
@@ -130,6 +148,15 @@ namespace paginaWeb.paginasFabrica
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button boton_pdf;
+
+        /// <summary>
+        /// Control boton_pdf_completo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_pdf_completo;
 
         /// <summary>
         /// Control gridView_productos.

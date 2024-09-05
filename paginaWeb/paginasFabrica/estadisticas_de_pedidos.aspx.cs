@@ -27,6 +27,8 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_sucursales()
         {
+            sucursales.DefaultView.Sort = "sucursal asc";
+            sucursales = sucursales.DefaultView.ToTable();
             gridView_sucursales.DataSource = sucursales;
             gridView_sucursales.DataBind();
 
@@ -101,6 +103,7 @@ namespace paginaWeb.paginasFabrica
         {
             crear_tabla_resumen();
             double venta_teorica = 0;
+            double venta_real = 0;
             int fila_resumen;
             estadisticas_de_pedidos_seleccionados = (DataTable)Session["estadisticas_de_pedidos"];
             for (int fila = 0; fila <= estadisticas_de_pedidos_seleccionados.Rows.Count - 1; fila++)
@@ -121,9 +124,11 @@ namespace paginaWeb.paginasFabrica
                     resumen.Rows[fila_resumen]["porcentaje_satisfaccion"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["porcentaje_satisfaccion"].ToString();
 
                     venta_teorica = venta_teorica + double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_teorica"].ToString());
+                    venta_real = venta_real + double.Parse(estadisticas_de_pedidos_seleccionados.Rows[fila]["venta_real"].ToString());
                 }
             }
-            label_total.Text = "Total: " + funciones.formatCurrency(venta_teorica);
+            label_total.Text = "Total Teorico: " + funciones.formatCurrency(venta_teorica);
+            label_total_real.Text = "Total Real: " + funciones.formatCurrency(venta_real);
             Session.Add("resumen_estadistica_de_pedido", resumen);
         }
         private void llenar_tabla_resumen_buscar()
@@ -280,6 +285,7 @@ namespace paginaWeb.paginasFabrica
             {
                 resumen_sucursales = (DataTable)Session["resumen_sucursal"];
                 boton_pdf.Visible = true;
+                boton_pdf_completo.Visible = true;
                 estadisticas_de_pedidos_seleccionados = estadisticas.obtener_estadisticas_de_pedido_segun_sucursales(resumen_sucursales, Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString());
                 Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
                 llenar_dropDownList(estadisticas_de_pedidos_seleccionados);
@@ -318,6 +324,65 @@ namespace paginaWeb.paginasFabrica
             cargar_sucursales();
         }
 
+        protected void boton_pdf_completo_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = "Estadistica de Pedidos - id -" + dato_hora + ".pdf";
+            string ruta = "/paginasFabrica/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            string ruta_logo = "~/imagenes/logo-completo.png";
+            estadisticas.crear_pdf_completo(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"], label_fecha_inicio.Text, label_fecha_final.Text, label_total.Text, dropDown_tipo.SelectedItem.Text,label_total_real.Text);
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginasFabrica/pdf/" + id_pedido;
+            try
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+            }
+            catch (Exception)
+            {
+
+                Response.Redirect(strUrl, false);
+            }
+        }
+
+        protected void boton_analisis_por_fecha_Click(object sender, EventArgs e)
+        {
+            if (Session["fecha_estadistica_inicio"].ToString() != "N/A" &&
+              Session["fecha_estadistica_fin"].ToString() != "N/A")
+            {
+                resumen_sucursales = (DataTable)Session["resumen_sucursal"];
+              //  estadisticas_de_pedidos_seleccionados = estadisticas.obtener_estadisticas_de_pedido_segun_sucursales(resumen_sucursales, Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString());
+              //  Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
+
+                DateTime hora = DateTime.Now;
+                string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+                string id_pedido = "Estadistica de Pedidos - id -" + dato_hora + ".pdf";
+                string ruta = "/paginasFabrica/pdf/" + id_pedido;
+                string ruta_archivo = Server.MapPath(ruta);
+
+                byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+                string ruta_logo = "~/imagenes/logo-completo.png";
+                estadisticas.crear_pdf_por_fecha(ruta_archivo, imgdata, (DataTable)Session["resumen_sucursal"], label_fecha_inicio.Text, label_fecha_final.Text, Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString());
+                //           Response.Redirect("~/archivo.pdf");
+                string strUrl = "/paginasFabrica/pdf/" + id_pedido;
+                try
+                {
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+
+                }
+                catch (Exception)
+                {
+
+                    Response.Redirect(strUrl, false);
+                }
+
+            }
+        }
+
         protected void boton_pdf_Click(object sender, EventArgs e)
         {
             DateTime hora = DateTime.Now;
@@ -328,7 +393,7 @@ namespace paginaWeb.paginasFabrica
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
             string ruta_logo = "~/imagenes/logo-completo.png";
-            estadisticas.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"],label_fecha_inicio.Text,label_fecha_final.Text,label_total.Text);
+            estadisticas.crear_pdf(ruta_archivo, imgdata, (DataTable)Session["resumen_estadistica_de_pedido"],label_fecha_inicio.Text,label_fecha_final.Text,label_total.Text,dropDown_tipo.SelectedItem.Text);
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginasFabrica/pdf/" + id_pedido;
             try

@@ -30,9 +30,11 @@ namespace _03___sistemas_fabrica
                 base_de_datos = ConfigurationManager.AppSettings["base_de_datos_desarrollo"];
             }
             consultas = new cls_consultas_Mysql(servidor, puerto, usuario_dato, contraseña_BD, base_de_datos);
+            stock_Producto_Terminado = new cls_stock_producto_terminado(usuario_BD);
         }
 
         #region atributos
+        cls_stock_producto_terminado stock_Producto_Terminado;
         cls_consultas_Mysql consultas;
         cls_funciones funciones = new cls_funciones();
         DataTable usuarioBD;
@@ -46,6 +48,10 @@ namespace _03___sistemas_fabrica
         movimientos resta stock: despacho, desperdicio. 
         */
         #region carga base de datos
+        public void cargar_historial_stock(string rol_usuario, string id_producto, string tipo_movimiento, string movimiento, string nota)
+        {
+            stock_Producto_Terminado.cargar_historial_stock(rol_usuario,id_producto,tipo_movimiento,movimiento,nota);
+        }
         public void cargar_actualizacion_stock(string rol_usuario, string id_producto, string stock_final_dato, string nota)
         {
             consultar_productos_proveedor();
@@ -177,7 +183,7 @@ namespace _03___sistemas_fabrica
         }
         private void consultar_historial_producto(string id_producto, string mes, string año)
         {
-            historial_producto = consultas.consultar_historial_producto_segun_mes_y_año(base_de_datos, "movimientos_stock_producto_terminado", id_producto, mes,año);
+            historial_producto = consultas.consultar_historial_producto_segun_mes_y_año(base_de_datos, "stock_producto_terminado", id_producto, mes,año);
         }
         #endregion
 

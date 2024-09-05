@@ -90,6 +90,7 @@
     <Compile Include="cls_sistema_rendiciones.cs" />
     <Compile Include="cls_stock.cs" />
     <Compile Include="cls_stock_insumos.cs" />
+    <Compile Include="cls_stock_producto_terminado.cs" />
     <Compile Include="cls_temperatura_de_equipos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

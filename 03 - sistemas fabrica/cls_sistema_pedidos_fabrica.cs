@@ -21,12 +21,13 @@ namespace _03___sistemas_fabrica
             stock_insumos = new cls_stock_insumos(usuarios_BD);
             historial_stock = new cls_movimientos_stock_producto(usuarios_BD);
             sistema_Administracion = new cls_sistema_cuentas_por_cobrar(usuarios_BD);
-
+            stock_producto_terminado = new cls_stock_producto_terminado(usuarios_BD);
         }
         #region atributos
         cls_movimientos_stock_producto movimientos_stock_producto;
         cls_sistema_cuentas_por_cobrar sistema_Administracion;
         cls_stock_insumos stock_insumos;
+        cls_stock_producto_terminado stock_producto_terminado;
         cls_movimientos_stock_producto historial_stock;
         cls_funciones funciones = new cls_funciones();
         private DataTable usuariosBD;
@@ -610,7 +611,7 @@ namespace _03___sistemas_fabrica
                     {
                         string nota = sucursal + " PEDIDO: " + num_pedido;
                         cargar_historial_stock(pedido, rol_usuario, nota, proveedor);
-                        pedidos.actualizar_stock(proveedor, pedido);
+                        //pedidos.actualizar_stock(proveedor, pedido);
                     }
                     else if (proveedor == "insumos_fabrica")
                     {
@@ -622,7 +623,7 @@ namespace _03___sistemas_fabrica
                     pedidos.cargar_venta_en_rendiciones(pedido, pedidos_sucursal, fila_pedido, proveedor);
                 }
             }
-            stock_insumos.guardar_registro_entrega_insumo_a_local(rol_usuario, insumos, insumos_copia);
+          //  stock_insumos.guardar_registro_entrega_insumo_a_local(rol_usuario, insumos, insumos_copia);
             DateTime fecha = DateTime.Now;
             sucursal = resumen_de_pedidos.Rows[0]["sucursal"].ToString();
             sistema_Administracion.get_deuda_total_mes(sucursal,fecha.Month.ToString(),fecha.Year.ToString());
@@ -655,7 +656,7 @@ namespace _03___sistemas_fabrica
         private void cargar_historial_stock(DataTable pedido, string rol_usuario, string nota, string proveedor)
         {
             string id;
-            double stock, nuevo_stock, cantidad_despachada;
+            double cantidad_despachada;
             for (int fila = 0; fila <= pedido.Rows.Count - 1; fila++)
             {
                 if (pedido.Rows[fila]["proveedor"].ToString() == proveedor)
@@ -664,15 +665,13 @@ namespace _03___sistemas_fabrica
                     if (pedido.Rows[fila]["nuevo_stock"].ToString() != "N/A")
                     {
                         id = pedido.Rows[fila]["id"].ToString();
-                        stock = double.Parse(pedido.Rows[fila]["stock"].ToString());
-                        nuevo_stock = double.Parse(pedido.Rows[fila]["nuevo_stock"].ToString());
-                        cantidad_despachada = nuevo_stock - stock;
+                        cantidad_despachada = double.Parse(pedido.Rows[fila]["cantidad_entrega"].ToString());
 
 
 
-                        movimientos_stock_producto.cargar_resta_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
+                        //movimientos_stock_producto.cargar_resta_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
 
-
+                        stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
                     }
                 }
 

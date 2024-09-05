@@ -287,6 +287,7 @@
     <Content Include="paginasFabrica\resumen_de_pedido.aspx" />
     <Content Include="paginasFabrica\stock.aspx" />
     <Content Include="paginasFabrica\stock_insumos.aspx" />
+    <Content Include="paginasFabrica\stock_producto_terminado.aspx" />
     <Content Include="paginasFabrica\sucursales.aspx" />
     <Content Include="paginasFabrica\temperatura_de_equipos.aspx" />
     <Content Include="paginasGerente\administrar_tipo_movimiento_caja_chica.aspx" />
@@ -343,6 +344,7 @@
   <ItemGroup>
     <Compile Include="cls_convertir_JSON.cs" />
     <Compile Include="cls_funciones.cs" />
+    <Compile Include="cls_migracion.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -807,6 +809,13 @@
     </Compile>
     <Compile Include="paginasFabrica\stock_insumos.aspx.designer.cs">
       <DependentUpon>stock_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\stock_producto_terminado.aspx.cs">
+      <DependentUpon>stock_producto_terminado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\stock_producto_terminado.aspx.designer.cs">
+      <DependentUpon>stock_producto_terminado.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\sucursales.aspx.cs">
       <DependentUpon>sucursales.aspx</DependentUpon>
