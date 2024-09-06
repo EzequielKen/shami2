@@ -32,10 +32,12 @@ namespace _03___sistemas_fabrica
             }
             consultas = new cls_consultas_Mysql(servidor, puerto, usuario_dato, contraseña_BD, base_de_datos);
             movimientos_stock_producto = new cls_movimientos_stock_producto(usuario_BD);
+            stock_producto_terminado = new cls_stock_producto_terminado(usuario_BD);
         }
         #region atributos
         cls_consultas_Mysql consultas;
         cls_movimientos_stock_producto movimientos_stock_producto;
+        cls_stock_producto_terminado stock_producto_terminado;
         cls_funciones funciones = new cls_funciones();
         cls_PDF PDF = new cls_PDF();
         DataTable usuarioBD;
@@ -245,37 +247,7 @@ namespace _03___sistemas_fabrica
 
                         fila_producto = funciones.buscar_fila_por_id(id_producto, productos_proveedor);
                         cantidad_recibida = double.Parse(detalle_produccion.Rows[fila]["Cant.Recibida"].ToString());
-                        if (proveedor == "Shami Villa Maipu Produccion")
-                        {
-                            stock_produccion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_produccion"].ToString());
-                            stock_expedicion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_expedicion"].ToString());
-                            stock = double.Parse(productos_proveedor.Rows[fila_producto]["stock"].ToString());
-
-                            nuevo_stock_produccion = stock_produccion - cantidad_recibida;
-                            nuevo_stock_expedicion = stock_expedicion + cantidad_recibida;
-                            stock = stock + cantidad_recibida;
-
-                            movimientos_stock_producto.cargar_suma_stock(rol_usuario, id_producto, "produccion", cantidad_recibida.ToString(), "N/A");
-
-                            consultas.actualizar_tabla(base_de_datos, nombre_proveedor, "`stock_produccion` = '" + nuevo_stock_produccion.ToString() + "'", id_producto);
-                            consultas.actualizar_tabla(base_de_datos, nombre_proveedor, "`stock_expedicion` = '" + nuevo_stock_expedicion.ToString() + "'", id_producto);
-                            consultas.actualizar_tabla(base_de_datos, nombre_proveedor, "`stock` = '" + stock.ToString() + "'", id_producto);
-                        }
-                        else if (proveedor == "Shami Fabrica Fatay")
-                        {
-
-                            stock_fabrica_fatay = double.Parse(productos_proveedor.Rows[fila_producto]["stock_fabrica_fatay"].ToString());
-                            stock = double.Parse(productos_proveedor.Rows[fila_producto]["stock"].ToString());
-
-
-                            nuevo_stock_fabrica_fatay = stock_fabrica_fatay - cantidad_recibida;
-                            stock = stock + cantidad_recibida;
-                            consultas.actualizar_tabla(base_de_datos, nombre_proveedor, "`stock_fabrica_fatay` = '" + nuevo_stock_fabrica_fatay.ToString() + "'", id_producto);
-                            consultas.actualizar_tabla(base_de_datos, nombre_proveedor, "`stock` = '" + stock.ToString() + "'", id_producto);
-                        
-                            movimientos_stock_producto.cargar_suma_stock(rol_usuario, id_producto, "produccion", cantidad_recibida.ToString(), "N/A");
-
-                        }
+                        stock_producto_terminado.cargar_historial_stock(rol_usuario, id_producto, "produccion", cantidad_recibida.ToString(), "N/A");
                         index++;
                     }
                     else
@@ -295,6 +267,8 @@ namespace _03___sistemas_fabrica
                         fila_producto = funciones.buscar_fila_por_id(id_producto, productos_proveedor);
                         cantidad_recibida = double.Parse(detalle_produccion.Rows[fila]["Cant.Recibida"].ToString());
                         stock_expedicion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_expedicion"].ToString());
+                        
+                        stock_producto_terminado.cargar_historial_stock(rol_usuario, id_producto, "produccion", cantidad_recibida.ToString(), "N/A");
 
                         nuevo_stock_expedicion = stock_expedicion + cantidad_recibida;
 

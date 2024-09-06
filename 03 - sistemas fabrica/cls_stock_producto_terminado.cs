@@ -120,6 +120,10 @@ namespace _03___sistemas_fabrica
             {//sumar
                 stock_final = stock_inicial + double.Parse(movimiento);
             }
+            if (tipo_movimiento == "produccion") //si es compra
+            {//sumar
+                stock_final = stock_inicial + double.Parse(movimiento);
+            }
             else if (tipo_movimiento == "despacho") //si es despacho
             {//restar
                 stock_final = stock_inicial - double.Parse(movimiento);
@@ -137,6 +141,10 @@ namespace _03___sistemas_fabrica
             double stock_inicial = obtener_ultimo_stock();
             double stock_final = 0;
             if (tipo_movimiento=="compra") //si es compra
+            {//sumar
+                stock_final = stock_inicial + double.Parse(movimiento);
+            }
+            if (tipo_movimiento == "produccion") //si es compra
             {//sumar
                 stock_final = stock_inicial + double.Parse(movimiento);
             }
