@@ -57,7 +57,7 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region metodos carga a base de datos
-        public string crear_orden_de_compra(string id_proveedor, string fecha_estimada, DataTable resumen, string id_orden_pedido_a_modificar, DataTable resumen_orden_pedido, string cantidad_a_pagar,string condicion_pago)
+        public string crear_orden_de_compra(string id_proveedor, string fecha_estimada, DataTable resumen, string id_orden_pedido_a_modificar, DataTable resumen_orden_pedido, string cantidad_a_pagar, string condicion_pago)
         {
             if (id_orden_pedido_a_modificar != "N/A")
             {
@@ -372,6 +372,13 @@ namespace _03___sistemas_fabrica
         {
             consular_acuerdo_de_precio_fabrica_proveedor(id_proveedor);
             consultar_insumos_fabrica();
+            llenar_tabla_insumos();
+            return insumos_proveedor;
+        }
+        public DataTable get_insumos_proveedor_optimizado(string id_proveedor, DataTable insumos_fabricaBD)
+        {
+            consular_acuerdo_de_precio_fabrica_proveedor(id_proveedor);
+            insumos_fabrica = insumos_fabricaBD;
             llenar_tabla_insumos();
             return insumos_proveedor;
         }

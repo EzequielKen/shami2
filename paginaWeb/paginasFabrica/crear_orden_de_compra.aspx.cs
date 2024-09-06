@@ -316,7 +316,14 @@ namespace paginaWeb.paginasFabrica
             ordenes_compra = (cls_crear_orden_de_compras)Session["ordenes_compra"];
             if (!IsPostBack)
             {
-                insumos_proveedorBD = ordenes_compra.get_insumos_proveedor(id_proveedor_fabrica_seleccionado);
+                if (Session["insumos_fabricaBD"] == null)
+                {
+                    insumos_proveedorBD = ordenes_compra.get_insumos_proveedor(id_proveedor_fabrica_seleccionado);
+                }
+                else
+                {
+                    insumos_proveedorBD = ordenes_compra.get_insumos_proveedor_optimizado(id_proveedor_fabrica_seleccionado, (DataTable)Session["insumos_fabricaBD"]);
+                }
                 proveedor = ordenes_compra.get_proveedor(id_proveedor_fabrica_seleccionado);
                 Session.Add("insumos_proveedorBD", insumos_proveedorBD);
                 Session.Add("proveedor_crear_pedido", proveedor);
@@ -326,7 +333,7 @@ namespace paginaWeb.paginasFabrica
             proveedor = (DataTable)Session["proveedor_crear_pedido"];
             if (!IsPostBack)
             {
-                
+
                 Session.Add("fechaBD", "N/A");
 
                 if (insumos_proveedorBD.Rows.Count > 0)
@@ -353,7 +360,7 @@ namespace paginaWeb.paginasFabrica
             if (fechaBD != "N/A" && resumen_pedido.Rows.Count > 0)
             {
                 string condicion_pago = proveedor.Rows[0]["condicion_pago"].ToString();
-                string url_whatsapp = ordenes_compra.crear_orden_de_compra(id_proveedor_fabrica_seleccionado, fechaBD, resumen_pedido, Session["id_orden_pedido_a_modificar"].ToString(), (DataTable)Session["resumen_orden_pedido"],calcular_total_numero(), condicion_pago);
+                string url_whatsapp = ordenes_compra.crear_orden_de_compra(id_proveedor_fabrica_seleccionado, fechaBD, resumen_pedido, Session["id_orden_pedido_a_modificar"].ToString(), (DataTable)Session["resumen_orden_pedido"], calcular_total_numero(), condicion_pago);
 
                 Session.Remove("id_orden_pedido_a_modificar");
 
