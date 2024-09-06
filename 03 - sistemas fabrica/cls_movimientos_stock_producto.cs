@@ -196,7 +196,7 @@ namespace _03___sistemas_fabrica
         public DataTable get_historial_producto(string id_producto, string mes, string año)
         {
             consultar_historial_producto(id_producto,mes,año);
-            historial_producto.DefaultView.Sort = "fecha DESC";
+            historial_producto.DefaultView.Sort = "fecha DESC, id DESC";
             historial_producto = historial_producto.DefaultView.ToTable();
             return historial_producto;
         }

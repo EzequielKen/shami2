@@ -162,7 +162,7 @@ namespace _03___sistemas_fabrica
         private double obtener_ultimo_stock()
         {
             //obtener ultimo stock
-            historial_stock.DefaultView.Sort = "fecha DESC";
+            historial_stock.DefaultView.Sort = "fecha DESC,id DESC";
             historial_stock = historial_stock.DefaultView.ToTable(true);
             return double.Parse(historial_stock.Rows[0]["stock_final"].ToString());
         }
