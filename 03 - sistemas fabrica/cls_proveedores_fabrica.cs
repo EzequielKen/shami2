@@ -54,6 +54,10 @@ namespace _03___sistemas_fabrica
         {
             insumos_fabrica = consultas.consultar_tabla(base_de_datos, "insumos_fabrica");
         }
+        private void consultar_insumos_fabrica_optimizado()
+        {
+            insumos_fabrica = consultas.consultar_insumos_fabricas_optimizado();
+        }
         private void consultar_acuerdo_de_precios_fabrica_a_proveedores()
         {
             acuerdo_de_precios_fabrica_a_proveedores = consultas.consultar_acuerdo_de_precios_fabrica_a_proveedores_activo();
@@ -89,6 +93,11 @@ namespace _03___sistemas_fabrica
         public DataTable get_insumos_fabrica()
         {
             consultar_insumos_fabrica();
+            return insumos_fabrica;
+        }
+        public DataTable get_insumos_fabrica_optimizado() 
+        { 
+            consultar_insumos_fabrica_optimizado(); 
             return insumos_fabrica;
         }
         public List<string> get_proveedores_seleccionados(string id_producto)

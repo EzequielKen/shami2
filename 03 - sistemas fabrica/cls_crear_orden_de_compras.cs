@@ -295,7 +295,6 @@ namespace _03___sistemas_fabrica
         private void llenar_tabla_insumos()
         {
             crear_tabla_insumos();
-            consultar_insumos_fabrica();
             string id_insumo, tipo_paquete, cantidad_unidades, unidad_medida, precio;
             int fila_insumo;
             int fila = 0;
@@ -360,7 +359,7 @@ namespace _03___sistemas_fabrica
         }
         private void consultar_insumos_fabrica()
         {
-            insumos_fabrica = consultas.consultar_tabla(base_de_datos, "insumos_fabrica");
+            insumos_fabrica = consultas.consultar_insumos_fabricas_optimizado();
         }
         private void consular_acuerdo_de_precio_fabrica_proveedor(string id_proveedor)
         {
@@ -372,6 +371,7 @@ namespace _03___sistemas_fabrica
         public DataTable get_insumos_proveedor(string id_proveedor)
         {
             consular_acuerdo_de_precio_fabrica_proveedor(id_proveedor);
+            consultar_insumos_fabrica();
             llenar_tabla_insumos();
             return insumos_proveedor;
         }

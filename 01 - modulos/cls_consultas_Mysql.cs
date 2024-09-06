@@ -1640,7 +1640,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal,string turno)
+        public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal, string turno)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1993,7 +1993,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_horarios_de_empleado_segun_fecha(string id_sucursal,string id_empleado, string fecha_inicio, string fecha_fin)
+        public DataTable consultar_horarios_de_empleado_segun_fecha(string id_sucursal, string id_empleado, string fecha_inicio, string fecha_fin)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -2056,7 +2056,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_desperdicio_merma_local_segun_fecha(string id_sucursal, string año, string mes, string dia,string categoria)
+        public DataTable consultar_desperdicio_merma_local_segun_fecha(string id_sucursal, string año, string mes, string dia, string categoria)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -2086,6 +2086,27 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + ".stock_producto_terminado WHERE activa=1 and id_producto='" + id_producto + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_insumos_fabricas_optimizado()
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT activa, id, producto, tipo_producto ,tipo_producto_local,unidad_tabla_produccion,venta,productos_fabrica_fatay,unidad_de_medida_local,equivalencia,precio,stock_produccion,stock,unidad_medida,tabla_produccion FROM " + base_de_datos + ".insumos_fabrica WHERE activa=1;";
 
 
                 retorno = base_datos.READ(query);

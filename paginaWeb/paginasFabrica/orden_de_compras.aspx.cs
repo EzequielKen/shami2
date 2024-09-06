@@ -141,7 +141,7 @@ namespace paginaWeb.paginasFabrica
             {
                 proveedoresBD = proveedores_de_fabrica.get_proveedores_de_fabrica();
                 Session.Add("lista_proveedoresBD", proveedoresBD);
-                insumos_fabricaBD = proveedores_de_fabrica.get_insumos_fabrica();
+                insumos_fabricaBD = proveedores_de_fabrica.get_insumos_fabrica_optimizado();
                 Session.Add("insumos_fabricaBD", insumos_fabricaBD);
             }
             proveedoresBD = (DataTable)Session["lista_proveedoresBD"];
