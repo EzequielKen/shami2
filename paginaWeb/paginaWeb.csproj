@@ -242,6 +242,7 @@
     <Content Include="paginasFabrica\administrar_lista_chequeo_perfiles.aspx" />
     <Content Include="paginasFabrica\administrar_actividades_lista_chequeo_locales.aspx" />
     <Content Include="paginasFabrica\analisis_de_produccion.aspx" />
+    <Content Include="paginasFabrica\conteo_de_stock.aspx" />
     <Content Include="paginasFabrica\historial_temperatura.aspx" />
     <Content Include="paginasFabrica\landing_page_local.aspx" />
     <Content Include="paginasFabrica\objetivo_de_produccion.aspx" />
@@ -495,6 +496,13 @@
     </Compile>
     <Compile Include="paginasFabrica\analisis_de_produccion.aspx.designer.cs">
       <DependentUpon>analisis_de_produccion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\conteo_de_stock.aspx.cs">
+      <DependentUpon>conteo_de_stock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\conteo_de_stock.aspx.designer.cs">
+      <DependentUpon>conteo_de_stock.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\historial_temperatura.aspx.cs">
       <DependentUpon>historial_temperatura.aspx</DependentUpon>
