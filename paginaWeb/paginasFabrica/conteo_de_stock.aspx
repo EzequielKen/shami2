@@ -11,6 +11,7 @@
                         <asp:TextBox ID="textbox_buscar" placeholder="Buscar..." CssClass="form-control input-group" OnTextChanged="textbox_buscar_TextChanged" runat="server" AutoPostBack="true" />
                         <asp:DropDownList ID="dropDown_tipo" CssClass="form-control input-group" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" runat="server" AutoPostBack="true">
                         </asp:DropDownList>
+                        <asp:Button ID="boton_cargar_conteo" CssClass="btn btn-primary" Text="Cargar Conteo" OnClick="boton_cargar_conteo_Click" runat="server" />
                     </div>
                     <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
 

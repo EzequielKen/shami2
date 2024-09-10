@@ -18,8 +18,8 @@ namespace paginaWeb.paginasFabrica
             productos.Columns.Add("id", typeof(string));
             productos.Columns.Add("producto", typeof(string));
             productos.Columns.Add("tipo_producto", typeof(string));
-            productos.Columns.Add("conteo_stock", typeof(string)); 
-            productos.Columns.Add("unidad_de_medida_local", typeof(string)); 
+            productos.Columns.Add("conteo_stock", typeof(string));
+            productos.Columns.Add("unidad_de_medida_local", typeof(string));
         }
         private void llenar_productos()
         {
@@ -28,15 +28,15 @@ namespace paginaWeb.paginasFabrica
             int ultima_fila;
             for (int fila = 0; fila <= productosBD.Rows.Count - 1; fila++)
             {
-                if (funciones.verificar_tipo_producto(productosBD.Rows[fila]["tipo_producto"].ToString(),dropDown_tipo.SelectedItem.Text))
+                if (funciones.verificar_tipo_producto(productosBD.Rows[fila]["tipo_producto"].ToString(), dropDown_tipo.SelectedItem.Text))
                 {
                     productos.Rows.Add();
                     ultima_fila = productos.Rows.Count - 1;
                     productos.Rows[ultima_fila]["id"] = productosBD.Rows[fila]["id"].ToString();
                     productos.Rows[ultima_fila]["producto"] = productosBD.Rows[fila]["producto"].ToString();
                     productos.Rows[ultima_fila]["tipo_producto"] = productosBD.Rows[fila]["tipo_producto"].ToString();
-                    productos.Rows[ultima_fila]["conteo_stock"] = productosBD.Rows[fila]["conteo_stock"].ToString(); 
-                    productos.Rows[ultima_fila]["unidad_de_medida_local"] = productosBD.Rows[fila]["unidad_de_medida_local"].ToString(); 
+                    productos.Rows[ultima_fila]["conteo_stock"] = productosBD.Rows[fila]["conteo_stock"].ToString();
+                    productos.Rows[ultima_fila]["unidad_de_medida_local"] = productosBD.Rows[fila]["unidad_de_medida_local"].ToString();
                 }
             }
         }
@@ -151,7 +151,7 @@ namespace paginaWeb.paginasFabrica
         {
             TextBox texbox_stock = (TextBox)sender;
             double cantidad;
-            if (!double.TryParse(texbox_stock.Text,out cantidad))
+            if (!double.TryParse(texbox_stock.Text, out cantidad))
             {
                 texbox_stock.Text = string.Empty;
             }
@@ -166,11 +166,18 @@ namespace paginaWeb.paginasFabrica
             if (texbox_stock.Text != string.Empty)
             {
                 productosBD = (DataTable)Session["productosBD"];
-                int fila_producto = funciones.buscar_fila_por_id(id_producto,productosBD);
+                int fila_producto = funciones.buscar_fila_por_id(id_producto, productosBD);
                 productosBD.Rows[fila_producto]["conteo_stock"] = texbox_stock.Text;
                 Session["productosBD"] = productosBD;
                 cargar_productos();
             }
+        }
+
+        protected void boton_cargar_conteo_Click(object sender, EventArgs e)
+        {
+            productosBD = (DataTable)Session["productosBD"];
+            conteo.cargar_conteo(productosBD);
+            Response.Redirect("~/paginasFabrica/landing_page_expedicion.aspx", false);
         }
     }
 }

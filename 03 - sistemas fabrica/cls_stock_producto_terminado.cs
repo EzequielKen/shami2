@@ -185,7 +185,11 @@ namespace _03___sistemas_fabrica
                 crear_stock(rol_usuario, id_producto, tipo_movimiento, movimiento, nota);
             }
         }
-
+        public string get_ultimo_stock_producto_terminado(string id_producto)
+        {
+            consultar_historial_stock(id_producto);
+            return obtener_ultimo_stock().ToString();
+        }
         #endregion
     }
 }

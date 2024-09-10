@@ -11,43 +11,34 @@ namespace paginaWeb.paginasFabrica
 {
 
 
-    public partial class conteo_de_stock
+    public partial class confirmar_conteo_stock
     {
 
         /// <summary>
-        /// Control textbox_buscar.
+        /// Control label_fecha.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textbox_buscar;
+        protected global::System.Web.UI.WebControls.Label label_fecha;
 
         /// <summary>
-        /// Control dropDown_tipo.
+        /// Control calendario.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
+        protected global::System.Web.UI.WebControls.Calendar calendario;
 
         /// <summary>
-        /// Control boton_cargar_conteo.
+        /// Control gridview_conteos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_cargar_conteo;
-
-        /// <summary>
-        /// Control gridview_productos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_productos;
+        protected global::System.Web.UI.WebControls.GridView gridview_conteos;
     }
 }

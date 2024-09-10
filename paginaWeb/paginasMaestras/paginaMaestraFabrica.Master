@@ -319,6 +319,7 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/stock_insumos.aspx">Stock Insumos</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Productos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/confirmar_conteo_stock.aspx">Confirmar Conteo de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/plantillas.aspx">Plantillas</a></li>
 

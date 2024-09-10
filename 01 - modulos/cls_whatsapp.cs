@@ -13,6 +13,7 @@ namespace _01___modulos
     {
 
         #region atributos
+        cls_whatsappApi api_whatsapp = new cls_whatsappApi();
         private DataTable usuario;
         private DataTable sucursal;
         private DataTable proveedorBD;
@@ -146,8 +147,10 @@ namespace _01___modulos
             }
             else
             {
-                 telefono = ConfigurationManager.AppSettings["telefono_pedidos"];
+                 telefono = ConfigurationManager.AppSettings["telefono_pedidos"]; 
             }
+        //    telefono = ConfigurationManager.AppSettings["programador"]; 
+        //    api_whatsapp.EnviarMensajeWhatsApp(telefono, body);
             string url = "https://api.whatsapp.com/send?phone=" + telefono + "&text=" + body.Replace(" ", "%20");
 
             return url;

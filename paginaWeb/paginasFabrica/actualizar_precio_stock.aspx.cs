@@ -292,9 +292,7 @@ namespace paginaWeb.paginasFabrica
                 if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" &&
                     tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Compras")
                 {
-                    gridview_productos.Columns[8].Visible = false;
-                    gridview_productos.Columns[9].Visible = false;
-                    gridview_productos.Columns[10].Visible = false;
+                    
 
                 }
 
