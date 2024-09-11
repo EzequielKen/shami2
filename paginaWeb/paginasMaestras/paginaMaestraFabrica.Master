@@ -160,23 +160,11 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Historiales
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-
-
-                            <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Historial Pedido de Insumos</a></li>
-
-
-
-
-
-
-                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de produccion</a></li>
-
-
-
-
-                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de compras</a></li>
-
+                            <li><a class="dropdown-item" href="/paginasFabrica/confirmar_conteo_stock.aspx">Historial Conteo de Stock</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Pedido de Insumos de Produccion a Expedicion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de Compras</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Pedidos de Expedicion a Compras</a></li>
                         </ul>
                     </li>
 
@@ -188,19 +176,14 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/conteo_de_stock.aspx">Conteo de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Productos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/plantillas.aspx">Plantillas</a></li>
                         </ul>
                     </li>
-
-
-
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_entrega.aspx">Estadísticas de Enrega a Cliente</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido a Compras</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Historial de Pedidos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/plantillas.aspx">Plantillas</a>
                     </li>
                     <%}%>
 

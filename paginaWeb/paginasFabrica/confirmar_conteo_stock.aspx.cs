@@ -37,6 +37,15 @@ namespace paginaWeb.paginasFabrica
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
             conteo = new cls_confirmar_conteo_stock(usuariosBD);
+            if (tipo_usuario.Rows[0]["rol"].ToString()== "Shami Villa Maipu Expedicion")
+            {
+                gridview_conteos.Columns[6].Visible = false;
+                gridview_conteos.Columns[7].Visible = false;
+                gridview_conteos.Columns[8].Visible = false;
+                gridview_conteos.Columns[9].Visible = false;
+                gridview_conteos.Columns[10].Visible = false;
+
+            }
             if (!IsPostBack)
             {
                 calendario.SelectedDate = DateTime.Now;
