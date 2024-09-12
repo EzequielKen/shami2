@@ -535,7 +535,7 @@ namespace _03___sistemas_fabrica
             resumen_de_pedidos = resumen_de_pedidos.DefaultView.ToTable();
             PDF.GenerarPDF_resumen_de_pedidos(ruta_archivo, logo, resumen_de_pedidos);
         }
-        public void actualizar_preciosStock(DataTable productos, string nombre_proveedor,string rol_usuario)
+        public void actualizar_preciosStock(DataTable productos, string nombre_proveedor, string rol_usuario)
         {
             consultar_acuerdo_de_precio_activo(nombre_proveedor);
             string id_acuerdo_activo, proveedor, acuerdo, tipo_de_acuerdo;
@@ -552,7 +552,7 @@ namespace _03___sistemas_fabrica
             pedidos.actualizar_acuerdo_en_pedidos_no_cargados(nuevo_acuerdo.ToString(), proveedor);
 
         }
-        private void registrar_movimientos_en_historial(DataTable productos,string rol_usuario)
+        private void registrar_movimientos_en_historial(DataTable productos, string rol_usuario)
         {
             string id = "";
             string stock_nuevo;
@@ -562,7 +562,7 @@ namespace _03___sistemas_fabrica
                 {
                     stock_nuevo = productos.Rows[fila]["stock_nuevo"].ToString();
                     id = productos.Rows[fila]["id"].ToString();
-                    historial_stock.cargar_actualizacion_stock(rol_usuario, id,stock_nuevo,"N/A");
+                    historial_stock.cargar_actualizacion_stock(rol_usuario, id, stock_nuevo, "N/A");
                 }
             }
         }
@@ -580,7 +580,7 @@ namespace _03___sistemas_fabrica
                 }
             }
         }
-        public void enviar_carga_de_pedido(DataTable pedido_sucursalSESSION, DataTable pedido, DataTable resumen_de_pedidos, string rol_usuario,string impuesto)
+        public void enviar_carga_de_pedido(DataTable pedido_sucursalSESSION, DataTable pedido, DataTable resumen_de_pedidos, string rol_usuario, string impuesto)
         {
             pedidos_sucursal = pedido_sucursalSESSION;
             string id_pedido;
@@ -590,14 +590,14 @@ namespace _03___sistemas_fabrica
             string nombre_remito = "pedido";
             string valor_remito;
             string fecha_remito = funciones.get_fecha();
-            string proveedor; 
-            string nota_pedido; 
+            string proveedor;
+            string nota_pedido;
             consultar_insumos();
             insumos_copia = pedidos.get_insumos();
             for (int fila = 0; fila <= resumen_de_pedidos.Rows.Count - 1; fila++)
             {
                 id_pedido = resumen_de_pedidos.Rows[fila]["id"].ToString();
-                nota_pedido = pedido.Rows[fila]["nota"].ToString(); 
+                nota_pedido = pedido.Rows[fila]["nota"].ToString();
                 fila_pedido = buscar_fila_pedido(id_pedido);
                 sucursal = resumen_de_pedidos.Rows[fila]["sucursal"].ToString();
                 num_pedido = resumen_de_pedidos.Rows[fila]["num_pedido"].ToString();
@@ -618,15 +618,15 @@ namespace _03___sistemas_fabrica
                         restar_stock_insumo(pedido, proveedor);
                     }
 
-                    pedidos.enviar_remito_fabrica(id_pedido, sucursal, num_pedido, nombre_remito, valor_remito, fecha_remito, proveedor, nota_pedido,impuesto);
-                    pedidos.actualizar_pedido(id_pedido, pedido, proveedor,impuesto);
+                    pedidos.enviar_remito_fabrica(id_pedido, sucursal, num_pedido, nombre_remito, valor_remito, fecha_remito, proveedor, nota_pedido, impuesto);
+                    pedidos.actualizar_pedido(id_pedido, pedido, proveedor, impuesto);
                     pedidos.cargar_venta_en_rendiciones(pedido, pedidos_sucursal, fila_pedido, proveedor);
                 }
             }
-          //  stock_insumos.guardar_registro_entrega_insumo_a_local(rol_usuario, insumos, insumos_copia);
+            //  stock_insumos.guardar_registro_entrega_insumo_a_local(rol_usuario, insumos, insumos_copia);
             DateTime fecha = DateTime.Now;
             sucursal = resumen_de_pedidos.Rows[0]["sucursal"].ToString();
-            sistema_Administracion.get_deuda_total_mes(sucursal,fecha.Month.ToString(),fecha.Year.ToString());
+            sistema_Administracion.get_deuda_total_mes(sucursal, fecha.Month.ToString(), fecha.Year.ToString());
         }
         private bool verificar_si_cargo_remito(string sucursal, string num_pedido, string nombre_remito, string valor_remito, string proveedor)
         {
@@ -826,11 +826,11 @@ namespace _03___sistemas_fabrica
             pedido.Columns.Add("id_pedido", typeof(string));
             pedido.Columns.Add("estado", typeof(string));
             pedido.Columns.Add("presentacion_entrega_seleccionada", typeof(string));
-            pedido.Columns.Add("presentacion_extraccion_seleccionada", typeof(string)); 
+            pedido.Columns.Add("presentacion_extraccion_seleccionada", typeof(string));
             pedido.Columns.Add("pincho", typeof(string));
             pedido.Columns.Add("cantidad_pincho", typeof(string));
 
-            pedido.Columns.Add("nota", typeof(string)); 
+            pedido.Columns.Add("nota", typeof(string));
 
             //,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,pedido.Columns.Add("facturacion por", typeof(string));
             //pedido.Columns.Add("kilos", typeof(string));
@@ -841,8 +841,8 @@ namespace _03___sistemas_fabrica
             for (int fila = 0; fila <= resumen_pedido.Rows.Count - 1; fila++)
             {
                 pedido.Rows.Add();
-                pedido.Rows[fila_pedido]["id"] = resumen_pedido.Rows[fila]["id"].ToString(); 
-                pedido.Rows[fila_pedido]["nota"] = resumen_pedido.Rows[fila]["nota"].ToString(); 
+                pedido.Rows[fila_pedido]["id"] = resumen_pedido.Rows[fila]["id"].ToString();
+                pedido.Rows[fila_pedido]["nota"] = resumen_pedido.Rows[fila]["nota"].ToString();
                 pedido.Rows[fila_pedido]["producto"] = resumen_pedido.Rows[fila]["producto"].ToString();
                 if (resumen_pedido.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                 {
@@ -869,7 +869,8 @@ namespace _03___sistemas_fabrica
                 pedido.Rows[fila_pedido]["presentacion_entrega_seleccionada"] = resumen_pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString();
                 pedido.Rows[fila_pedido]["presentacion_extraccion_seleccionada"] = resumen_pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString();
                 pedido.Rows[fila_pedido]["equivalencia"] = resumen_pedido.Rows[fila]["equivalencia"].ToString();
-                pedido.Rows[fila_pedido]["equivalencia"] = resumen_pedido.Rows[fila]["equivalencia"].ToString();
+                pedido.Rows[fila_pedido]["pincho"] = resumen_pedido.Rows[fila]["pincho"].ToString();
+                pedido.Rows[fila_pedido]["cantidad_pincho"] = "N/A";
 
 
                 //pedido.Rows[fila_pedido]["facturacion por"] = resumen_pedido.Rows[fila]["facturacion por"].ToString();
@@ -908,6 +909,7 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Columns.Add("presentacion_extraccion_seleccionada", typeof(string));
 
             resumen_pedido.Columns.Add("nota", typeof(string));
+            resumen_pedido.Columns.Add("pincho", typeof(string));
             // resumen_pedido.Columns.Add("factura,                     cion por", typeof(string));
             // resumen_pedido.Columns.Add("kilos", typeof(string));
             // resumen_pedido.Columns.Add("factura_por_kilo", typeof(string));
@@ -955,7 +957,7 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows.Add();
             int fila = resumen_pedido.Rows.Count - 1;
             int fila_producto = buscar_fila_producto(id, productos_proveedor);
-            resumen_pedido.Rows[fila]["id"] = id; 
+            resumen_pedido.Rows[fila]["id"] = id;
             resumen_pedido.Rows[fila]["nota"] = nota;
             resumen_pedido.Rows[fila]["producto"] = producto;
             resumen_pedido.Rows[fila]["pedido"] = cantidad_pedida;
@@ -1004,7 +1006,14 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows[fila]["presentacion_entrega_seleccionada"] = presentacion_entrega_seleccionada; // presentacion_entrega_seleccionada 
             resumen_pedido.Rows[fila]["presentacion_extraccion_seleccionada"] = presentacion_extraccion_seleccionada; // presentacion_extraccion_seleccionada 
 
-
+            if (proveedor == "proveedor_villaMaipu")
+            {
+                resumen_pedido.Rows[fila]["pincho"] = productos_proveedor.Rows[fila_producto]["pincho"].ToString();
+            }
+            else
+            {
+                resumen_pedido.Rows[fila]["pincho"] = "no";
+            }
         }
         private List<string> obtener_lista_de_presentaciones(string proveedor, int fila_producto)
         {

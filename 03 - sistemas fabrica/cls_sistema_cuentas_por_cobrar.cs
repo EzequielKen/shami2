@@ -58,7 +58,7 @@ namespace _03___sistemas_fabrica
         #region cargar iva
         public void cargar_iva(string id_remito, string proveedor, string sucursal, string num_pedido, string valor_remito)
         {
-            administracion.cargar_iva(id_remito,proveedor,sucursal,num_pedido,valor_remito);
+            administracion.cargar_iva(id_remito, proveedor, sucursal, num_pedido, valor_remito);
         }
         #endregion
         #region cargar nota
@@ -581,14 +581,14 @@ namespace _03___sistemas_fabrica
             return retorno;
         }
         //ruta_archivo, gridView_remitos.SelectedRow.Cells[0].Text, proveedor_seleccionado, imgdata, Session["nivel_seguridad"].ToString(), Session["sucursal_seleccionada"].ToString(), sistema_Administracion.get_sucursales()
-        public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad, string sucursal_seleccionada,string mes,string año) //
+        public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad, string sucursal_seleccionada, string mes, string año) //
         {
 
-            string acuerdo, num_acuerdo, nombre_proveedor, nota,impuesto;
+            string acuerdo, num_acuerdo, nombre_proveedor, nota, impuesto;
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
             consultar_sucursales();
-            consultar_remitos_todas_las_sucursales(mes,año);
+            consultar_remitos_todas_las_sucursales(mes, año);
 
             consultar_acuerdo_de_precios();
             fila_pedido = obtener_fila_de_pedido_mediante_idRemito(id_remito, sucursal_seleccionada);
@@ -607,7 +607,7 @@ namespace _03___sistemas_fabrica
             fila_remito = obtener_fila_de_remito(id_remito);
             if (seguridad < 2)
             {
-                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota,impuesto); // resumen_pedido,resumen_bonificado
+                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota, impuesto); // resumen_pedido,resumen_bonificado
             }
 
 
@@ -653,7 +653,7 @@ namespace _03___sistemas_fabrica
             //PDF.GenerarPDF_orden_de_compra(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_pedido, pedidos_fabrica_a_proveedor, proveedor_BD, remitos_proveedores_a_fabrica, fila_remito);
 
         }
-        public void crear_pdf_remito_de_carga(string ruta, DataTable resumen, byte[] logo,DateTime fecha) //
+        public void crear_pdf_remito_de_carga(string ruta, DataTable resumen, byte[] logo, DateTime fecha) //
         {
 
             consultar_remitos_todas_las_sucursales(fecha.Month.ToString(), fecha.Year.ToString());
@@ -883,8 +883,8 @@ namespace _03___sistemas_fabrica
             string id_sucursal = sucursalBD.Rows[0]["id"].ToString();
             string mes_anterior = obtener_mes_anterior(mes);
             string año_anterior = obtener_año_anterior(mes, año);
-           
-                consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
+
+            consultar_deuda_mes_anterior(id_sucursal, mes_anterior, año_anterior);
             if (deuda_mes_anterior.Rows.Count > 0)
             {
                 for (int fil = 0; fil <= deuda_mes_anterior.Rows.Count - 1; fil++)
@@ -915,24 +915,24 @@ namespace _03___sistemas_fabrica
         {
             consultar_remitos(sucursal, mes, año);
 
-          /*  if (remitos == null)
-            {
-                consultar_remitos(sucursal, mes, año);
-            }
-            else if (remitos.Rows.Count == 0)
-            {
-                consultar_remitos(sucursal, mes, año);
-            }
-            else
-            {
-                DateTime fecha_remito = (DateTime)remitos.Rows[0]["fecha_remito"];
-                if (fecha_remito.Month.ToString() != mes ||
-                     fecha_remito.Year.ToString() != año ||
-                     remitos.Rows[0]["sucursal"].ToString() != sucursal)
-                {
-                    consultar_remitos(sucursal, mes, año);
-                }
-            }*/
+            /*  if (remitos == null)
+              {
+                  consultar_remitos(sucursal, mes, año);
+              }
+              else if (remitos.Rows.Count == 0)
+              {
+                  consultar_remitos(sucursal, mes, año);
+              }
+              else
+              {
+                  DateTime fecha_remito = (DateTime)remitos.Rows[0]["fecha_remito"];
+                  if (fecha_remito.Month.ToString() != mes ||
+                       fecha_remito.Year.ToString() != año ||
+                       remitos.Rows[0]["sucursal"].ToString() != sucursal)
+                  {
+                      consultar_remitos(sucursal, mes, año);
+                  }
+              }*/
             return remitos;
         }
         public DataTable get_remitos_proveedores_a_fabrica()
@@ -944,27 +944,27 @@ namespace _03___sistemas_fabrica
         {
             consultar_imputaciones(sucursal, mes, año);
 
-           /* if (imputaciones == null)
-            {
-                consultar_imputaciones(sucursal, mes, año);
-            }
-            else if (imputaciones.Rows.Count == 0)
-            {
-                consultar_imputaciones(sucursal, mes, año);
-            }
-            else
-            {
-                if (imputaciones.Rows.Count > 0)
-                {
-                    DateTime fecha = (DateTime)imputaciones.Rows[0]["fecha"];
-                    if (fecha.Month.ToString() != mes ||
-                         fecha.Year.ToString() != año ||
-                         imputaciones.Rows[0]["sucursal"].ToString() != sucursal)
-                    {
-                        consultar_imputaciones(sucursal, mes, año);
-                    }
-                }
-            }*/
+            /* if (imputaciones == null)
+             {
+                 consultar_imputaciones(sucursal, mes, año);
+             }
+             else if (imputaciones.Rows.Count == 0)
+             {
+                 consultar_imputaciones(sucursal, mes, año);
+             }
+             else
+             {
+                 if (imputaciones.Rows.Count > 0)
+                 {
+                     DateTime fecha = (DateTime)imputaciones.Rows[0]["fecha"];
+                     if (fecha.Month.ToString() != mes ||
+                          fecha.Year.ToString() != año ||
+                          imputaciones.Rows[0]["sucursal"].ToString() != sucursal)
+                     {
+                         consultar_imputaciones(sucursal, mes, año);
+                     }
+                 }
+             }*/
             return imputaciones;
         }
         public DataTable get_imputaciones_fabrica_a_proveedor()
@@ -1255,7 +1255,7 @@ namespace _03___sistemas_fabrica
                             cantidad_recibida = "0";
                         }
                         //cargar normal
-                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, dato, unidad_insumo, "N/A", "N/A", "N/A");
+                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, dato, unidad_insumo, "N/A", "N/A", "N/A", fila_pedido, i, pedidos);
                     }
                 }
                 i++;
@@ -1265,7 +1265,7 @@ namespace _03___sistemas_fabrica
         {
             string acuerdo, num_acuerdo, nombre_proveedor, num_pedido;
             int fila_pedido, fila_acuerdo;
-           
+
             consultar_sucursales();
 
             consultar_acuerdo_de_precios();
@@ -1337,7 +1337,7 @@ namespace _03___sistemas_fabrica
                                 cantidad_recibida = "0";
                             }
                             //cargar normal
-                            cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, dato, unidad_insumo, sucursal_seleccionada, num_pedido, nombre_proveedor); // sucursal_seleccionada num_pedido nombre_proveedor
+                            cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, dato, unidad_insumo, sucursal_seleccionada, num_pedido, nombre_proveedor, fila_pedido, i, pedidos); // sucursal_seleccionada num_pedido nombre_proveedor
                         }
                     }
                     i++;
@@ -1386,7 +1386,7 @@ namespace _03___sistemas_fabrica
                         else
                         {
                             //cargar normal
-                            cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, "N/A", "N/A", "N/A", "N/A", "N/A");
+                            cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, "N/A", "N/A", "N/A", "N/A", "N/A", fila_pedido, i, pedidos_fabrica_a_proveedor);
                         }
                     }
                 }
@@ -1408,7 +1408,7 @@ namespace _03___sistemas_fabrica
             }
             return retorno;
         }
-        private void cargar_producto(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, int fila_acuerdo, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor)
+        private void cargar_producto(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, int fila_acuerdo, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor, int fila_pedido, int i, DataTable pedido_local)
         {
             resumen_pedido.Rows.Add();
             int fila = resumen_pedido.Rows.Count - 1;
@@ -1418,6 +1418,17 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows[fila]["pedido"] = cantidad_pedida;
             resumen_pedido.Rows[fila]["unid.pedida"] = productos_proveedor.Rows[fila_producto]["unidad_de_medida_local"].ToString();
             resumen_pedido.Rows[fila]["entregado"] = cantidad_entregada;
+            if (nombre_proveedor == "proveedor_villaMaipu")
+            {
+                if (productos_proveedor.Rows[fila_producto]["pincho"].ToString() == "si" &&
+                pedido_local.Rows[fila_pedido]["legado"].ToString() == "no")
+                {
+                    string cant_pinchos = obtener_dato_pedido(pedido_local.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 8) + " PINCHOS | ";//
+
+                    resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada ;
+
+                }
+            }
             resumen_pedido.Rows[fila]["sucursal_seleccionada"] = sucursal_seleccionada;
             resumen_pedido.Rows[fila]["num_pedido"] = num_pedido;
             resumen_pedido.Rows[fila]["nombre_proveedor"] = nombre_proveedor;
@@ -1713,9 +1724,9 @@ namespace _03___sistemas_fabrica
         {
             remitos = administracion.get_remitos(sucursal, mes, año);
         }
-        private void consultar_remitos_todas_las_sucursales( string mes, string año)
+        private void consultar_remitos_todas_las_sucursales(string mes, string año)
         {
-            remitos = administracion.get_remitos_todas_las_sucursales( mes, año);
+            remitos = administracion.get_remitos_todas_las_sucursales(mes, año);
         }
         private void consultar_remitos_proveedores_a_fabrica()
         {

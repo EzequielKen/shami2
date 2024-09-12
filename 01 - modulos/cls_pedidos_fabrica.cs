@@ -637,7 +637,7 @@ namespace modulos
                         }
                         else
                         {
-                            dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString();
+                            dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "-" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString() + "-" + pedido.Rows[fila]["cantidad_pincho"].ToString();
                         }
                     }
 

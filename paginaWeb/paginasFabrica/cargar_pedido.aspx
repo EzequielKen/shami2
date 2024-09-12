@@ -28,7 +28,7 @@
 
 
 
-            <div class=" container">
+            <div class="container-fluid">
 
                 <div class=" row  ">
 
@@ -48,7 +48,7 @@
                         </div>
 
                         <div class=" alert alert-light">
-                            <asp:TextBox ID="textbox_porcentaje" CssClass="form-control" placeholder="Ingrese porcentaje de aumento" runat="server" OnTextChanged="textbox_porcentaje_TextChanged"  AutoPostBack="true"/>
+                            <asp:TextBox ID="textbox_porcentaje" CssClass="form-control" placeholder="Ingrese porcentaje de aumento" runat="server" OnTextChanged="textbox_porcentaje_TextChanged" AutoPostBack="true" />
                         </div>
                         <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" OnRowDataBound="gridview_pedido_RowDataBound" runat="server" ID="gridview_pedido" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
 
@@ -59,14 +59,17 @@
 
                                 <asp:TemplateField HeaderText="Presentacion Pedida">
                                     <ItemTemplate>
-                                        <asp:DropDownList ID="dropdown_tipo_presentacion"  CssClass="input-group-text" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'>
+                                        <asp:DropDownList ID="dropdown_tipo_presentacion" CssClass="input-group-text" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'>
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
                                 <asp:TemplateField HeaderText="Ingrese cantidad a entregar">
                                     <ItemTemplate>
-                                        <asp:TextBox ID="texbox_cantidad" CssClass="input-group-text" OnTextChanged="texbox_cantidad_TextChanged" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'></asp:TextBox>
+                                        <div class="input-group">
+                                            <asp:TextBox ID="Textbox_pinchos" placeholder="Cant.Pinchos" CssClass="input-group form-control" OnTextChanged="Textbox_pinchos_TextChanged" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'></asp:TextBox>
+                                            <asp:TextBox ID="texbox_cantidad" CssClass="input-group form-control" OnTextChanged="texbox_cantidad_TextChanged" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'></asp:TextBox>
+                                        </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
@@ -84,10 +87,11 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
+                                <asp:BoundField HeaderText="cantidad de pinchos" DataField="cantidad_pincho" />
                                 <asp:BoundField HeaderText="cantidad a entregar" DataField="cantidad_entrega" />
                                 <asp:BoundField HeaderText="precio" DataField="precio" />
-                                <asp:BoundField HeaderText="sub total" DataField="sub_total" />
                                 <asp:BoundField HeaderText="id pedido" DataField="id_pedido" />
+                                <asp:BoundField HeaderText="sub total" DataField="sub_total" />
 
 
 

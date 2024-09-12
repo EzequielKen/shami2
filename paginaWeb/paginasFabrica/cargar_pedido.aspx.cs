@@ -30,6 +30,7 @@ namespace paginaWeb.paginasFabrica
             pedido_usuario.Columns.Add("presentacion_entrega_seleccionada", typeof(string));
             pedido_usuario.Columns.Add("presentacion_extraccion_seleccionada", typeof(string));
             pedido_usuario.Columns.Add("id_pedido", typeof(string));
+            pedido_usuario.Columns.Add("cantidad_pincho", typeof(string));
 
             //pedido_usuario.Columns.Add("facturacion por", typeof(string));
             //pedido_usuario.Columns.Add("kilos", typeof(string));
@@ -57,6 +58,7 @@ namespace paginaWeb.paginasFabrica
                 pedido_usuario.Rows[fila_usuario]["presentacion_extraccion_seleccionada"] = pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString();
                 pedido_usuario.Rows[fila_usuario]["id_pedido"] = pedido.Rows[fila]["id_pedido"].ToString();
                 pedido_usuario.Rows[fila_usuario]["equivalencia"] = pedido.Rows[fila]["equivalencia"].ToString();
+                pedido_usuario.Rows[fila_usuario]["cantidad_pincho"] = pedido.Rows[fila]["cantidad_pincho"].ToString();
 
                 //pedido_usuario.Rows[fila_usuario]["facturacion por"] = pedido.Rows[fila]["facturacion por"].ToString();
                 //pedido_usuario.Rows[fila_usuario]["kilos"] = pedido.Rows[fila]["kilos"].ToString();
@@ -234,12 +236,12 @@ namespace paginaWeb.paginasFabrica
             if (verificar_carga_a_BD())
             {
                 string impuesto_carga = "0";
-                double impuesto=0;
-                if (double.TryParse(textbox_porcentaje.Text,out impuesto))
+                double impuesto = 0;
+                if (double.TryParse(textbox_porcentaje.Text, out impuesto))
                 {
                     impuesto_carga = impuesto.ToString();
                 }
-                pedidos_fabrica.enviar_carga_de_pedido(pedidos_sucursal, pedido, resumen_de_pedidos, tipo_usuario.Rows[0]["rol"].ToString(),impuesto_carga);
+                pedidos_fabrica.enviar_carga_de_pedido(pedidos_sucursal, pedido, resumen_de_pedidos, tipo_usuario.Rows[0]["rol"].ToString(), impuesto_carga);
                 Response.Redirect("/paginasFabrica/sucursales.aspx", false);
             }
 
@@ -269,30 +271,42 @@ namespace paginaWeb.paginasFabrica
             double porcentaje, impuesto;
             if (double.TryParse(cantidad_dato, out cantidad))
             {
-
-                cantidad_entrega = double.Parse(pedido.Rows[fila_producto]["cantidad_entrega"].ToString());
-                stock = double.Parse(pedido.Rows[fila_producto]["stock"].ToString());
-                stock_total = stock;
-                double precio = double.Parse(pedido.Rows[fila_producto]["precio"].ToString());
-                double sub_total;
-                if (pedido.Rows[fila_producto]["proveedor"].ToString() == "insumos_fabrica")
+                if ((pedido.Rows[fila_producto]["pincho"].ToString() == "no") || (pedido.Rows[fila_producto]["pincho"].ToString() == "si" && pedido.Rows[fila_producto]["cantidad_pincho"].ToString() != "N/A"))
                 {
-                    double multiplicador = double.Parse(funciones.obtener_dato(presentacion_entrega, 2));
-                    precio = precio * multiplicador;
-                }
-                sub_total = cantidad * precio;
-                if (double.TryParse(textbox_porcentaje.Text, out impuesto))
-                {
-                    porcentaje = (sub_total * impuesto) / 100;
-                    sub_total = sub_total + porcentaje;
-                }
-                stock_total = stock_total - cantidad;
-                pedido.Rows[fila_producto]["cantidad_entrega"] = cantidad.ToString();
-                pedido.Rows[fila_producto]["sub_total"] = sub_total.ToString();
-                pedido.Rows[fila_producto]["nuevo_stock"] = stock_total.ToString();
 
-                Session.Add("pedido", pedido);
+                    cantidad_entrega = double.Parse(pedido.Rows[fila_producto]["cantidad_entrega"].ToString());
+                    stock = double.Parse(pedido.Rows[fila_producto]["stock"].ToString());
+                    stock_total = stock;
+                    double precio = double.Parse(pedido.Rows[fila_producto]["precio"].ToString());
+                    double sub_total;
+                    if (pedido.Rows[fila_producto]["proveedor"].ToString() == "insumos_fabrica")
+                    {
+                        double multiplicador = double.Parse(funciones.obtener_dato(presentacion_entrega, 2));
+                        precio = precio * multiplicador;
+                    }
+                    sub_total = cantidad * precio;
+                    if (double.TryParse(textbox_porcentaje.Text, out impuesto))
+                    {
+                        porcentaje = (sub_total * impuesto) / 100;
+                        sub_total = sub_total + porcentaje;
+                    }
+                    stock_total = stock_total - cantidad;
+                    pedido.Rows[fila_producto]["cantidad_entrega"] = cantidad.ToString();
+                    pedido.Rows[fila_producto]["sub_total"] = sub_total.ToString();
+                    pedido.Rows[fila_producto]["nuevo_stock"] = stock_total.ToString();
+
+                    Session.Add("pedido", pedido);
+                }
             }
+            cargar_pedido_abierto();
+        }
+        private void cargar_cantidad_pinchos(string id_producto_dato, string nombre_producto, string id_pedido, string cantidad_pincho)
+        {
+            pedido = (DataTable)Session["pedido"];
+            id_producto = id_producto_dato;
+            int fila_producto = funciones.buscar_fila_por_id_y_nombre(id_producto, nombre_producto, id_pedido, pedido);
+            pedido.Rows[fila_producto]["cantidad_pincho"] = cantidad_pincho;
+            Session.Add("pedido", pedido);
             cargar_pedido_abierto();
         }
         private void cargar_presentacion(string id_producto, string presentacion)
@@ -353,8 +367,20 @@ namespace paginaWeb.paginasFabrica
                 pedido.Rows[fila_tabla]["sub_total"] = sub_total.ToString();
                 gridview_pedido.Rows[fila].Cells[9].Text = funciones.formatCurrency(sub_total);
 
-                TextBox textbox_unidades = (gridview_pedido.Rows[fila].Cells[4].FindControl("textbox_unidades") as TextBox);
+                TextBox Textbox_pinchos = (gridview_pedido.Rows[fila].Cells[4].FindControl("Textbox_pinchos") as TextBox);
+                TextBox texbox_cantidad = (gridview_pedido.Rows[fila].Cells[4].FindControl("texbox_cantidad") as TextBox);
+                if (pedido.Rows[fila_tabla]["proveedor"].ToString() == "proveedor_villaMaipu")
+                {
+                    if (pedido.Rows[fila_tabla]["pincho"].ToString() == "no")
+                    {
+                        Textbox_pinchos.Visible = false;
+                    }
+                }
+                else
+                {
+                    Textbox_pinchos.Visible = false;
 
+                }
             }
             Session.Add("pedido", pedido);
 
@@ -475,6 +501,25 @@ namespace paginaWeb.paginasFabrica
             {
                 cargar_pedido_abierto();
             }
+        }
+
+        protected void Textbox_pinchos_TextChanged(object sender, EventArgs e)
+        {
+            TextBox texbox_pincho = (TextBox)sender;
+            GridViewRow row = (GridViewRow)texbox_pincho.NamingContainer;
+            int rowIndex = row.RowIndex;
+
+            string id_producto = gridview_pedido.Rows[rowIndex].Cells[0].Text;
+            double cantidad;
+            if (double.TryParse(texbox_pincho.Text, out cantidad))
+            {
+                cargar_cantidad_pinchos(id_producto, gridview_pedido.Rows[rowIndex].Cells[1].Text, gridview_pedido.Rows[rowIndex].Cells[10].Text, texbox_pincho.Text);
+            }
+            else
+            {
+                texbox_pincho.Text = string.Empty;
+            }
+
         }
     }
 }
