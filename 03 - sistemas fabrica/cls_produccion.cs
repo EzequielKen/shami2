@@ -137,32 +137,15 @@ namespace _03___sistemas_fabrica
 
                     fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
 
-                    cantidad_producida = double.Parse(cantidad_despachada);
                     if (productos_proveedor.Rows[fila_producto]["confirmacion_automatica_stock"].ToString() == "1")
                     {
-                        movimientos_stock_producto.cargar_suma_stock(rol_usuario, id, "produccion", cantidad_producida.ToString(), "N/A");
+                        movimientos_stock_producto.cargar_historial_stock(rol_usuario, id, "produccion", cantidad_despachada, "");
 
-                        stock_expedicion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_expedicion"].ToString());
-                        nuevo_stock = stock_expedicion + cantidad_producida;
-
-                        actualizar = "`stock_expedicion` = '" + nuevo_stock.ToString() + "'";
-                        consultas.actualizar_tabla(base_de_datos, fabrica, actualizar, id);
-
-                        stock = double.Parse(productos_proveedor.Rows[fila_producto]["stock"].ToString());
-                        nuevo_stock = stock + cantidad_producida;
-
-                        actualizar = "`stock` = '" + nuevo_stock.ToString() + "'";
-                        consultas.actualizar_tabla(base_de_datos, fabrica, actualizar, id);
                         valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
 
                     }
                     else
                     {
-                        stock_produccion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_produccion"].ToString());
-                        nuevo_stock = stock_produccion + cantidad_producida;
-                        actualizar = "`stock_produccion` = '" + nuevo_stock.ToString() + "'";
-                        consultas.actualizar_tabla(base_de_datos, fabrica, actualizar, id);
-
                         valor_final = id + "-" + producto + "-" + cantidad_despachada + "-N/A";
                     }
 
@@ -179,31 +162,15 @@ namespace _03___sistemas_fabrica
 
                 fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
 
-                cantidad_producida = double.Parse(cantidad_despachada);
                 if (productos_proveedor.Rows[fila_producto]["confirmacion_automatica_stock"].ToString() == "1")
                 {
-                    stock_expedicion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_expedicion"].ToString());
-                    nuevo_stock = stock_expedicion + cantidad_producida;
-
-                    actualizar = "`stock_expedicion` = '" + nuevo_stock.ToString() + "'";
-                    consultas.actualizar_tabla(base_de_datos, fabrica, actualizar, id);
-
-                    stock = double.Parse(productos_proveedor.Rows[fila_producto]["stock"].ToString());
-                    nuevo_stock = stock + cantidad_producida;
-
-                    actualizar = "`stock` = '" + nuevo_stock.ToString() + "'";
-                    consultas.actualizar_tabla(base_de_datos, fabrica, actualizar, id);
+                    movimientos_stock_producto.cargar_historial_stock(rol_usuario, id, "produccion", cantidad_despachada, "");
 
                     valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
 
                 }
                 else
                 {
-                    stock_produccion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_produccion"].ToString());
-                    nuevo_stock = stock_produccion + cantidad_producida;
-                    actualizar = "`stock_produccion` = '" + nuevo_stock.ToString() + "'";
-                    consultas.actualizar_tabla(base_de_datos, fabrica, actualizar, id);
-
                     valor_final = id + "-" + producto + "-" + cantidad_despachada + "-N/A";
                 }
 
