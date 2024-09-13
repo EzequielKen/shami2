@@ -85,7 +85,7 @@
                             <asp:BoundField HeaderText="producto" DataField="producto" />
                             <asp:BoundField HeaderText="cantidad pedida" DataField="cantidad_pedida" />
                             <asp:BoundField HeaderText="presentacion" DataField="presentacion" />
-                            <asp:BoundField HeaderText="Cantidad en Kg" DataField="cantidad_kilos" />
+                            <asp:BoundField HeaderText="Cantidad en Kg teoricos" DataField="cantidad_kilos" />
                             <asp:BoundField HeaderText="Venta Teorica" DataField="venta_teorica" />
                             <asp:BoundField HeaderText="cantidad entregada" DataField="cantidad_entregada" />
                             <asp:BoundField HeaderText="Venta Real" DataField="venta_real" />

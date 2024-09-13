@@ -319,6 +319,10 @@ namespace _02___sistemas
                         funciones.IsNotDBNull(pedidos.Rows[fila][columna]))
                         {
                             id_producto = funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 2);
+                            if (id_producto=="")
+                            {
+                                string stop = pedidos.Rows[fila]["id"].ToString();
+                            }
                             if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu")
                             {
                                 cargar_estadistica(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4);
