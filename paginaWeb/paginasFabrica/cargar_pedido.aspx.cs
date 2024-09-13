@@ -176,14 +176,14 @@ namespace paginaWeb.paginasFabrica
             if (seguridad > 1)
             {
                 label_total_pedido.Visible = false;
-                gridview_pedido.Columns[8].Visible = false;
                 gridview_pedido.Columns[9].Visible = false;
+                gridview_pedido.Columns[11].Visible = false;
             }
             else if (seguridad < 2)
             {
                 label_total_pedido.Visible = true;
-                gridview_pedido.Columns[8].Visible = true;
                 gridview_pedido.Columns[9].Visible = true;
+                gridview_pedido.Columns[11].Visible = true;
             }
             proveedorBD = (DataTable)Session["proveedorBD"];
             usuariosBD = (DataTable)Session["usuariosBD"];
