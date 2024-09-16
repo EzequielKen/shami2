@@ -95,6 +95,8 @@ namespace _02___sistemas
             resumen.Columns.Add("objetivo", typeof(string));
             resumen.Columns.Add("venta_teorica", typeof(string));
             resumen.Columns.Add("venta_real", typeof(string));
+            resumen.Columns.Add("pincho", typeof(string));
+            resumen.Columns.Add("cantidad_pincho", typeof(string));
         }
         private void crear_resumen_fecha()
         {
@@ -201,12 +203,14 @@ namespace _02___sistemas
             crear_tabla_resumen();
 
             string id_producto;
+            string legado = string.Empty;
             int columna = pedidos.Columns["producto_1"].Ordinal;
             for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
             {
                 if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu" ||
                 pedidos.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                 {
+                    legado = pedidos.Rows[fila]["legado"].ToString();
                     columna = pedidos.Columns["producto_1"].Ordinal;
                     while (columna <= pedidos.Columns.Count - 1 &&
                     funciones.IsNotDBNull(pedidos.Rows[fila][columna]))
@@ -214,11 +218,11 @@ namespace _02___sistemas
                         id_producto = funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 2);
                         if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu")
                         {
-                            cargar_estadistica(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4);
+                            cargar_estadistica(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4,legado);
                         }
                         else if (pedidos.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                         {
-                            cargar_estadistica(fila, columna, id_producto, insumos_fabrica, "insumos_fabrica", pedidos, 4);
+                            cargar_estadistica(fila, columna, id_producto, insumos_fabrica, "insumos_fabrica", pedidos, 4, legado);
                         }
                         columna++;
                     }
@@ -299,6 +303,7 @@ namespace _02___sistemas
             crear_tabla_resumen();
             string tipo_de_acuerdo, acuerdo_de_precios_dato, proveedor;
             string id_producto;
+            string legado = string.Empty;
             int columna;
             for (int fila_pedidos = 0; fila_pedidos <= lista_pedidos_sucursales.Count - 1; fila_pedidos++)
             {
@@ -306,6 +311,7 @@ namespace _02___sistemas
                 columna = pedidos.Columns["producto_1"].Ordinal;
                 for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
                 {
+                    legado = pedidos.Rows[fila]["legado"].ToString();
                     tipo_de_acuerdo = pedidos.Rows[fila]["tipo_de_acuerdo"].ToString();
                     acuerdo_de_precios_dato = pedidos.Rows[fila]["acuerdo_de_precios"].ToString();
                     proveedor = pedidos.Rows[fila]["proveedor"].ToString();
@@ -319,17 +325,22 @@ namespace _02___sistemas
                         funciones.IsNotDBNull(pedidos.Rows[fila][columna]))
                         {
                             id_producto = funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 2);
-                            if (id_producto=="")
+                            if (id_producto == "")
                             {
                                 string stop = pedidos.Rows[fila]["id"].ToString();
                             }
                             if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu")
                             {
-                                cargar_estadistica(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4);
+                                cargar_estadistica(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4, legado);
                             }
                             else if (pedidos.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                             {
-                                cargar_estadistica(fila, columna, id_producto, insumos_fabrica, "insumos_fabrica", pedidos, 4);
+                                double precio = double.Parse(acuerdo_de_precios.Rows[0]["producto_" + id_producto.ToString()].ToString());
+                                if (id_producto == "74" && precio != 1360)
+                                {
+                                    string strop = pedidos.Rows[fila]["id"].ToString();
+                                }
+                                cargar_estadistica(fila, columna, id_producto, insumos_fabrica, "insumos_fabrica", pedidos, 4, legado);
                             }
                             columna++;
                         }
@@ -345,7 +356,6 @@ namespace _02___sistemas
             {
                 if (resumen.Rows[filas]["cantidad_pedida"].ToString() != "")
                 {
-
                     id = resumen.Rows[filas]["id"].ToString();
 
 
@@ -358,13 +368,26 @@ namespace _02___sistemas
                             fila_producto = funciones.buscar_fila_por_id(id, productos_terminados);
                             if (productos_terminados.Rows[fila_producto]["pincho"].ToString() == "si")
                             {
+                                double cant_entregada = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
+                                double venta_real = double.Parse(resumen.Rows[filas]["venta_real"].ToString());
+                                double precio_venta = Math.Round(venta_real/ cant_entregada, 2);
+
+
                                 double equivalencia_pincho = double.Parse(productos_terminados.Rows[fila_producto]["equivalencia_pincho"].ToString());
                                 cantidad_entrega = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
                                 cantidad_pedida = cantidad_pedida * equivalencia_pincho;
+                                
                                 resumen.Rows[filas]["cantidad_kilos"] = cantidad_pedida.ToString() + "Kg";
+                                resumen.Rows[filas]["venta_teorica"] = cantidad_pedida*precio_venta;
+
                                 porcentaje_satisfaccion = (cantidad_entrega * 100) / cantidad_pedida;
                                 porcentaje_satisfaccion = Math.Round(porcentaje_satisfaccion, 2);
                                 resumen.Rows[filas]["porcentaje_satisfaccion"] = porcentaje_satisfaccion.ToString() + "%";
+                                
+
+                                string cantidad_pincho = resumen.Rows[filas]["cantidad_pincho"].ToString();
+                                string cantidad_entregada = resumen.Rows[filas]["cantidad_entregada"].ToString();
+                                resumen.Rows[filas]["cantidad_entregada"] = cantidad_pincho + " PINCHOS | " + cantidad_entregada + "Kg";
                             }
                             else
                             {
@@ -453,13 +476,18 @@ namespace _02___sistemas
                 }
             }
         }
-        private void cargar_estadistica(int fila, int columna, string id_producto, DataTable productos_seleccionados, string proveedor, DataTable pedido, int posicion)
+        private void cargar_estadistica(int fila, int columna, string id_producto, DataTable productos_seleccionados, string proveedor, DataTable pedido, int posicion, string legado)
         {
+            
             int fila_resumen = 0;
             int fila_producto;
             double cantidad_pedida, cantidad_entregada, venta_teorica, venta_real, precio, venta_teorica_historico, venta_real_historico;
             fila_producto = funciones.buscar_fila_por_id(id_producto, productos_seleccionados);
             precio = double.Parse(acuerdo_de_precios.Rows[0]["producto_" + id_producto.ToString()].ToString());
+            if (id_producto == "74" && precio!=1360)
+            {
+                string strop = "";
+            }
             if (fila_producto != -1)
             {
                 // cantidad_entregada porcentaje_satisfaccion
@@ -476,6 +504,8 @@ namespace _02___sistemas
                         resumen.Rows[fila_resumen]["cantidad_pedida"] = "0";
                         resumen.Rows[fila_resumen]["venta_teorica"] = "0";
                         resumen.Rows[fila_resumen]["venta_real"] = "0";
+                        resumen.Rows[fila_resumen]["cantidad_pincho"] = "0";
+
                     }
                     else
                     {
@@ -484,6 +514,9 @@ namespace _02___sistemas
                         venta_teorica = cantidad_pedida * precio;
                         resumen.Rows[fila_resumen]["venta_teorica"] = venta_teorica.ToString();
                         resumen.Rows[fila_resumen]["venta_real"] = "0";
+                        resumen.Rows[fila_resumen]["cantidad_pincho"] = "0";
+
+
 
                     }
                     if (pedido.Rows[fila]["estado"].ToString() == "Entregado")
@@ -494,6 +527,29 @@ namespace _02___sistemas
                             resumen.Rows[fila_resumen]["cantidad_entregada"] = cantidad_entregada.ToString();
                             venta_real = cantidad_entregada * precio;
                             resumen.Rows[fila_resumen]["venta_real"] = venta_real.ToString();
+
+                            if (proveedor == "proveedor_villaMaipu")
+                            {
+                                if (productos_seleccionados.Rows[fila_producto]["pincho"].ToString() == "si")
+                                {
+                                    if (legado == "si")
+                                    {
+                                        double equivalencia_pincho = double.Parse(productos_seleccionados.Rows[fila_producto]["equivalencia_pincho"].ToString());
+                                        double cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
+                                        cantidad_pincho = Math.Round(cantidad_pincho + (cantidad_entregada / equivalencia_pincho),2);
+                                        resumen.Rows[fila_resumen]["pincho"] = "si";
+                                        resumen.Rows[fila_resumen]["cantidad_pincho"] = cantidad_pincho.ToString();
+                                    }
+                                    else
+                                    {
+                                        double pinchos_entregados = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8));
+                                        double cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
+                                        cantidad_pincho = cantidad_pincho + pinchos_entregados;
+                                        resumen.Rows[fila_resumen]["pincho"] = "si";
+                                        resumen.Rows[fila_resumen]["cantidad_pincho"] = cantidad_pincho.ToString();
+                                    }
+                                }
+                            }
                         }
                     }
                     resumen.Rows[fila_resumen]["presentacion"] = productos_seleccionados.Rows[fila_producto]["unidad_de_medida_local"].ToString();
@@ -521,6 +577,30 @@ namespace _02___sistemas
                             venta_real = cantidad_entregada * precio;
                             venta_real = venta_real_historico + venta_real;
                             resumen.Rows[fila_resumen]["venta_real"] = venta_real.ToString();
+
+                            if (proveedor == "proveedor_villaMaipu")
+                            {
+                                if (productos_seleccionados.Rows[fila_producto]["pincho"].ToString() == "si")
+                                {
+                                    double cantidad_pincho ;
+                                    if (legado == "si")
+                                    {
+                                        double equivalencia_pincho = double.Parse(productos_seleccionados.Rows[fila_producto]["equivalencia_pincho"].ToString());
+                                        cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
+                                        cantidad_pincho = Math.Round(cantidad_pincho + (cantidad_entregada / equivalencia_pincho), 2);
+                                        resumen.Rows[fila_resumen]["pincho"] = "si";
+                                        resumen.Rows[fila_resumen]["cantidad_pincho"] = cantidad_pincho.ToString();
+                                    }
+                                    else
+                                    {
+                                        double pinchos_entregados = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8));
+                                        cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
+                                        cantidad_pincho = cantidad_pincho + pinchos_entregados;
+                                        resumen.Rows[fila_resumen]["pincho"] = "si";
+                                        resumen.Rows[fila_resumen]["cantidad_pincho"] = cantidad_pincho.ToString();
+                                    }
+                                }
+                            }
                         }
                     }
 
