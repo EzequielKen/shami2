@@ -62,6 +62,7 @@ namespace _03___sistemas_fabrica
         private void consultar_productos_produccion(string nombre_proveedor)
         {
             productos_produccion = consultas.consultar_productos_produccion(base_de_datos, nombre_proveedor);
+           
         }
         #endregion
 

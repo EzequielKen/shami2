@@ -841,7 +841,7 @@ namespace _02___sistemas
                         }
 
                         //cargar normal
-                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, pedido_dato, dato, unidad_insumo);
+                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, pedido_dato, dato, unidad_insumo,nombre_proveedor,pedidos,fila_pedido,i);
 
                     }
                 }
@@ -863,7 +863,7 @@ namespace _02___sistemas
             }
             return retorno;
         }
-        private void cargar_producto(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, int fila_acuerdo, string pedido_dato, string unidad_insumo, string multiplicador)
+        private void cargar_producto(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, int fila_acuerdo, string pedido_dato, string unidad_insumo, string multiplicador,string nombre_proveedor, DataTable pedido_local, int fila_pedido,int i)
         {
             resumen_pedido.Rows.Add();
             int fila = resumen_pedido.Rows.Count - 1;
@@ -902,6 +902,33 @@ namespace _02___sistemas
             decimal sub_total = decimal.Parse(cantidad_recibida) * decimal.Parse(precio);
             resumen_pedido.Rows[fila]["precio"] = decimal.Parse(precio);
             resumen_pedido.Rows[fila]["sub.total"] = sub_total;
+
+            if (nombre_proveedor == "proveedor_villaMaipu")
+            {
+                if (pedido_local.Rows[fila_pedido]["legado"].ToString() == "no")
+                {
+                    if (productos_proveedor.Rows[fila_producto]["pincho"].ToString() == "si")
+                    {
+                        string cant_pinchos = obtener_dato_pedido(pedido_local.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 8) + " PINCHOS | ";//
+
+                        resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada;
+                        resumen_pedido.Rows[fila]["recibido"] = cant_pinchos + cantidad_entregada;
+
+                    }
+                }
+                else
+                {
+                    if (productos_proveedor.Rows[fila_producto]["pincho"].ToString() == "si")
+                    {
+                        double equivalencia_pincho = double.Parse(productos_proveedor.Rows[fila_producto]["equivalencia_pincho"].ToString());
+                        double cantidad_pinchos = Math.Ceiling(Math.Round(double.Parse(cantidad_entregada) / equivalencia_pincho, 2));
+                        string cant_pinchos = cantidad_pinchos + " PINCHOS | ";//
+
+                        resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada;
+                        resumen_pedido.Rows[fila]["recibido"] = cant_pinchos + cantidad_entregada;
+                    }
+                }
+            }
 
 
         }

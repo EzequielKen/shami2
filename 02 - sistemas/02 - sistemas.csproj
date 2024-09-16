@@ -72,6 +72,10 @@
       <Project>{4f441403-c852-4c50-93da-33c46fce4e00}</Project>
       <Name>01 - modulos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\03 - sistemas fabrica\03 - sistemas fabrica.csproj">
+      <Project>{347c8a5c-b3bc-4912-91ff-010cd82b67ec}</Project>
+      <Name>03 - sistemas fabrica</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,4 +1,5 @@
 ﻿using _01___modulos;
+using _03___sistemas_fabrica;
 using modulos;
 using paginaWeb;
 using System;
@@ -31,9 +32,11 @@ namespace _02___sistemas
                 base_de_datos = ConfigurationManager.AppSettings["base_de_datos_desarrollo"];
             }
             consultas = new cls_consultas_Mysql(servidor, puerto, usuario_dato, contraseña_BD, base_de_datos);
+            stock_producto_terminado = new cls_stock_producto_terminado(usuarioBD);
         }
 
         #region atributos
+        cls_stock_producto_terminado stock_producto_terminado;
         cls_consultas_Mysql consultas;
         cls_funciones funciones = new cls_funciones();
         cls_PDF PDF = new cls_PDF();
@@ -187,7 +190,7 @@ namespace _02___sistemas
                     resumen.Rows[fila_resumen]["cantidad_pedida"] = funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 4);
                     resumen.Rows[fila_resumen]["presentacion"] = productos_seleccionados.Rows[fila_producto]["unidad_de_medida_local"].ToString();
                     resumen.Rows[fila_resumen]["proveedor"] = proveedor;
-                    resumen.Rows[fila_resumen]["stock"] = productos_seleccionados.Rows[fila_producto]["stock"].ToString();
+                    resumen.Rows[fila_resumen]["stock"] = stock_producto_terminado.get_ultimo_stock_producto_terminado(productos_seleccionados.Rows[fila_producto]["id"].ToString());
                 }
                 else
                 {

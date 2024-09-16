@@ -43,7 +43,7 @@ namespace paginaWeb.paginasFabrica
 
                     productos_produccion.Rows[fila_producto]["id"] = productos_produccionBD.Rows[fila]["id"].ToString();
                     productos_produccion.Rows[fila_producto]["producto"] = productos_produccionBD.Rows[fila]["producto"].ToString();
-                    productos_produccion.Rows[fila_producto]["unidad_de_medida"] = productos_produccionBD.Rows[fila]["unidad_de_medida_fabrica"].ToString();
+                    productos_produccion.Rows[fila_producto]["unidad_de_medida"] = productos_produccionBD.Rows[fila]["unidad_de_medida_produccion"].ToString();
 
                     fila_producto++;
                 }

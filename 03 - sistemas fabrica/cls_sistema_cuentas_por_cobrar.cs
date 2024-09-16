@@ -1255,7 +1255,7 @@ namespace _03___sistemas_fabrica
                             cantidad_recibida = "0";
                         }
                         //cargar normal
-                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, dato, unidad_insumo, "N/A", "N/A", "N/A", fila_pedido, i, pedidos);
+                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, dato, unidad_insumo, "N/A", "N/A", nombre_proveedor, fila_pedido, i, pedidos);
                     }
                 }
                 i++;
@@ -1418,17 +1418,7 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows[fila]["pedido"] = cantidad_pedida;
             resumen_pedido.Rows[fila]["unid.pedida"] = productos_proveedor.Rows[fila_producto]["unidad_de_medida_local"].ToString();
             resumen_pedido.Rows[fila]["entregado"] = cantidad_entregada;
-            if (nombre_proveedor == "proveedor_villaMaipu")
-            {
-                if (productos_proveedor.Rows[fila_producto]["pincho"].ToString() == "si" &&
-                pedido_local.Rows[fila_pedido]["legado"].ToString() == "no")
-                {
-                    string cant_pinchos = obtener_dato_pedido(pedido_local.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 8) + " PINCHOS | ";//
 
-                    resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada ;
-
-                }
-            }
             resumen_pedido.Rows[fila]["sucursal_seleccionada"] = sucursal_seleccionada;
             resumen_pedido.Rows[fila]["num_pedido"] = num_pedido;
             resumen_pedido.Rows[fila]["nombre_proveedor"] = nombre_proveedor;
@@ -1442,6 +1432,32 @@ namespace _03___sistemas_fabrica
             }
             resumen_pedido.Rows[fila]["tipo"] = productos_proveedor.Rows[fila_producto]["tipo_producto"].ToString();
             resumen_pedido.Rows[fila]["recibido"] = cantidad_recibida;
+            if (nombre_proveedor == "proveedor_villaMaipu")
+            {
+                if (pedido_local.Rows[fila_pedido]["legado"].ToString() == "no")
+                {
+                    if (productos_proveedor.Rows[fila_producto]["pincho"].ToString() == "si")
+                    {
+                        string cant_pinchos = obtener_dato_pedido(pedido_local.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 8) + " PINCHOS | ";//
+
+                        resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada;
+                        resumen_pedido.Rows[fila]["recibido"] = cant_pinchos + cantidad_entregada;
+
+                    }
+                }
+                else
+                {
+                    if (productos_proveedor.Rows[fila_producto]["pincho"].ToString() == "si")
+                    {
+                        double equivalencia_pincho = double.Parse(productos_proveedor.Rows[fila_producto]["equivalencia_pincho"].ToString());
+                        double cantidad_pinchos = Math.Ceiling(Math.Round(double.Parse(cantidad_entregada) / equivalencia_pincho, 2));
+                        string cant_pinchos = cantidad_pinchos + " PINCHOS | ";//
+
+                        resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada;
+                        resumen_pedido.Rows[fila]["recibido"] = cant_pinchos + cantidad_entregada;
+                    }
+                }
+            }
 
             precio = acuerdo_de_precios_parametreados.Rows[fila_acuerdo]["producto_" + id].ToString();
             //  precio = precio.Replace(",", ".");

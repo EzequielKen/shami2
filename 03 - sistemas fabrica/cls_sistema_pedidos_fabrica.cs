@@ -670,8 +670,22 @@ namespace _03___sistemas_fabrica
 
 
                         //movimientos_stock_producto.cargar_resta_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
-
-                        stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
+                        if (proveedor == "proveedor_villaMaipu")
+                        {
+                            if (pedido.Rows[fila]["pincho"].ToString() == "si")
+                            {
+                                cantidad_despachada = double.Parse(pedido.Rows[fila]["cantidad_pincho"].ToString());
+                                stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
+                            }
+                            else
+                            {
+                                stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
+                            }
+                        }
+                        else
+                        {
+                            stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
+                        }
                     }
                 }
 
