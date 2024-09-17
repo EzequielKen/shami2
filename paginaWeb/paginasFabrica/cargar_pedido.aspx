@@ -72,7 +72,8 @@
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-
+                                <asp:BoundField HeaderText="cantidad de pinchos a entregar" DataField="cantidad_pincho" />
+                                <asp:BoundField HeaderText="Kg/Cantidad a entregar" DataField="cantidad_entrega" />
                                 <asp:TemplateField HeaderText="Presentacion Entrega">
                                     <ItemTemplate>
                                         <asp:DropDownList ID="dropdown_presentacion_entrega" OnSelectedIndexChanged="dropdown_presentacion_entrega_SelectedIndexChanged" CssClass="input-group-text" runat="server" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>'>
@@ -87,8 +88,7 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
-                                <asp:BoundField HeaderText="cantidad de pinchos a entregar" DataField="cantidad_pincho" />
-                                <asp:BoundField HeaderText="Kg/Cantidad a entregar" DataField="cantidad_entrega" />
+
                                 <asp:BoundField HeaderText="precio" DataField="precio" />
                                 <asp:BoundField HeaderText="id pedido" DataField="id_pedido" />
                                 <asp:BoundField HeaderText="sub total" DataField="sub_total" />

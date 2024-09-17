@@ -164,7 +164,7 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows[fila]["Cant.Entregada"] = cantidad_entregada;
             resumen_pedido.Rows[fila]["Cant.Recibida"] = cantidad_recibida;
 
-            resumen_pedido.Rows[fila]["stock"] = productos_proveedor.Rows[fila_producto]["stock"].ToString();
+            resumen_pedido.Rows[fila]["stock"] = stock_producto_terminado.get_ultimo_stock_producto_terminado(id);
             resumen_pedido.Rows[fila]["nuevo_stock"] = "N/A";
             resumen_pedido.Rows[fila]["confirmacion_automatica_stock"] = productos_proveedor.Rows[fila_producto]["confirmacion_automatica_stock"].ToString();
 
@@ -268,7 +268,7 @@ namespace _03___sistemas_fabrica
                         cantidad_recibida = double.Parse(detalle_produccion.Rows[fila]["Cant.Recibida"].ToString());
                         stock_expedicion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_expedicion"].ToString());
                         
-                        stock_producto_terminado.cargar_historial_stock(rol_usuario, id_producto, "produccion", cantidad_recibida.ToString(), "N/A");
+                        //stock_producto_terminado.cargar_historial_stock(rol_usuario, id_producto, "produccion", cantidad_recibida.ToString(), "N/A");
 
                         nuevo_stock_expedicion = stock_expedicion + cantidad_recibida;
 

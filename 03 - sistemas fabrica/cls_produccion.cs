@@ -85,6 +85,22 @@ namespace _03___sistemas_fabrica
             }
             return retorno;
         }
+        private bool verificar_estado(DataTable resumen_pedido)
+        {
+            int fila_producto;
+            string id;
+            bool retorno = true;
+            for (int fila = 0; fila <= resumen_pedido.Rows.Count-1; fila++)
+            {
+                id = resumen_pedido.Rows[fila]["id"].ToString();
+                fila_producto = funciones.buscar_fila_por_id(id,productos_proveedor);
+                if (productos_proveedor.Rows[fila_producto]["confirmacion_automatica_stock"].ToString() == "0")
+                {
+                    retorno=false;
+                }
+            }
+            return retorno;
+        }
         public void cargar_produccion_diaria(DataTable resumen_pedido, string fabrica, string proveedor, string fecha, string rol_usuario)
         {
             consultar_productos_proveedor(fabrica);
@@ -109,7 +125,7 @@ namespace _03___sistemas_fabrica
                 //receptor
                 columnas = armar_query_columna(columnas, "receptor", false);
                 valores = armar_query_valores(valores, "Shami Villa Maipu Expedicion", false);
-                if (proveedor == "Shami Villa Maipu Expedicion")
+                if (verificar_estado(resumen_pedido))
                 {
                     //estado
                     columnas = armar_query_columna(columnas, "estado", false);
