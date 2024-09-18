@@ -28,7 +28,7 @@ namespace paginaWeb.paginasFabrica
             string ruta_archivo = Server.MapPath(ruta);
 
             byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
-            analisis.crear_pdf(ruta_archivo,imgdata);
+            //analisis.crear_pdf(ruta_archivo,imgdata);
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginasFabrica/pdf/" + id_pedido;
             try
@@ -41,6 +41,16 @@ namespace paginaWeb.paginasFabrica
 
                 Response.Redirect(strUrl, false);
             }
+        }
+
+        protected void textbox_buscar_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void dropDown_tipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

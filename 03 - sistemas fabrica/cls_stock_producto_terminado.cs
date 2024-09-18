@@ -137,6 +137,10 @@ namespace _03___sistemas_fabrica
         }
         private void crear_stock(string rol_usuario, string id_producto, string tipo_movimiento, string movimiento, string nota)
         {
+            if (movimiento=="")
+            {
+                movimiento="0";
+            }
             //obtener ultimo stock
             double stock_inicial = obtener_ultimo_stock();
             double stock_final = 0;
@@ -161,10 +165,19 @@ namespace _03___sistemas_fabrica
         }
         private double obtener_ultimo_stock()
         {
+            double stock;
             //obtener ultimo stock
             historial_stock.DefaultView.Sort = "fecha DESC,id DESC";
             historial_stock = historial_stock.DefaultView.ToTable(true);
-            return double.Parse(historial_stock.Rows[0]["stock_final"].ToString());
+            if (historial_stock.Rows.Count==0)
+            {
+                stock = 0;
+            }
+            else
+            {
+                stock = double.Parse(historial_stock.Rows[0]["stock_final"].ToString());
+            }
+            return stock;
         }
         #endregion
 

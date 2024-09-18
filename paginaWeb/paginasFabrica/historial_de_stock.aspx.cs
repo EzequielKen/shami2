@@ -18,19 +18,21 @@ namespace paginaWeb.paginasFabrica
             productos_proveedor = new DataTable();
             productos_proveedor.Columns.Add("id", typeof(string));
             productos_proveedor.Columns.Add("producto", typeof(string));
+            productos_proveedor.Columns.Add("ultimo_stock", typeof(string));
         }
         private void llenar_tabla_productos()
         {
             crear_tabla_productos();
             int fila_producto = 0;
-            for (int fila = 0; fila < productos_proveedorBD.Rows.Count-1; fila++)
+            for (int fila = 0; fila < productos_proveedorBD.Rows.Count - 1; fila++)
             {
                 if (funciones.buscar_alguna_coincidencia(textbox_busqueda.Text, productos_proveedorBD.Rows[fila]["producto"].ToString()) &&
-                    funciones.verificar_tipo_producto(productos_proveedorBD.Rows[fila]["tipo_producto"].ToString(),dropDown_tipo.SelectedItem.Text))
+                    funciones.verificar_tipo_producto(productos_proveedorBD.Rows[fila]["tipo_producto"].ToString(), dropDown_tipo.SelectedItem.Text))
                 {
                     productos_proveedor.Rows.Add();
                     productos_proveedor.Rows[fila_producto]["id"] = productos_proveedorBD.Rows[fila]["id"].ToString();
                     productos_proveedor.Rows[fila_producto]["producto"] = productos_proveedorBD.Rows[fila]["producto"].ToString();
+                    productos_proveedor.Rows[fila_producto]["ultimo_stock"] = productos_proveedorBD.Rows[fila]["ultimo_stock"].ToString();
                     fila_producto++;
                 }
             }
@@ -43,7 +45,7 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_historial()
         {
-            gridview_historial.DataSource = historial_stock.get_historial_producto(Session["id_producto_historial"].ToString(),DropDown_mes.SelectedItem.Text,DropDown_año.SelectedItem.Text);
+            gridview_historial.DataSource = historial_stock.get_historial_producto(Session["id_producto_historial"].ToString(), DropDown_mes.SelectedItem.Text, DropDown_año.SelectedItem.Text);
             gridview_historial.DataBind();
         }
         #endregion
@@ -58,7 +60,7 @@ namespace paginaWeb.paginasFabrica
             cargar_año();
             llenar_dropDownList(productos_proveedorBD);
         }
-        
+
         private void cargar_mes()
         {
             int num_item = 1;
@@ -140,7 +142,7 @@ namespace paginaWeb.paginasFabrica
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
             historial_stock = new cls_movimientos_stock_producto(usuariosBD);
-            productos_proveedorBD= historial_stock.get_productos_proveedor();
+            productos_proveedorBD = historial_stock.get_productos_proveedor();
             if (!IsPostBack)
             {
                 configurar_controles();
@@ -178,9 +180,9 @@ namespace paginaWeb.paginasFabrica
         {
             TextBox textbox_nuevo_stock = (TextBox)sender;
             double cantidad;
-            if (!double.TryParse(textbox_nuevo_stock.Text,out cantidad))
+            if (!double.TryParse(textbox_nuevo_stock.Text, out cantidad))
             {
-                textbox_nuevo_stock.Text =string.Empty;
+                textbox_nuevo_stock.Text = string.Empty;
             }
         }
 
@@ -194,10 +196,10 @@ namespace paginaWeb.paginasFabrica
             TextBox texbox_nota = (gridview_productos.Rows[fila].Cells[3].FindControl("texbox_nota") as TextBox);
             string rol_usuario = tipo_usuario.Rows[0]["rol"].ToString();
             string id_producto = gridview_productos.Rows[fila].Cells[0].Text;
-            historial_stock.cargar_historial_stock(rol_usuario,id_producto, "conteo stock",texbox_nuevo_stock.Text,texbox_nota.Text);
+            historial_stock.cargar_historial_stock(rol_usuario, id_producto, "conteo stock", texbox_nuevo_stock.Text, texbox_nota.Text);
             Session.Add("id_producto_historial", id_producto);
             cargar_historial();
-            texbox_nuevo_stock.Text=string.Empty;
+            texbox_nuevo_stock.Text = string.Empty;
             texbox_nota.Text = string.Empty;
         }
     }

@@ -180,6 +180,13 @@ namespace _03___sistemas_fabrica
         private void consultar_productos_proveedor()
         {
             productos_proveedor = consultas.consultar_tabla(base_de_datos, "proveedor_villaMaipu");
+            productos_proveedor.Columns.Add("ultimo_stock", typeof(string));
+            string id;
+            for (int fila = 0; fila <= productos_proveedor.Rows.Count-1; fila++)
+            {
+                id = productos_proveedor.Rows[fila]["id"].ToString();
+                productos_proveedor.Rows[fila]["ultimo_stock"] = stock_Producto_Terminado.get_ultimo_stock_producto_terminado(id);
+            }
         }
         private void consultar_historial_producto(string id_producto, string mes, string año)
         {

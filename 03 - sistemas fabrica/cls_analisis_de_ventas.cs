@@ -188,13 +188,6 @@ namespace _03___sistemas_fabrica
         }
         #endregion
 
-        public void crear_pdf(string ruta_archivo, byte[] logo)
-        {
-            //consultar_remitos_del_mes();
-            consultar_acuerdo_de_precios();
-            consultar_productos_proveedor();
-            llenar_tabla_resumen();
-            PDF.GenerarPDF_analisis_de_venta(ruta_archivo, logo, resumen, calcular_total());
-        }
+
     }
 }

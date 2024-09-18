@@ -39,6 +39,7 @@
                                         <asp:Button ID="boton_cargar" CssClass="input-group btn btn-primary" Text="Cargar" OnClick="boton_cargar_Click" runat="server" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:BoundField HeaderText="Stock" DataField="ultimo_stock" />
                             </Columns>
                         </asp:GridView>
                     </div>

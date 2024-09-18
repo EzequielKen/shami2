@@ -399,6 +399,7 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por Cobrar</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/analisis_de_ventas.aspx">Analisis de Venta de Producto</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Entrega a Cliente</a></li>
 
                         </ul>
