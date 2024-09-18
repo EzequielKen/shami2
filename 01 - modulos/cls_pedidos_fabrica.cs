@@ -7,6 +7,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using acceso_a_base_de_datos;
+using paginaWeb;
 namespace modulos
 {
     [Serializable]
@@ -36,6 +37,7 @@ namespace modulos
         }
         #region atributos
         private cls_consultas_Mysql consultas;
+        private cls_funciones funciones = new cls_funciones();
         private string servidor;
         private string puerto;
         private string usuario;
@@ -631,23 +633,13 @@ namespace modulos
                     }
                     else
                     {
-                        if (pedido.Rows[fila]["estado"].ToString() == "Carga parcial")
-                        {
-                            if (pedido.Rows[fila]["pincho"].ToString() == "si")
-                            {
-                            dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "-" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString() + "-" + pedido.Rows[fila]["cantidad_pincho"].ToString();
-                                
-                            }
-                            else
-                            {
-                                dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "-" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString() + "-" + pedido.Rows[fila]["cantidad_pincho"].ToString();
-
-                            }
-                        }
-                        else
-                        {
-                            dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "-" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString() + "-" + pedido.Rows[fila]["cantidad_pincho"].ToString();
-                        }
+                        string pedido_dato_parcial = funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 1) + "-";
+                        pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 2) + "-";
+                        pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 3) + "-";
+                        pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 4);
+                        string presentacion_entrega_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString(),1);
+                        string presentacion_extraccion_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString(),1);
+                        dato = pedido_dato_parcial + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + presentacion_entrega_seleccionada + "-" + presentacion_extraccion_seleccionada + "-" + pedido.Rows[fila]["cantidad_pincho"].ToString();
                     }
 
                     if (fila == pedido.Rows.Count - 1)
