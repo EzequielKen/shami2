@@ -196,11 +196,14 @@ namespace paginaWeb.paginasFabrica
             TextBox texbox_nota = (gridview_productos.Rows[fila].Cells[3].FindControl("texbox_nota") as TextBox);
             string rol_usuario = tipo_usuario.Rows[0]["rol"].ToString();
             string id_producto = gridview_productos.Rows[fila].Cells[0].Text;
-            historial_stock.cargar_historial_stock(rol_usuario, id_producto, "conteo stock", texbox_nuevo_stock.Text, texbox_nota.Text);
-            Session.Add("id_producto_historial", id_producto);
-            cargar_historial();
-            texbox_nuevo_stock.Text = string.Empty;
-            texbox_nota.Text = string.Empty;
+            if (texbox_nuevo_stock.Text != string.Empty)
+            {
+                historial_stock.cargar_historial_stock(rol_usuario, id_producto, "conteo stock", texbox_nuevo_stock.Text, texbox_nota.Text);
+                Session.Add("id_producto_historial", id_producto);
+                cargar_historial();
+                texbox_nuevo_stock.Text = string.Empty;
+                texbox_nota.Text = string.Empty;
+            }
         }
     }
 }

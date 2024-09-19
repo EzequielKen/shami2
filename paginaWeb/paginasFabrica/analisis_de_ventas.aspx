@@ -9,20 +9,30 @@
                 <h1>Seleccione el rango de fechas para el análisis de ventas</h1>
                 <div class="input-group">
                     <h2 class="form-label">Fecha Inicial</h2>
-                    <asp:TextBox ID="textbox_fecha_inicial" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                    <asp:TextBox ID="textbox_fecha_inicial" runat="server" CssClass="form-control" TextMode="Date" OnTextChanged="textbox_fecha_inicial_TextChanged" AutoPostBack="true"></asp:TextBox>
                     <h2 class="form-label">Fecha Final</h2>
-                    <asp:TextBox ID="textbox_fecha_final" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                    <asp:TextBox ID="textbox_fecha_final" runat="server" CssClass="form-control" TextMode="Date" OnTextChanged="textbox_fecha_final_TextChanged" AutoPostBack="true"></asp:TextBox>
                 </div>
             </div>
 
             <div class="alert alert-light">
                 <div class="input-group">
-                    <asp:TextBox ID="textbox_buscar" CssClass="form-control" placeholder="Buscar..." OnTextChanged="textbox_buscar_TextChanged" runat="server" />
-                    <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" runat="server">
+                    <h2 class="form-label">Tipo Producto:</h2>
+                    <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true" runat="server">
                     </asp:DropDownList>
                 </div>
+                <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
+                    <Columns>
+                        <asp:BoundField HeaderText="id" DataField="id" />
+                        <asp:BoundField HeaderText="producto" DataField="producto" />
+                        <asp:TemplateField HeaderText="Analisis">
+                            <ItemTemplate>
+                                <asp:Button ID="boton_analisis" CssClass="input-group btn btn-primary" Text="Analizar ventas" OnClick="boton_analisis_Click" runat="server" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    </Columns>
+                </asp:GridView>
             </div>
-
         </div>
     </div>
 </asp:Content>

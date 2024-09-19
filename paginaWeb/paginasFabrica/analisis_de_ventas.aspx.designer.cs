@@ -33,15 +33,6 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.TextBox textbox_fecha_final;
 
         /// <summary>
-        /// Control textbox_buscar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textbox_buscar;
-
-        /// <summary>
         /// Control dropDown_tipo.
         /// </summary>
         /// <remarks>
@@ -49,5 +40,14 @@ namespace paginaWeb.paginasFabrica
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
+
+        /// <summary>
+        /// Control gridview_productos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gridview_productos;
     }
 }
