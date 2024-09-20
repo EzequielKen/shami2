@@ -89,9 +89,6 @@
                         <a class="nav-link btn btn-primary" href="/paginas/calendario_de_entrega.aspx">Calendario de entrega</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginas/cuentas_por_pagar.aspx">Cuentas por pagar a Fabrica</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/stock_insumos_fabrica_fatay.aspx">Stock Insumos</a>
                     </li>
                     <li class="nav-item">

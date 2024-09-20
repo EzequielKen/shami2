@@ -173,6 +173,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Stock
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/conteo_de_stock.aspx">Conteo de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Productos</a></li>

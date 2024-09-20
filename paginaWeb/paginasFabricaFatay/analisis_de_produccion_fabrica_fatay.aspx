@@ -49,8 +49,8 @@
                         <asp:BoundField HeaderText="id" DataField="id" />
                         <asp:BoundField HeaderText="producto" DataField="producto" />
                         <asp:BoundField HeaderText="cantidad pedida" DataField="cantidad_pedida" />
-                        <asp:BoundField HeaderText="% incremento" DataField="incremento" />
-                        <asp:BoundField HeaderText="stock" DataField="stock" />
+                        <asp:BoundField HeaderText="20% incremento" DataField="incremento" />
+                        <asp:BoundField HeaderText="stock" DataField="stock de fabrica" />
                         <asp:BoundField HeaderText="objetivo" DataField="objetivo" />
                         <asp:BoundField HeaderText="presentacion" DataField="presentacion" />
                     </Columns>

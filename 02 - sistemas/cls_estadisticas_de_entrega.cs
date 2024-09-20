@@ -215,6 +215,11 @@ namespace _02___sistemas
                 {
                     legado = pedidos.Rows[fila]["legado"].ToString();
                     columna = pedidos.Columns["producto_1"].Ordinal;
+                    string tipo_de_acuerdo = pedidos.Rows[fila]["tipo_de_acuerdo"].ToString();
+                    string acuerdo_de_precios_dato = pedidos.Rows[fila]["acuerdo_de_precios"].ToString();
+                    string proveedor = pedidos.Rows[fila]["proveedor"].ToString();
+                    consultar_acuerdo_de_precios(proveedor, acuerdo_de_precios_dato, tipo_de_acuerdo);
+
                     while (columna <= pedidos.Columns.Count - 1 &&
                     funciones.IsNotDBNull(pedidos.Rows[fila][columna]))
                     {

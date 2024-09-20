@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "paginaWeb", "paginaWeb\paginaWeb.csproj", "{9B1C75BA-74C4-461E-9B9E-67B504753C23}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00 - acceso a base de datos", "00 - acceso a base de datos\00 - acceso a base de datos.csproj", "{83175085-7B47-43B7-85E4-966D82567213}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01 - modulos", "01 - modulos\01 - modulos.csproj", "{4F441403-C852-4C50-93DA-33C46FCE4E00}"
@@ -19,9 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05 - sistemas fabrica fatay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "06 - sistemas gerente", "06 - sistemas gerente\06 - sistemas gerente.csproj", "{436922F1-24DA-4274-96E4-257E5FFDE747}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "paginaLocales", "paginaLocales\paginaLocales.csproj", "{C7492072-D432-4AFD-B66B-A0192C0DE356}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07 - sistemas supervision", "07-sistemas supervision\07 - sistemas supervision.csproj", "{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "paginaWeb", "paginaWeb\paginaWeb.csproj", "{9B1C75BA-74C4-461E-9B9E-67B504753C23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83175085-7B47-43B7-85E4-966D82567213}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83175085-7B47-43B7-85E4-966D82567213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83175085-7B47-43B7-85E4-966D82567213}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,14 +55,14 @@ Global
 		{436922F1-24DA-4274-96E4-257E5FFDE747}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{436922F1-24DA-4274-96E4-257E5FFDE747}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{436922F1-24DA-4274-96E4-257E5FFDE747}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7492072-D432-4AFD-B66B-A0192C0DE356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7492072-D432-4AFD-B66B-A0192C0DE356}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7492072-D432-4AFD-B66B-A0192C0DE356}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7492072-D432-4AFD-B66B-A0192C0DE356}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A38EE0C9-E589-4B88-A7ED-2F46C47756AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B1C75BA-74C4-461E-9B9E-67B504753C23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
