@@ -61,6 +61,9 @@ namespace _01___modulos
         DataTable deuda_mes;
         DataTable deuda_actual;
         DataTable remitos_local;
+
+        DataTable totalidad_remitos;
+        DataTable totalidad_imputaciones;
         #endregion
         #region cargar iva
         public void cargar_iva(string id_remito, string proveedor, string sucursal, string num_pedido, string valor_remito)
@@ -359,6 +362,14 @@ namespace _01___modulos
         #endregion
 
         #region metodos privados de consulta
+        private void consultar_totalidad_remitos()
+        {
+            totalidad_remitos = consultas.consultar_todos_los_remitos_cuenta_por_pagar();
+        }
+        private void consultar_totalidad_imputaciones()
+        {
+            totalidad_imputaciones = consultas.consultar_todas_las_imputaciones_local();
+        }
         private void consultar_deuda_actual(string sucursal)
         {
             deuda_actual = consultas.consultar_deudas_de_sucursal(sucursal);
@@ -442,6 +453,16 @@ namespace _01___modulos
         #endregion
 
         #region metodos get/set 
+        public DataTable get_totalidad_remitos()
+        {
+            consultar_totalidad_remitos();
+            return totalidad_remitos;
+        }
+        public DataTable get_totalidad_imputaciones()
+        {
+            consultar_totalidad_imputaciones();
+            return totalidad_imputaciones;
+        }
         public DataTable get_deuda_actual(string sucursal)
         {
             consultar_deuda_actual(sucursal);

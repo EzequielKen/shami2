@@ -32,6 +32,9 @@
                         <div class="alert alert-light">
                             <div class="row">
                                 <div class="col">
+                                    <h1>
+                                        <asp:Label ID="label_deuda_total_mes" Text="Deuda total del mes" CssClass="badge bg-secondary" runat="server" />
+                                    </h1>
                                 </div>
                                 <div class="col">
                                 </div>

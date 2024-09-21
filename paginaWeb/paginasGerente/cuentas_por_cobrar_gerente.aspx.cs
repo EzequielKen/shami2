@@ -1,4 +1,5 @@
 ﻿using _03___sistemas_fabrica;
+using _06___sistemas_gerente;
 using paginaWeb.paginas;
 using System;
 using System.Collections.Generic;
@@ -250,9 +251,13 @@ namespace paginaWeb.paginasGerente
         private void cargar_saldo()
         {
             DateTime fecha = DateTime.Now;
+            /*
+            label_deuda_total_mes.Text = "Deuda Total de Locales: " + formatCurrency(sistema_Administracion.deuda_total_del_mes_locales());
             label_saldo.Text = "Deuda del Mes: " + formatCurrency(double.Parse(sistema_Administracion.get_deuda_total_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text)));
+
             label_deuda_actual.Text = "Deuda al Dia " + fecha.ToString("dd/MM/yyyy") + " : " + formatCurrency(sistema_Administracion.get_deuda_actual(dropDown_sucursales.SelectedItem.Text));
             label_deuda_actual.Visible =false;
+
             label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.get_deuda_mes_anterior(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
             double compra_del_mes = sistema_Administracion.calcular_compra_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
@@ -260,6 +265,22 @@ namespace paginaWeb.paginasGerente
             double total_pagado_mes = sistema_Administracion.calcular_pago_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             label_total_pago.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
             label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+            */
+
+            label_deuda_total_mes.Text = "Deuda Total de Locales: " + formatCurrency(sistema_Administracion.deuda_total_del_mes_locales());
+            label_saldo.Text = "Deuda del Mes: " + formatCurrency(calculo_deudas.calcular_deuda_del_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+
+//            label_deuda_actual.Text = "Deuda al Dia " + fecha.ToString("dd/MM/yyyy") + " : " + formatCurrency(sistema_Administracion.get_deuda_actual(dropDown_sucursales.SelectedItem.Text));
+            label_deuda_actual.Visible = false;
+
+            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(calculo_deudas.calcular_deuda_mes_anterior(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            double compra_del_mes = calculo_deudas.calcular_compra_del_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
+            label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(compra_del_mes); ;
+            double total_pagado_mes = calculo_deudas.calcular_pagos_del_mes(dropDown_sucursales.SelectedItem.Text, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_pago.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+            label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+
         }
         private string formatDate(string valor)
         {
@@ -275,6 +296,7 @@ namespace paginaWeb.paginasGerente
         #region atributos
         cls_sistema_cuentas_por_cobrar sistema_Administracion;
         cls_sistema_pedidos_fabrica pedidos_fabrica;
+        cls_calculo_deuda_locales calculo_deudas;
         cls_funciones funciones = new cls_funciones();
         DataTable sucursalBD;
         DataTable sucursales;
@@ -326,6 +348,7 @@ namespace paginaWeb.paginasGerente
             sucursalBD = (DataTable)Session["sucursal"];
             sistema_Administracion = new cls_sistema_cuentas_por_cobrar((DataTable)Session["usuariosBD"]);
             pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
+            calculo_deudas = new cls_calculo_deuda_locales((DataTable)Session["usuariosBD"]);
             sucursales = pedidos_fabrica.get_sucursales();
 
             Session.Add("sucursalesBD", sucursales);

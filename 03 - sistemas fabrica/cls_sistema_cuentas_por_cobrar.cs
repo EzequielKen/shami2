@@ -176,6 +176,29 @@ namespace _03___sistemas_fabrica
         }
 
 
+        public double deuda_total_del_mes_locales()
+        {
+            double retorno = 0;
+            todos_los_remitos = administracion.get_totalidad_remitos();
+            double compra = 0;
+            for (int fila = 0; fila <= todos_los_remitos.Rows.Count - 1; fila++)
+            {
+                compra = compra + double.Parse(todos_los_remitos.Rows[fila]["valor_remito"].ToString());
+            }
+            todas_las_imputaciones = administracion.get_totalidad_imputaciones();
+            double pagado_subTotal;
+            double pagado = 0;
+            for (int fila = 0; fila <= todas_las_imputaciones.Rows.Count - 1; fila++)
+            {
+                if (todas_las_imputaciones.Rows[fila]["autorizado"].ToString() == "Si")
+                {
+                    pagado_subTotal = double.Parse(todas_las_imputaciones.Rows[fila]["abono_efectivo"].ToString()) + double.Parse(todas_las_imputaciones.Rows[fila]["abono_digital"].ToString()) + double.Parse(todas_las_imputaciones.Rows[fila]["abono_digital_mercadoPago"].ToString());
+                    pagado = pagado + pagado_subTotal;
+                }
+            }
+            retorno = compra - pagado;
+            return retorno;
+        }
 
         public double deuda_total_del_mes(string nombre_proveedor_seleccionado, string mes, string año)
         {

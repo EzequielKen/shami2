@@ -1766,6 +1766,69 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_cuentas_por_pagar_segun_sucursal(string sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".cuenta_por_pagar WHERE activa=1 and sucursal='" + sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_cuentas_por_pagar_segun_fecha(string sucursal, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".cuenta_por_pagar WHERE activa=1 and sucursal='" + sucursal + "' and YEAR(fecha_remito)='" + año + "' and MONTH(fecha_remito)='" + mes + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_imputaciones_segun_sucursal(string sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".imputaciones WHERE activa=1 and sucursal='" + sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_imputaciones_segun_fecha(string sucursal, string mes, string año)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
@@ -2128,6 +2191,48 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + ".conteo_stock WHERE activa=1 and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_todos_los_remitos_cuenta_por_pagar()
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".cuenta_por_pagar where activa=1 and (proveedor='proveedor_villaMaipu' or proveedor='insumos_fabrica');";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_todas_las_imputaciones_local()
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".imputaciones where activa=1 and (proveedor='proveedor_villaMaipu' or proveedor='insumos_fabrica');";
 
 
                 retorno = base_datos.READ(query);
