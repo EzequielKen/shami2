@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using System.IO;
 using paginaWeb.paginasFabrica;
 using Newtonsoft.Json.Linq;
+using _06___sistemas_gerente;
 
 
 
@@ -175,6 +176,7 @@ namespace paginaWeb.paginas
         private void cargar_saldo()
         {
             DateTime fecha = DateTime.Now;
+            /*
             label_saldo.Text = "Deuda del Mes: " + formatCurrency(double.Parse(sistema_Administracion.get_deuda_total_mes(sucursal.Rows[0]["id"].ToString(), sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text)));
             label_deuda_actual.Text = "Deuda al Dia " + fecha.ToString("dd/MM/yyyy") + " : " + formatCurrency(sistema_Administracion.get_deuda_actual(sucursal.Rows[0]["sucursal"].ToString()));
             label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(sistema_Administracion.get_deuda_mes_anterior(sucursal.Rows[0]["id"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
@@ -182,6 +184,17 @@ namespace paginaWeb.paginas
             label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
             label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(compra_del_mes); ;
             double total_pagado_mes = sistema_Administracion.calcular_pago_mes(sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_pago.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+            label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
+            */
+            label_saldo.Text = "Deuda del Mes: " + formatCurrency(calculo_deuda.calcular_deuda_del_mes(sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            //label_deuda_actual.Text = "Deuda al Dia " + fecha.ToString("dd/MM/yyyy") + " : " + formatCurrency(sistema_Administracion.get_deuda_actual(sucursal.Rows[0]["sucursal"].ToString()));
+            label_deuda_actual.Visible = false;
+            label_saldo_anterior.Text = "Deuda meses anteriores: " + formatCurrency(calculo_deuda.calcular_deuda_mes_anterior(sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text));
+            double compra_del_mes = calculo_deuda.calcular_compra_del_mes(sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
+            label_total_compra.Text = "Compra del mes: " + formatCurrency(compra_del_mes);
+            label_total_compra_titulo.Text = "Compra del mes: " + formatCurrency(compra_del_mes); ;
+            double total_pagado_mes = calculo_deuda.calcular_pagos_del_mes(sucursal.Rows[0]["sucursal"].ToString(), dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
             label_total_pago.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
             label_total_pago_titulo.Text = "Total pagado del mes: " + formatCurrency(total_pagado_mes);
         }
@@ -211,6 +224,7 @@ namespace paginaWeb.paginas
         //#########################################################################################################
         #region atributos
         cls_sistema_cuentas_por_pagar sistema_Administracion;
+        cls_calculo_deuda_locales calculo_deuda;
         cls_funciones funciones = new cls_funciones();
         DataTable sucursal;
         DataTable lista_proveedores;
@@ -254,7 +268,7 @@ namespace paginaWeb.paginas
             else
             {
                 sistema_Administracion = new cls_sistema_cuentas_por_pagar((DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]);
-
+                calculo_deuda = new cls_calculo_deuda_locales((DataTable)Session["usuariosBD"]);
                 if (!IsPostBack)
                 {
 
@@ -265,7 +279,7 @@ namespace paginaWeb.paginas
                 }
                 if (Session["remitos"] == null)
                 {
-                    remitosBD = sistema_Administracion.get_remitos();
+                    remitosBD = sistema_Administracion.get_cuentas_por_pagar();
 
                     Session.Add("remitos", remitosBD);
                 }

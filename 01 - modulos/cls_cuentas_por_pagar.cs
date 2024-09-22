@@ -181,6 +181,11 @@ namespace modulos
             consultar_remitos();
             return remitos;
         }
+        public DataTable get_cuentas_por_pagar()
+        {
+            consultar_cuenta_por_pagar();
+            return cuenta_por_pagar;
+        }
         public DataTable get_lista_proveedores()
         {
             consultar_lista_proveedores();

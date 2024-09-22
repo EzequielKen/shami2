@@ -45,6 +45,7 @@ namespace _02___sistemas
         DataTable deuda_mes_anterior;
         DataTable deuda_mes;
         DataTable deuda_actual;
+        DataTable cuentas_por_pagar;
         #endregion
 
         #region metodos
@@ -223,10 +224,13 @@ namespace _02___sistemas
         public void crear_pdf(string ruta, string id_remito, string proveedor_seleccionado, byte[] logo, string nivel_seguridad) //
         {
 
-            string acuerdo, num_acuerdo, nombre_proveedor, nota,aumento;
+            string acuerdo, num_acuerdo, nombre_proveedor, nota, aumento;
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
+
             consultar_acuerdo_de_precios();
+            consultar_cuentas_por_pagar();
+
             fila_pedido = obtener_fila_de_pedido_por_id(id_remito);
             acuerdo = pedidos.Rows[fila_pedido]["tipo_de_acuerdo"].ToString();
             num_acuerdo = pedidos.Rows[fila_pedido]["acuerdo_de_precios"].ToString();
@@ -242,7 +246,7 @@ namespace _02___sistemas
             fila_remito = obtener_fila_de_remito(id_remito);
             if (seguridad <= 2)
             {
-                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota,aumento); // resumen_pedido,resumen_bonificado
+                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota, aumento); // resumen_pedido,resumen_bonificado
             }
             else
             {
@@ -342,12 +346,12 @@ namespace _02___sistemas
                 num_pedido = pedidos_no_calculados.Rows[fila]["num_pedido"].ToString();
                 tipo_de_acuerdo = pedidos_no_calculados.Rows[fila]["tipo_de_acuerdo"].ToString();
 
-                double porcentaje, impuesto=0;
+                double porcentaje, impuesto = 0;
                 if (pedidos_no_calculados.Rows[fila]["aumento"].ToString() != "0")
                 {
                     impuesto = double.Parse(pedidos_no_calculados.Rows[fila]["aumento"].ToString());
-                    porcentaje = (total_remito*impuesto)/100;
-                    total_remito = total_remito+porcentaje;
+                    porcentaje = (total_remito * impuesto) / 100;
+                    total_remito = total_remito + porcentaje;
                 }
 
                 if (IsNotDBNull(acuerdo_de_precios_parametreados.Rows[0]["descuentos"]))
@@ -361,15 +365,15 @@ namespace _02___sistemas
                     descuento = 0;
                 }
                 string fecha_remito = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                cargar_remito_en_BD(proveedor, sucursal_pedido, num_pedido, tipo_de_acuerdo, total_remito.ToString().Replace(",", "."), fecha_remito, descuento.ToString().Replace(",", "."),impuesto.ToString());
+                cargar_remito_en_BD(proveedor, sucursal_pedido, num_pedido, tipo_de_acuerdo, total_remito.ToString().Replace(",", "."), fecha_remito, descuento.ToString().Replace(",", "."), impuesto.ToString());
                 id_pedido = pedidos_no_calculados.Rows[fila]["id"].ToString();
                 actualizar_lectura_de_pedido(id_pedido);
             }
         }
-        private void cargar_remito_en_BD(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento,string impuesto)
+        private void cargar_remito_en_BD(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento, string impuesto)
         {
-            administracion.cargar_remito(proveedor, sucursal, num_pedido, tipo_de_acuerdoBD, valor_remito, fecha_remito, descuento,impuesto);
-        }  
+            administracion.cargar_remito(proveedor, sucursal, num_pedido, tipo_de_acuerdoBD, valor_remito, fecha_remito, descuento, impuesto);
+        }
         private void actualizar_lectura_de_pedido(string id_pedido)
         {
             administracion.actualizar_lectura_de_pedido(id_pedido);
@@ -641,6 +645,11 @@ namespace _02___sistemas
             consultar_remitos();
             return remitos;
         }
+        public DataTable get_cuentas_por_pagar()
+        {
+            consultar_cuentas_por_pagar();
+            return remitos;
+        }
         public DataTable get_imputaciones()
         {
             consultar_imputaciones();
@@ -841,7 +850,7 @@ namespace _02___sistemas
                         }
 
                         //cargar normal
-                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, pedido_dato, dato, unidad_insumo,nombre_proveedor,pedidos,fila_pedido,i);
+                        cargar_producto(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, fila_acuerdo, pedido_dato, dato, unidad_insumo, nombre_proveedor, pedidos, fila_pedido, i);
 
                     }
                 }
@@ -863,7 +872,7 @@ namespace _02___sistemas
             }
             return retorno;
         }
-        private void cargar_producto(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, int fila_acuerdo, string pedido_dato, string unidad_insumo, string multiplicador,string nombre_proveedor, DataTable pedido_local, int fila_pedido,int i)
+        private void cargar_producto(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, int fila_acuerdo, string pedido_dato, string unidad_insumo, string multiplicador, string nombre_proveedor, DataTable pedido_local, int fila_pedido, int i)
         {
             resumen_pedido.Rows.Add();
             int fila = resumen_pedido.Rows.Count - 1;
@@ -1097,7 +1106,7 @@ namespace _02___sistemas
 
 
         #region metodos consulta
-        
+
         private void consultar_imputaciones(string sucursal, string mes, string año)
         {
             imputaciones = administracion.get_imputaciones(sucursal, mes, año);
@@ -1137,6 +1146,10 @@ namespace _02___sistemas
         private void consultar_remitos()
         {
             remitos = administracion.get_remitos();
+        }
+        private void consultar_cuentas_por_pagar()
+        {
+            remitos = administracion.get_cuentas_por_pagar();
         }
         private void consultar_productos_proveedor(string proveedor_seleccionado)
         {
