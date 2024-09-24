@@ -25,6 +25,11 @@
                         <h2>
                             <asp:Label ID="label_fecha" Text="text" runat="server" />
                         </h2>
+                        <h3>
+                            cliente:    
+                        </h3>
+                        <asp:DropDownList ID="dropdown_clientes" CssClass="form-control" runat="server">
+                        </asp:DropDownList>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <div class="row alert alert-light">
@@ -63,6 +68,8 @@
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="producto" DataField="producto" />
+                                <asp:BoundField HeaderText="Stock actual" DataField="stock" />
+                                <asp:BoundField HeaderText="unidad de medida" DataField="unidad_de_medida" />
 
                                 <asp:TemplateField HeaderText="cantidad a entregar">
                                     <ItemTemplate>
@@ -70,9 +77,7 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
-                                <asp:BoundField HeaderText="unidad de medida" DataField="unidad_de_medida" />
                                 <asp:CommandField ShowSelectButton="true" SelectText="Cargar" HeaderText="Cargar" ControlStyle-CssClass="btn btn-primary btn-sm" />
-                                <asp:BoundField HeaderText="Stock actual" DataField="stock" />
 
                             </Columns>
                         </asp:GridView>

@@ -144,6 +144,7 @@ namespace paginaWeb.paginasFabricaFatay
         private void configurar_controles()
         {
             llenar_dropDownList(productos_produccionBD);
+            llenar_sucursales();
         }
         private void llenar_dropDownList(DataTable dt)
         {
@@ -171,6 +172,13 @@ namespace paginaWeb.paginasFabricaFatay
                 }
             }
         }
+        private void llenar_sucursales()
+        {
+            for (int fila = 0; fila <= sucursales.Rows.Count-1; fila++)
+            {
+                dropdown_clientes.Items.Add(sucursales.Rows[fila]["sucursal"].ToString());
+            }
+        }
         #endregion
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////
@@ -178,7 +186,7 @@ namespace paginaWeb.paginasFabricaFatay
         #region atributos
         string mensaje_default = "seleccione un producto";
 
-        cls_produccion_fabrica_fatay produccion;
+        cls_despacho_fabrica_fatay despacho;
         cls_stock_insumos stock_insumo;
         cls_funciones funciones = new cls_funciones();
         DataTable resumen_pedido = new DataTable();
@@ -188,6 +196,7 @@ namespace paginaWeb.paginasFabricaFatay
         DataTable productos_produccion;
         DataTable usuariosBD;
         DataTable tipo_usuarioBD;
+        DataTable sucursales;
         string tipo_seleccionado;
         string fechaBD;
 
@@ -205,12 +214,13 @@ namespace paginaWeb.paginasFabricaFatay
             }
             else
             {
-                produccion = new cls_produccion_fabrica_fatay(usuariosBD);
-                productos_produccionBD = produccion.get_productos_produccion("proveedor_villaMaipu");
+                despacho = new cls_despacho_fabrica_fatay(usuariosBD);
+                productos_produccionBD = despacho.get_productos_produccion("proveedor_villaMaipu");
                 Session.Add("productos_produccionBD", productos_produccionBD);
 
                 if (!IsPostBack)
                 {
+                    sucursales = despacho.get_sucursales();
                     label_productoSelecionado.Text = mensaje_default;
                     crear_dataTable_resumen();
                     Session.Add("resumen", resumen_pedido);
@@ -229,7 +239,7 @@ namespace paginaWeb.paginasFabricaFatay
 
             if (dt.Rows.Count > 0)
             {
-                produccion.cargar_produccion_diaria((DataTable)Session["resumen"], "Fabrica Fatay Callao", tipo_usuarioBD.Rows[0]["rol"].ToString(), Session["fechaBD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString());
+                despacho.cargar_despacho((DataTable)Session["resumen"], "Fabrica Fatay Callao", tipo_usuarioBD.Rows[0]["rol"].ToString(), Session["fechaBD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(),dropdown_clientes.SelectedItem.Text);
                 Response.Redirect("~/paginas/landing_page_local.aspx", false);
                 // string url_whatsapp = sistema_pedidos.enviar_pedido((DataTable)Session["resumen"], (DataTable)Session["bonificados"], (DataTable)Session["lista_proveedores"], Session["nombre_proveedor"].ToString());
                 //Response.Write("<script>window.open('" + url_whatsapp + "','_blank');</script>");

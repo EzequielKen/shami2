@@ -1,4 +1,5 @@
 ﻿using _01___modulos;
+using _02___sistemas;
 using _03___sistemas_fabrica;
 using modulos;
 using paginaWeb;
@@ -14,7 +15,7 @@ namespace _05___sistemas_fabrica_fatay
 {
     public class cls_despacho_fabrica_fatay
     {
-        public  cls_despacho_fabrica_fatay(DataTable usuario_BD)
+        public cls_despacho_fabrica_fatay(DataTable usuario_BD)
         {
             usuarioBD = usuario_BD;
             servidor = usuarioBD.Rows[0]["servidor"].ToString();
@@ -39,6 +40,7 @@ namespace _05___sistemas_fabrica_fatay
         cls_consultas_Mysql consultas;
         cls_movimientos_stock_producto movimientos_stock_producto;
         cls_stock_producto_terminado_fabrica_fatay stock_productos_fabrica_fatay;
+        cls_sistema_pedidos pedidos;
         cls_funciones funciones = new cls_funciones();
         cls_whatsapp whatsapp = new cls_whatsapp();
         DataTable usuarioBD;
@@ -48,9 +50,32 @@ namespace _05___sistemas_fabrica_fatay
         DataTable productos_proveedor;
         DataTable insumos_fabrica;
         DataTable recetas;
+        DataTable sucursales;
+        DataTable resumen_pedido;
+        #endregion
+
+        #region metodos facturacion automatica
+        private void crear_dataTable_resumen()
+        {
+            resumen_pedido.Rows.Clear();
+            resumen_pedido.Columns.Clear();
+            resumen_pedido.Columns.Add("id", typeof(string));
+            resumen_pedido.Columns.Add("producto", typeof(string));
+            resumen_pedido.Columns.Add("cantidad", typeof(string));
+            resumen_pedido.Columns.Add("unidad de medida", typeof(string));
+            resumen_pedido.Columns.Add("precio", typeof(string));
+            resumen_pedido.Columns.Add("multiplicador", typeof(string));
+            resumen_pedido.Columns.Add("bonificable", typeof(bool));
+            resumen_pedido.Columns.Add("tipo_producto", typeof(string));
+            resumen_pedido.Columns.Add("proveedor", typeof(string));
+        }
         #endregion
 
         #region metodos consulta
+        private void consultar_sucursales()
+        {
+            sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
+        }
         private void consultar_insumos_fabrica()
         {
             insumos_fabrica = consultas.consultar_tabla_completa(base_de_datos, "insumos_fabrica");
@@ -70,6 +95,13 @@ namespace _05___sistemas_fabrica_fatay
         #endregion
 
         #region metodos get/set
+        public DataTable get_sucursales()
+        {
+            consultar_sucursales();
+            sucursales.DefaultView.Sort = "sucursal asc";
+            sucursales = sucursales.DefaultView.ToTable();
+            return sucursales;
+        }
         public DataTable get_productos_produccion(string nombre_proveedor)
         {
             consultar_productos_produccion(nombre_proveedor);
@@ -78,6 +110,7 @@ namespace _05___sistemas_fabrica_fatay
         #endregion
 
         #region metodos carga a base de datos
+
         private bool verificar_si_cargo_en_BD(string fabrica, string proveedor, string receptor, string fecha)
         {
             bool retorno = false;
@@ -88,88 +121,98 @@ namespace _05___sistemas_fabrica_fatay
             }
             return retorno;
         }
-        public void cargar_produccion_diaria(DataTable resumen_pedido, string fabrica, string proveedor, string fecha, string rol_usuario)
+        public void cargar_despacho(DataTable resumen_pedido, string fabrica, string proveedor, string fecha, string rol_usuario, string receptor)
         {
             consultar_productos_proveedor("proveedor_villaMaipu");
-            if (!verificar_si_cargo_en_BD(fabrica, proveedor, "Shami Villa Maipu Expedicion", fecha))
+
+
+            //actualizar_stock_insumos(resumen_pedido);
+            string columnas = "";
+            string valores = "";
+
+            string id, producto, cantidad_despachada, valor_final;
+            int producto_index;
+
+            //fabrica
+            columnas = armar_query_columna(columnas, "fabrica", false);
+            valores = armar_query_valores(valores, fabrica, false);
+            //proveedor
+            columnas = armar_query_columna(columnas, "proveedor", false);
+            valores = armar_query_valores(valores, proveedor, false);
+
+            //receptor
+            columnas = armar_query_columna(columnas, "receptor", false);
+            valores = armar_query_valores(valores, "Shami Fabrica Fatay", false);
+            //estado
+            if (receptor == "Fabrica Villa Maipu")
             {
-
-
-                //actualizar_stock_insumos(resumen_pedido);
-                string columnas = "";
-                string valores = "";
-
-                string id, producto, cantidad_despachada, valor_final;
-                int producto_index;
-
-                //fabrica
-                columnas = armar_query_columna(columnas, "fabrica", false);
-                valores = armar_query_valores(valores, fabrica, false);
-                //proveedor
-                columnas = armar_query_columna(columnas, "proveedor", false);
-                valores = armar_query_valores(valores, proveedor, false);
-
-                //receptor
-                columnas = armar_query_columna(columnas, "receptor", false);
-                valores = armar_query_valores(valores, "Shami Fabrica Fatay", false);
-                //estado
+                columnas = armar_query_columna(columnas, "estado", false);
+                valores = armar_query_valores(valores, "Despachado", false);
+            }
+            else
+            {
                 columnas = armar_query_columna(columnas, "estado", false);
                 valores = armar_query_valores(valores, "Recibido", false);
-                //fecha
-                columnas = armar_query_columna(columnas, "fecha", false);
-                valores = armar_query_valores(valores, fecha, false);
-                //USAR FUNCIONES COMO OBTENER ACUERDO DE PRECIO PARA  TENER INFO EN TIEMPO REAL Y NO RECIBIRLA POR PARAMETRO.
-                int fila_producto;
-                double stock_produccion, cantidad_producida, nuevo_stock;
-                string actualizar;
-                producto_index = 1;
-                for (int fila = 0; fila < resumen_pedido.Rows.Count - 1; fila++)
-                {
-                    id = resumen_pedido.Rows[fila]["id"].ToString();
-                    producto = resumen_pedido.Rows[fila]["producto"].ToString();
-                    cantidad_despachada = resumen_pedido.Rows[fila]["cantidad"].ToString().Replace(",", ".");
-
-                    fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
-
-                    cantidad_producida = double.Parse(cantidad_despachada);
-
-                    stock_produccion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_produccion"].ToString());
-                    nuevo_stock = stock_produccion + cantidad_producida;
-                    actualizar = "`stock_fabrica_fatay` = '" + nuevo_stock.ToString() + "'";
-                    consultas.actualizar_tabla(base_de_datos, "proveedor_villaMaipu", actualizar, id);
-
-                    valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
-                    stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "produccion", cantidad_despachada, "");
-
-                    columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
-                    valores = armar_query_valores(valores, valor_final, false);
-
-                    producto_index = producto_index + 1;
-                }
-                int ultima_fila = resumen_pedido.Rows.Count - 1;
-                id = resumen_pedido.Rows[ultima_fila]["id"].ToString();
-                producto = resumen_pedido.Rows[ultima_fila]["producto"].ToString();
-                cantidad_despachada = resumen_pedido.Rows[ultima_fila]["cantidad"].ToString().Replace(",", ".");
+            }
+            //fecha
+            columnas = armar_query_columna(columnas, "fecha", false);
+            valores = armar_query_valores(valores, fecha, false);
+            //USAR FUNCIONES COMO OBTENER ACUERDO DE PRECIO PARA  TENER INFO EN TIEMPO REAL Y NO RECIBIRLA POR PARAMETRO.
+            int fila_producto;
+            producto_index = 1;
+            for (int fila = 0; fila < resumen_pedido.Rows.Count - 1; fila++)
+            {
+                id = resumen_pedido.Rows[fila]["id"].ToString();
+                producto = resumen_pedido.Rows[fila]["producto"].ToString();
+                cantidad_despachada = resumen_pedido.Rows[fila]["cantidad"].ToString().Replace(",", ".");
 
                 fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
 
-                cantidad_producida = double.Parse(cantidad_despachada);
+                if (receptor == "Fabrica Villa Maipu")
+                {
+                    valor_final = id + "-" + producto + "-" + cantidad_despachada + "-N/A";
+                }
+                else
+                {
+                    valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
+                }
 
-                stock_produccion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_produccion"].ToString());
-                nuevo_stock = stock_produccion + cantidad_producida;
-                actualizar = "`stock_fabrica_fatay` = '" + nuevo_stock.ToString() + "'";
-                consultas.actualizar_tabla(base_de_datos, "proveedor_villaMaipu", actualizar, id);
-
-
-                valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
                 stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "produccion", cantidad_despachada, "");
 
+                columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
+                valores = armar_query_valores(valores, valor_final, false);
 
-                columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
-                valores = armar_query_valores(valores, valor_final, true);
-
-                consultas.insertar_en_tabla(base_de_datos, "produccion_diaria", columnas, valores);
+                producto_index = producto_index + 1;
             }
+            int ultima_fila = resumen_pedido.Rows.Count - 1;
+            id = resumen_pedido.Rows[ultima_fila]["id"].ToString();
+            producto = resumen_pedido.Rows[ultima_fila]["producto"].ToString();
+            cantidad_despachada = resumen_pedido.Rows[ultima_fila]["cantidad"].ToString().Replace(",", ".");
+
+            fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
+
+            if (receptor == "Fabrica Villa Maipu")
+            {
+                valor_final = id + "-" + producto + "-" + cantidad_despachada + "-N/A";
+            }
+            else
+            {
+                valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
+            }
+
+
+            stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "produccion", cantidad_despachada, "");
+
+
+            columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
+            valores = armar_query_valores(valores, valor_final, true);
+
+            consultas.insertar_en_tabla(base_de_datos, "produccion_diaria", columnas, valores);
+            if (receptor != "Fabrica Villa Maipu")
+            {
+                //FACTURACION AUTOMATICA
+            }
+
         }
         private void actualizar_stock_insumos(DataTable resumen_pedido)
         {

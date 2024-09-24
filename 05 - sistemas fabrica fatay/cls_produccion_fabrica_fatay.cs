@@ -1,4 +1,5 @@
 ﻿using _01___modulos;
+using _02___sistemas;
 using _03___sistemas_fabrica;
 using modulos;
 using paginaWeb;
@@ -51,7 +52,10 @@ namespace _05___sistemas_fabrica_fatay
         DataTable recetas;
         #endregion
 
+
+
         #region metodos consulta
+
         private void consultar_insumos_fabrica()
         {
             insumos_fabrica = consultas.consultar_tabla_completa(base_de_datos, "insumos_fabrica");
@@ -71,11 +75,12 @@ namespace _05___sistemas_fabrica_fatay
         #endregion
 
         #region metodos get/set
+
         public DataTable get_productos_produccion(string nombre_proveedor)
         {
             consultar_productos_produccion(nombre_proveedor);
             string id;
-            for (int fila = 0; fila <= productos_produccion.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= productos_produccion.Rows.Count - 1; fila++)
             {
                 id = productos_produccion.Rows[fila]["id"].ToString();
                 productos_produccion.Rows[fila]["stock"] = stock_productos_fabrica_fatay.get_ultimo_stock_producto_terminado(id);
@@ -120,15 +125,14 @@ namespace _05___sistemas_fabrica_fatay
                 columnas = armar_query_columna(columnas, "receptor", false);
                 valores = armar_query_valores(valores, "Shami Fabrica Fatay", false);
                 //estado
+
                 columnas = armar_query_columna(columnas, "estado", false);
-                valores = armar_query_valores(valores, "Despachado", false);
+                valores = armar_query_valores(valores, "Recibido", false);
                 //fecha
                 columnas = armar_query_columna(columnas, "fecha", false);
                 valores = armar_query_valores(valores, fecha, false);
                 //USAR FUNCIONES COMO OBTENER ACUERDO DE PRECIO PARA  TENER INFO EN TIEMPO REAL Y NO RECIBIRLA POR PARAMETRO.
                 int fila_producto;
-                double stock_produccion, cantidad_producida, nuevo_stock;
-                string actualizar;
                 producto_index = 1;
                 for (int fila = 0; fila < resumen_pedido.Rows.Count - 1; fila++)
                 {
@@ -138,14 +142,7 @@ namespace _05___sistemas_fabrica_fatay
 
                     fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
 
-                    cantidad_producida = double.Parse(cantidad_despachada);
-
-                    stock_produccion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_produccion"].ToString());
-                    nuevo_stock = stock_produccion + cantidad_producida;
-                    actualizar = "`stock_fabrica_fatay` = '" + nuevo_stock.ToString() + "'";
-                    consultas.actualizar_tabla(base_de_datos, "proveedor_villaMaipu", actualizar, id);
-
-                    valor_final = id + "-" + producto + "-" + cantidad_despachada + "-N/A";
+                        valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
                     stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
 
                     columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
@@ -160,15 +157,7 @@ namespace _05___sistemas_fabrica_fatay
 
                 fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
 
-                cantidad_producida = double.Parse(cantidad_despachada);
-
-                stock_produccion = double.Parse(productos_proveedor.Rows[fila_producto]["stock_produccion"].ToString());
-                nuevo_stock = stock_produccion + cantidad_producida;
-                actualizar = "`stock_fabrica_fatay` = '" + nuevo_stock.ToString() + "'";
-                consultas.actualizar_tabla(base_de_datos, "proveedor_villaMaipu", actualizar, id);
-
-
-                valor_final = id + "-" + producto + "-" + cantidad_despachada + "-N/A";
+                valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
                 stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
 
 
@@ -176,6 +165,7 @@ namespace _05___sistemas_fabrica_fatay
                 valores = armar_query_valores(valores, valor_final, true);
 
                 consultas.insertar_en_tabla(base_de_datos, "despacho_fabrica_fatay", columnas, valores);
+              
             }
         }
         private void actualizar_stock_insumos(DataTable resumen_pedido)

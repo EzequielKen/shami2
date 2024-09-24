@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace _05___sistemas_fabrica_fatay
 {
-    internal class cls_stock_producto_terminado_fabrica_fatay
+    public class cls_stock_producto_terminado_fabrica_fatay
     {
         public cls_stock_producto_terminado_fabrica_fatay(DataTable usuario_BD)
         {

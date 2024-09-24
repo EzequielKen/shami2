@@ -357,6 +357,12 @@ namespace paginaWeb.paginasFabrica
                     double multiplicador = double.Parse(funciones.obtener_dato(pedido.Rows[fila_tabla]["presentacion_entrega_seleccionada"].ToString(), 2));
                     precio = precio * multiplicador;
                 }
+                else if (pedido.Rows[fila_tabla]["proveedor"].ToString() == "insumos_fabrica")
+                {
+                    DropDownList dropdown_presentacion_entrega = (gridview_pedido.Rows[fila].Cells[5].FindControl("dropdown_presentacion_entrega") as DropDownList);
+                    double multiplicador = double.Parse(funciones.obtener_dato(dropdown_presentacion_entrega.SelectedItem.Text, 2));
+                    precio = precio * multiplicador;
+                }
                 sub_total = cantidad_entrega * precio;
                 if (double.TryParse(textbox_porcentaje.Text, out impuesto))
                 {
@@ -365,7 +371,7 @@ namespace paginaWeb.paginasFabrica
                 }
                 pedido.Rows[fila_tabla]["cantidad_entrega"] = cantidad_entrega.ToString();
                 pedido.Rows[fila_tabla]["sub_total"] = sub_total.ToString();
-                gridview_pedido.Rows[fila].Cells[9].Text = funciones.formatCurrency(sub_total);
+                gridview_pedido.Rows[fila].Cells[9].Text = funciones.formatCurrency(precio);
 
                 TextBox Textbox_pinchos = (gridview_pedido.Rows[fila].Cells[4].FindControl("Textbox_pinchos") as TextBox);
                 TextBox texbox_cantidad = (gridview_pedido.Rows[fila].Cells[4].FindControl("texbox_cantidad") as TextBox);

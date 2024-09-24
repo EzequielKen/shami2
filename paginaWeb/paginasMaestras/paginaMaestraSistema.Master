@@ -98,7 +98,10 @@
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/historial_de_produccion_fabrica_fatay.aspx">Historial de Produccion</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/analisis_de_produccion_fabrica_fatay.aspx">Analisis de Produccion</a>
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/historial_de_produccion_fabrica_fatay.aspx">Historial de Produccion</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/historial_de_stock_fabrica_fatay.aspx">Historial Stock</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/plantilla_fabrica_fatay.aspx">Plantilla de Stock</a>

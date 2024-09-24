@@ -162,6 +162,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Historiales
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Movimientos de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/confirmar_conteo_stock.aspx">Historial Conteo de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Pedido de Insumos de Produccion a Expedicion</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Produccion</a></li>
@@ -175,7 +176,6 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false">Stock
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/conteo_de_stock.aspx">Conteo de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Productos</a></li>
