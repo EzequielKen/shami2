@@ -229,7 +229,9 @@
     <Content Include="paginasCarrefour\planilla_movimientos.aspx" />
     <Content Include="paginasCarrefour\sucursales_carrefour.aspx" />
     <Content Include="paginasFabricaFatay\analisis_de_produccion_fabrica_fatay.aspx" />
+    <Content Include="paginasFabricaFatay\despacho_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx" />
+    <Content Include="paginasFabricaFatay\historial_de_stock_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx" />
     <Content Include="paginasFabricaFatay\orden_de_pedido_a_compras.aspx" />
     <Content Include="paginasFabricaFatay\plantilla_fabrica_fatay.aspx" />
@@ -275,6 +277,8 @@
     <Content Include="paginasFabrica\pedir_insumos.aspx" />
     <Content Include="paginasFabrica\plantillas.aspx" />
     <Content Include="paginasFabrica\proveedores_fabrica.aspx" />
+    <Content Include="paginasFabrica\recepcion_de_despacho_fatay.aspx" />
+    <Content Include="paginasFabrica\recepcion_de_fabrica_fatay.aspx" />
     <Content Include="paginasFabrica\recepcion_de_insumos.aspx" />
     <Content Include="paginasFabrica\recepcion_de_produccion.aspx" />
     <Content Include="paginasFabrica\pedidos.aspx" />
@@ -408,12 +412,26 @@
     <Compile Include="paginasFabricaFatay\analisis_de_produccion_fabrica_fatay.aspx.designer.cs">
       <DependentUpon>analisis_de_produccion_fabrica_fatay.aspx</DependentUpon>
     </Compile>
+    <Compile Include="paginasFabricaFatay\despacho_fabrica_fatay.aspx.cs">
+      <DependentUpon>despacho_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\despacho_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>despacho_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
     <Compile Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx.cs">
       <DependentUpon>historial_de_produccion_fabrica_fatay.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx.designer.cs">
       <DependentUpon>historial_de_produccion_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_de_stock_fabrica_fatay.aspx.cs">
+      <DependentUpon>historial_de_stock_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_de_stock_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>historial_de_stock_fabrica_fatay.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx.cs">
       <DependentUpon>historial_orden_de_pedidos_a_compras.aspx</DependentUpon>
@@ -729,6 +747,20 @@
     </Compile>
     <Compile Include="paginasFabrica\proveedores_fabrica.aspx.designer.cs">
       <DependentUpon>proveedores_fabrica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_despacho_fatay.aspx.cs">
+      <DependentUpon>recepcion_de_despacho_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_despacho_fatay.aspx.designer.cs">
+      <DependentUpon>recepcion_de_despacho_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_fabrica_fatay.aspx.cs">
+      <DependentUpon>recepcion_de_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\recepcion_de_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>recepcion_de_fabrica_fatay.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\recepcion_de_insumos.aspx.cs">
       <DependentUpon>recepcion_de_insumos.aspx</DependentUpon>

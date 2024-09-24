@@ -15,7 +15,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="spinnerModalLabel">Ingresando al sistema... espere...</h5>
+                            <h5 class="modal-title" id="spinnerModalLabel">Ingresando facturacion al sistema... espere...</h5>
                         </div>
                         <div class="modal-body text-center">
                             <div class="spinner-border" role="status">

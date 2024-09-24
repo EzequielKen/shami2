@@ -81,6 +81,8 @@
     <Compile Include="cls_pedir_insumos.cs" />
     <Compile Include="cls_plantillas.cs" />
     <Compile Include="cls_proveedores_fabrica.cs" />
+    <Compile Include="cls_recepcion_de_fabrica_fatay.cs" />
+    <Compile Include="cls_recepcion_de_fatay.cs" />
     <Compile Include="cls_recepcion_de_insumos.cs" />
     <Compile Include="cls_recepcion_de_produccion.cs" />
     <Compile Include="cls_produccion.cs" />

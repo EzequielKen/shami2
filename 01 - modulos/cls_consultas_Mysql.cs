@@ -2161,6 +2161,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_stock_producto_terminado_fabrica_fatay_segun_producto(string id_producto)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".stock_producto_terminado_fabrica_fatay WHERE activa=1 and id_producto='" + id_producto + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_insumos_fabricas_optimizado()
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);

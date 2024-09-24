@@ -89,9 +89,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cls_despacho_fabrica_fatay.cs" />
     <Compile Include="cls_plantillas_fabrica_fatay.cs" />
     <Compile Include="cls_produccion_fabrica_fatay.cs" />
     <Compile Include="cls_stock_insumos_fabrica_fatay.cs" />
+    <Compile Include="cls_stock_producto_terminado_fabrica_fatay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

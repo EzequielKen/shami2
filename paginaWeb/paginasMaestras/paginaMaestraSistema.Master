@@ -103,6 +103,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/plantilla_fabrica_fatay.aspx">Plantilla de Stock</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/despacho_fabrica_fatay.aspx">Despacho</a>
+                    </li>
                 </ul>
                 <% }
 

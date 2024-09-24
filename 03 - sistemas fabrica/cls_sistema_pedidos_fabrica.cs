@@ -610,7 +610,7 @@ namespace _03___sistemas_fabrica
                     if (proveedor != "insumos_fabrica")
                     {
                         string nota = sucursal + " PEDIDO: " + num_pedido;
-                        cargar_historial_stock(pedido, rol_usuario, nota, proveedor);
+                        cargar_historial_stock(pedido, rol_usuario, nota, "proveedor_villaMaipu");
                         //pedidos.actualizar_stock(proveedor, pedido);
                     }
                     else if (proveedor == "insumos_fabrica")
@@ -661,8 +661,8 @@ namespace _03___sistemas_fabrica
             {
                 if (pedido.Rows[fila]["proveedor"].ToString() == proveedor)
                 {
-
-                    if (pedido.Rows[fila]["nuevo_stock"].ToString() != "N/A")
+                    string dato = pedido.Rows[fila]["cantidad_entrega"].ToString();
+                    if (pedido.Rows[fila]["cantidad_entrega"].ToString() != "0")
                     {
                         id = pedido.Rows[fila]["id"].ToString();
                         cantidad_despachada = double.Parse(pedido.Rows[fila]["cantidad_entrega"].ToString());
@@ -682,14 +682,8 @@ namespace _03___sistemas_fabrica
                                 stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
                             }
                         }
-                        else
-                        {
-                            stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
-                        }
                     }
                 }
-
-
             }
         }
         public void enviar_carga_de_pedido_fabrica(string id_pedido, DataTable pedidos_fabrica_a_proveedorSESSION, DataTable pedido, string total_remito)

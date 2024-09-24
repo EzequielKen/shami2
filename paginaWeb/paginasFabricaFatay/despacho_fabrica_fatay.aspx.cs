@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace paginaWeb.paginasFabricaFatay
 {
-    public partial class produccion_fabrica_fatay : System.Web.UI.Page
+    public partial class despacho_fabrica_fatay : System.Web.UI.Page
     {
         private void crear_tabla_productos()
         {
@@ -19,6 +19,7 @@ namespace paginaWeb.paginasFabricaFatay
             productos_produccion.Columns.Add("id", typeof(string));
             productos_produccion.Columns.Add("producto", typeof(string));
             productos_produccion.Columns.Add("unidad_de_medida", typeof(string));
+            productos_produccion.Columns.Add("stock", typeof(string));
         }
         private void crear_dataTable_resumen()
         {
@@ -45,6 +46,7 @@ namespace paginaWeb.paginasFabricaFatay
                     productos_produccion.Rows[fila_producto]["id"] = productos_produccionBD.Rows[fila]["id"].ToString();
                     productos_produccion.Rows[fila_producto]["producto"] = productos_produccionBD.Rows[fila]["producto"].ToString();
                     productos_produccion.Rows[fila_producto]["unidad_de_medida"] = productos_produccionBD.Rows[fila]["unidad_de_medida_fabrica"].ToString();
+                    productos_produccion.Rows[fila_producto]["stock"] = productos_produccionBD.Rows[fila]["stock"].ToString();
 
                     fila_producto++;
                 }

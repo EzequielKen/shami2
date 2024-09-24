@@ -370,10 +370,10 @@ namespace paginaWeb.paginasFabrica
             Session.Add("id_producto", id_producto);
 
             TextBox txtValor_precio = (gridview_productos.SelectedRow.Cells[3].FindControl("texbox_precio") as TextBox);
-            TextBox txtValor_stock = (gridview_productos.SelectedRow.Cells[3].FindControl("texbox_Stock") as TextBox);
+           
 
 
-            cargar_precioStock(txtValor_precio.Text, txtValor_stock.Text);
+            cargar_precioStock(txtValor_precio.Text, "");
             cargar_productos();
 
 
