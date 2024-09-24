@@ -51,23 +51,89 @@ namespace _05___sistemas_fabrica_fatay
         DataTable insumos_fabrica;
         DataTable recetas;
         DataTable sucursales;
-        DataTable resumen_pedido;
+        DataTable resumen;
         #endregion
 
         #region metodos facturacion automatica
-        private void crear_dataTable_resumen()
+        private void crear_dataTable_resumen(DataTable despacho, string id_sucursal)
         {
-            resumen_pedido.Rows.Clear();
-            resumen_pedido.Columns.Clear();
-            resumen_pedido.Columns.Add("id", typeof(string));
-            resumen_pedido.Columns.Add("producto", typeof(string));
-            resumen_pedido.Columns.Add("cantidad", typeof(string));
-            resumen_pedido.Columns.Add("unidad de medida", typeof(string));
-            resumen_pedido.Columns.Add("precio", typeof(string));
-            resumen_pedido.Columns.Add("multiplicador", typeof(string));
-            resumen_pedido.Columns.Add("bonificable", typeof(bool));
-            resumen_pedido.Columns.Add("tipo_producto", typeof(string));
-            resumen_pedido.Columns.Add("proveedor", typeof(string));
+            DataTable productos_proveedor_pedido = pedidos.get_productos_proveedor(id_sucursal);
+            resumen = new DataTable();
+            resumen.Columns.Add("id", typeof(string));
+            resumen.Columns.Add("producto", typeof(string));
+            resumen.Columns.Add("cantidad", typeof(string));
+            resumen.Columns.Add("unidad de medida", typeof(string));
+            resumen.Columns.Add("precio", typeof(string));
+            resumen.Columns.Add("multiplicador", typeof(string));
+            resumen.Columns.Add("bonificable", typeof(bool));
+            resumen.Columns.Add("tipo_producto", typeof(string));
+            resumen.Columns.Add("proveedor", typeof(string));
+
+            string id_producto, producto;
+            int fila_producto, ultima_fila;
+            for (int fila = 0; fila <= despacho.Rows.Count - 1; fila++)
+            {
+                id_producto = despacho.Rows[fila]["id"].ToString();
+                producto = despacho.Rows[fila]["producto"].ToString();
+                fila_producto = funciones.buscar_fila_por_id_nombre(id_producto, producto, productos_proveedor_pedido);
+
+                resumen.Rows.Add();
+                ultima_fila = resumen.Rows.Count - 1;
+
+                resumen.Rows[ultima_fila]["id"] = productos_proveedor_pedido.Rows[fila_producto]["id"].ToString();
+                resumen.Rows[ultima_fila]["producto"] = productos_proveedor_pedido.Rows[fila_producto]["producto"].ToString();
+                resumen.Rows[ultima_fila]["cantidad"] = despacho.Rows[fila]["cantidad"].ToString();
+                resumen.Rows[ultima_fila]["unidad de medida"] = productos_proveedor_pedido.Rows[fila_producto]["unidad_medida_local"].ToString();
+                resumen.Rows[ultima_fila]["precio"] = productos_proveedor_pedido.Rows[fila_producto]["precio"].ToString();
+                resumen.Rows[ultima_fila]["multiplicador"] = productos_proveedor_pedido.Rows[fila_producto]["multiplicador"].ToString();
+                resumen.Rows[ultima_fila]["tipo_producto"] = productos_proveedor_pedido.Rows[fila_producto]["tipo_producto"].ToString();
+                resumen.Rows[ultima_fila]["proveedor"] = productos_proveedor_pedido.Rows[fila_producto]["proveedor"].ToString();
+            }
+        }
+        private void crear_cuentas_por_pagar(DataTable resumen, DataTable sucursal, string num_pedido, string nota)
+        {
+            double valor_remito, precio, multiplicador, cantidad,sub_total;
+            valor_remito = 0;
+            for (int fila = 0; fila <= resumen.Rows.Count-1; fila++)
+            {
+                precio = double.Parse(resumen.Rows[fila]["precio"].ToString());
+                multiplicador = double.Parse(resumen.Rows[fila]["multiplicador"].ToString());
+                cantidad = double.Parse(resumen.Rows[fila]["cantidad"].ToString());
+
+                precio = precio * multiplicador;
+                sub_total = cantidad * precio;
+
+                valor_remito = valor_remito + sub_total;
+            }
+
+            string columnas = string.Empty;
+            string valores = string.Empty;
+            //sucursal
+            columnas = funciones.armar_query_columna(columnas,"sucursal",false);
+            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["sucursal"].ToString(),false);
+            //num_pedido
+            columnas = funciones.armar_query_columna(columnas, "num_pedido", false);
+            valores = funciones.armar_query_valores(valores, num_pedido, false);
+            //nombre_remito
+            columnas = funciones.armar_query_columna(columnas, "nombre_remito", false);
+            valores = funciones.armar_query_valores(valores, "pedido", false);
+            //valor_remito
+            columnas = funciones.armar_query_columna(columnas, "valor_remito", false);
+            valores = funciones.armar_query_valores(valores, valor_remito.ToString(), false);
+            //aumento
+            columnas = funciones.armar_query_columna(columnas, "aumento", false);
+            valores = funciones.armar_query_valores(valores, "0", false);
+            //fecha_remito
+            columnas = funciones.armar_query_columna(columnas, "fecha_remito", false);
+            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
+            //proveedor
+            columnas = funciones.armar_query_columna(columnas, "proveedor", false);
+            valores = funciones.armar_query_valores(valores, "proveedor_villaMaipu", false);
+            //nota
+            columnas = funciones.armar_query_columna(columnas, "nota", true);
+            valores = funciones.armar_query_valores(valores, nota, true);
+
+            consultas.insertar_en_tabla(base_de_datos, "cuenta_por_pagar", columnas, valores);
         }
         #endregion
 
@@ -91,6 +157,11 @@ namespace _05___sistemas_fabrica_fatay
         private void consultar_productos_produccion(string nombre_proveedor)
         {
             productos_produccion = consultas.consultar_productos_produccion_fabrica_fatay(base_de_datos, nombre_proveedor);
+            for (int fila = 0; fila <= productos_produccion.Rows.Count-1; fila++)
+            {
+                string id = productos_produccion.Rows[fila]["id"].ToString();
+                productos_produccion.Rows[fila]["stock"] = stock_productos_fabrica_fatay.get_ultimo_stock_producto_terminado(id);
+            }
         }
         #endregion
 
@@ -142,7 +213,7 @@ namespace _05___sistemas_fabrica_fatay
 
             //receptor
             columnas = armar_query_columna(columnas, "receptor", false);
-            valores = armar_query_valores(valores, "Shami Fabrica Fatay", false);
+            valores = armar_query_valores(valores, receptor, false);
             //estado
             if (receptor == "Fabrica Villa Maipu")
             {
@@ -177,7 +248,7 @@ namespace _05___sistemas_fabrica_fatay
                     valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
                 }
 
-                stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "produccion", cantidad_despachada, "");
+                stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
 
                 columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
                 valores = armar_query_valores(valores, valor_final, false);
@@ -201,16 +272,22 @@ namespace _05___sistemas_fabrica_fatay
             }
 
 
-            stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "produccion", cantidad_despachada, "");
+            stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
 
 
             columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
             valores = armar_query_valores(valores, valor_final, true);
 
-            consultas.insertar_en_tabla(base_de_datos, "produccion_diaria", columnas, valores);
+            consultas.insertar_en_tabla(base_de_datos, "despacho_fabrica_fatay", columnas, valores);
             if (receptor != "Fabrica Villa Maipu")
             {
                 //FACTURACION AUTOMATICA
+                DataTable sucursal = consultas.consultar_sucursal_por_nombre(receptor);
+                pedidos = new cls_sistema_pedidos(usuarioBD, sucursal);
+                crear_dataTable_resumen(resumen_pedido, sucursal.Rows[0]["id"].ToString());
+                string nota = "Facturado por Shami Fabrica Fatay";
+                string num_pedido = pedidos.enviar_pedido_automatico(resumen,nota);
+                crear_cuentas_por_pagar(resumen,sucursal,num_pedido,nota);
             }
 
         }

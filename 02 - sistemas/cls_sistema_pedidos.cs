@@ -53,6 +53,11 @@ namespace _02___sistemas
             whatsapp = new cls_whatsapp();
             return whatsapp.enviar_pedido(resumen_pedido, usuariosBD, sucursalBD);
         }
+        public string enviar_pedido_automatico(DataTable resumen_pedido, string nota)
+        {
+           return pedidos.enviar_pedido_automatico(resumen_pedido, nota);
+
+        }
         public List<int> obtener_lista_bonificados()
         {
             lista_bonificados = pedidos.get_productos_bonificados_lista();

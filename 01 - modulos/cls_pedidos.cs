@@ -74,7 +74,7 @@ namespace modulos
         private string tipo_de_acuerdo_fabrica;
         #endregion region
 
-        
+
 
         #region metodos privados de consulta
         private void consultar_lista_proveedores()
@@ -88,7 +88,7 @@ namespace modulos
             {
                 if (id_sucursal == "17" ||
                     id_sucursal == "18" ||
-                    id_sucursal == "22" )
+                    id_sucursal == "22")
                 {
                     productos_proveedor = consultas.consultar_insumos_fabrica_venta_vip(base_de_datos, proveedor_seleccionado);
                 }
@@ -164,7 +164,7 @@ namespace modulos
             return lista_proveedores;
         }
 
-        public DataTable get_productos_proveedor(string proveedor,string id_sucursal)
+        public DataTable get_productos_proveedor(string proveedor, string id_sucursal)
         {
             int fila_acuerdo_de_precios;
 
@@ -460,6 +460,12 @@ namespace modulos
 
             return retorno;
         }
+        public string enviar_pedido_automatico(DataTable pedido_cargado, string nota)
+        {
+            int num_pedido = obtener_ultimo_num_pedido_enviado(sucursalBD) + 1;
+            envio_automatico_de_pedido(pedido_cargado, nota);
+            return num_pedido.ToString();
+        }
         public void enviar_pedido(DataTable pedido_cargado, string nota)
         {
             pedido_cargado.DefaultView.Sort = "proveedor ASC";
@@ -532,6 +538,170 @@ namespace modulos
                     producto = proveedor_villaMaipu.Rows[fila_resumen]["producto"].ToString();
                     cantidad = proveedor_villaMaipu.Rows[fila_resumen]["cantidad"].ToString().Replace(",", ".");
                     valor_final = precio + "-" + id + "-" + producto + "-" + cantidad + "-N/A";
+
+                    if (fila_resumen == proveedor_villaMaipu.Rows.Count - 1)
+                    {
+                        columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
+                        valores = armar_query_valores(valores, valor_final, true);
+                    }
+                    else
+                    {
+                        columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
+                        valores = armar_query_valores(valores, valor_final, false);
+                    }
+                    producto_index = producto_index + 1;
+                }
+                consultas.insertar_en_tabla(base_de_datos, "pedidos", columnas, valores);
+            }
+
+            DataTable insumos_fabrica = crear_dataTable_resumen(pedido_cargado, "insumos_fabrica");
+            if (insumos_fabrica.Rows.Count > 0)
+            {
+                proveedor_seleccionado = "insumos_fabrica";
+                columnas = "";
+                valores = "";
+                //setear acuerdos de precios
+                setear_acuerdos_de_precios("insumos_fabrica");
+                num_pedido = obtener_ultimo_num_pedido_enviado(sucursalBD) + 1;
+                id_usuario = sucursalBD.Rows[0]["id"].ToString();
+                actualizar = "`ultimo_pedido_enviado` = '" + num_pedido + "'";
+                consultas.actualizar_tabla("shami", "sucursal", actualizar, id_usuario);
+
+                //activa
+                columnas = armar_query_columna(columnas, "activa", false);
+                valores = armar_query_valores(valores, "1", false);
+                //fecha
+                columnas = armar_query_columna(columnas, "fecha", false);
+                valores = armar_query_valores(valores, funciones.get_fecha(), false);
+                //sucursal
+                columnas = armar_query_columna(columnas, "sucursal", false);
+                valores = armar_query_valores(valores, sucursalBD.Rows[0]["sucursal"].ToString(), false);
+                //num_pedido
+                columnas = armar_query_columna(columnas, "num_pedido", false);
+                valores = armar_query_valores(valores, num_pedido.ToString(), false);
+                //proveedor
+                columnas = armar_query_columna(columnas, "proveedor", false);
+                valores = armar_query_valores(valores, proveedor_seleccionado, false);
+                //acuerdo_de_precios
+                columnas = armar_query_columna(columnas, "acuerdo_de_precios", false);
+                valores = armar_query_valores(valores, acuerdo_de_precio, false);
+                //estado
+                columnas = armar_query_columna(columnas, "estado", false);
+                valores = armar_query_valores(valores, "local", false);
+                //tipo_de_acuerdo
+                columnas = armar_query_columna(columnas, "tipo_de_acuerdo", false);
+                valores = armar_query_valores(valores, tipo_de_acuerdo, false);
+                //calculado_local
+                columnas = armar_query_columna(columnas, "calculado_local", false);
+                valores = armar_query_valores(valores, "no", false);
+                //calculado_proveedor
+                columnas = armar_query_columna(columnas, "calculado_proveedor", false);
+                valores = armar_query_valores(valores, "no", false);
+                //tipo_de_acuerdo_fabrica
+                columnas = armar_query_columna(columnas, "tipo_de_acuerdo_fabrica", false);
+                valores = armar_query_valores(valores, tipo_de_acuerdo_fabrica, false);
+                //mensaje
+                //inicio
+                columnas = armar_query_columna(columnas, "inicio", false);
+                valores = armar_query_valores(valores, "inicio", false);
+                producto_index = 1;
+                for (int fila_resumen = 0; fila_resumen <= insumos_fabrica.Rows.Count - 1; fila_resumen++)
+                {
+                    precio = insumos_fabrica.Rows[fila_resumen]["precio"].ToString();
+                    id = insumos_fabrica.Rows[fila_resumen]["id"].ToString();
+                    producto = insumos_fabrica.Rows[fila_resumen]["producto"].ToString();
+                    cantidad = insumos_fabrica.Rows[fila_resumen]["cantidad"].ToString().Replace(",", ".");
+                    valor_final = precio + "-" + id + "-" + producto + "-" + cantidad + "-N/A";
+
+                    if (fila_resumen == insumos_fabrica.Rows.Count - 1)
+                    {
+                        columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
+                        valores = armar_query_valores(valores, valor_final, true);
+                    }
+                    else
+                    {
+                        columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
+                        valores = armar_query_valores(valores, valor_final, false);
+                    }
+                    producto_index = producto_index + 1;
+                }
+                consultas.insertar_en_tabla(base_de_datos, "pedidos", columnas, valores);
+            }
+
+        }
+        private void envio_automatico_de_pedido(DataTable pedido_cargado, string nota)
+        {
+            pedido_cargado.DefaultView.Sort = "proveedor ASC";
+            pedido_cargado = pedido_cargado.DefaultView.ToTable();
+            string columnas = "";
+            string valores = "";
+            string precio, id, producto, cantidad, valor_final;
+            //            List<string> proveedores = obtener_lista_cantidad_de_proveedores(pedido_cargado);
+            //          string proveedor_seleccionado = proveedores[0].ToString();
+            string proveedor_seleccionado;
+            int num_pedido;
+            string id_usuario;
+            string actualizar;
+            int producto_index;
+            DataTable proveedor_villaMaipu = crear_dataTable_resumen(pedido_cargado, "proveedor_villaMaipu");
+            if (proveedor_villaMaipu.Rows.Count > 0)
+            {
+                proveedor_seleccionado = "proveedor_villaMaipu";
+                columnas = "";
+                valores = "";
+                //setear acuerdos de precios
+                setear_acuerdos_de_precios("proveedor_villaMaipu");
+                num_pedido = obtener_ultimo_num_pedido_enviado(sucursalBD) + 1;
+                id_usuario = sucursalBD.Rows[0]["id"].ToString();
+                actualizar = "`ultimo_pedido_enviado` = '" + num_pedido + "'";
+                consultas.actualizar_tabla("shami", "sucursal", actualizar, id_usuario);
+
+                //activa
+                columnas = armar_query_columna(columnas, "nota", false);
+                valores = armar_query_valores(valores, nota, false);
+                //fecha
+                columnas = armar_query_columna(columnas, "fecha", false);
+                valores = armar_query_valores(valores, funciones.get_fecha(), false);
+                //sucursal
+                columnas = armar_query_columna(columnas, "sucursal", false);
+                valores = armar_query_valores(valores, sucursalBD.Rows[0]["sucursal"].ToString(), false);
+                //num_pedido
+                columnas = armar_query_columna(columnas, "num_pedido", false);
+                valores = armar_query_valores(valores, num_pedido.ToString(), false);
+                //proveedor
+                columnas = armar_query_columna(columnas, "proveedor", false);
+                valores = armar_query_valores(valores, proveedor_seleccionado, false);
+                //acuerdo_de_precios
+                columnas = armar_query_columna(columnas, "acuerdo_de_precios", false);
+                valores = armar_query_valores(valores, acuerdo_de_precio, false);
+                //estado
+                columnas = armar_query_columna(columnas, "estado", false);
+                valores = armar_query_valores(valores, "listo para despachar", false);
+                //tipo_de_acuerdo
+                columnas = armar_query_columna(columnas, "tipo_de_acuerdo", false);
+                valores = armar_query_valores(valores, tipo_de_acuerdo, false);
+                //calculado_local
+                columnas = armar_query_columna(columnas, "calculado_local", false);
+                valores = armar_query_valores(valores, "no", false);
+                //calculado_proveedor
+                columnas = armar_query_columna(columnas, "calculado_proveedor", false);
+                valores = armar_query_valores(valores, "si", false);
+                //tipo_de_acuerdo_fabrica
+                columnas = armar_query_columna(columnas, "tipo_de_acuerdo_fabrica", false);
+                valores = armar_query_valores(valores, tipo_de_acuerdo_fabrica, false);
+                //mensaje
+                //inicio
+                columnas = armar_query_columna(columnas, "inicio", false);
+                valores = armar_query_valores(valores, "inicio", false);
+                producto_index = 1;
+                for (int fila_resumen = 0; fila_resumen <= proveedor_villaMaipu.Rows.Count - 1; fila_resumen++)
+                {
+                    precio = proveedor_villaMaipu.Rows[fila_resumen]["precio"].ToString();
+                    id = proveedor_villaMaipu.Rows[fila_resumen]["id"].ToString();
+                    producto = proveedor_villaMaipu.Rows[fila_resumen]["producto"].ToString();
+                    cantidad = proveedor_villaMaipu.Rows[fila_resumen]["cantidad"].ToString().Replace(",", ".");
+                    string unidad_de_medida = proveedor_villaMaipu.Rows[fila_resumen]["unidad de medida"].ToString();
+                    valor_final = precio + "-" + id + "-" + producto + "-" + cantidad + "-" + cantidad+"-"+ unidad_de_medida + "-" + unidad_de_medida + "-N/A";
 
                     if (fila_resumen == proveedor_villaMaipu.Rows.Count - 1)
                     {
