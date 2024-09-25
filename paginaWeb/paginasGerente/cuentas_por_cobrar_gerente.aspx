@@ -176,7 +176,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <asp:Label Text="Detalle" CssClass=" form-label" runat="server" />
-                                            <asp:TextBox ID="textBox_detalle_boleta" CssClass="form-control" OnTextChanged="textBox_detalle_boleta_TextChanged" AutoPostBack="true" runat="server" />
+                                            <asp:TextBox ID="textBox_detalle_boleta" CssClass="form-control"  runat="server" />
                                         </div>
                                     </div>
                                     <div class="col">

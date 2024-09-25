@@ -46,12 +46,17 @@
     <Compile Include="cls_analisis_caja_chica.cs" />
     <Compile Include="cls_caja_chica.cs" />
     <Compile Include="cls_calculo_deuda_locales.cs" />
+    <Compile Include="cls_resumen_deuda_locales.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\01 - modulos\01 - modulos.csproj">
       <Project>{4f441403-c852-4c50-93da-33c46fce4e00}</Project>
       <Name>01 - modulos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\03 - sistemas fabrica\03 - sistemas fabrica.csproj">
+      <Project>{347c8a5c-b3bc-4912-91ff-010cd82b67ec}</Project>
+      <Name>03 - sistemas fabrica</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

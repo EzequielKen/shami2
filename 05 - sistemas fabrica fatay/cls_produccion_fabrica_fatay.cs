@@ -143,7 +143,7 @@ namespace _05___sistemas_fabrica_fatay
                     fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
 
                         valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
-                    stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
+                    stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "produccion", cantidad_despachada, "");
 
                     columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
                     valores = armar_query_valores(valores, valor_final, false);
@@ -158,13 +158,13 @@ namespace _05___sistemas_fabrica_fatay
                 fila_producto = funciones.buscar_fila_por_id(id, productos_proveedor);
 
                 valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
-                stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
+                stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "produccion", cantidad_despachada, "");
 
 
                 columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
                 valores = armar_query_valores(valores, valor_final, true);
 
-                consultas.insertar_en_tabla(base_de_datos, "despacho_fabrica_fatay", columnas, valores);
+                consultas.insertar_en_tabla(base_de_datos, "produccion_diaria", columnas, valores);
               
             }
         }
