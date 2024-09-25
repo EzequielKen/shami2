@@ -11,7 +11,7 @@ namespace paginaWeb.paginasFabricaFatay
 {
 
 
-    public partial class despacho_fabrica_fatay
+    public partial class historial_de_despacho
     {
 
         /// <summary>
@@ -33,84 +33,66 @@ namespace paginaWeb.paginasFabricaFatay
         protected global::System.Web.UI.WebControls.Label label_fecha;
 
         /// <summary>
-        /// Control dropdown_clientes.
+        /// Control gridview_historial.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropdown_clientes;
+        protected global::System.Web.UI.WebControls.GridView gridview_historial;
 
         /// <summary>
-        /// Control boton_seleccionar.
+        /// Control label_id.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_seleccionar;
+        protected global::System.Web.UI.WebControls.Label label_id;
 
         /// <summary>
-        /// Control label_cliente.
+        /// Control label_fecha_seleccionada.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_cliente;
+        protected global::System.Web.UI.WebControls.Label label_fecha_seleccionada;
 
         /// <summary>
-        /// Control boton_enviar.
+        /// Control label_proveedor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_enviar;
+        protected global::System.Web.UI.WebControls.Label label_proveedor;
 
         /// <summary>
-        /// Control label_productoSelecionado.
+        /// Control label_receptor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_productoSelecionado;
+        protected global::System.Web.UI.WebControls.Label label_receptor;
 
         /// <summary>
-        /// Control textbox_busqueda.
+        /// Control label_estado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textbox_busqueda;
+        protected global::System.Web.UI.WebControls.Label label_estado;
 
         /// <summary>
-        /// Control dropDown_tipo.
+        /// Control gridview_detalle_produccion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
-
-        /// <summary>
-        /// Control gridview_productos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_productos;
-
-        /// <summary>
-        /// Control gridview_resumen.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_resumen;
+        protected global::System.Web.UI.WebControls.GridView gridview_detalle_produccion;
     }
 }

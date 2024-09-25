@@ -30,6 +30,10 @@
                         </h3>
                         <asp:DropDownList ID="dropdown_clientes" CssClass="form-control" runat="server">
                         </asp:DropDownList>
+                        <asp:Button ID="boton_seleccionar" Text="Seleccionar" CssClass="btn btn-primary" OnClick="boton_seleccionar_Click" runat="server" />
+                        <h3>
+                            <asp:Label ID="label_cliente" Text="Cliente Seleccionado: N/A"  runat="server" />
+                        </h3>
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <div class="row alert alert-light">

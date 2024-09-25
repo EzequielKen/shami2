@@ -117,9 +117,11 @@ namespace paginaWeb
             }
             else
             {
+
                 item = new ListItem(dt.Rows[0]["tipo_producto"].ToString(), num_item.ToString());
                 dropDown_tipo.Items.Add(item);
                 num_item = num_item + 1;
+
             }
 
             for (int fila = 1; fila <= dt.Rows.Count - 1; fila++)
@@ -141,9 +143,22 @@ namespace paginaWeb
 
                     else
                     {
-                        item = new ListItem(dt.Rows[fila]["tipo_producto"].ToString(), num_item.ToString());
-                        dropDown_tipo.Items.Add(item);
-                        num_item = num_item + 1;
+                        if (sucusalBD.Rows[0]["id"].ToString() == "13" &&
+                            Session["nombre_proveedor"].ToString() == "Fabrica villa maipu")
+                        {
+                            if (dt.Rows[fila]["tipo_producto"].ToString() != "2-Empanadas")
+                            {
+                                item = new ListItem(dt.Rows[fila]["tipo_producto"].ToString(), num_item.ToString());
+                                dropDown_tipo.Items.Add(item);
+                                num_item = num_item + 1;
+                            }
+                        }
+                        else
+                        {
+                            item = new ListItem(dt.Rows[fila]["tipo_producto"].ToString(), num_item.ToString());
+                            dropDown_tipo.Items.Add(item);
+                            num_item = num_item + 1;
+                        }
                     }
                 }
 
@@ -162,6 +177,7 @@ namespace paginaWeb
             {
                 retorno = true;
             }
+
             return retorno;
         }
         private bool verificar_tipo_producto(string tipo_producto)
@@ -254,7 +270,7 @@ namespace paginaWeb
                 {
                     productosPDF.Rows.Add();
                     productosPDF.Rows[fila_producto]["id"] = productos_proveedor.Rows[fila]["id"].ToString();
-                    if (productos_proveedor.Rows[fila]["id"].ToString()=="1")
+                    if (productos_proveedor.Rows[fila]["id"].ToString() == "1")
                     {
                         string stop = productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
                     }
@@ -265,7 +281,7 @@ namespace paginaWeb
                     precio = precio * multiplicador;
                     if (productos_proveedor.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                     {
-                        productosPDF.Rows[fila_producto]["precio"] = formatCurrency(precio) + " x"+ productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
+                        productosPDF.Rows[fila_producto]["precio"] = formatCurrency(precio) + " x" + productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
                     }
                     else
                     {
@@ -275,7 +291,7 @@ namespace paginaWeb
                     fila_producto++;
                 }
             }
-            Session.Add("productosPDF",productosPDF);
+            Session.Add("productosPDF", productosPDF);
         }
         private bool verificar_tipo_a_cargar(string tipo_producto)
         {
@@ -526,13 +542,13 @@ namespace paginaWeb
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucusalBD = (DataTable)Session["sucursal"];
-            if (sucusalBD.Rows[0]["id"].ToString()!="19")
+            if (sucusalBD.Rows[0]["id"].ToString() != "19")
             {
-                textbox_nota.Visible=false;
+                textbox_nota.Visible = false;
             }
 
             sistema_pedidos = new cls_sistema_pedidos(usuariosBD, sucusalBD);
-            
+
 
 
 
@@ -615,12 +631,12 @@ namespace paginaWeb
 
             if (dt.Rows.Count > 0)
             {
-                string nota="N/A";
+                string nota = "N/A";
                 if (textbox_nota.Text != string.Empty)
                 {
                     nota = textbox_nota.Text;
                 }
-                string url_whatsapp = sistema_pedidos.enviar_pedido((DataTable)Session["resumen"],nota);
+                string url_whatsapp = sistema_pedidos.enviar_pedido((DataTable)Session["resumen"], nota);
                 Session.Contents.RemoveAll();
                 //Response.Write("<script>window.open('" + url_whatsapp + "','_blank');</script>");
                 //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + url_whatsapp + "','_blank')", true);

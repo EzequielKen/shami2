@@ -101,22 +101,9 @@ namespace paginaWeb.paginasFabricaFatay
 
             tipo_seleccionado = dt.Rows[0]["tipo_producto"].ToString();
             item = new ListItem(dt.Rows[0]["tipo_producto"].ToString(), num_item.ToString());
-            dropDown_tipo.Items.Add(item);
+            dropDown_tipo.Items.Add("2-Empanadas");
             num_item = num_item + 1;
-            for (int fila = 1; fila <= dt.Rows.Count - 1; fila++)
-            {
-
-
-                if (dropDown_tipo.Items[num_item - 2].Text != dt.Rows[fila]["tipo_producto"].ToString())
-                {
-
-                    item = new ListItem(dt.Rows[fila]["tipo_producto"].ToString(), num_item.ToString());
-                    dropDown_tipo.Items.Add(item);
-                    num_item = num_item + 1;
-
-                }
-
-            }
+            
         }
         #endregion
         /// <summary>

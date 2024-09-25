@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cls_despacho_fabrica_fatay.cs" />
+    <Compile Include="cls_historial_de_despacho.cs" />
     <Compile Include="cls_historial_de_stock_fabrica_fatay.cs" />
     <Compile Include="cls_plantillas_fabrica_fatay.cs" />
     <Compile Include="cls_produccion_fabrica_fatay.cs" />

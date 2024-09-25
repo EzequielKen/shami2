@@ -106,6 +106,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/despacho_fabrica_fatay.aspx">Despacho</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/historial_de_despacho.aspx">Historial de Despacho</a>
+                    </li>
                 </ul>
                 <% }
 

@@ -230,6 +230,7 @@
     <Content Include="paginasCarrefour\sucursales_carrefour.aspx" />
     <Content Include="paginasFabricaFatay\analisis_de_produccion_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\despacho_fabrica_fatay.aspx" />
+    <Content Include="paginasFabricaFatay\historial_de_despacho.aspx" />
     <Content Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\historial_de_stock_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx" />
@@ -419,6 +420,13 @@
     </Compile>
     <Compile Include="paginasFabricaFatay\despacho_fabrica_fatay.aspx.designer.cs">
       <DependentUpon>despacho_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_de_despacho.aspx.cs">
+      <DependentUpon>historial_de_despacho.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_de_despacho.aspx.designer.cs">
+      <DependentUpon>historial_de_despacho.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx.cs">
       <DependentUpon>historial_de_produccion_fabrica_fatay.aspx</DependentUpon>

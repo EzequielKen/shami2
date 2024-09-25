@@ -196,7 +196,7 @@ namespace _05___sistemas_fabrica_fatay
         {
             consultar_productos_proveedor("proveedor_villaMaipu");
 
-
+            string nota = "Despachado a cliente: " + receptor;
             //actualizar_stock_insumos(resumen_pedido);
             string columnas = "";
             string valores = "";
@@ -248,7 +248,7 @@ namespace _05___sistemas_fabrica_fatay
                     valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
                 }
 
-                stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
+                stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, nota);
 
                 columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
                 valores = armar_query_valores(valores, valor_final, false);
@@ -272,7 +272,7 @@ namespace _05___sistemas_fabrica_fatay
             }
 
 
-            stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, "");
+            stock_productos_fabrica_fatay.cargar_historial_stock("Shami Fabrica Fatay", id, "despacho", cantidad_despachada, nota);
 
 
             columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
@@ -285,7 +285,7 @@ namespace _05___sistemas_fabrica_fatay
                 DataTable sucursal = consultas.consultar_sucursal_por_nombre(receptor);
                 pedidos = new cls_sistema_pedidos(usuarioBD, sucursal);
                 crear_dataTable_resumen(resumen_pedido, sucursal.Rows[0]["id"].ToString());
-                string nota = "Facturado por Shami Fabrica Fatay";
+                nota = "Facturado por Shami Fabrica Fatay";
                 string num_pedido = pedidos.enviar_pedido_automatico(resumen,nota);
                 crear_cuentas_por_pagar(resumen,sucursal,num_pedido,nota);
             }

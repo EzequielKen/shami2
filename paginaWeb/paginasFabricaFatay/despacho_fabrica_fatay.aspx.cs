@@ -174,7 +174,7 @@ namespace paginaWeb.paginasFabricaFatay
         }
         private void llenar_sucursales()
         {
-            for (int fila = 0; fila <= sucursales.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= sucursales.Rows.Count - 1; fila++)
             {
                 dropdown_clientes.Items.Add(sucursales.Rows[fila]["sucursal"].ToString());
             }
@@ -220,6 +220,7 @@ namespace paginaWeb.paginasFabricaFatay
 
                 if (!IsPostBack)
                 {
+                    Session.Add("cliente_seleccionado", "N/A");
                     sucursales = despacho.get_sucursales();
                     label_productoSelecionado.Text = mensaje_default;
                     crear_dataTable_resumen();
@@ -230,6 +231,7 @@ namespace paginaWeb.paginasFabricaFatay
                     Session.Add("fechaBD", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
                 }
+                label_cliente.Text = "Cliente Seleccionado: " + Session["cliente_seleccionado"].ToString();
             }
         }
 
@@ -237,9 +239,9 @@ namespace paginaWeb.paginasFabricaFatay
         {
             DataTable dt = (DataTable)Session["resumen"];
 
-            if (dt.Rows.Count > 0)
+            if (dt.Rows.Count > 0 && Session["cliente_seleccionado"].ToString() != "N/A")
             {
-                despacho.cargar_despacho((DataTable)Session["resumen"], "Fabrica Fatay Callao", tipo_usuarioBD.Rows[0]["rol"].ToString(), Session["fechaBD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(),dropdown_clientes.SelectedItem.Text);
+                despacho.cargar_despacho((DataTable)Session["resumen"], "Fabrica Fatay Callao", tipo_usuarioBD.Rows[0]["rol"].ToString(), Session["fechaBD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), Session["cliente_seleccionado"].ToString());
                 Response.Redirect("~/paginas/landing_page_local.aspx", false);
                 // string url_whatsapp = sistema_pedidos.enviar_pedido((DataTable)Session["resumen"], (DataTable)Session["bonificados"], (DataTable)Session["lista_proveedores"], Session["nombre_proveedor"].ToString());
                 //Response.Write("<script>window.open('" + url_whatsapp + "','_blank');</script>");
@@ -312,6 +314,12 @@ namespace paginaWeb.paginasFabricaFatay
         {
             label_fecha.Text = calendario.SelectedDate.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second).ToString();
             Session.Add("fechaBD", calendario.SelectedDate.AddHours(DateTime.Now.Hour).AddMinutes(DateTime.Now.Minute).AddSeconds(DateTime.Now.Second).ToString("yyyy-MM-dd HH:mm:ss"));
+        }
+
+        protected void boton_seleccionar_Click(object sender, EventArgs e)
+        {
+            Session.Add("cliente_seleccionado", dropdown_clientes.SelectedItem.Text);
+            label_cliente.Text = "Cliente Seleccionado: " + Session["cliente_seleccionado"].ToString();
         }
     }
 }
