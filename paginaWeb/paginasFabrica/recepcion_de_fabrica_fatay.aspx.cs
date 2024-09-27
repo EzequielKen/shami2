@@ -85,7 +85,7 @@ namespace paginaWeb.paginasFabrica
                 "Shami Villa Maipu Expedicion" != tipo_usuarioBD.Rows[0]["rol"].ToString())
             {
                 recepcion_fatay = new cls_recepcion_de_fabrica_fatay(usuariosBD);
-                historial_despachoBD = recepcion_fatay.get_todo_historial_de_despacho();
+                historial_despachoBD = recepcion_fatay.get_todo_historial_de_despacho(tipo_usuarioBD.Rows[0]["rol"].ToString());
                 if (!IsPostBack)
                 {
 
@@ -174,7 +174,7 @@ namespace paginaWeb.paginasFabrica
                 else
                 {
                     //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), "Shami Villa Maipu Produccion", tipo_usuarioBD.Rows[0]["rol"].ToString());
-                    historial_despachoBD = recepcion_fatay.get_todo_historial_de_despacho();
+                    historial_despachoBD = recepcion_fatay.get_todo_historial_de_despacho(tipo_usuarioBD.Rows[0]["rol"].ToString());
                 }
                 cargar_historial();
             }

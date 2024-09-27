@@ -52,9 +52,9 @@ namespace _03___sistemas_fabrica
         {
             productos_proveedor = consultas.consultar_tabla_completa(base_de_datos, nombre_proveedor);
         }
-        private void consultar_todo_historial_de_despacho()
+        private void consultar_todo_historial_de_despacho(string rol)
         {
-            historial_despacho = consultas.consultar_tabla(base_de_datos, "despacho_fabrica_fatay");
+            historial_despacho = consultas.consultar_historial_despacho_proveedor_receptor(base_de_datos, "despacho_fabrica_fatay",rol);
         }
         private void consultar_todo_historial_de_produccion_segun_fabrica(string nombre_proveedor)
         {
@@ -69,9 +69,10 @@ namespace _03___sistemas_fabrica
             string actualizar = "`activa` = '0'";
             consultas.actualizar_tabla(base_de_datos, "produccion_diaria", actualizar, id);
         }
-        public DataTable get_todo_historial_de_despacho()
+        public DataTable get_todo_historial_de_despacho(string rol)
         {
-            consultar_todo_historial_de_despacho();
+            rol = "Fabrica Villa Maipu";
+            consultar_todo_historial_de_despacho(rol);
             return historial_despacho;
         }
         public DataTable get_todo_historial_de_produccion_segun_fabrica(string nombre_proveedor)
