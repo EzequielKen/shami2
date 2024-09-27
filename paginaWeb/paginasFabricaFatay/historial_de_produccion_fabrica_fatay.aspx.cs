@@ -101,6 +101,11 @@ namespace paginaWeb.paginasFabricaFatay
             label_fecha.Text = fechaBD.ToString();
             gridview_detalle_produccion.DataSource = null;
             gridview_detalle_produccion.DataBind();
+            label_id.Text = "";
+            label_proveedor.Text = "";
+            label_receptor.Text = "";
+            label_estado.Text = "";
+
             cargar_historial();
         }
 
