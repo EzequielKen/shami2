@@ -89,7 +89,13 @@ namespace paginaWeb.paginasFabrica
                 if ("Shami Villa Maipu Produccion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
                 {
                     //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), "Shami Villa Maipu Expedicion");
-                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion_segun_fabrica(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
+                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion();
+
+                }
+                else if ("Shami Villa Maipu Expedicion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
+                {
+                    //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), "Shami Villa Maipu Expedicion");
+                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion_segun_receptor(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString());
 
                 }
                 else

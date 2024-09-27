@@ -63,6 +63,11 @@ namespace _03___sistemas_fabrica
             historial_produccion_proveedor_cliente = consultas.consultar_todo_el_historial_produccion(base_de_datos, "produccion_diaria", nombre_proveedor);
             // historial_produccion_proveedor_cliente = consultas.consultar_tabla(base_de_datos, "produccion_diaria");
         }
+        private void consultar_todo_historial_de_produccion_segun_receptor(string nombre_proveedor,string rol)
+        {
+            historial_produccion_proveedor_cliente = consultas.consultar_historial_produccion_proveedor_receptor(base_de_datos, "produccion_diaria", nombre_proveedor,rol);
+            // historial_produccion_proveedor_cliente = consultas.consultar_tabla(base_de_datos, "produccion_diaria");
+        }
         #endregion
 
         #region metodos get/set
@@ -81,7 +86,11 @@ namespace _03___sistemas_fabrica
             consultar_todo_historial_de_produccion_segun_fabrica(nombre_proveedor);
             return historial_produccion_proveedor_cliente;
         }
-        
+        public DataTable get_todo_historial_de_produccion_segun_receptor(string nombre_proveedor,string rol)
+        {
+            consultar_todo_historial_de_produccion_segun_receptor(nombre_proveedor,rol);
+            return historial_produccion_proveedor_cliente;
+        }
         public DataTable get_historial_produccion_proveedor_cliente(string fabrica, string proveedor, string cliente)
         {
             consultar_historial_produccion(fabrica, proveedor, cliente);
