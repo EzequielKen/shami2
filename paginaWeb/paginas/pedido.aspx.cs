@@ -542,7 +542,12 @@ namespace paginaWeb
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             sucusalBD = (DataTable)Session["sucursal"];
-            if (sucusalBD.Rows[0]["id"].ToString() != "19")
+            if (sucusalBD.Rows[0]["id"].ToString() == "19" ||
+                sucusalBD.Rows[0]["id"].ToString() == "22")
+            {
+                textbox_nota.Visible = true;
+            }
+            else
             {
                 textbox_nota.Visible = false;
             }

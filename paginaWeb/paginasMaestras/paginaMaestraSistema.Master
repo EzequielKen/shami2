@@ -92,7 +92,7 @@
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/stock_insumos_fabrica_fatay.aspx">Stock Insumos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/analisis_de_produccion_fabrica_fatay.aspx">Analisis Produccion</a>
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/analisis_de_produccion_fabrica_fatay.aspx">Objetivo de Produccion</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/produccion_fabrica_fatay.aspx">Produccion</a>
@@ -102,6 +102,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/historial_de_stock_fabrica_fatay.aspx">Historial Stock</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/historial_stock_fabrica_maipu.aspx">Historial Stock Villa Maipu</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/plantilla_fabrica_fatay.aspx">Plantilla de Stock</a>

@@ -234,6 +234,7 @@
     <Content Include="paginasFabricaFatay\historial_de_produccion_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\historial_de_stock_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx" />
+    <Content Include="paginasFabricaFatay\historial_stock_fabrica_maipu.aspx" />
     <Content Include="paginasFabricaFatay\orden_de_pedido_a_compras.aspx" />
     <Content Include="paginasFabricaFatay\plantilla_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\produccion_fabrica_fatay.aspx" />
@@ -448,6 +449,13 @@
     </Compile>
     <Compile Include="paginasFabricaFatay\historial_orden_de_pedidos_a_compras.aspx.designer.cs">
       <DependentUpon>historial_orden_de_pedidos_a_compras.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_stock_fabrica_maipu.aspx.cs">
+      <DependentUpon>historial_stock_fabrica_maipu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabricaFatay\historial_stock_fabrica_maipu.aspx.designer.cs">
+      <DependentUpon>historial_stock_fabrica_maipu.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabricaFatay\orden_de_pedido_a_compras.aspx.cs">
       <DependentUpon>orden_de_pedido_a_compras.aspx</DependentUpon>
