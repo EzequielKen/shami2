@@ -92,6 +92,9 @@
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/stock_insumos_fabrica_fatay.aspx">Stock Insumos</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/analisis_de_produccion_fabrica_fatay.aspx">Analisis Produccion</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/produccion_fabrica_fatay.aspx">Produccion</a>
                     </li>
                     <li class="nav-item">
