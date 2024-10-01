@@ -128,13 +128,16 @@ namespace paginaWeb.paginasFabrica
                     boton_eliminar.Visible = false;
                 }
                 //diferencia
-                if (conteo_stock.Rows[fila_conteo]["diferencia"].ToString() != "0")
+                if (tipo_usuario.Rows[0]["rol"].ToString()!= "Shami Villa Maipu Expedicion")
                 {
-                    gridview_conteos.Rows[fila].CssClass = "table-danger";
-                }
-                else if (conteo_stock.Rows[fila_conteo]["diferencia"].ToString() == "0")
-                {
-                    gridview_conteos.Rows[fila].CssClass = "table-success";
+                    if (conteo_stock.Rows[fila_conteo]["diferencia"].ToString() != "0")
+                    {
+                        gridview_conteos.Rows[fila].CssClass = "table-danger";
+                    }
+                    else if (conteo_stock.Rows[fila_conteo]["diferencia"].ToString() == "0")
+                    {
+                        gridview_conteos.Rows[fila].CssClass = "table-success";
+                    }
                 }
             }
         }

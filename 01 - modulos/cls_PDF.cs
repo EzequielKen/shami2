@@ -3068,7 +3068,7 @@ namespace _01___modulos
 
                             tabla.Header(header =>
                             {
-                                header.Cell().Background("#257272").Padding(2).Text("feca").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("fecha").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Producto").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("conteo de stock").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("unidad de medida").FontColor("#fff");
