@@ -2490,6 +2490,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_conteo_stock_segun_fecha_e_id(string id_producto,string dia, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".conteo_stock WHERE activa=1 and id_producto='"+id_producto+"' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
     }
 
