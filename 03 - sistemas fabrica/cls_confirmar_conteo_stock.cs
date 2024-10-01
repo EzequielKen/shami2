@@ -1,4 +1,5 @@
-﻿using modulos;
+﻿using _01___modulos;
+using modulos;
 using paginaWeb;
 using System;
 using System.Collections.Generic;
@@ -35,11 +36,19 @@ namespace _03___sistemas_fabrica
         #region atributos
         cls_consultas_Mysql consultas;
         cls_movimientos_stock_producto movimientos_stock;
+        cls_PDF PDF = new cls_PDF();
         cls_funciones funciones = new cls_funciones();
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
         DataTable conteo_stock;
+        #endregion
+
+        #region PDF
+        public void pdf_conteo(string ruta_archivo,DataTable conteo_stock, byte[]logo,string fecha_conteo)
+        {
+            PDF.GenerarPDF_conteo_stock(ruta_archivo,logo,conteo_stock,fecha_conteo);
+        }
         #endregion
 
         #region carga a base de datos

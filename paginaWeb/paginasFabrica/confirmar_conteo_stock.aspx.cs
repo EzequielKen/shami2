@@ -37,7 +37,7 @@ namespace paginaWeb.paginasFabrica
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
             conteo = new cls_confirmar_conteo_stock(usuariosBD);
-            if (tipo_usuario.Rows[0]["rol"].ToString()== "Shami Villa Maipu Expedicion")
+            if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")
             {
                 gridview_conteos.Columns[6].Visible = false;
                 gridview_conteos.Columns[7].Visible = false;
@@ -50,14 +50,35 @@ namespace paginaWeb.paginasFabrica
             {
                 calendario.SelectedDate = DateTime.Now;
                 Session.Add("fecha_seleccionada", calendario.SelectedDate);
+                Session.Add("fecha_conteo_selecccionada", DateTime.Now.ToString("dd/MM/yyyy"));
                 cargar_conteo();
+            }
+            conteo_stock = (DataTable)Session["conteo_stock"];
+            if (conteo_stock.Rows.Count == 0)
+            {
+                boton_pdf.Visible = false;
+            }
+            else
+            {
+                boton_pdf.Visible = true;
             }
         }
 
         protected void calendario_SelectionChanged(object sender, EventArgs e)
         {
+            DateTime fecha = calendario.SelectedDate;
             Session.Add("fecha_seleccionada", calendario.SelectedDate);
+            Session.Add("fecha_conteo_selecccionada", fecha.ToString("dd/MM/yyyy"));
             cargar_conteo();
+            conteo_stock = (DataTable)Session["conteo_stock"];
+            if (conteo_stock.Rows.Count == 0)
+            {
+                boton_pdf.Visible = false;
+            }
+            else
+            {
+                boton_pdf.Visible = true;
+            }
         }
 
         protected void boton_aprobar_Click(object sender, EventArgs e)
@@ -69,7 +90,7 @@ namespace paginaWeb.paginasFabrica
             string id_producto = fila.Cells[1].Text;
             string movimiento = fila.Cells[5].Text;
             TextBox nota = (TextBox)fila.FindControl("textbox_nota");
-            conteo.aprobar_conteo(id,rol_usuario,id_producto,movimiento,nota.Text);
+            conteo.aprobar_conteo(id, rol_usuario, id_producto, movimiento, nota.Text);
             cargar_conteo();
         }
 
@@ -89,7 +110,7 @@ namespace paginaWeb.paginasFabrica
             int fila_conteo;
             DateTime fecha = (DateTime)Session["fecha_seleccionada"];
             DateTime fecha_actual = DateTime.Now;
-            for (int fila = 0; fila <= gridview_conteos.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= gridview_conteos.Rows.Count - 1; fila++)
             {
 
                 TextBox textbox_nota = (gridview_conteos.Rows[fila].Cells[8].FindControl("textbox_nota") as TextBox);
@@ -99,13 +120,41 @@ namespace paginaWeb.paginasFabrica
                 id = gridview_conteos.Rows[fila].Cells[0].Text;
                 fila_conteo = funciones.buscar_fila_por_id(id, conteo_stock);
                 if (conteo_stock.Rows[fila_conteo]["aprobado"].ToString() == "Si" ||
-                    fecha.ToString("dd/MM/yyyy")!=fecha_actual.ToString("dd/MM/yyyy"))
+                    fecha.ToString("dd/MM/yyyy") != fecha_actual.ToString("dd/MM/yyyy") ||
+                    conteo_stock.Rows[fila_conteo]["diferencia"].ToString() == "0")
                 {
                     textbox_nota.Visible = false;
                     boton_aprobar.Visible = false;
                     boton_eliminar.Visible = false;
                 }
+                //diferencia
+                if (conteo_stock.Rows[fila_conteo]["diferencia"].ToString() != "0")
+                {
+                    gridview_conteos.Rows[fila].CssClass = "table-danger";
+                }
+                else if (conteo_stock.Rows[fila_conteo]["diferencia"].ToString() == "0")
+                {
+                    gridview_conteos.Rows[fila].CssClass = "table-success";
+                }
             }
+        }
+
+        protected void boton_pdf_Click(object sender, EventArgs e)
+        {
+            DateTime hora = DateTime.Now;
+
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = "CONTEO DE STOCK" + " - id-" + dato_hora + ".pdf";
+            string ruta = "/paginasFabrica/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+            conteo.pdf_conteo(ruta_archivo, (DataTable)Session["conteo_stock"], imgdata, Session["fecha_conteo_selecccionada"].ToString());
+
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginasFabrica/pdf/" + id_pedido;
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+            //GenerarPDF_Click();*/
         }
     }
 }

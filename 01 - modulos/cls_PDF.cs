@@ -2917,7 +2917,7 @@ namespace _01___modulos
             }).GeneratePdf(ruta_archivo);
         }
 
-        public void GenerarPDF_resumen_de_estadisticas_de_pedidos_segun_fecha(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin,string sucursales_seleccionadas)
+        public void GenerarPDF_resumen_de_estadisticas_de_pedidos_segun_fecha(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_inicio, string fecha_fin, string sucursales_seleccionadas)
         {
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
@@ -2925,7 +2925,7 @@ namespace _01___modulos
                 document.Page(page =>
                 {
                     page.Size(PageSizes.A3.Landscape());//Landscape()
-                    
+
                     page.Margin(10);
                     page.Header().ShowOnce().Row(row =>
                     {
@@ -2992,6 +2992,102 @@ namespace _01___modulos
                                     tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
                                     .Text(resumen.Rows[fila][columna].ToString()).FontSize(10);
                                 }
+                            }
+                        });
+
+
+                        col.Item().Background(Colors.Grey.Lighten3).Padding(10)
+                        .Column(column =>
+                        {
+                            column.Item().Text("Entrega conforme / firma:").FontSize(12);
+                            column.Item().Text("recibe conforme / firma:").FontSize(12);
+                            column.Spacing(20);
+                        });
+
+                        col.Spacing(10);
+                    });
+
+                    page.Footer().AlignRight().Text(txt =>
+                    {
+                        txt.Span("pagina ").FontSize(10);
+                        txt.CurrentPageNumber().FontSize(10);
+                        txt.Span(" de ").FontSize(10);
+                        txt.TotalPages().FontSize(10);
+                    });
+                });
+            }).GeneratePdf(ruta_archivo);
+        }
+        public void GenerarPDF_conteo_stock(string ruta_archivo, byte[] logo, DataTable resumen, string fecha_conteo)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+            Document.Create(document =>
+            {
+                document.Page(page =>
+                {
+                    page.Size(PageSizes.A4);//Landscape()
+
+                    page.Margin(10);
+                    page.Header().ShowOnce().Row(row =>
+                    {
+
+                        row.ConstantItem(150).Image(logo);
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().AlignCenter().Text("Conteo Stock").Bold().FontSize(14);
+                            col.Item().AlignCenter().Text(fecha_conteo).Bold().FontSize(14);
+
+                        });
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            DateTime fecha_dato = DateTime.Now;
+                            string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString();
+
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Shami Shawarma").Bold().FontSize(14);
+                            col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("Conteo de Stock.").Bold().FontSize(14).FontColor("#fff");
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Impreso el: " + fecha).Bold().FontSize(14);
+
+                        });
+                    });
+
+                    page.Content().PaddingVertical(10).Column(col =>
+                    {
+
+                        col.Item().LineHorizontal(0.5f);
+
+                        col.Item().Table(tabla =>
+                        {
+                            tabla.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
+
+                            tabla.Header(header =>
+                            {
+                                header.Cell().Background("#257272").Padding(2).Text("feca").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Producto").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("conteo de stock").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("unidad de medida").FontColor("#fff");
+                            });
+
+                            for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
+                            {
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(resumen.Rows[fila]["fecha"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(resumen.Rows[fila]["producto"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(resumen.Rows[fila]["conteo"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(resumen.Rows[fila]["unidad_medida"].ToString()).FontSize(10);
+
                             }
                         });
 
