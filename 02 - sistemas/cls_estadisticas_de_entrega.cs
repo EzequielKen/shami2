@@ -371,6 +371,7 @@ namespace _02___sistemas
                 columna = pedidos.Columns["producto_1"].Ordinal;
                 for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
                 {
+                    
                     legado = pedidos.Rows[fila]["legado"].ToString();
                     tipo_de_acuerdo = pedidos.Rows[fila]["tipo_de_acuerdo"].ToString();
                     acuerdo_de_precios_dato = pedidos.Rows[fila]["acuerdo_de_precios"].ToString();
@@ -602,6 +603,7 @@ namespace _02___sistemas
                                     }
                                     else
                                     {
+                                        string dato = pedidos.Rows[fila]["id"].ToString();
                                         double pinchos_entregados = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8));
                                         double cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
                                         cantidad_pincho = cantidad_pincho + pinchos_entregados;

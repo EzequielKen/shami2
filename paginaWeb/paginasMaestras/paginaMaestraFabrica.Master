@@ -412,6 +412,8 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink12" role="button" data-bs-toggle="dropdown" aria-expanded="false">Fabrica de Fatay
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock_fabrica_fatay.aspx">Historial de Stock de Fabrica de Fatay</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/analisis_de_produccion_fabrica_fatay.aspx">Analisis de Produccion de Fabrica de Fatay</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_despacho_fabrica_fatay.aspx">Historial de Despacho de Fabrica de Fatay</a></li>
                         </ul>
                     </li>
