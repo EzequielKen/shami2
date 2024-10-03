@@ -25,6 +25,7 @@
                         <h2>
                             <asp:Label ID="label_fecha" Text="text" runat="server" />
                         </h2>
+                        <asp:TextBox ID="textbox_nota" CssClass="form-control" TextMode="MultiLine" placeholder="Ingrese su nota aqui" runat="server" />
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
                         <div class="row alert alert-light">

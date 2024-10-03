@@ -227,7 +227,7 @@ namespace paginaWeb.paginasFabrica
 
             if (dt.Rows.Count > 0)
             {
-                produccion.cargar_produccion_diaria((DataTable)Session["resumen"], proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), Session["fechaBD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString());
+                produccion.cargar_produccion_diaria((DataTable)Session["resumen"], proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), Session["fechaBD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(),textbox_nota.Text);
                 Response.Redirect("/paginasFabrica/sucursales.aspx", false);
                 // string url_whatsapp = sistema_pedidos.enviar_pedido((DataTable)Session["resumen"], (DataTable)Session["bonificados"], (DataTable)Session["lista_proveedores"], Session["nombre_proveedor"].ToString());
                 //Response.Write("<script>window.open('" + url_whatsapp + "','_blank');</script>");

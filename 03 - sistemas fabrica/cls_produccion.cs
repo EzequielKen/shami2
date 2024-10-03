@@ -101,7 +101,7 @@ namespace _03___sistemas_fabrica
             }
             return retorno;
         }
-        public void cargar_produccion_diaria(DataTable resumen_pedido, string fabrica, string proveedor, string fecha, string rol_usuario)
+        public void cargar_produccion_diaria(DataTable resumen_pedido, string fabrica, string proveedor, string fecha, string rol_usuario,string nota)
         {
             consultar_productos_proveedor(fabrica);
             if (!verificar_si_cargo_en_BD(fabrica, proveedor, "Shami Villa Maipu Expedicion", fecha))
@@ -141,6 +141,11 @@ namespace _03___sistemas_fabrica
                 columnas = armar_query_columna(columnas, "fecha", false);
 
                 valores = armar_query_valores(valores, fecha, false);
+
+                //nota
+                columnas = armar_query_columna(columnas, "nota", false);
+
+                valores = armar_query_valores(valores, nota, false);
                 //USAR FUNCIONES COMO OBTENER ACUERDO DE PRECIO PARA  TENER INFO EN TIEMPO REAL Y NO RECIBIRLA POR PARAMETRO.
                 int fila_producto;
                 double stock_produccion, stock_expedicion, stock, cantidad_producida, nuevo_stock;
@@ -156,7 +161,7 @@ namespace _03___sistemas_fabrica
 
                     if (productos_proveedor.Rows[fila_producto]["confirmacion_automatica_stock"].ToString() == "1")
                     {
-                        movimientos_stock_producto.cargar_historial_stock(rol_usuario, id, "produccion", cantidad_despachada, "");
+                        movimientos_stock_producto.cargar_historial_stock(rol_usuario, id, "produccion", cantidad_despachada, nota);
 
                         valor_final = id + "-" + producto + "-" + cantidad_despachada + "-" + cantidad_despachada;
 
