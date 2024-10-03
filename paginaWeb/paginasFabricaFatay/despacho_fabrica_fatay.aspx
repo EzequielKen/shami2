@@ -33,6 +33,7 @@
                         <h3>
                             <asp:Label ID="label_cliente" Text="Cliente Seleccionado: N/A" runat="server" />
                         </h3>
+                        <asp:TextBox ID="textbox_nota" CssClass="form-control" TextMode="MultiLine" placeholder="Ingrese sus notas aqui" runat="server" />
 
                     </div>
                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">

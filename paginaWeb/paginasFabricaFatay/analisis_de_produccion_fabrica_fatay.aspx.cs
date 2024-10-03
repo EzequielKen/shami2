@@ -114,9 +114,7 @@ namespace paginaWeb.paginasFabricaFatay
             {
                 Session.Add("fecha_estadistica_inicio", "N/A");
                 Session.Add("fecha_estadistica_fin", "N/A");
-                label_fecha_inicio.Text = "Seleccione fecha inicio.";
-                label_fecha_final.Text = "Seleccione fecha final.";
-               
+                
                 estadisticas_de_pedidos_seleccionados = estadisticas.get_analisis_produccion_fabrica_fatay();
                 Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
                 llenar_dropDownList(estadisticas_de_pedidos_seleccionados);
@@ -124,17 +122,7 @@ namespace paginaWeb.paginasFabricaFatay
             }
 
         }
-        protected void calendario_rango_inicial_SelectionChanged(object sender, EventArgs e)
-        {
-            label_fecha_inicio.Text = "Fecha inicio: " + calendario_rango_inicial.SelectedDate.ToString("dd/MM/yyyy");
-            Session.Add("fecha_estadistica_inicio", calendario_rango_inicial.SelectedDate.ToString("yyyy-MM-dd"));
-        }
-
-        protected void calendario_rango_final_SelectionChanged(object sender, EventArgs e)
-        {
-            label_fecha_final.Text = "Fecha fin: " + calendario_rango_final.SelectedDate.ToString("dd/MM/yyyy");
-            Session.Add("fecha_estadistica_fin", calendario_rango_final.SelectedDate.ToString("yyyy-MM-dd"));
-        }
+       
 
         protected void boton_calcular_Click(object sender, EventArgs e)
         {

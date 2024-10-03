@@ -28,6 +28,7 @@ namespace paginaWeb.paginasFabricaFatay
             historial_produccion.Columns.Add("proveedor", typeof(string));
             historial_produccion.Columns.Add("receptor", typeof(string));
             historial_produccion.Columns.Add("estado", typeof(string));
+            historial_produccion.Columns.Add("nota", typeof(string));
 
         }
 
@@ -47,6 +48,7 @@ namespace paginaWeb.paginasFabricaFatay
                     historial_produccion.Rows[fila_historial]["proveedor"] = historial_produccionBD.Rows[fila]["proveedor"].ToString();
                     historial_produccion.Rows[fila_historial]["receptor"] = historial_produccionBD.Rows[fila]["receptor"].ToString();
                     historial_produccion.Rows[fila_historial]["estado"] = historial_produccionBD.Rows[fila]["estado"].ToString();
+                    historial_produccion.Rows[fila_historial]["nota"] = historial_produccionBD.Rows[fila]["nota"].ToString();
 
                     fila_historial++;
                 }
@@ -105,7 +107,6 @@ namespace paginaWeb.paginasFabricaFatay
             label_proveedor.Text = "";
             label_receptor.Text = "";
             label_estado.Text = "";
-
             cargar_historial();
         }
 

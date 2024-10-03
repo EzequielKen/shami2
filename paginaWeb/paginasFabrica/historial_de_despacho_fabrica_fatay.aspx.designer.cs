@@ -7,11 +7,11 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace paginaWeb.paginasFabricaFatay
+namespace paginaWeb.paginasFabrica
 {
 
 
-    public partial class produccion_fabrica_fatay
+    public partial class historial_de_despacho_fabrica_fatay
     {
 
         /// <summary>
@@ -33,66 +33,66 @@ namespace paginaWeb.paginasFabricaFatay
         protected global::System.Web.UI.WebControls.Label label_fecha;
 
         /// <summary>
-        /// Control textbox_nota.
+        /// Control gridview_historial.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textbox_nota;
+        protected global::System.Web.UI.WebControls.GridView gridview_historial;
 
         /// <summary>
-        /// Control boton_enviar.
+        /// Control label_id.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_enviar;
+        protected global::System.Web.UI.WebControls.Label label_id;
 
         /// <summary>
-        /// Control label_productoSelecionado.
+        /// Control label_fecha_seleccionada.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_productoSelecionado;
+        protected global::System.Web.UI.WebControls.Label label_fecha_seleccionada;
 
         /// <summary>
-        /// Control textbox_busqueda.
+        /// Control label_proveedor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textbox_busqueda;
+        protected global::System.Web.UI.WebControls.Label label_proveedor;
 
         /// <summary>
-        /// Control dropDown_tipo.
+        /// Control label_receptor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropDown_tipo;
+        protected global::System.Web.UI.WebControls.Label label_receptor;
 
         /// <summary>
-        /// Control gridview_productos.
+        /// Control label_estado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_productos;
+        protected global::System.Web.UI.WebControls.Label label_estado;
 
         /// <summary>
-        /// Control gridview_resumen.
+        /// Control gridview_detalle_produccion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gridview_resumen;
+        protected global::System.Web.UI.WebControls.GridView gridview_detalle_produccion;
     }
 }

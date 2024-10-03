@@ -393,6 +393,7 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Producto</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">historial de Solicitud a Fabrica</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/recepcion_de_fabrica_fatay.aspx">Recepcion de Fatay</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -405,6 +406,13 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/analisis_de_ventas.aspx">Analisis de Venta de Producto</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Entrega a Cliente</a></li>
 
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink12" role="button" data-bs-toggle="dropdown" aria-expanded="false">Fabrica de Fatay
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_despacho_fabrica_fatay.aspx">Historial de Despacho de Fabrica de Fatay</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

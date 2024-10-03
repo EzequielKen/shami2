@@ -15,51 +15,6 @@ namespace paginaWeb.paginasFabricaFatay
     {
 
         /// <summary>
-        /// Control calendario_rango_inicial.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar calendario_rango_inicial;
-
-        /// <summary>
-        /// Control label_fecha_inicio.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_fecha_inicio;
-
-        /// <summary>
-        /// Control label_fecha_final.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label_fecha_final;
-
-        /// <summary>
-        /// Control boton_calcular.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_calcular;
-
-        /// <summary>
-        /// Control calendario_rango_final.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar calendario_rango_final;
-
-        /// <summary>
         /// Control dropDown_tipo.
         /// </summary>
         /// <remarks>

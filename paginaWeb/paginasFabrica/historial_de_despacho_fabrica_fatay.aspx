@@ -1,4 +1,4 @@
-﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="historial_de_produccion_fabrica_fatay.aspx.cs" Inherits="paginaWeb.paginasFabricaFatay.historial_de_produccion_fabrica_fatay" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="historial_de_despacho_fabrica_fatay.aspx.cs" Inherits="paginaWeb.paginasFabrica.historial_de_despacho_fabrica_fatay" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -45,9 +45,6 @@
                                 <asp:BoundField HeaderText="estado" DataField="estado" />
                                 <asp:ButtonField HeaderText="PDF" Text="PDF" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="crear_pdf" />
                                 <asp:ButtonField HeaderText="Abrir" Text="Abrir" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="abrir" />
-                                <asp:ButtonField HeaderText="Confirmar" Text="Confirmar" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="confirmar" />
-                                <asp:ButtonField HeaderText="Cancelar" Text="Cancelar" ControlStyle-CssClass="btn btn-danger btn-sm" CommandName="cancelar" />
-                                <asp:BoundField HeaderText="nota" DataField="nota" />
                             </Columns>
                         </asp:GridView>
                     </div>
@@ -73,7 +70,6 @@
                         <h2>
                             <asp:Label ID="label_estado" Text="" runat="server" />
                         </h2>
-
                         <asp:GridView Caption="DETALLE DE PRODUCCION" CaptionAlign="Top" runat="server" ID="gridview_detalle_produccion" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
 
                             <Columns>

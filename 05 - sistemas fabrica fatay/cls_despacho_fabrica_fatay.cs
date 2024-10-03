@@ -92,9 +92,9 @@ namespace _05___sistemas_fabrica_fatay
         }
         private void crear_cuentas_por_pagar(DataTable resumen, DataTable sucursal, string num_pedido, string nota)
         {
-            double valor_remito, precio, multiplicador, cantidad,sub_total;
+            double valor_remito, precio, multiplicador, cantidad, sub_total;
             valor_remito = 0;
-            for (int fila = 0; fila <= resumen.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
             {
                 precio = double.Parse(resumen.Rows[fila]["precio"].ToString());
                 multiplicador = double.Parse(resumen.Rows[fila]["multiplicador"].ToString());
@@ -109,8 +109,8 @@ namespace _05___sistemas_fabrica_fatay
             string columnas = string.Empty;
             string valores = string.Empty;
             //sucursal
-            columnas = funciones.armar_query_columna(columnas,"sucursal",false);
-            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["sucursal"].ToString(),false);
+            columnas = funciones.armar_query_columna(columnas, "sucursal", false);
+            valores = funciones.armar_query_valores(valores, sucursal.Rows[0]["sucursal"].ToString(), false);
             //num_pedido
             columnas = funciones.armar_query_columna(columnas, "num_pedido", false);
             valores = funciones.armar_query_valores(valores, num_pedido, false);
@@ -157,7 +157,7 @@ namespace _05___sistemas_fabrica_fatay
         private void consultar_productos_produccion(string nombre_proveedor)
         {
             productos_produccion = consultas.consultar_productos_produccion_fabrica_fatay(base_de_datos, nombre_proveedor);
-            for (int fila = 0; fila <= productos_produccion.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= productos_produccion.Rows.Count - 1; fila++)
             {
                 string id = productos_produccion.Rows[fila]["id"].ToString();
                 productos_produccion.Rows[fila]["stock"] = stock_productos_fabrica_fatay.get_ultimo_stock_producto_terminado(id);
@@ -192,11 +192,14 @@ namespace _05___sistemas_fabrica_fatay
             }
             return retorno;
         }
-        public void cargar_despacho(DataTable resumen_pedido, string fabrica, string proveedor, string fecha, string rol_usuario, string receptor)
+        public void cargar_despacho(DataTable resumen_pedido, string fabrica, string proveedor, string fecha, string rol_usuario, string receptor, string nota_usuario)
         {
             consultar_productos_proveedor("proveedor_villaMaipu");
-
             string nota = "Despachado a cliente: " + receptor;
+            if (nota_usuario != string.Empty)
+            {
+                 nota = "Despachado a cliente: " + receptor + " | " + nota_usuario;
+            }
             //actualizar_stock_insumos(resumen_pedido);
             string columnas = "";
             string valores = "";
@@ -228,6 +231,10 @@ namespace _05___sistemas_fabrica_fatay
             //fecha
             columnas = armar_query_columna(columnas, "fecha", false);
             valores = armar_query_valores(valores, fecha, false);
+
+            //nota
+            columnas = armar_query_columna(columnas, "nota", false);
+            valores = armar_query_valores(valores, nota, false);
             //USAR FUNCIONES COMO OBTENER ACUERDO DE PRECIO PARA  TENER INFO EN TIEMPO REAL Y NO RECIBIRLA POR PARAMETRO.
             int fila_producto;
             producto_index = 1;
@@ -286,8 +293,8 @@ namespace _05___sistemas_fabrica_fatay
                 pedidos = new cls_sistema_pedidos(usuarioBD, sucursal);
                 crear_dataTable_resumen(resumen_pedido, sucursal.Rows[0]["id"].ToString());
                 nota = "Facturado por Shami Fabrica Fatay";
-                string num_pedido = pedidos.enviar_pedido_automatico(resumen,nota);
-                crear_cuentas_por_pagar(resumen,sucursal,num_pedido,nota);
+                string num_pedido = pedidos.enviar_pedido_automatico(resumen, nota);
+                crear_cuentas_por_pagar(resumen, sucursal, num_pedido, nota);
             }
 
         }

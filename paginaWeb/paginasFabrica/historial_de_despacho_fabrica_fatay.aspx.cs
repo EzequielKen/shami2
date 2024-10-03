@@ -1,4 +1,5 @@
 ﻿using _03___sistemas_fabrica;
+using _05___sistemas_fabrica_fatay;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,25 +10,24 @@ using System.Web.UI.WebControls;
 
 namespace paginaWeb.paginasFabrica
 {
-    public partial class historial_de_produccion : System.Web.UI.Page
+    public partial class historial_de_despacho_fabrica_fatay : System.Web.UI.Page
     {
-
         #region metodos
 
         private void cargar_detalle(string id_historial, string nombre_proveedor)
         {
-            gridview_detalle_produccion.DataSource = historial_produccion_cls.get_detalle_produccion(id_historial, nombre_proveedor);
+            gridview_detalle_produccion.DataSource = historial.get_detalle_produccion(id_historial, nombre_proveedor);
             gridview_detalle_produccion.DataBind();
         }
         private void crear_tabla_historial()
         {
-            historial_produccion = new DataTable();
+            historial_despacho = new DataTable();
 
-            historial_produccion.Columns.Add("id", typeof(string));
-            historial_produccion.Columns.Add("fecha", typeof(string));
-            historial_produccion.Columns.Add("proveedor", typeof(string));
-            historial_produccion.Columns.Add("receptor", typeof(string));
-            historial_produccion.Columns.Add("estado", typeof(string));
+            historial_despacho.Columns.Add("id", typeof(string));
+            historial_despacho.Columns.Add("fecha", typeof(string));
+            historial_despacho.Columns.Add("proveedor", typeof(string));
+            historial_despacho.Columns.Add("receptor", typeof(string));
+            historial_despacho.Columns.Add("estado", typeof(string));
 
         }
 
@@ -36,17 +36,17 @@ namespace paginaWeb.paginasFabrica
             crear_tabla_historial();
             fechaBD = (DateTime)Session["fechaBD"];
             int fila_historial = 0;
-            for (int fila = 0; fila <= historial_produccionBD.Rows.Count - 1; fila++)
+            for (int fila = 0; fila <= historial_despachoBD.Rows.Count - 1; fila++)
             {
-                if (funciones.verificar_fecha_completa(historial_produccionBD.Rows[fila]["fecha"].ToString(), fechaBD.Day.ToString(), fechaBD.Month.ToString(), fechaBD.Year.ToString()))
+                if (funciones.verificar_fecha_completa(historial_despachoBD.Rows[fila]["fecha"].ToString(), fechaBD.Day.ToString(), fechaBD.Month.ToString(), fechaBD.Year.ToString()))
                 {
-                    historial_produccion.Rows.Add();
+                    historial_despacho.Rows.Add();
 
-                    historial_produccion.Rows[fila_historial]["id"] = historial_produccionBD.Rows[fila]["id"].ToString();
-                    historial_produccion.Rows[fila_historial]["fecha"] = historial_produccionBD.Rows[fila]["fecha"].ToString();
-                    historial_produccion.Rows[fila_historial]["proveedor"] = historial_produccionBD.Rows[fila]["proveedor"].ToString();
-                    historial_produccion.Rows[fila_historial]["receptor"] = historial_produccionBD.Rows[fila]["receptor"].ToString();
-                    historial_produccion.Rows[fila_historial]["estado"] = historial_produccionBD.Rows[fila]["estado"].ToString();
+                    historial_despacho.Rows[fila_historial]["id"] = historial_despachoBD.Rows[fila]["id"].ToString();
+                    historial_despacho.Rows[fila_historial]["fecha"] = historial_despachoBD.Rows[fila]["fecha"].ToString();
+                    historial_despacho.Rows[fila_historial]["proveedor"] = historial_despachoBD.Rows[fila]["proveedor"].ToString();
+                    historial_despacho.Rows[fila_historial]["receptor"] = historial_despachoBD.Rows[fila]["receptor"].ToString();
+                    historial_despacho.Rows[fila_historial]["estado"] = historial_despachoBD.Rows[fila]["estado"].ToString();
 
                     fila_historial++;
                 }
@@ -55,7 +55,7 @@ namespace paginaWeb.paginasFabrica
         private void cargar_historial()
         {
             llenar_tabla_historial();
-            gridview_historial.DataSource = historial_produccion;
+            gridview_historial.DataSource = historial_despacho;
             gridview_historial.DataBind();
         }
         #endregion
@@ -63,15 +63,15 @@ namespace paginaWeb.paginasFabrica
         /// //////////////////////////////////////////////////////////////////////////////////////////////////////
         /// </summary>
         #region atributos
-        cls_historial_de_produccion historial_produccion_cls;
+        cls_historial_de_despacho historial;
         cls_funciones funciones = new cls_funciones();
         cls_landing_page landing;
         DataTable usuariosBD;
         DataTable proveedorBD;
         DataTable tipo_usuarioBD;
 
-        DataTable historial_produccionBD;
-        DataTable historial_produccion;
+        DataTable historial_despachoBD;
+        DataTable historial_despacho;
         DateTime fechaBD;
 
         #endregion
@@ -85,24 +85,8 @@ namespace paginaWeb.paginasFabrica
             if (landing.verificar_si_registro("2") ||
                 "Shami Villa Maipu Expedicion" != tipo_usuarioBD.Rows[0]["rol"].ToString())
             {
-                historial_produccion_cls = new cls_historial_de_produccion(usuariosBD);
-                if ("Shami Villa Maipu Produccion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
-                {
-                    //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), "Shami Villa Maipu Expedicion");
-                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion();
-
-                }
-                else if ("Shami Villa Maipu Expedicion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
-                {
-                    //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), "Shami Villa Maipu Expedicion");
-                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion_segun_receptor(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString());
-
-                }
-                else
-                {
-                    //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), "Shami Villa Maipu Produccion", tipo_usuarioBD.Rows[0]["rol"].ToString());
-                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion();
-                }
+                historial = new cls_historial_de_despacho(usuariosBD);
+                historial_despachoBD = historial.get_todo_historial_de_despacho();
                 if (!IsPostBack)
                 {
 
@@ -129,11 +113,6 @@ namespace paginaWeb.paginasFabrica
             gridview_detalle_produccion.DataSource = null;
             gridview_detalle_produccion.DataBind();
             cargar_historial();
-            label_id.Text = string.Empty;
-            label_fecha_seleccionada.Text = string.Empty;
-            label_proveedor.Text = string.Empty;
-            label_receptor.Text = string.Empty;
-            label_estado.Text = string.Empty;
         }
 
 
@@ -153,7 +132,7 @@ namespace paginaWeb.paginasFabrica
 
                 byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
 
-                historial_produccion_cls.crear_pdf_historial_produccion(ruta_archivo, imgdata, id, proveedorBD.Rows[0]["nombre_en_BD"].ToString()); //crear_pdf();
+                historial.crear_pdf_historial_produccion(ruta_archivo, imgdata, id, proveedorBD.Rows[0]["nombre_en_BD"].ToString()); //crear_pdf();
 
                 //           Response.Redirect("~/archivo.pdf");
                 string strUrl = "/paginasFabrica/pdf/" + id_pedido;
@@ -170,7 +149,7 @@ namespace paginaWeb.paginasFabrica
                 label_proveedor.Text = "Despacha: " + gridview_historial.Rows[int.Parse(gridview_historial_index)].Cells[2].Text;
                 label_receptor.Text = "Recibe: " + gridview_historial.Rows[int.Parse(gridview_historial_index)].Cells[3].Text;
                 label_estado.Text = "Estado: " + gridview_historial.Rows[int.Parse(gridview_historial_index)].Cells[4].Text;
-                cargar_detalle(id, proveedorBD.Rows[0]["nombre_en_BD"].ToString());
+                cargar_detalle(id, "proveedor_villaMaipu");
             }
             else if (e.CommandName == "confirmar")
             {
@@ -179,24 +158,24 @@ namespace paginaWeb.paginasFabrica
                 string id = gridview_historial.Rows[int.Parse(gridview_historial_index)].Cells[0].Text;
 
                 Session.Add("id_historial", id);
-                Response.Redirect("/paginasFabrica/recepcion_de_produccion.aspx", false);
+                Response.Redirect("/paginasFabrica/recepcion_de_despacho_fatay.aspx", false);
             }
             else if (e.CommandName == "cancelar")
             {
                 string gridview_historial_index = e.CommandArgument.ToString();
 
                 string id = gridview_historial.Rows[int.Parse(gridview_historial_index)].Cells[0].Text;
-                historial_produccion_cls.cancelar_produccion(id);
+                historial.cancelar_produccion(id);
                 if ("Shami Villa Maipu Produccion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
                 {
                     //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuarioBD.Rows[0]["rol"].ToString(), "Shami Villa Maipu Expedicion");
-                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion_segun_fabrica(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
+                    historial_despachoBD = historial.get_todo_historial_de_produccion_segun_fabrica(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
 
                 }
                 else
                 {
                     //historial_produccionBD = historial_produccion_cls.get_historial_produccion_proveedor_cliente(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), "Shami Villa Maipu Produccion", tipo_usuarioBD.Rows[0]["rol"].ToString());
-                    historial_produccionBD = historial_produccion_cls.get_todo_historial_de_produccion();
+                    historial_despachoBD = historial.get_todo_historial_de_despacho();
                 }
                 cargar_historial();
             }
@@ -204,24 +183,7 @@ namespace paginaWeb.paginasFabrica
 
         protected void gridview_historial_DataBound(object sender, EventArgs e)
         {
-            for (int fila = 0; fila <= gridview_historial.Rows.Count - 1; fila++)
-            {
-                if ("Despachado" == gridview_historial.Rows[fila].Cells[4].Text && "Shami Villa Maipu Expedicion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
-                {
-                    gridview_historial.Rows[fila].Cells[7].Controls[0].Visible = true;
-                }
 
-                else if ("Recibido" == gridview_historial.Rows[fila].Cells[4].Text || "Shami Villa Maipu Produccion" == tipo_usuarioBD.Rows[0]["rol"].ToString())
-                {
-                    gridview_historial.Rows[fila].Cells[7].Controls[0].Visible = false;
-                }
-
-                if ("Recibido" == gridview_historial.Rows[fila].Cells[4].Text)
-                {
-                    gridview_historial.Rows[fila].Cells[8].Controls[0].Visible = false;
-                }
-
-            }
         }
     }
 }

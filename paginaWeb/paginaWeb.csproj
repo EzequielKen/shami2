@@ -248,6 +248,7 @@
     <Content Include="paginasFabrica\analisis_de_produccion.aspx" />
     <Content Include="paginasFabrica\confirmar_conteo_stock.aspx" />
     <Content Include="paginasFabrica\conteo_de_stock.aspx" />
+    <Content Include="paginasFabrica\historial_de_despacho_fabrica_fatay.aspx" />
     <Content Include="paginasFabrica\historial_temperatura.aspx" />
     <Content Include="paginasFabrica\landing_page_local.aspx" />
     <Content Include="paginasFabrica\objetivo_de_produccion.aspx" />
@@ -547,6 +548,13 @@
     </Compile>
     <Compile Include="paginasFabrica\conteo_de_stock.aspx.designer.cs">
       <DependentUpon>conteo_de_stock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_despacho_fabrica_fatay.aspx.cs">
+      <DependentUpon>historial_de_despacho_fabrica_fatay.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\historial_de_despacho_fabrica_fatay.aspx.designer.cs">
+      <DependentUpon>historial_de_despacho_fabrica_fatay.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\historial_temperatura.aspx.cs">
       <DependentUpon>historial_temperatura.aspx</DependentUpon>
