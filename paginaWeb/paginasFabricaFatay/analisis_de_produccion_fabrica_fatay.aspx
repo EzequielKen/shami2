@@ -13,11 +13,17 @@
                         <asp:DropDownList runat="server" CssClass="form-select" ID="dropDown_tipo" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                         </asp:DropDownList>
                     </div>
+                    <h4>
+                        <asp:Label ID="label_fecha_mes_pasado" Text="Fechas mes pasado: " runat="server" />
+                    </h4>
+                    <h4>
+                        <asp:Label ID="label_fecha_produccion" Text="Fechas mes pasado: " runat="server" />
+                    </h4>
                     <asp:GridView ID="gridView_productos" runat="server" Caption="Estadisticas" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
                             <asp:BoundField HeaderText="producto" DataField="producto" />
-                            <asp:BoundField HeaderText="cantidad pedida" DataField="cantidad_pedida" />
+                            <asp:BoundField HeaderText="cantidad edida mes pasado" DataField="cantidad_pedida" />
                             <asp:BoundField HeaderText="20% incremento" DataField="incremento" />
                             <asp:BoundField HeaderText="objetivo semanal" DataField="objetivo" />
                             <asp:BoundField HeaderText="produccion semanal" DataField="produccion_semanal" />

@@ -119,6 +119,28 @@ namespace paginaWeb.paginasFabricaFatay
                 Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
                 llenar_dropDownList(estadisticas_de_pedidos_seleccionados);
                 cargar_resumen();
+
+                DateTime fechaActual = DateTime.Now;
+
+                DateTime primerDiaMesActual = new DateTime(fechaActual.Year, fechaActual.Month, 1);
+
+                DateTime primerDiaMesAnterior = primerDiaMesActual.AddMonths(-1);
+                DateTime ultimaFechaMesAnterior = primerDiaMesActual.AddDays(-1);
+                string fecha_inicio = primerDiaMesAnterior.ToString("dd/MM/yyyy");
+                string fecha_fin = ultimaFechaMesAnterior.ToString("dd/MM/yyyy");
+
+                label_fecha_mes_pasado.Text = "Fechas mes pasado: desde " + fecha_inicio+ " hasta " + fecha_fin;
+
+                // Obtener el día actual de la semana
+                DayOfWeek diaActual = DateTime.Now.DayOfWeek;
+
+                // Convertir el día en número, ajustando para que Lunes sea 0 y Domingo sea 6
+                int numeroDiaSemana = ((int)diaActual + 6) % 7;
+
+                DateTime fecha_semana_actual = DateTime.Now;
+                DateTime fecha_semana_incio = fecha_semana_actual.AddDays(-numeroDiaSemana);
+
+                label_fecha_produccion.Text = "Fechas produccion semanal: desde " + fecha_semana_incio.ToString("dd/MM/yyyy") + " hasta " + fecha_semana_actual.ToString("dd/MM/yyyy");
             }
 
         }
