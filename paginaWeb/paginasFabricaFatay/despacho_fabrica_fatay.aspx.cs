@@ -272,14 +272,22 @@ namespace paginaWeb.paginasFabricaFatay
             label_productoSelecionado.Text = gridview_productos.SelectedRow.Cells[1].Text;
 
             //Buscas el control <cubicandolo por fila y columna, y lo agregas a un textbox  
-            TextBox txtValor = (gridview_productos.SelectedRow.Cells[3].FindControl("texbox_cantidad") as TextBox);
+            TextBox txtValor = (gridview_productos.SelectedRow.Cells[4].FindControl("texbox_cantidad") as TextBox);
             double cantidad;
+            double stock = double.Parse(gridview_productos.SelectedRow.Cells[2].Text);
             if (double.TryParse(txtValor.Text.Replace(",", "."), out cantidad))
             {
-
-                cargar_producto_en_resumen(cantidad.ToString());
-                cargar_productos();
-
+                if (cantidad <= stock)
+                {
+                    label_alerta.Visible = false;
+                    cargar_producto_en_resumen(cantidad.ToString());
+                    cargar_productos();
+                }
+                else
+                {
+                    label_alerta.Text = "Para despachar un producto debe ingresar una cantidad menor o iguala a su stock.";
+                    label_alerta.Visible = true;
+                }
             }
         }
 

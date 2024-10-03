@@ -69,6 +69,15 @@ namespace paginaWeb.paginasFabricaFatay
         protected global::System.Web.UI.WebControls.Button boton_enviar;
 
         /// <summary>
+        /// Control label_alerta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_alerta;
+
+        /// <summary>
         /// Control label_productoSelecionado.
         /// </summary>
         /// <remarks>

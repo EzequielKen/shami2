@@ -2304,6 +2304,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_produccion_semanal_fabrica_fatay_segun_rango_de_fecha(string fecha_inicio, string fecha_fin)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".produccion_diaria WHERE activa='1'and fabrica='Fabrica Fatay Callao' AND (fecha >= '" + fecha_inicio + "' AND fecha < DATE_ADD('" + fecha_fin + "', INTERVAL 1 DAY))";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         #endregion
 
         #region consultas fabrica a proveedor

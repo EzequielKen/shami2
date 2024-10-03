@@ -50,8 +50,10 @@
                         <asp:BoundField HeaderText="producto" DataField="producto" />
                         <asp:BoundField HeaderText="cantidad pedida" DataField="cantidad_pedida" />
                         <asp:BoundField HeaderText="20% incremento" DataField="incremento" />
+                        <asp:BoundField HeaderText="objetivo semanal" DataField="objetivo" />
+                        <asp:BoundField HeaderText="produccion semanal" DataField="produccion_semanal"/>
+                        <asp:BoundField HeaderText="produccion pendiente" DataField="produccion_pendiente"/>
                         <asp:BoundField HeaderText="stock de fabrica" DataField="stock" />
-                        <asp:BoundField HeaderText="objetivo" DataField="objetivo" />
                         <asp:BoundField HeaderText="presentacion" DataField="presentacion" />
                     </Columns>
                 </asp:GridView>

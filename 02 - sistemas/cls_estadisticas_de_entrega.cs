@@ -52,6 +52,7 @@ namespace _02___sistemas
         DataTable pedido_de_insumos;
         List<DataTable> lista_pedidos_sucursales = new List<DataTable>();
         DataTable acuerdo_de_precios;
+        DataTable produccion_semanal;
         #endregion
 
         #region PDF
@@ -100,6 +101,8 @@ namespace _02___sistemas
             resumen.Columns.Add("venta_real", typeof(string));
             resumen.Columns.Add("pincho", typeof(string));
             resumen.Columns.Add("cantidad_pincho", typeof(string));
+            resumen.Columns.Add("produccion_semanal", typeof(string));
+            resumen.Columns.Add("produccion_pendiente", typeof(string));
         }
         private void crear_resumen_fecha()
         {
@@ -122,7 +125,8 @@ namespace _02___sistemas
         #region analisis de produccion
         private void calcular_incremento()
         {
-            double cantidad_pedida, stock, incremento, objetivo;
+            double cantidad_pedida, stock, incremento, objetivo, semanas_del_mes;
+            double produccion_semanal, produccion_pendiente;
             for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
             {
 
@@ -130,11 +134,36 @@ namespace _02___sistemas
                 incremento = (20 * cantidad_pedida) / 100;
                 incremento = incremento + cantidad_pedida;
                 resumen.Rows[fila]["incremento"] = Math.Ceiling(incremento);
-                stock = double.Parse(resumen.Rows[fila]["stock"].ToString());
-                objetivo = incremento - stock;
+                semanas_del_mes = ObtenerSemanasDelMesActual();
+                objetivo = incremento / semanas_del_mes;
+                resumen.Rows[fila]["objetivo"] = Math.Ceiling(objetivo); 
                 resumen.Rows[fila]["objetivo"] = Math.Ceiling(objetivo);
+
+                produccion_semanal = double.Parse(resumen.Rows[fila]["produccion_semanal"].ToString());
+                produccion_pendiente = objetivo - produccion_semanal;
+                resumen.Rows[fila]["produccion_pendiente"] = Math.Ceiling(produccion_pendiente);
             }
         }
+        private double ObtenerSemanasDelMesActual()
+        {
+            // Obtener la fecha actual
+            DateTime fechaActual = DateTime.Now;
+
+            // Obtener el primer día del mes actual
+            DateTime primerDiaMes = new DateTime(fechaActual.Year, fechaActual.Month, 1);
+
+            // Obtener el último día del mes actual
+            DateTime ultimoDiaMes = primerDiaMes.AddMonths(1).AddDays(-1);
+
+            // Calcular la cantidad de días en el mes actual
+            double diasDelMes = (ultimoDiaMes - primerDiaMes).Days + 1;
+
+            // Calcular el número de semanas (considerando semanas completas de 7 días)
+            double semanasDelMes = (double)Math.Ceiling(diasDelMes / 7.0);
+
+            return semanasDelMes;
+        }
+
         private void calcular_analisis_de_producccion()
         {
             crear_tabla_resumen();
@@ -191,6 +220,9 @@ namespace _02___sistemas
                     resumen.Rows[fila_resumen]["presentacion"] = productos_seleccionados.Rows[fila_producto]["unidad_de_medida_local"].ToString();
                     resumen.Rows[fila_resumen]["proveedor"] = proveedor;
                     resumen.Rows[fila_resumen]["stock"] = stock_producto_terminado.get_ultimo_stock_producto_terminado(productos_seleccionados.Rows[fila_producto]["id"].ToString());
+                    //", 
+                    resumen.Rows[fila_resumen]["produccion_semanal"] = obtener_produccion_semanal(productos_seleccionados.Rows[fila_producto]["id"].ToString());
+
                 }
                 else
                 {
@@ -198,6 +230,26 @@ namespace _02___sistemas
                     resumen.Rows[fila_resumen]["cantidad_pedida"] = cantidad_pedida + double.Parse(funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 4));
                 }
             }
+        }
+        private string obtener_produccion_semanal(string id)
+        {
+            double produccion_diaria;
+            double produccion_total=0;
+            for (int fila = 0; fila <= produccion_semanal.Rows.Count - 1; fila++)
+            {
+                for (int columna = produccion_semanal.Columns["producto_1"].Ordinal; columna <= produccion_semanal.Columns.Count - 1; columna++)
+                {
+                    if (funciones.IsNotDBNull(produccion_semanal.Rows[fila][columna]))
+                    {
+                        if (id == funciones.obtener_dato(produccion_semanal.Rows[fila][columna].ToString(),1))
+                        {
+                            produccion_diaria = double.Parse(funciones.obtener_dato(produccion_semanal.Rows[fila][columna].ToString(), 4));
+                            produccion_total = produccion_total + produccion_diaria;
+                        }
+                    }
+                }
+            }
+            return produccion_total.ToString();
         }
         #endregion
         #region calculo de estadisticas
@@ -226,7 +278,7 @@ namespace _02___sistemas
                         id_producto = funciones.obtener_dato(pedidos.Rows[fila][columna].ToString(), 2);
                         if (pedidos.Rows[fila]["proveedor"].ToString() == "proveedor_villaMaipu")
                         {
-                            cargar_estadistica(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4,legado);
+                            cargar_estadistica(fila, columna, id_producto, productos_terminados, "proveedor_villaMaipu", pedidos, 4, legado);
                         }
                         else if (pedidos.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
                         {
@@ -378,20 +430,20 @@ namespace _02___sistemas
                             {
                                 double cant_entregada = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
                                 double venta_real = double.Parse(resumen.Rows[filas]["venta_real"].ToString());
-                                double precio_venta = Math.Round(venta_real/ cant_entregada, 2);
+                                double precio_venta = Math.Round(venta_real / cant_entregada, 2);
 
 
                                 double equivalencia_pincho = double.Parse(productos_terminados.Rows[fila_producto]["equivalencia_pincho"].ToString());
                                 cantidad_entrega = double.Parse(resumen.Rows[filas]["cantidad_entregada"].ToString());
                                 cantidad_pedida = cantidad_pedida * equivalencia_pincho;
-                                
+
                                 resumen.Rows[filas]["cantidad_kilos"] = cantidad_pedida.ToString() + "Kg";
-                                resumen.Rows[filas]["venta_teorica"] = cantidad_pedida*precio_venta;
+                                resumen.Rows[filas]["venta_teorica"] = cantidad_pedida * precio_venta;
 
                                 porcentaje_satisfaccion = (cantidad_entrega * 100) / cantidad_pedida;
                                 porcentaje_satisfaccion = Math.Round(porcentaje_satisfaccion, 2);
                                 resumen.Rows[filas]["porcentaje_satisfaccion"] = porcentaje_satisfaccion.ToString() + "%";
-                                
+
 
                                 string cantidad_pincho = resumen.Rows[filas]["cantidad_pincho"].ToString();
                                 string cantidad_entregada = resumen.Rows[filas]["cantidad_entregada"].ToString();
@@ -486,13 +538,13 @@ namespace _02___sistemas
         }
         private void cargar_estadistica(int fila, int columna, string id_producto, DataTable productos_seleccionados, string proveedor, DataTable pedido, int posicion, string legado)
         {
-            
+
             int fila_resumen = 0;
             int fila_producto;
             double cantidad_pedida, cantidad_entregada, venta_teorica, venta_real, precio, venta_teorica_historico, venta_real_historico;
             fila_producto = funciones.buscar_fila_por_id(id_producto, productos_seleccionados);
             precio = double.Parse(acuerdo_de_precios.Rows[0]["producto_" + id_producto.ToString()].ToString());
-            if (id_producto == "74" && precio!=1360)
+            if (id_producto == "74" && precio != 1360)
             {
                 string strop = "";
             }
@@ -544,7 +596,7 @@ namespace _02___sistemas
                                     {
                                         double equivalencia_pincho = double.Parse(productos_seleccionados.Rows[fila_producto]["equivalencia_pincho"].ToString());
                                         double cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
-                                        cantidad_pincho = Math.Round(cantidad_pincho + (cantidad_entregada / equivalencia_pincho),2);
+                                        cantidad_pincho = Math.Round(cantidad_pincho + (cantidad_entregada / equivalencia_pincho), 2);
                                         resumen.Rows[fila_resumen]["pincho"] = "si";
                                         resumen.Rows[fila_resumen]["cantidad_pincho"] = cantidad_pincho.ToString();
                                     }
@@ -590,7 +642,7 @@ namespace _02___sistemas
                             {
                                 if (productos_seleccionados.Rows[fila_producto]["pincho"].ToString() == "si")
                                 {
-                                    double cantidad_pincho ;
+                                    double cantidad_pincho;
                                     if (legado == "si")
                                     {
                                         double equivalencia_pincho = double.Parse(productos_seleccionados.Rows[fila_producto]["equivalencia_pincho"].ToString());
@@ -686,6 +738,19 @@ namespace _02___sistemas
         {
             sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
         }
+        private void consultar_produccion_semanal()
+        {
+            // Obtener el día actual de la semana
+            DayOfWeek diaActual = DateTime.Now.DayOfWeek;
+
+            // Convertir el día en número, ajustando para que Lunes sea 0 y Domingo sea 6
+            int numeroDiaSemana = ((int)diaActual + 6) % 7;
+
+            DateTime fecha_actual = DateTime.Now;
+            DateTime fecha_incio = fecha_actual.AddDays(-numeroDiaSemana);
+
+            produccion_semanal = consultas.consultar_produccion_semanal_fabrica_fatay_segun_rango_de_fecha(fecha_incio.ToString("yyyy-MM-dd"), fecha_actual.ToString("yyyy-MM-dd"));
+        }
         #endregion
 
         #region metodos get/set
@@ -717,11 +782,21 @@ namespace _02___sistemas
             return resumen;
         }
 
-        public DataTable get_analisis_produccion_fabrica_fatay(string fecha_inicio, string fecha_fin)
+        public DataTable get_analisis_produccion_fabrica_fatay()
         {
+            //2024-10-2
+            DateTime fechaActual = DateTime.Now;
+
+            DateTime primerDiaMesActual = new DateTime(fechaActual.Year, fechaActual.Month, 1);
+
+            DateTime primerDiaMesAnterior = primerDiaMesActual.AddMonths(-1);
+            DateTime ultimaFechaMesAnterior = primerDiaMesActual.AddDays(-1);
+            string fecha_inicio = primerDiaMesAnterior.ToString("yyyy-MM-dd");
+            string fecha_fin = ultimaFechaMesAnterior.ToString("yyyy-MM-dd");
             consultar_sucursal();
 
             //consultar_insumos_fabrica();
+            consultar_produccion_semanal();
             consultar_productos_terminados_fabrica_fatay();
             consultar_pedidos_segun_sucursal(sucursales, fecha_inicio, fecha_fin);
             calcular_analisis_de_producccion();

@@ -24,6 +24,8 @@ namespace paginaWeb.paginasFabricaFatay
             resumen.Columns.Add("stock", typeof(string));
             resumen.Columns.Add("incremento", typeof(string));
             resumen.Columns.Add("objetivo", typeof(string));
+            resumen.Columns.Add("produccion_semanal", typeof(string));
+            resumen.Columns.Add("produccion_pendiente", typeof(string));
         }
         private void llenar_tabla_resumen()
         {
@@ -45,6 +47,8 @@ namespace paginaWeb.paginasFabricaFatay
                     resumen.Rows[fila_resumen]["stock"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["stock"].ToString();
                     resumen.Rows[fila_resumen]["incremento"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["incremento"].ToString();
                     resumen.Rows[fila_resumen]["objetivo"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["objetivo"].ToString();
+                    resumen.Rows[fila_resumen]["produccion_semanal"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["produccion_semanal"].ToString();
+                    resumen.Rows[fila_resumen]["produccion_pendiente"] = estadisticas_de_pedidos_seleccionados.Rows[fila]["produccion_pendiente"].ToString();
                 }
             }
         }
@@ -112,6 +116,11 @@ namespace paginaWeb.paginasFabricaFatay
                 Session.Add("fecha_estadistica_fin", "N/A");
                 label_fecha_inicio.Text = "Seleccione fecha inicio.";
                 label_fecha_final.Text = "Seleccione fecha final.";
+               
+                estadisticas_de_pedidos_seleccionados = estadisticas.get_analisis_produccion_fabrica_fatay();
+                Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
+                llenar_dropDownList(estadisticas_de_pedidos_seleccionados);
+                cargar_resumen();
             }
 
         }
@@ -133,10 +142,7 @@ namespace paginaWeb.paginasFabricaFatay
                 Session["fecha_estadistica_fin"].ToString() != "N/A")
             {
 
-                estadisticas_de_pedidos_seleccionados = estadisticas.get_analisis_produccion_fabrica_fatay(Session["fecha_estadistica_inicio"].ToString(), Session["fecha_estadistica_fin"].ToString());
-                Session.Add("estadisticas_de_pedidos", estadisticas_de_pedidos_seleccionados);
-                llenar_dropDownList(estadisticas_de_pedidos_seleccionados);
-                cargar_resumen();
+
             }
         }
 
