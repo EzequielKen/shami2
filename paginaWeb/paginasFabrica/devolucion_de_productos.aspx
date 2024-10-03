@@ -31,7 +31,7 @@
                                     <div class="col">
                                         <asp:Label Text="Cargar devolucion a stock" CssClass=" form-label" runat="server" />
                                         <div class=" input-group">
-                                            <asp:Button ID="boton_enviar" Text="Enviar a" CssClass="btn btn-primary" OnClick="boton_enviar_Click" runat="server" />
+                                            <asp:Button ID="boton_enviar" Text="Cargar Devolucion" CssClass="btn btn-primary" OnClick="boton_enviar_Click" runat="server" />
                                         </div>
 
                                     </div>
