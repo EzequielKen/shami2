@@ -26,15 +26,12 @@
                                             <asp:TextBox ID="textbox_busqueda" runat="server" AutoPostBack="true" CssClass="form-control" OnTextChanged="textbox_busqueda_TextChanged" />
                                             <asp:Button Text="Buscar" runat="server" CssClass="form-control btn btn-primary" />
                                         </div>
+                                        <asp:TextBox ID="textbox_nota" CssClass="form-control" TextMode="MultiLine" placeholder="Ingrese sus notas aqui" runat="server" />
                                     </div>
                                     <div class="col">
                                         <asp:Label Text="Cargar devolucion a stock" CssClass=" form-label" runat="server" />
                                         <div class=" input-group">
                                             <asp:Button ID="boton_enviar" Text="Enviar a" CssClass="btn btn-primary" OnClick="boton_enviar_Click" runat="server" />
-                                            <asp:DropDownList ID="DropDownList_enviar_a" runat="server" CssClass="form-select" OnSelectedIndexChanged="DropDownList_enviar_a_SelectedIndexChanged" AutoPostBack="true">
-                                                <asp:ListItem Text="Stock" />
-                                                <asp:ListItem Text="Desperdicio" />
-                                            </asp:DropDownList>
                                         </div>
 
                                     </div>

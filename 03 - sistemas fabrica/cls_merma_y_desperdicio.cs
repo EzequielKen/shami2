@@ -30,12 +30,13 @@ namespace _03___sistemas_fabrica
                 base_de_datos = ConfigurationManager.AppSettings["base_de_datos_desarrollo"];
             }
             consultas = new cls_consultas_Mysql(servidor, puerto, usuario_dato, contraseña_BD, base_de_datos);
-            movimientos_stock_producto = new cls_movimientos_stock_producto(usuario_BD);
+            stock_producto_terminado = new cls_stock_producto_terminado(usuario_BD);
         }
 
         #region atributos
         cls_consultas_Mysql consultas;
-        cls_movimientos_stock_producto movimientos_stock_producto;
+        cls_stock_producto_terminado stock_producto_terminado;
+        
         cls_funciones funciones = new cls_funciones();
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
@@ -45,176 +46,7 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region carga a base de datos
-        public void cargar_desperdicio_desde_devolucion(DataTable productos_proveedorBD ,string rol_usuario)
-        {
-            string id, producto, cantidad_desperdicio, unidad, dato;
-            string columnas = "";
-            string valores = "";
-
-            columnas = funciones.armar_query_columna(columnas, "fabrica", false);
-            valores = funciones.armar_query_valores(valores, "proveedor_villaMaipu", false);
-
-            columnas = funciones.armar_query_columna(columnas, "fecha", false);
-            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
-
-            columnas = funciones.armar_query_columna(columnas, "tipo", false);
-            valores = funciones.armar_query_valores(valores, "Desperdicio", false);
-            int index = 1;
-            for (int fila = 0; fila < productos_proveedorBD.Rows.Count - 1; fila++)
-            {
-                if (productos_proveedorBD.Rows[fila]["cantidad_devuelta"].ToString() != "N/A")
-                {
-                    id = productos_proveedorBD.Rows[fila]["id"].ToString();
-                    producto = productos_proveedorBD.Rows[fila]["producto"].ToString();
-                    cantidad_desperdicio = productos_proveedorBD.Rows[fila]["cantidad_devuelta"].ToString();
-                    unidad = productos_proveedorBD.Rows[fila]["unidad_de_medida_fabrica"].ToString();
-
-                    dato = id + "-" + producto + "-" + cantidad_desperdicio + "-" + unidad;
-                    
-                    movimientos_stock_producto.cargar_resta_stock(rol_usuario, id, "desperdicio", cantidad_desperdicio, "N/A");
-
-                    columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), false);
-                    valores = funciones.armar_query_valores(valores, dato, false);
-
-                    index++;
-                }
-
-            }
-            int ultima_fila = productos_proveedorBD.Rows.Count - 1;
-
-            if (productos_proveedorBD.Rows[ultima_fila]["cantidad_desperdicio"].ToString() != "N/A")
-            {
-                id = productos_proveedorBD.Rows[ultima_fila]["id"].ToString();
-                producto = productos_proveedorBD.Rows[ultima_fila]["producto"].ToString();
-                cantidad_desperdicio = productos_proveedorBD.Rows[ultima_fila]["cantidad_devuelta"].ToString();
-                unidad = productos_proveedorBD.Rows[ultima_fila]["unidad_de_medida_fabrica"].ToString();
-
-                dato = id + "-" + producto + "-" + cantidad_desperdicio + "-" + unidad;
-               
-                movimientos_stock_producto.cargar_resta_stock(rol_usuario, id, "desperdicio", cantidad_desperdicio,"N/A");
-
-                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
-                valores = funciones.armar_query_valores(valores, dato, true);
-            }
-            else
-            {
-                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
-                valores = funciones.armar_query_valores(valores, "N/A", true);
-            }
-
-            consultas.insertar_en_tabla(base_de_datos, "merma_y_desperdicio", columnas, valores);
-        }
-        public void cargar_desperdicio(string nombre_fabrica, DataTable productos_proveedorBD)
-        {
-            string id, producto, cantidad_desperdicio, unidad, dato;
-            string columnas = "";
-            string valores = "";
-           
-            columnas = funciones.armar_query_columna(columnas, "fabrica", false);
-            valores = funciones.armar_query_valores(valores, nombre_fabrica, false);
-
-            columnas = funciones.armar_query_columna(columnas, "fecha", false);
-            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
-
-            columnas = funciones.armar_query_columna(columnas, "tipo", false);
-            valores = funciones.armar_query_valores(valores, "Desperdicio", false);
-            int index = 1;
-            for (int fila = 0; fila < productos_proveedorBD.Rows.Count - 1; fila++)
-            {
-                if (productos_proveedorBD.Rows[fila]["cantidad_desperdicio"].ToString() != "N/A")
-                {
-                    id = productos_proveedorBD.Rows[fila]["id"].ToString();
-                    producto = productos_proveedorBD.Rows[fila]["producto"].ToString();
-                    cantidad_desperdicio = productos_proveedorBD.Rows[fila]["cantidad_desperdicio"].ToString();
-                    unidad = productos_proveedorBD.Rows[fila]["unidad"].ToString(); 
-
-                    dato = id + "-" + producto + "-" + cantidad_desperdicio + "-" + unidad;
-
-                    columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), false);
-                    valores = funciones.armar_query_valores(valores, dato, false);
-
-                    index++;
-                }
-
-            }
-            int ultima_fila = productos_proveedorBD.Rows.Count - 1;
-
-            if (productos_proveedorBD.Rows[ultima_fila]["cantidad_desperdicio"].ToString() != "N/A")
-            {
-                id = productos_proveedorBD.Rows[ultima_fila]["id"].ToString();
-                producto = productos_proveedorBD.Rows[ultima_fila]["producto"].ToString();
-                cantidad_desperdicio = productos_proveedorBD.Rows[ultima_fila]["cantidad_desperdicio"].ToString();
-                unidad = productos_proveedorBD.Rows[ultima_fila]["unidad"].ToString();
-
-                dato = id + "-" + producto + "-" + cantidad_desperdicio + "-" + unidad;
-
-                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
-                valores = funciones.armar_query_valores(valores, dato, true);
-            }
-            else
-            {
-                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
-                valores = funciones.armar_query_valores(valores, "N/A", true);
-            }
-
-            consultas.insertar_en_tabla(base_de_datos, "merma_y_desperdicio", columnas, valores);
-        }
-        public void cargar_merma(string nombre_fabrica, DataTable insumosBD)
-        {
-            string id, producto, cantidad_merma, unidad, dato;
-            string columnas = "";
-            string valores = "";
-
-            columnas = funciones.armar_query_columna(columnas, "fabrica", false);
-            valores = funciones.armar_query_valores(valores, nombre_fabrica, false);
-
-            columnas = funciones.armar_query_columna(columnas, "fecha", false);
-            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
-
-            columnas = funciones.armar_query_columna(columnas, "tipo", false);
-            valores = funciones.armar_query_valores(valores, "Merma", false);
-            int index = 1;
-            for (int fila = 0; fila < insumosBD.Rows.Count - 1; fila++)
-            {
-                if (insumosBD.Rows[fila]["cantidad_merma"].ToString() != "N/A")
-                {
-                    id = insumosBD.Rows[fila]["id"].ToString();
-                    producto = insumosBD.Rows[fila]["producto"].ToString();
-                    cantidad_merma = insumosBD.Rows[fila]["cantidad_merma"].ToString();
-                    unidad = insumosBD.Rows[fila]["unidad"].ToString(); 
-
-                    dato = id + "-" + producto + "-" + cantidad_merma + "-" + unidad;
-
-                    columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), false);
-                    valores = funciones.armar_query_valores(valores, dato, false);
-
-                    index++;
-                }
-
-            }
-            int ultima_fila = insumosBD.Rows.Count - 1;
-
-            if (insumosBD.Rows[ultima_fila]["cantidad_merma"].ToString() != "N/A")
-            {
-                id = insumosBD.Rows[ultima_fila]["id"].ToString();
-                producto = insumosBD.Rows[ultima_fila]["producto"].ToString();
-                cantidad_merma = insumosBD.Rows[ultima_fila]["cantidad_merma"].ToString();
-                unidad = insumosBD.Rows[ultima_fila]["unidad"].ToString();
-
-                dato = id + "-" + producto + "-" + cantidad_merma + "-" + unidad;
-
-                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
-                valores = funciones.armar_query_valores(valores, dato, true);
-            }
-            else
-            {
-                columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
-                valores = funciones.armar_query_valores(valores, "N/A", true);
-            }
-
-            consultas.insertar_en_tabla(base_de_datos, "merma_y_desperdicio", columnas, valores);
-        }
-        public void sumar_stock(DataTable productos_proveedorBD, string nombre_fabrica, string rol_usuario)
+        public void sumar_stock(DataTable productos_proveedorBD, string nombre_fabrica, string rol_usuario,string nota)
         {
             string nuevo_stock, id_producto;
             double stock_dato, nuevo_stock_dato, cantidad_recibida;
@@ -229,8 +61,7 @@ namespace _03___sistemas_fabrica
                     nuevo_stock_dato = double.Parse(productos_proveedorBD.Rows[fila]["nuevo_stock"].ToString());
                     cantidad_recibida = nuevo_stock_dato - stock_dato;
 
-                    movimientos_stock_producto.cargar_suma_stock(rol_usuario, id_producto, "devolucion", cantidad_recibida.ToString(),"N/A");
-
+                    stock_producto_terminado.cargar_historial_stock(rol_usuario,id_producto,"devolucion",cantidad_recibida.ToString(), nota);
 
                     string actualizar = "`stock` = '" + nuevo_stock + "'";
                     consultas.actualizar_tabla(base_de_datos, nombre_fabrica, actualizar, id_producto);
@@ -246,7 +77,7 @@ namespace _03___sistemas_fabrica
         #region metodos consultas
         private void consultar_productos_proveedor(string nombre_proveedor)
         {
-            productos_proveedor = consultas.consultar_tabla_completa(base_de_datos, nombre_proveedor);
+            productos_proveedor = consultas.consultar_productos_proveedor_productos_terminados(base_de_datos, nombre_proveedor);
         }
         private void consultar_insumos_proveedor()
         {
@@ -265,6 +96,7 @@ namespace _03___sistemas_fabrica
             productos_proveedor.Columns.Add("cantidad_devuelta", typeof(string)); 
             for (int fila = 0; fila <= productos_proveedor.Rows.Count - 1; fila++)
             {
+                productos_proveedor.Rows[fila]["stock"] = stock_producto_terminado.get_ultimo_stock_producto_terminado(productos_proveedor.Rows[fila]["id"].ToString()) ;
                 productos_proveedor.Rows[fila]["presentacion"] = "N/A";
                 productos_proveedor.Rows[fila]["cantidad_desperdicio"] = "N/A";
                 productos_proveedor.Rows[fila]["unidad"] = "N/A";

@@ -14,17 +14,7 @@ namespace paginaWeb.paginasFabrica
         #region carga a base de datos
         private void enviar_stock()
         {
-            if (DropDownList_enviar_a.SelectedItem.Text == "Stock")
-            {
-                merma_y_deperdicio.sumar_stock((DataTable)Session["productos_proveedorBD_devolucion"], proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuario.Rows[0]["rol"].ToString());
-            }
-            else
-            {
-                merma_y_deperdicio.cargar_desperdicio_desde_devolucion((DataTable)Session["productos_proveedorBD_devolucion"], tipo_usuario.Rows[0]["rol"].ToString());
-            }
-            productos_proveedorBD = merma_y_deperdicio.get_productos_proveedor(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
-            Session.Add("productos_proveedorBD_devolucion", productos_proveedorBD);
-        
+            merma_y_deperdicio.sumar_stock((DataTable)Session["productos_proveedorBD_devolucion"], proveedorBD.Rows[0]["nombre_en_BD"].ToString(), tipo_usuario.Rows[0]["rol"].ToString(),textbox_nota.Text);
         }
         private void sumar_stock(string id_producto, string cantidad_dato)
         {
@@ -38,11 +28,11 @@ namespace paginaWeb.paginasFabrica
                     cantidad = double.Parse(productos_proveedorBD.Rows[fila_producto]["stock"].ToString());
                     nueva_cantidad = cantidad + cantidad_a_sumar;
 
-                    productos_proveedorBD.Rows[fila_producto]["cantidad_devuelta"] = cantidad_a_sumar.ToString(); 
-                    productos_proveedorBD.Rows[fila_producto]["nuevo_stock"] = nueva_cantidad.ToString(); 
+                    productos_proveedorBD.Rows[fila_producto]["cantidad_devuelta"] = cantidad_a_sumar.ToString();
+                    productos_proveedorBD.Rows[fila_producto]["nuevo_stock"] = nueva_cantidad.ToString();
                     Session.Add("productos_proveedorBD_devolucion", productos_proveedorBD);
 
-                    
+
                 }
             }
         }
@@ -66,40 +56,9 @@ namespace paginaWeb.paginasFabrica
                 }
             }
         }
-        private void recalcular()
-        {
-            productos_proveedorBD = (DataTable)Session["productos_proveedorBD_devolucion"];
-            string id_producto,cantidad;
-            for (int fila = 0; fila <= productos_proveedorBD.Rows.Count-1; fila++)
-            {
-                if (productos_proveedorBD.Rows[fila]["cantidad_devuelta"].ToString()!="N/A")
-                {
-                    id_producto = productos_proveedorBD.Rows[fila]["id"].ToString();
-                    cantidad = productos_proveedorBD.Rows[fila]["cantidad_devuelta"].ToString();
-                    if (DropDownList_enviar_a.SelectedItem.Text== "Stock")
-                    {
-                        sumar_stock(id_producto, cantidad);
-                    }
-                    else
-                    {
-                        solo_cargar_desperdicio(id_producto,cantidad);
-                    }
-                }
-            }
-            Session.Add("productos_proveedorBD_devolucion", productos_proveedorBD);
-        }
-        private void cargar_desperdicio()
-        {
-            merma_y_deperdicio.cargar_desperdicio(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), productos_proveedorBD);
-            productos_proveedorBD = merma_y_deperdicio.get_productos_proveedor(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
-            Session.Add("productos_proveedorBD_devolucion", productos_proveedorBD);
-        }
-        private void cargar_merma()
-        {
-            merma_y_deperdicio.cargar_merma(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), insumosBD);
-            insumosBD = merma_y_deperdicio.get_insumos_proveedor();
-            Session.Add("insumosBD_merma", insumosBD);
-        }
+       
+        
+      
         #endregion
         #region carga merma/desperdicio
         private void configurar_desperdicio(string id_producto, string cantidad_dato, string unidad)
@@ -145,7 +104,7 @@ namespace paginaWeb.paginasFabrica
         }
         #endregion
         #region carga de productos
-       
+
         private void crear_tabla_productos()
         {
             productos_proveedor = new DataTable();
@@ -178,8 +137,8 @@ namespace paginaWeb.paginasFabrica
                     productos_proveedor.Rows[fila_producto]["unidad"] = productos_proveedorBD.Rows[fila]["unidad"].ToString();
                     productos_proveedor.Rows[fila_producto]["presentacion"] = productos_proveedorBD.Rows[fila]["presentacion"].ToString();
                     productos_proveedor.Rows[fila_producto]["stock"] = productos_proveedorBD.Rows[fila]["stock"].ToString();
-                    productos_proveedor.Rows[fila_producto]["nuevo_stock"] = productos_proveedorBD.Rows[fila]["nuevo_stock"].ToString(); 
-                    productos_proveedor.Rows[fila_producto]["cantidad_devuelta"] = productos_proveedorBD.Rows[fila]["cantidad_devuelta"].ToString(); 
+                    productos_proveedor.Rows[fila_producto]["nuevo_stock"] = productos_proveedorBD.Rows[fila]["nuevo_stock"].ToString();
+                    productos_proveedor.Rows[fila_producto]["cantidad_devuelta"] = productos_proveedorBD.Rows[fila]["cantidad_devuelta"].ToString();
 
                     fila_producto++;
                 }
@@ -225,7 +184,7 @@ namespace paginaWeb.paginasFabrica
 
             }
         }
-   
+
         #endregion
 
         /// <summary>
@@ -250,32 +209,26 @@ namespace paginaWeb.paginasFabrica
             usuariosBD = (DataTable)Session["usuariosBD"];
             proveedorBD = (DataTable)Session["proveedorBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
-            
+
             merma_y_deperdicio = new cls_merma_y_desperdicio(usuariosBD);
             if (!IsPostBack)
             {
                 productos_proveedorBD = merma_y_deperdicio.get_productos_proveedor(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
                 Session.Add("productos_proveedorBD_devolucion", productos_proveedorBD);
-                insumosBD = merma_y_deperdicio.get_insumos_proveedor();
-                Session.Add("insumosBD_merma", insumosBD);
+                // insumosBD = merma_y_deperdicio.get_insumos_proveedor();
+                //  Session.Add("insumosBD_merma", insumosBD);
                 llenar_dropDownList(productos_proveedorBD);
                 Session.Add("tipo_seleccionado", dropDown_tipo.SelectedItem.Text);
 
-             
+
 
                 cargar_producto();
             }
             productos_proveedorBD = (DataTable)Session["productos_proveedorBD_devolucion"];
-            insumosBD = (DataTable)Session["insumosBD_merma"];
+            //  insumosBD = (DataTable)Session["insumosBD_merma"];
         }
 
         #region productos
-        protected void boton_carga_desperdicio_Click(object sender, EventArgs e)
-        {
-            cargar_desperdicio();
-            cargar_producto();
-        }
-
         protected void textbox_busqueda_TextChanged(object sender, EventArgs e)
         {
             cargar_producto();
@@ -288,7 +241,7 @@ namespace paginaWeb.paginasFabrica
         }
         protected void gridView_productos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-          
+
         }
         protected void gridView_productos_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -298,40 +251,19 @@ namespace paginaWeb.paginasFabrica
 
                 TextBox texbox_cantidad_stock = (gridView_productos.Rows[fila].Cells[2].FindControl("texbox_cantidad_stock") as TextBox);
 
-                if (DropDownList_enviar_a.SelectedItem.Text== "Stock")
-                {
-                    sumar_stock(gridView_productos.Rows[fila].Cells[0].Text, texbox_cantidad_stock.Text);
-                }
-                else
-                {
-                    solo_cargar_desperdicio(gridView_productos.Rows[fila].Cells[0].Text, texbox_cantidad_stock.Text);
-                }
+                sumar_stock(gridView_productos.Rows[fila].Cells[0].Text, texbox_cantidad_stock.Text);
 
                 cargar_producto();
             }
         }
         #endregion
 
-        #region insumos
-
-        protected void boton_carga_merma_Click(object sender, EventArgs e)
-        {
-            cargar_merma();
-        }
-        #endregion
-
-
         protected void boton_enviar_Click(object sender, EventArgs e)
         {
             enviar_stock();
-            cargar_producto();
-
+            Response.Redirect("~/paginasFabrica/landing_page_expedicion.aspx",false);
         }
 
-        protected void DropDownList_enviar_a_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            recalcular();
-            cargar_producto();
-        }
+       
     }
 }

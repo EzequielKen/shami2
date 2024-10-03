@@ -12,18 +12,7 @@ namespace paginaWeb.paginasFabrica
         {
             
         }
-        private void cargar_desperdicio()
-        {
-            merma_y_deperdicio.cargar_desperdicio(proveedorBD.Rows[0]["nombre_en_BD"].ToString(),productos_proveedorBD);
-            productos_proveedorBD = merma_y_deperdicio.get_productos_proveedor(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
-            Session.Add("productos_proveedorBD_merma", productos_proveedorBD);
-        }
-        private void cargar_merma()
-        {
-            merma_y_deperdicio.cargar_merma(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), insumosBD);
-            insumosBD = merma_y_deperdicio.get_insumos_proveedor();
-            Session.Add("insumosBD_merma", insumosBD);
-        }
+       
         #endregion
         #region carga merma/desperdicio
         private void configurar_desperdicio(string id_producto, string cantidad_dato,string unidad)
@@ -259,7 +248,7 @@ namespace paginaWeb.paginasFabrica
         #region productos
         protected void boton_carga_desperdicio_Click(object sender, EventArgs e)
         {
-            cargar_desperdicio();
+            
             cargar_producto();
         }
 
@@ -315,7 +304,6 @@ namespace paginaWeb.paginasFabrica
        
         protected void boton_carga_merma_Click(object sender, EventArgs e)
         {
-            cargar_merma();
             cargar_insumo();
         }
         protected void textbox_buscar_insumo_TextChanged(object sender, EventArgs e)
