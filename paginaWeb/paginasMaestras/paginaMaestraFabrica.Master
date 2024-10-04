@@ -209,27 +209,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por pagar a Proveedores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deuda a proveedores</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadísticas de Pedidos de Cliente</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_entrega.aspx">Estadísticas de Enrega a Cliente</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por cobrar</a>
                     </li>
 
                     <%}%>
@@ -289,7 +269,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido</a>
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido a compras</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Historial de Pedidos</a>

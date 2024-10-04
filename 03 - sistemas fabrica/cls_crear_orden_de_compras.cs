@@ -71,33 +71,38 @@ namespace _03___sistemas_fabrica
                 DateTime fecha_actual = DateTime.Now;
                 string id_dato, producto_dato, cantidad, unidad, estado, num_orden, fecha, dato_a_cargar, actualizar, nomb_columna;
                 int columna;
+                int fila_resumen;
                 for (int fila = 0; fila <= resumen_orden_pedido.Rows.Count - 1; fila++)
                 {
                     id_producto = resumen_orden_pedido.Rows[fila]["id"].ToString();
+                    fila_resumen = funciones.buscar_fila_por_id(id_producto, resumen);
                     columna = orden_de_pedido.Columns["producto_1"].Ordinal;
-                    while (columna <= orden_de_pedido.Columns.Count - 1)
+                    if (fila_resumen!=-1)
                     {
-                        if (orden_de_pedido.Rows[fila_orden_pedido][columna].ToString() != "N/A")
+                        while (columna <= orden_de_pedido.Columns.Count - 1)
                         {
-                            if (id_producto == funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 1))
+                            if (orden_de_pedido.Rows[fila_orden_pedido][columna].ToString() != "N/A")
                             {
-                                id_dato = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 1);
-                                producto_dato = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 2);
-                                cantidad = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 3);
-                                unidad = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 4);
-                                estado = "Pedido";
-                                num_orden = nuevo_num_orden_de_compra.ToString();
-                                fecha = fecha_actual.ToString("dd/MM/yyyy");
+                                if (id_producto == funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 1))
+                                {
+                                    id_dato = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 1);
+                                    producto_dato = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 2);
+                                    cantidad = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 3);
+                                    unidad = funciones.obtener_dato(orden_de_pedido.Rows[fila_orden_pedido][columna].ToString(), 4);
+                                    estado = "Pedido";
+                                    num_orden = nuevo_num_orden_de_compra.ToString();
+                                    fecha = fecha_actual.ToString("dd/MM/yyyy");
 
-                                dato_a_cargar = id_dato + "-" + producto_dato + "-" + cantidad + "-" + unidad + "-" + estado + "-" + num_orden + "-" + fecha;
+                                    dato_a_cargar = id_dato + "-" + producto_dato + "-" + cantidad + "-" + unidad + "-" + estado + "-" + num_orden + "-" + fecha;
 
-                                nomb_columna = orden_de_pedido.Columns[columna].ColumnName;
+                                    nomb_columna = orden_de_pedido.Columns[columna].ColumnName;
 
-                                actualizar = "`" + nomb_columna + "` = '" + dato_a_cargar + "'";
-                                consultas.actualizar_tabla(base_de_datos, "orden_de_pedido", actualizar, id_orden_pedido_a_modificar);
+                                    actualizar = "`" + nomb_columna + "` = '" + dato_a_cargar + "'";
+                                    consultas.actualizar_tabla(base_de_datos, "orden_de_pedido", actualizar, id_orden_pedido_a_modificar);
+                                }
                             }
+                            columna++;
                         }
-                        columna++;
                     }
                 }
 

@@ -26,7 +26,6 @@ namespace paginaWeb.paginasFabrica
         {
             if (verificar_insumos_de_proveedorBD())
             {
-                label_mensaje_de_alerta.Visible = false;
                 insumos_de_proveedorBD = (DataTable)Session["insumos_de_proveedor"];
                 id_proveedor_fabrica_seleccionado = Session["id_proveedor_fabrica_seleccionado"].ToString();
 
@@ -44,10 +43,13 @@ namespace paginaWeb.paginasFabrica
                 cargar_insumos();
                 cargar_insumos_proveedor();
                 cargar_datos_proveedor();
+                label_mensaje_de_alerta.Visible = false;
+                label_mensaje_de_exito.Visible=true;
             }
             else
             {
                 label_mensaje_de_alerta.Visible = true;
+                label_mensaje_de_exito.Visible = false;
             }
         }
         #endregion
@@ -413,7 +415,8 @@ namespace paginaWeb.paginasFabrica
                 if (insumos_de_proveedorBD.Rows[fila]["tipo_paquete"].ToString() == "N/A" ||
                     insumos_de_proveedorBD.Rows[fila]["cantidad_unidades"].ToString() == "N/A" ||
                     insumos_de_proveedorBD.Rows[fila]["unidad_medida"].ToString() == "N/A" ||
-                    insumos_de_proveedorBD.Rows[fila]["precio"].ToString() == "N/A")
+                    insumos_de_proveedorBD.Rows[fila]["precio"].ToString() == "N/A" ||
+                    insumos_de_proveedorBD.Rows[fila]["precio"].ToString() == "0")
                 {
                     retorno = false;
                     break;
@@ -598,7 +601,7 @@ namespace paginaWeb.paginasFabrica
         protected void boton_guardar_Click(object sender, EventArgs e)
         {
             linkear_productos_a_proveedor();
-            Response.Redirect("~/paginasFabrica/proveedores_fabrica.aspx", false);
+           // Response.Redirect("~/paginasFabrica/proveedores_fabrica.aspx", false);
         }
 
         protected void dropdown_tipo_paquete_SelectedIndexChanged(object sender, EventArgs e)

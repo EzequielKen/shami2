@@ -10,8 +10,10 @@
             </div>
             <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
 
-                <div class="alert alert-light">
-
+                <div class="alert alert-warning">
+                    <h3>
+                        <label>Campos obligatorios</label>
+                    </h3>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Nombre proveedor</span>
                         <asp:TextBox CssClass="form-control" ID="textbox_nombre_proveedor" runat="server" />
@@ -36,7 +38,8 @@
                         <span class="input-group-text">Telefono</span>
                         <asp:TextBox CssClass="form-control" ID="textbox_telefono" runat="server" />
                     </div>
-
+                </div>
+                <div class="alert alert-light">
                     <div class="input-group mb-3">
                         <span class="input-group-text">Pago a</span>
                         <asp:TextBox CssClass="form-control" ID="textbox_condicion_pago" runat="server" TextMode="Number" />
@@ -69,18 +72,18 @@
                     </div>
 
                 </div>
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                <asp:Button ID="boton_carga" Text="Cargar" CssClass="btn btn-primary" OnClick="boton_carga_Click" runat="server" />
-            </div>
+        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
         </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
+            <asp:Button ID="boton_carga" Text="Cargar" CssClass="btn btn-primary" OnClick="boton_carga_Click" runat="server" />
+        </div>
+    </div>
     </div>
 </asp:Content>

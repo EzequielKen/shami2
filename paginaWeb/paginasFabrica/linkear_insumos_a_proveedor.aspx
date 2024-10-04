@@ -124,7 +124,8 @@
                                     </div>
                                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 text-center">
 
-                                        <asp:Label CssClass="alert alert-danger " ID="label_mensaje_de_alerta" Text="Faltan configurar datos." runat="server" Visible="false" />
+                                        <asp:Label CssClass="alert alert-danger " ID="label_mensaje_de_alerta" Text="Faltan ingresar datos." runat="server" Visible="false" />
+                                        <asp:Label CssClass="alert alert-success " ID="label_mensaje_de_exito" Text="Guardado con exito." runat="server" Visible="false" />
 
                                     </div>
                                     <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 text-lg-end">
@@ -174,7 +175,7 @@
                                         <asp:BoundField HeaderText="presentacion recomendada" DataField="producto_1" />
 
                                         <asp:BoundField HeaderText="Presentacion seleccionada" DataField="presentacion" />
-                                        <asp:TemplateField HeaderText="Ingrese precio">
+                                        <asp:TemplateField HeaderText="Ingrese precio compra a proveedor">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="textbox_precio" CssClass="input-group-text" runat="server">
                                                 </asp:TextBox>

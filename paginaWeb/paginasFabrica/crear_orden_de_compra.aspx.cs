@@ -362,6 +362,18 @@ namespace paginaWeb.paginasFabrica
                 string condicion_pago = proveedor.Rows[0]["condicion_pago"].ToString();
                 string url_whatsapp = ordenes_compra.crear_orden_de_compra(id_proveedor_fabrica_seleccionado, fechaBD, resumen_pedido, Session["id_orden_pedido_a_modificar"].ToString(), (DataTable)Session["resumen_orden_pedido"], calcular_total_numero(), condicion_pago);
 
+                resumen_orden_pedido = (DataTable)Session["resumen_orden_pedido"];
+                string id;
+                for (int fila = 0; fila <=resumen_pedido.Rows.Count-1; fila ++)
+                {
+                    id = resumen_pedido.Rows[fila]["id"].ToString(); 
+                    int fila_orden = funciones.buscar_fila_por_id(id,resumen_orden_pedido);
+                    if (fila_orden!=-1)
+                    {
+                        resumen_orden_pedido.Rows[fila_orden].Delete();
+                    }
+                }
+                Session.Add("resumen_orden_pedido", resumen_orden_pedido);
                 Session.Remove("id_orden_pedido_a_modificar");
 
                 Response.Redirect("~/paginasFabrica/proveedores_fabrica.aspx", false);

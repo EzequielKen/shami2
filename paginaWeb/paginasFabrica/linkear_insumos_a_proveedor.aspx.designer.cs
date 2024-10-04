@@ -159,6 +159,15 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.Label label_mensaje_de_alerta;
 
         /// <summary>
+        /// Control label_mensaje_de_exito.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label_mensaje_de_exito;
+
+        /// <summary>
         /// Control boton_guardar.
         /// </summary>
         /// <remarks>
