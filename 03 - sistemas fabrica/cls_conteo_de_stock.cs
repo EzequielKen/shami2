@@ -120,7 +120,7 @@ namespace _03___sistemas_fabrica
                             valores = funciones.armar_query_valores(valores, diferencia.ToString(), false);
 
                             //aprobado
-                            columnas = funciones.armar_query_columna(columnas, "aprobado", false);
+                            columnas = funciones.armar_query_columna(columnas, "aprobado", true);
                             if (diferencia == 0)
                             {
                                 valores = funciones.armar_query_valores(valores, "Si", true);

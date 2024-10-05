@@ -46,6 +46,7 @@
     <Compile Include="cls_analisis_caja_chica.cs" />
     <Compile Include="cls_caja_chica.cs" />
     <Compile Include="cls_calculo_deuda_locales.cs" />
+    <Compile Include="cls_movimiento_mercaderia_interna_gerente.cs" />
     <Compile Include="cls_resumen_deuda_locales.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

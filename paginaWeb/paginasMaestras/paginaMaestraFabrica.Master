@@ -264,7 +264,6 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pedido de insumos
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/paginasFabrica/pedir_insumos.aspx">Pedir Insumos</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Historial Pedido de Insumos</a></li>
                         </ul>
                     </li>
@@ -318,6 +317,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink7" role="button" data-bs-toggle="dropdown" aria-expanded="false">Expedicion
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/pedir_insumos.aspx">Pedir Insumos a expedicion</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de pedido</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/remitos_de_carga.aspx">Remitos de carga</a></li>
                         </ul>

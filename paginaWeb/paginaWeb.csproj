@@ -308,6 +308,7 @@
     <Content Include="paginasGerente\cuentas_por_pagar_gerente.aspx" />
     <Content Include="paginasGerente\estadisticas_de_pedido_gerente.aspx" />
     <Content Include="paginasGerente\landing_page_local.aspx" />
+    <Content Include="paginasGerente\movimiento_mercaderia_interna_gerente.aspx" />
     <Content Include="paginasGerente\proveedores_fabrica_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_locales_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
@@ -970,6 +971,13 @@
     </Compile>
     <Compile Include="paginasGerente\landing_page_local.aspx.designer.cs">
       <DependentUpon>landing_page_local.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\movimiento_mercaderia_interna_gerente.aspx.cs">
+      <DependentUpon>movimiento_mercaderia_interna_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\movimiento_mercaderia_interna_gerente.aspx.designer.cs">
+      <DependentUpon>movimiento_mercaderia_interna_gerente.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasGerente\proveedores_fabrica_gerente.aspx.cs">
       <DependentUpon>proveedores_fabrica_gerente.aspx</DependentUpon>
