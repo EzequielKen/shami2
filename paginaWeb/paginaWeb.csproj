@@ -294,6 +294,7 @@
     <Content Include="paginasFabrica\recetario_linkear_sub_producto.aspx" />
     <Content Include="paginasFabrica\remitos_de_carga.aspx" />
     <Content Include="paginasFabrica\rendiciones.aspx" />
+    <Content Include="paginasFabrica\resumen_deuda_locales.aspx" />
     <Content Include="paginasFabrica\resumen_deuda_proveedores.aspx" />
     <Content Include="paginasFabrica\resumen_de_pedido.aspx" />
     <Content Include="paginasFabrica\stock.aspx" />
@@ -873,6 +874,13 @@
     </Compile>
     <Compile Include="paginasFabrica\rendiciones.aspx.designer.cs">
       <DependentUpon>rendiciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\resumen_deuda_locales.aspx.cs">
+      <DependentUpon>resumen_deuda_locales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\resumen_deuda_locales.aspx.designer.cs">
+      <DependentUpon>resumen_deuda_locales.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\resumen_deuda_proveedores.aspx.cs">
       <DependentUpon>resumen_deuda_proveedores.aspx</DependentUpon>

@@ -39,14 +39,24 @@ namespace _06___sistemas_gerente
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
         cls_PDF PDF = new cls_PDF();
-        DataTable tipo_movimientos_caja_chica;
-        DataTable movimientos_caja_chica;
-        DataTable conceptos_ingresos;
-        DataTable detalles;
+        DataTable movimiento_mercaderia_interna;
+        #endregion
+
+        #region PDF
+        public void Generar_PDF(string id,string ruta_archivo, byte[] imgdata)
+        {
+            DataTable movimiento_mercaderia = consultas.consultar_movimiento_mercaderia_interna_por_id(id);
+            PDF.GenerarPDF_movimiento_mercaderia_interna(ruta_archivo,imgdata, movimiento_mercaderia);
+        }
         #endregion
 
         #region carga a base de datos
-        public void cargar_transaccion()
+        public void eliminar_movimiento(string id)
+        {
+            string actualizar = "`activa` = '0'";
+            consultas.actualizar_tabla(base_de_datos, "movimiento_mercaderia_interna",actualizar,id);
+        }
+        public void cargar_transaccion(DataTable transaccion)
         {
             string columnas = string.Empty;
             string valores = string.Empty;
@@ -54,13 +64,41 @@ namespace _06___sistemas_gerente
             columnas = funciones.armar_query_columna(columnas,"fecha",false);
             valores = funciones.armar_query_valores(valores,funciones.get_fecha(),false);
             //producto
+            columnas = funciones.armar_query_columna(columnas, "producto", false);
+            valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["producto"].ToString(), false);
             //entrega
+            columnas = funciones.armar_query_columna(columnas, "entrega", false);
+            valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["entrega"].ToString(), false);
             //recibe
+            columnas = funciones.armar_query_columna(columnas, "recibe", false);
+            valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["recibe"].ToString(), false);
             //direccion
+            columnas = funciones.armar_query_columna(columnas, "direccion", false);
+            valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["direccion"].ToString(), false);
             //contacto
+            columnas = funciones.armar_query_columna(columnas, "contacto", false);
+            valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["contacto"].ToString(), false);
             //nota
+            columnas = funciones.armar_query_columna(columnas, "nota", true);
+            valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["nota"].ToString(), true);
+
+            consultas.insertar_en_tabla(base_de_datos, "movimiento_mercaderia_interna",columnas, valores);
         }
         #endregion
 
+        #region metodos consultas
+        private void consultar_movimiento_mercaderia_interna(DateTime fecha)
+        {
+            movimiento_mercaderia_interna = consultas.consultar_movimiento_mercaderia_interna_segun_fecha(fecha.Day.ToString(),fecha.Month.ToString(),fecha.Year.ToString());
+        }
+        #endregion
+
+        #region metodos get/set
+        public DataTable get_movimiento_mercaderia_interna(DateTime fecha)
+        {
+            consultar_movimiento_mercaderia_interna(fecha);
+            return movimiento_mercaderia_interna;
+        }
+        #endregion
     }
 }

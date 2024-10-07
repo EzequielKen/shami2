@@ -81,7 +81,55 @@ namespace paginaWeb.paginasGerente
             if (verificar_campos_oblogatorios())
             {
                 cargar_transaccion();
+                movimientos.cargar_transaccion(transaccion);
+                Response.Redirect("~/paginasGerente/landing_page_local.aspx",false);
             }
+        }
+
+        protected void calendario_SelectionChanged(object sender, EventArgs e)
+        {
+            DateTime fecha = calendario.SelectedDate;
+            Session.Add("fecha_movimiento_mercaderia",fecha);
+            label_fecha_seleccionada.Text = "Fecha Seleccionada: " + fecha.ToString("dd/MM/yyyy");
+            gridView_movimientos.DataSource = movimientos.get_movimiento_mercaderia_interna(fecha);
+            gridView_movimientos.DataBind();
+        }
+
+        protected void boton_pdf_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int rowIndex = row.RowIndex;
+            string id = gridView_movimientos.Rows[rowIndex].Cells[0].Text;
+
+            DateTime hora = DateTime.Now;
+            string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
+            string id_pedido = Session["sucursal"].ToString() + " pedido-" + "- id-" + dato_hora + ".pdf";
+            string ruta = "~/paginasFabrica/pdf/" + id_pedido;
+            string ruta_archivo = Server.MapPath(ruta);
+
+            byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
+
+            movimientos.Generar_PDF(id,ruta_archivo,imgdata);
+            //           Response.Redirect("~/archivo.pdf");
+            string strUrl = "/paginasFabrica/pdf/" + id_pedido;
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
+            //GenerarPDF_Click();
+        }
+
+        protected void boton_eliminar_Click(object sender, EventArgs e)
+        {
+
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int rowIndex = row.RowIndex;
+            string id = gridView_movimientos.Rows[rowIndex].Cells[0].Text;
+
+            movimientos.eliminar_movimiento(id);
+            DateTime fecha = (DateTime)Session["fecha_movimiento_mercaderia"];
+            label_fecha_seleccionada.Text = "Fecha Seleccionada: " + fecha.ToString("dd/MM/yyyy");
+            gridView_movimientos.DataSource = movimientos.get_movimiento_mercaderia_interna(fecha);
+            gridView_movimientos.DataBind();
         }
     }
 }

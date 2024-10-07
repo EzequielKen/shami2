@@ -3113,6 +3113,107 @@ namespace _01___modulos
                 });
             }).GeneratePdf(ruta_archivo);
         }
+        public void GenerarPDF_movimiento_mercaderia_interna(string ruta_archivo, byte[] logo, DataTable movimiento)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+            Document.Create(document =>
+            {
+                document.Page(page =>
+                {
+                    page.Size(PageSizes.A4);//Landscape()
+
+                    page.Margin(10);
+                    page.Header().ShowOnce().Row(row =>
+                    {
+
+                        row.ConstantItem(150).Image(logo);
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().AlignCenter().Text("Entrega: " + movimiento.Rows[0]["entrega"].ToString()).Bold().FontSize(14);
+                            col.Item().AlignCenter().Text("Recibe: " + movimiento.Rows[0]["recibe"].ToString()).Bold().FontSize(14);
+
+                        });
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            DateTime fecha_dato = DateTime.Now;
+                            string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString();
+
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Shami Shawarma").Bold().FontSize(14);
+                            col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("Movimiento Mercaderia Interna.").Bold().FontSize(14).FontColor("#fff");
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Impreso el: " + fecha).Bold().FontSize(14);
+
+                        });
+                    });
+
+                    page.Content().PaddingVertical(10).Column(col =>
+                    {
+
+                        col.Item().LineHorizontal(0.5f);
+
+                        col.Item().Table(tabla =>
+                        {
+                            tabla.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
+
+                            tabla.Header(header =>
+                            {
+                                header.Cell().Background("#257272").Padding(2).Text("Fecha").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Producto").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Direccion").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Contacto").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Nota").FontColor("#fff");
+                            });
+
+                            for (int fila = 0; fila <= movimiento.Rows.Count - 1; fila++)
+                            {
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(movimiento.Rows[fila]["fecha"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(movimiento.Rows[fila]["producto"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(movimiento.Rows[fila]["direccion"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(movimiento.Rows[fila]["contacto"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(movimiento.Rows[fila]["nota"].ToString()).FontSize(10);
+                            }
+                        });
+
+
+                        col.Item().Background(Colors.Grey.Lighten3).Padding(10)
+                        .Column(column =>
+                        {
+                            column.Item().Text("Entrega conforme / firma:").FontSize(12);
+                            column.Item().Text("recibe conforme / firma:").FontSize(12);
+                            column.Spacing(20);
+                        });
+
+                        col.Spacing(10);
+                    });
+
+                    page.Footer().AlignRight().Text(txt =>
+                    {
+                        txt.Span("pagina ").FontSize(10);
+                        txt.CurrentPageNumber().FontSize(10);
+                        txt.Span(" de ").FontSize(10);
+                        txt.TotalPages().FontSize(10);
+                    });
+                });
+            }).GeneratePdf(ruta_archivo);
+        }
+
         #endregion
 
         private string formatCurrency(object valor)
