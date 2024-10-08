@@ -108,6 +108,11 @@ namespace modulos
                     productos_proveedor = consultas.consultar_insumos_fabrica_venta_nivel4(base_de_datos, "insumos_fabrica");
 
                 }
+                else if (id_sucursal == "2")
+                {
+                    productos_proveedor = consultas.consultar_insumos_caballito(base_de_datos, "insumos_fabrica");
+
+                }
                 else
                 {
                     productos_proveedor = consultas.consultar_insumos_fabrica_venta(base_de_datos, proveedor_seleccionado);
