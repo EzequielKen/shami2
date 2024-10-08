@@ -99,6 +99,10 @@ namespace paginaWeb
                         {
                             Response.Redirect("~/paginasFabrica/landing_page_local.aspx", false);
                         }
+                        else if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Administracion Central")
+                        {
+                            Response.Redirect("~/paginasFabrica/landing_page_local.aspx", false);
+                        }
                         else
                         {
                             if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")

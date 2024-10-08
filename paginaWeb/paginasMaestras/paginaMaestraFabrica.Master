@@ -399,6 +399,27 @@
                     </li>
 
                     <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - ADMINISTRACION CENTRAL %>
+                    <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Administracion Central")
+                        {%>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink17" role="button" data-bs-toggle="dropdown" aria-expanded="false">Clientes
+                        </a><% //CLIENTES %>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por cobrar</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/resumen_deuda_locales.aspx">Resumen Deuda Locales</a></li>
+                        </ul>
+                    </li>
+                                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink19" role="button" data-bs-toggle="dropdown" aria-expanded="false">Compras
+                        </a><% //COMPRAS %>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por Pagar a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deuda a Proveedores</a></li>
+                        </ul>
+                    </li>
+                    <%}%>
                 </ul>
 
                 <h3>
