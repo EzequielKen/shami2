@@ -80,6 +80,9 @@
                         <a class="nav-link btn btn-primary" href="/paginas/proveedores.aspx">Realizar Pedidos a Fabrica</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabricaFatay/orden_de_pedido_fabrica_fatay.aspx">Orden de pedido a compras</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/historial_pedido.aspx">Historial de pedidos a Fabrica</a>
                     </li>
                     <li class="nav-item">
