@@ -618,7 +618,8 @@ namespace _03___sistemas_fabrica
                     dato = id + "-" + producto + "-" + precio_unidad + "-" + unidad_pedida + "-" + cantidad_pedida;
 
                     fila_producto = funciones.buscar_fila_por_id(id, insumos_fabrica);
-                    stock = obtener_stock(fila_producto, tipo_paquete, cantidad_unidades, unidad_medida); //buscar stock
+                    string presentacion = tipo_paquete + "-" + cantidad_unidades + "-" + unidad_medida;
+                    stock = stock_Insumos.get_ultimo_stock_insumo_fabrica(id,presentacion); //buscar stock
                     orden_de_compra.Rows.Add();
                     //id
                     orden_de_compra.Rows[fila_orden]["id"] = id;

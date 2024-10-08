@@ -325,6 +325,22 @@ namespace paginaWeb.paginasFabrica
 
             cargar_pedido_abierto();
         }
+        private void cargar_presentacion_extraccion(string id_producto, string presentacion)
+        {
+
+            pedido = (DataTable)Session["pedido"];
+
+            int fila_producto = funciones.buscar_fila_por_id(id_producto, pedido);
+            pedido.Rows[fila_producto]["presentacion_extraccion_seleccionada"] = presentacion;
+
+            Session.Add("pedido", pedido);
+
+
+
+
+
+            cargar_pedido_abierto();
+        }
         protected void boton_cancelar_Click(object sender, EventArgs e)
         {
             pedido = (DataTable)Session["pedido"];
@@ -493,7 +509,21 @@ namespace paginaWeb.paginasFabrica
 
         protected void dropdown_extraido_de_SelectedIndexChanged(object sender, EventArgs e)
         {
+            pedido = (DataTable)Session["pedido"];
 
+            DropDownList dropdown_tipo_presentacion = (DropDownList)sender;
+            GridViewRow row = (GridViewRow)dropdown_tipo_presentacion.NamingContainer;
+            int rowIndex = row.RowIndex;
+            string id_producto = gridview_pedido.Rows[rowIndex].Cells[0].Text;//cantidad_entrega
+            int fila_tabla = funciones.buscar_fila_por_id(id_producto, pedido);
+            DropDownList dropdown_extraido_de = (gridview_pedido.Rows[rowIndex].Cells[6].FindControl("dropdown_extraido_de") as DropDownList);
+
+            double cantidad_entrega;
+            if (double.TryParse(pedido.Rows[fila_tabla]["cantidad_entrega"].ToString(), out cantidad_entrega))
+            {
+                cargar_presentacion_extraccion(id_producto, dropdown_tipo_presentacion.SelectedItem.Text);
+                cargar_cantidad(cantidad_entrega.ToString(), pedido.Rows[fila_tabla]["presentacion_entrega_seleccionada"].ToString(), dropdown_extraido_de.SelectedItem.Text, id_producto, gridview_pedido.Rows[rowIndex].Cells[1].Text, gridview_pedido.Rows[rowIndex].Cells[10].Text);
+            }
         }
 
         protected void textbox_porcentaje_TextChanged(object sender, EventArgs e)

@@ -606,16 +606,16 @@ namespace _03___sistemas_fabrica
 
                 if (!verificar_si_cargo_remito(sucursal, num_pedido, nombre_remito, valor_remito, proveedor))
                 {
+                    string nota = sucursal + " PEDIDO: " + num_pedido;
 
                     if (proveedor != "insumos_fabrica")
                     {
-                        string nota = sucursal + " PEDIDO: " + num_pedido;
                         cargar_historial_stock(pedido, rol_usuario, nota, "proveedor_villaMaipu");
-                        //pedidos.actualizar_stock(proveedor, pedido);
                     }
                     else if (proveedor == "insumos_fabrica")
                     {
-                        restar_stock_insumo(pedido, proveedor);
+                        cargar_historial_stock(pedido, rol_usuario, nota, "insumos_fabrica");
+
                     }
 
                     pedidos.enviar_remito_fabrica(id_pedido, sucursal, num_pedido, nombre_remito, valor_remito, fecha_remito, proveedor, nota_pedido, impuesto);
@@ -679,8 +679,33 @@ namespace _03___sistemas_fabrica
                             }
                             else
                             {
+
                                 stock_producto_terminado.cargar_historial_stock(rol_usuario, id, "despacho", cantidad_despachada.ToString(), nota);
                             }
+                        }
+                        else if (proveedor == "insumos_fabrica")
+                        {
+                            string presentacion_entrega_seleccionada = pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString();
+                            string presentacion_extraccion_seleccionada = pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString();
+
+                            double unidad_entrega = double.Parse(funciones.obtener_dato(presentacion_entrega_seleccionada, 2));
+                            double unidad_extraccion = double.Parse(funciones.obtener_dato(presentacion_extraccion_seleccionada, 2));
+                            double descontar = cantidad_despachada;
+
+                            double valor_unidad_entrega = 1 * unidad_entrega;
+                            double valor_unidad_extraccion = 1 * unidad_extraccion;
+                            if (unidad_entrega < unidad_extraccion)
+                            {
+                                double entrega = cantidad_despachada * valor_unidad_entrega;
+
+                                descontar = valor_unidad_extraccion / entrega;
+                            }
+                            else if (unidad_entrega>unidad_extraccion)
+                            {
+                                descontar = (cantidad_despachada * valor_unidad_entrega) / unidad_extraccion;
+                            }
+
+                            stock_insumos.cargar_historial_stock(rol_usuario, id, "despacho", descontar.ToString(), nota, presentacion_extraccion_seleccionada);
                         }
                     }
                 }
