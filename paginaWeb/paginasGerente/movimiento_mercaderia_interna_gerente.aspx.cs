@@ -15,6 +15,7 @@ namespace paginaWeb.paginasGerente
         {
             transaccion = new DataTable();
             transaccion.Columns.Add("producto",typeof(string));
+            transaccion.Columns.Add("cantidad",typeof(string));
             transaccion.Columns.Add("entrega", typeof(string));
             transaccion.Columns.Add("recibe", typeof(string));
             transaccion.Columns.Add("direccion", typeof(string));
@@ -27,6 +28,7 @@ namespace paginaWeb.paginasGerente
             transaccion.Rows.Add();
 
             transaccion.Rows[0]["producto"] = textbox_producto.Text;
+            transaccion.Rows[0]["cantidad"] = textbox_cantidad.Text;
             transaccion.Rows[0]["entrega"] = textbox_entrega.Text;
             transaccion.Rows[0]["recibe"] = textbox_recibe.Text;
             transaccion.Rows[0]["direccion"] = textbox_direccion.Text;
@@ -57,7 +59,11 @@ namespace paginaWeb.paginasGerente
             {
                 verificado = false;
             }
-            
+            if (textbox_cantidad.Text == string.Empty)
+            {
+                verificado = false;
+            }
+
             return verificado;
         }
         /// <summary>
@@ -82,7 +88,13 @@ namespace paginaWeb.paginasGerente
             {
                 cargar_transaccion();
                 movimientos.cargar_transaccion(transaccion);
-                Response.Redirect("~/paginasGerente/landing_page_local.aspx",false);
+                textbox_entrega.Text=string.Empty;
+                textbox_recibe.Text = string.Empty;
+                textbox_direccion.Text = string.Empty;
+                textbox_contacto.Text = string.Empty;
+                textbox_producto.Text = string.Empty;
+                textbox_cantidad.Text=string.Empty;
+                textbox_nota.Text = string.Empty;
             }
         }
 

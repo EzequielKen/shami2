@@ -15,6 +15,7 @@ using static QuestPDF.Helpers.Colors;
 using static System.Net.Mime.MediaTypeNames;
 using System.Collections;
 using System.Runtime.Remoting.Messaging;
+using static System.Net.WebRequestMethods;
 
 
 namespace _01___modulos
@@ -3142,7 +3143,7 @@ namespace _01___modulos
 
                             col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Shami Shawarma").Bold().FontSize(14);
                             col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("Movimiento Mercaderia Interna.").Bold().FontSize(14).FontColor("#fff");
-                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Impreso el: " + fecha).Bold().FontSize(14);
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("Fecha: " + movimiento.Rows[0]["fecha"].ToString()).Bold().FontSize(14);
 
                         });
                     });
@@ -3165,8 +3166,8 @@ namespace _01___modulos
 
                             tabla.Header(header =>
                             {
-                                header.Cell().Background("#257272").Padding(2).Text("Fecha").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Producto").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Cantidad").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Direccion").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Contacto").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Nota").FontColor("#fff");
@@ -3175,10 +3176,10 @@ namespace _01___modulos
                             for (int fila = 0; fila <= movimiento.Rows.Count - 1; fila++)
                             {
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
-                                .Text(movimiento.Rows[fila]["fecha"].ToString()).FontSize(10);
+                                .Text(movimiento.Rows[fila]["producto"].ToString()).FontSize(10);
 
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
-                                .Text(movimiento.Rows[fila]["producto"].ToString()).FontSize(10);
+                                .Text(movimiento.Rows[fila]["cantidad"].ToString()).FontSize(10);
 
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
                                 .Text(movimiento.Rows[fila]["direccion"].ToString()).FontSize(10);

@@ -119,7 +119,7 @@ namespace _03___sistemas_fabrica
             }
             if (estado_pedido != "Recibido")
             {
-                stock_Insumos.guardar_registro_compra(rol_usuario, insumos_fabrica, insumos_fabrica_copia);
+               // stock_Insumos.guardar_registro_compra(rol_usuario, insumos_fabrica, insumos_fabrica_copia);
             }
             if (verificar_si_hay_nuevo_precio(orden_de_compra))
             {
@@ -179,7 +179,7 @@ namespace _03___sistemas_fabrica
                     actualizar_stock_en_insumo(id_insumo, orden_de_compra.Rows[fila]["nuevo_stock"].ToString(), tipo_paquete, cantidad_unidades, unidad_medida, cantidad_entrega);
                 }
             }
-            stock_Insumos.guardar_registro_compra(rol_usuario, insumos_fabrica, insumos_fabrica_copia);
+           // stock_Insumos.guardar_registro_compra(rol_usuario, insumos_fabrica, insumos_fabrica_copia);
             /*if (verificar_si_hay_nuevo_precio(orden_de_compra))
             {
                 actualizar_acuerdo_de_precio(id_orden, id_proveedor, orden_de_compra);

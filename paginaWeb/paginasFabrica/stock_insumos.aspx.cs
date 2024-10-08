@@ -15,7 +15,7 @@ namespace paginaWeb.paginasFabrica
         private void guardar_registro()
         {
             // tipo_usuario.Rows[0]["rol"].ToString()
-            stock_insumo.guardar_registro(tipo_usuario.Rows[0]["rol"].ToString(), (DataTable)Session["insumos_fabricaBD_stock"], (DataTable)Session["insumos_fabricaBD_stock_copia"]);
+          //  stock_insumo.guardar_registro(tipo_usuario.Rows[0]["rol"].ToString(), (DataTable)Session["insumos_fabricaBD_stock"], (DataTable)Session["insumos_fabricaBD_stock_copia"]);
             Response.Redirect("~/paginasFabrica/sucursales.aspx", false);
 
         }
@@ -238,12 +238,12 @@ namespace paginaWeb.paginasFabrica
             tipo_usuario = (DataTable)Session["tipo_usuario"];
 
             stock_insumo = new cls_stock_insumos(usuariosBD);
-            stock_insumo.actualizar_stock_insumos();
+          //  stock_insumo.actualizar_stock_insumos();
 
 
             if (!IsPostBack)
             {
-                insumos_fabricaBD = stock_insumo.get_insumos_fabrica();
+         //       insumos_fabricaBD = stock_insumo.get_insumos_fabrica();
                 insumos_fabricaBD_copia = insumos_fabricaBD;
                 Session.Add("insumos_fabricaBD_stock", insumos_fabricaBD);
                 Session.Add("insumos_fabricaBD_stock_copia", insumos_fabricaBD_copia);

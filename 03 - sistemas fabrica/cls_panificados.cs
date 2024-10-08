@@ -67,7 +67,7 @@ namespace _03___sistemas_fabrica
             }
             if (actualizo)
             {
-                stock_insumos.actualizar_stock_insumos();
+             //   stock_insumos.actualizar_stock_insumos();
             }
         }
         #endregion

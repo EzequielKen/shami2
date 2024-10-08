@@ -66,6 +66,9 @@ namespace _06___sistemas_gerente
             //producto
             columnas = funciones.armar_query_columna(columnas, "producto", false);
             valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["producto"].ToString(), false);
+            //cantidad
+            columnas = funciones.armar_query_columna(columnas, "cantidad", false);
+            valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["cantidad"].ToString(), false);
             //entrega
             columnas = funciones.armar_query_columna(columnas, "entrega", false);
             valores = funciones.armar_query_valores(valores, transaccion.Rows[0]["entrega"].ToString(), false);

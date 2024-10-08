@@ -32,8 +32,10 @@
                             <asp:TextBox CssClass="form-control" ID="textbox_contacto" runat="server" />
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Producto</span>
+                            <span class="input-group-text">Descripcion</span>
                             <asp:TextBox CssClass="form-control" ID="textbox_producto" runat="server" />
+                            <span class="input-group-text">Cantidad</span>
+                            <asp:TextBox CssClass="form-control" ID="textbox_cantidad" TextMode="Number" runat="server" />
                         </div>
                     </div>
 
@@ -75,6 +77,7 @@
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="Fecha" DataField="fecha" />
                                 <asp:BoundField HeaderText="Producto" DataField="producto" />
+                                <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
                                 <asp:BoundField HeaderText="Entrega" DataField="entrega" />
                                 <asp:BoundField HeaderText="Recibe" DataField="recibe" />
                                 <asp:BoundField HeaderText="Direccion" DataField="direccion" />
@@ -87,7 +90,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Eliminar">
                                     <ItemTemplate>
-                                        <asp:Button ID="boton_eliminar" OnClick="boton_eliminar_Click" Text="Deshabilitar" ControlStyle-CssClass="btn btn-primary btn-sm btn-danger" runat="server" CommandArgument='<%# Container.DataItemIndex %>' />
+                                        <asp:Button ID="boton_eliminar" OnClick="boton_eliminar_Click" Text="Eliminar" ControlStyle-CssClass="btn btn-primary btn-sm btn-danger" runat="server" CommandArgument='<%# Container.DataItemIndex %>' />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>

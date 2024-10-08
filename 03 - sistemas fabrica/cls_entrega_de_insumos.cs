@@ -106,8 +106,8 @@ namespace _03___sistemas_fabrica
                     }
                 }
             }
-            stock_insumos.guardar_registro_entrega_insumo(rol_usuario, insumos_fabricaBD, insumos_fabricaBD_copia);
-            stock_insumos.guardar_registro_entrega_sub_productos(rol_usuario, sub_productos, sub_productos_copia);
+            //stock_insumos.guardar_registro_entrega_insumo(rol_usuario, insumos_fabricaBD, insumos_fabricaBD_copia);
+           // stock_insumos.guardar_registro_entrega_sub_productos(rol_usuario, sub_productos, sub_productos_copia);
         }
         private void actualizar_stock_en_tabla(int fila_insumo, int columna_presentacion, string cantidad_entrega_dato)
         {

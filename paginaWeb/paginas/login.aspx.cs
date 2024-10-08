@@ -83,7 +83,7 @@ namespace paginaWeb
                                 Session.Add("stock_insumo", new cls_stock_insumos(usuarioBD));
                             }
                             stock_insumo = (cls_stock_insumos)Session["stock_insumo"];
-                            stock_insumo.actualizar_stock_insumos();
+                        //    stock_insumo.actualizar_stock_insumos();
                         }
 
 
