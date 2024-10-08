@@ -2218,7 +2218,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_stock_insumos_segun_producto(string id_producto)
+        public DataTable consultar_stock_insumos_segun_producto(string id_producto,string presentacion)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -2226,7 +2226,7 @@ namespace modulos
 
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".stock_insumos WHERE activa=1 and id_producto='" + id_producto + "';";
+                query = "SELECT * FROM " + base_de_datos + ".stock_insumos WHERE activa=1 and id_producto='" + id_producto + "' and presentacion='" + presentacion + "';";
 
 
                 retorno = base_datos.READ(query);

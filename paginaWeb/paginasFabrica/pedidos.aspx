@@ -21,6 +21,7 @@
                         <asp:BoundField HeaderText="fecha pedido" DataField="fecha" />
                         <asp:ButtonField HeaderText="abrir" Text="abrir" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="boton_abrir" />
                         <asp:ButtonField HeaderText="seleccionar" Text="seleccionar" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="boton_seleccionar" />
+                        <asp:BoundField HeaderText="Nota" DataField="nota" />
                     </Columns>
                 </asp:GridView>
             </div>

@@ -86,9 +86,9 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region metodos consultas
-        private void consultar_historial_stock(string id_producto)
+        private void consultar_historial_stock(string id_producto,string presentacion)
         {
-            historial_stock = consultas.consultar_stock_insumos_segun_producto(id_producto);
+            historial_stock = consultas.consultar_stock_insumos_segun_producto(id_producto, presentacion);
         }
         private void consultar_insumos_fabrica()
         {
@@ -194,7 +194,7 @@ namespace _03___sistemas_fabrica
         public void cargar_historial_stock(string rol_usuario, string id_producto, string tipo_movimiento, string movimiento, string nota, string presentacion)
         {
             consultar_insumos_fabrica();
-            consultar_historial_stock(id_producto);
+            consultar_historial_stock(id_producto,presentacion);
 
             //VERIFICAR SI EXISTE HISTORIAL
             if (!verificar_existencia_historial())
@@ -207,9 +207,9 @@ namespace _03___sistemas_fabrica
                 crear_stock(rol_usuario, id_producto, tipo_movimiento, movimiento, nota, presentacion);
             }
         }
-        public string get_ultimo_stock_producto_terminado(string id_producto)
+        public string get_ultimo_stock_producto_terminado(string id_producto, string presentacion)
         {
-            consultar_historial_stock(id_producto);
+            consultar_historial_stock(id_producto,presentacion);
             return obtener_ultimo_stock().ToString();
         }
         #endregion

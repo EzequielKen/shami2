@@ -573,8 +573,8 @@ namespace modulos
                 consultas.actualizar_tabla("shami", "sucursal", actualizar, id_usuario);
 
                 //activa
-                columnas = armar_query_columna(columnas, "activa", false);
-                valores = armar_query_valores(valores, "1", false);
+                columnas = armar_query_columna(columnas, "nota", false);
+                valores = armar_query_valores(valores, nota, false);
                 //fecha
                 columnas = armar_query_columna(columnas, "fecha", false);
                 valores = armar_query_valores(valores, funciones.get_fecha(), false);
