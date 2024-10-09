@@ -32,6 +32,7 @@ namespace _06___sistemas_gerente
             }
             consultas = new cls_consultas_Mysql(servidor, puerto, usuario_dato, contraseña_BD, base_de_datos);
             cuentas_Por_cobrar = new cls_sistema_cuentas_por_cobrar(usuario_BD);
+            calculo_deudas = new cls_calculo_deuda_locales(usuario_BD);
         }
 
         #region atributos
@@ -39,6 +40,7 @@ namespace _06___sistemas_gerente
         cls_funciones funciones = new cls_funciones();
         cls_PDF PDF = new cls_PDF();
         cls_sistema_cuentas_por_cobrar cuentas_Por_cobrar;
+        cls_calculo_deuda_locales calculo_deudas;
         DataTable usuarioBD;
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
@@ -55,7 +57,11 @@ namespace _06___sistemas_gerente
             for (int fila = 0; fila <= locales.Rows.Count - 1; fila++)
             {
                 sucursal = locales.Rows[fila]["sucursal"].ToString();
-                locales.Rows[fila]["deuda"] = cuentas_Por_cobrar.calcular_deuda_del_mes(sucursal,DateTime.Now.Month.ToString(),DateTime.Now.Year.ToString());
+                if (sucursal== "Dalal")
+                {
+                    string stop="";
+                }
+                locales.Rows[fila]["deuda"] = calculo_deudas.calcular_deuda_del_mes(sucursal,DateTime.Now.Month.ToString(),DateTime.Now.Year.ToString());
             }
             locales.DefaultView.Sort = "sucursal ASC";
             locales = locales.DefaultView.ToTable();
