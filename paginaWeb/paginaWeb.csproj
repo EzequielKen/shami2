@@ -254,6 +254,7 @@
     <Content Include="paginasFabrica\historial_de_stock_fabrica_fatay.aspx" />
     <Content Include="paginasFabrica\historial_temperatura.aspx" />
     <Content Include="paginasFabrica\landing_page_local.aspx" />
+    <Content Include="paginasFabrica\movimiento_mercaderia_interna.aspx" />
     <Content Include="paginasFabrica\objetivo_de_produccion.aspx" />
     <Content Include="paginasFabrica\analisis_de_ventas.aspx" />
     <Content Include="paginasFabrica\cargar_orden_de_compra.aspx" />
@@ -595,6 +596,13 @@
     </Compile>
     <Compile Include="paginasFabrica\landing_page_local.aspx.designer.cs">
       <DependentUpon>landing_page_local.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\movimiento_mercaderia_interna.aspx.cs">
+      <DependentUpon>movimiento_mercaderia_interna.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\movimiento_mercaderia_interna.aspx.designer.cs">
+      <DependentUpon>movimiento_mercaderia_interna.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\objetivo_de_produccion.aspx.cs">
       <DependentUpon>objetivo_de_produccion.aspx</DependentUpon>
