@@ -64,7 +64,7 @@ namespace _05___sistemas_fabrica_fatay
                     }
                     else
                     {
-                        historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
+                     //   historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
                     }
                 }
 
@@ -99,7 +99,7 @@ namespace _05___sistemas_fabrica_fatay
                     }
                     else
                     {
-                        historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
+                      //  historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
                     }
                 }
 
@@ -133,7 +133,7 @@ namespace _05___sistemas_fabrica_fatay
                     }
                     else
                     {
-                        historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
+                      //  historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
                     }
                 }
 
@@ -167,7 +167,7 @@ namespace _05___sistemas_fabrica_fatay
                 insumos.Rows[fila][columna_insumo].ToString() != "N/A")
                 {
 
-                    historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
+                  //  historial_stock_insumos.registrar_movimiento_en_historial(fila, columna_insumo, rol_usuario, fecha, insumos, insumos_copia, tipo_registro);
 
                     columna_insumo++;
                 }

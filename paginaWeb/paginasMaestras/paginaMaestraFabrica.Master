@@ -163,6 +163,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Movimientos de Stock</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock_insumos.aspx">Historial de Stock Insumos</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/confirmar_conteo_stock.aspx">Historial Conteo de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Pedido de Insumos de Produccion a Expedicion</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Produccion</a></li>
@@ -281,6 +282,7 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/recepcion_de_fabrica_fatay.aspx">Recepcion de Fatay</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/plantillas.aspx">Plantillas de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial de Movimientos de Stock</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock_insumos.aspx">Historial de Stock Insumos</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/confirmar_conteo_stock.aspx">Historial de Conteo de Stock</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/movimiento_mercaderia_interna.aspx">Movimiento mercaderia interna</a></li>
                         </ul>
@@ -339,6 +341,7 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdcio</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Producto</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial Stock</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock_insumos.aspx">Historial de Stock Insumos</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">historial de Solicitud a Fabrica</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/recepcion_de_fabrica_fatay.aspx">Recepcion de Fatay</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/movimiento_mercaderia_interna.aspx">Movimiento mercaderia interna</a></li>

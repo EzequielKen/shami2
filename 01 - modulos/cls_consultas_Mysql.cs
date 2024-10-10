@@ -1346,6 +1346,25 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_historial_insumo_segun_mes_y_año(string base_de_datos, string tabla, string id_producto, string presentacion, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + "." + tabla + " WHERE id_producto='" + id_producto + "' and presentacion = '" + presentacion + "' and MONTH(fecha) = '" + mes + "' and YEAR(fecha) = '" + año + "';";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_acuerdo_de_precios_fabrica_a_proveedores_activo()
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
