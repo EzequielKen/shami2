@@ -150,7 +150,7 @@ namespace paginaWeb.paginasFabrica
             }
             if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Expedicion")
             {
-                gridview_productos.Columns[3].Visible = false;
+                gridview_productos.Columns[2].Visible = false;
             }
         }
 
