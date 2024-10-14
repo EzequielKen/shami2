@@ -94,6 +94,9 @@ namespace paginaWeb
             resumen_pedido.Columns.Add("bonificable", typeof(bool));
             resumen_pedido.Columns.Add("tipo_producto", typeof(string));
             resumen_pedido.Columns.Add("proveedor", typeof(string));
+            resumen_pedido.Columns.Add("alimento", typeof(string));
+            resumen_pedido.Columns.Add("bebida", typeof(string));
+            resumen_pedido.Columns.Add("descartable", typeof(string));
         }
         private void llenar_dropDownList(DataTable dt)
         {
@@ -442,6 +445,9 @@ namespace paginaWeb
 
                     resumen_pedido.Rows[fila_resumen]["tipo_producto"] = productos_proveedor.Rows[fila]["tipo_producto"].ToString();
                     resumen_pedido.Rows[fila_resumen]["proveedor"] = productos_proveedor.Rows[fila]["proveedor"].ToString();
+                    resumen_pedido.Rows[fila_resumen]["alimento"] = productos_proveedor.Rows[fila]["alimento"].ToString();
+                    resumen_pedido.Rows[fila_resumen]["bebida"] = productos_proveedor.Rows[fila]["bebida"].ToString();
+                    resumen_pedido.Rows[fila_resumen]["descartable"] = productos_proveedor.Rows[fila]["descartable"].ToString();
 
                     break;
                 }

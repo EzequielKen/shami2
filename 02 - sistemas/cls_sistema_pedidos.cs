@@ -222,6 +222,9 @@ namespace _02___sistemas
             resumen.Columns.Add("presentacion", typeof(string));
             resumen.Columns.Add("proveedor", typeof(string));
             resumen.Columns.Add("multiplicador", typeof(string));
+            resumen.Columns.Add("alimento", typeof(string));
+            resumen.Columns.Add("bebida", typeof(string));
+            resumen.Columns.Add("descartable", typeof(string));
             resumen.Columns.Add("orden_tipo", typeof(int));
         }
         private void llenar_lista_resumen()
@@ -241,6 +244,9 @@ namespace _02___sistemas
                         resumen.Rows[fila_resumen]["precio"] = productos_proveedor.Rows[fila]["precio"].ToString();
                         resumen.Rows[fila_resumen]["unidad_medida_local"] = productos_proveedor.Rows[fila]["unidad_de_medida_local"].ToString();
                         resumen.Rows[fila_resumen]["unidad_medida_fabrica"] = productos_proveedor.Rows[fila]["unidad_de_medida_fabrica"].ToString();
+                        resumen.Rows[fila_resumen]["alimento"] = productos_proveedor.Rows[fila]["alimento"].ToString();
+                        resumen.Rows[fila_resumen]["bebida"] = productos_proveedor.Rows[fila]["bebida"].ToString();
+                        resumen.Rows[fila_resumen]["descartable"] = productos_proveedor.Rows[fila]["descartable"].ToString();
                         resumen.Rows[fila_resumen]["presentacion"] = " x" + productos_proveedor.Rows[fila]["unidad_de_medida_fabrica"].ToString();
                         resumen.Rows[fila_resumen]["proveedor"] = "proveedor_villaMaipu";
                         resumen.Rows[fila_resumen]["multiplicador"] = "1";
@@ -262,6 +268,9 @@ namespace _02___sistemas
                         resumen.Rows[fila_resumen]["producto"] = insumos_proveedor.Rows[fila]["producto"].ToString();
                         resumen.Rows[fila_resumen]["tipo_producto"] = insumos_proveedor.Rows[fila]["tipo_producto"].ToString();
                         resumen.Rows[fila_resumen]["precio"] = insumos_proveedor.Rows[fila]["precio"].ToString();
+                        resumen.Rows[fila_resumen]["alimento"] = insumos_proveedor.Rows[fila]["alimento"].ToString();
+                        resumen.Rows[fila_resumen]["bebida"] = insumos_proveedor.Rows[fila]["bebida"].ToString();
+                        resumen.Rows[fila_resumen]["descartable"] = insumos_proveedor.Rows[fila]["descartable"].ToString();
                         paquete = funciones.obtener_dato(insumos_proveedor.Rows[fila]["unidad_de_medida_local"].ToString(), 1);
                         cantidad_unidades = funciones.obtener_dato(insumos_proveedor.Rows[fila]["unidad_de_medida_local"].ToString(), 2);
                         unidad = funciones.obtener_dato(insumos_proveedor.Rows[fila]["unidad_de_medida_local"].ToString(), 3);
