@@ -156,6 +156,7 @@ namespace paginaWeb.paginasFabrica
         {
             Session.Add("id_proveedor_fabrica_seleccionado", gridView_proveedores.SelectedRow.Cells[0].Text);
             Session.Add("titulo_proveedor", gridView_proveedores.SelectedRow.Cells[1].Text);
+            Session.Remove("insumos_fabrica_orden_pedido");
             Response.Redirect("/paginasFabrica/crear_orden_de_compra.aspx", false);
         }
 

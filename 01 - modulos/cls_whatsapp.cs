@@ -125,7 +125,7 @@ namespace _01___modulos
 
             body = "Se ha registrado en sistema un nuevo pedido de insumos.";
 
-            return enviar_orden(body);
+            return enviar_pedido_insumo(body);
 
         }
         public string notificar_carga_de_produccion_fatay()
@@ -165,6 +165,14 @@ namespace _01___modulos
             return url;
         }
         private string enviar_orden(string body)
+        {
+
+            string telefono = ConfigurationManager.AppSettings["telefono_compras"];
+            string url = "https://api.whatsapp.com/send?phone=" + telefono + "&text=" + body.Replace(" ", "%20");
+
+            return url;
+        }
+        private string enviar_pedido_insumo(string body)
         {
 
             string telefono = ConfigurationManager.AppSettings["telefono_expedicion"];
