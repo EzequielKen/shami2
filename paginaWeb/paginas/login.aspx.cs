@@ -95,6 +95,10 @@ namespace paginaWeb
                         {
                             Response.Redirect("~/paginasFabrica/proveedores_fabrica.aspx", false);
                         }
+                        else if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Marketing")
+                        {
+                            Response.Redirect("~/paginasMarketing/landing_page_local.aspx", false);
+                        }
                         else if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin")
                         {
                             Response.Redirect("~/paginasFabrica/landing_page_local.aspx", false);

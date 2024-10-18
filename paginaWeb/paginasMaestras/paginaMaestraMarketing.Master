@@ -1,0 +1,92 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="paginaMaestraMarketing.master.cs" Inherits="paginaWeb.paginasMaestras.paginaMaestraMarketing" %>
+
+<!DOCTYPE html>
+
+<html data-bs-theme="dark">
+<head runat="server">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21C4MLTPJS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-21C4MLTPJS');
+    </script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Favicon-->
+    <title>Shami | Sistema</title>
+    <meta charset="utf-8" />
+
+    <meta property="og:image" content="/imagenes/logo-redondo.png" />
+    <link href="/imagenes/logo-redondo.png" rel=" shortcut icon" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:image" content="/imagenes/logo-simple.png" />
+    <link href="/imagenes/logo-simple.png" rel=" shortcut icon" />
+    <link href="/CSS/sign-in.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script type="text/javascript">const tlJsHost = ((window.location.protocol == "https:") ? "https://secure.trust-provider.com/" : "http://www.trustlogo.com/"); document.write(unescape("<script src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript' %3E%3C/script%3E"));</script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container-fluid {
+            flex: 1;
+        }
+
+        .conteiner {
+            flex: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e7e7e7;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/default.aspx">
+                <img width="170" src="/imagenes/logo-completo.png" alt="Alternate Text" /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasMarketing/solicitud_franquicia.aspx">Solicitudes de Franquicia</a>
+                    </li>
+                    
+                </ul>
+                <h1>
+                    <asp:Label ID="label_tipo_usuario" Text="Gerente" runat="server" />
+                </h1>
+            </div>
+        </div>
+    </nav>
+     <form id="form1" runat="server" style="flex: 1; display: flex; flex-direction: column;">
+     <div class="conteiner">
+         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+         </asp:ContentPlaceHolder>
+     </div>
+ </form>
+    <footer>
+        <hr />
+        <script language="JavaScript" type="text/javascript">TrustLogo("https://micuenta.donweb.com/img/sectigo_positive_sm.png", "CL1", "none");</script>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

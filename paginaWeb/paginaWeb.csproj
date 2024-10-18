@@ -317,6 +317,9 @@
     <Content Include="paginasGerente\resumen_deuda_locales_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
     <Content Include="paginasLanding\landing_local.aspx" />
+    <Content Include="paginasMarketing\landing_page_local.aspx" />
+    <Content Include="paginasMarketing\solicitud_abierta.aspx" />
+    <Content Include="paginasMarketing\solicitud_franquicia.aspx" />
     <Content Include="paginasSupervision\evaluar_visita_operativa.aspx" />
     <Content Include="paginasSupervision\historial_visita_operativa.aspx" />
     <Content Include="paginasSupervision\subir_foto.aspx" />
@@ -1074,6 +1077,13 @@
     <Compile Include="paginasMaestras\paginaMaestraGerente.Master.designer.cs">
       <DependentUpon>paginaMaestraGerente.Master</DependentUpon>
     </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraMarketing.Master.cs">
+      <DependentUpon>paginaMaestraMarketing.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMaestras\paginaMaestraMarketing.Master.designer.cs">
+      <DependentUpon>paginaMaestraMarketing.Master</DependentUpon>
+    </Compile>
     <Compile Include="paginasMaestras\paginaMaestraSistema.Master.cs">
       <DependentUpon>paginaMaestraSistema.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1087,6 +1097,27 @@
     </Compile>
     <Compile Include="paginasMaestras\paginaMaestraLogin.Master.designer.cs">
       <DependentUpon>paginaMaestraLogin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMarketing\landing_page_local.aspx.cs">
+      <DependentUpon>landing_page_local.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMarketing\landing_page_local.aspx.designer.cs">
+      <DependentUpon>landing_page_local.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMarketing\solicitud_abierta.aspx.cs">
+      <DependentUpon>solicitud_abierta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMarketing\solicitud_abierta.aspx.designer.cs">
+      <DependentUpon>solicitud_abierta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMarketing\solicitud_franquicia.aspx.cs">
+      <DependentUpon>solicitud_franquicia.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMarketing\solicitud_franquicia.aspx.designer.cs">
+      <DependentUpon>solicitud_franquicia.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasSupervision\evaluar_visita_operativa.aspx.cs">
       <DependentUpon>evaluar_visita_operativa.aspx</DependentUpon>
@@ -1375,6 +1406,7 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="paginasMaestras\paginaMaestraGerente.Master" />
     <Content Include="paginasLanding\landing_local.Master" />
+    <Content Include="paginasMaestras\paginaMaestraMarketing.Master" />
     <None Include="Properties\PublishProfiles\Desarrollo.pubxml" />
     <None Include="Properties\PublishProfiles\PRODUCCION.pubxml" />
     <None Include="Web.Debug.config">
@@ -1414,6 +1446,10 @@
     <ProjectReference Include="..\07-sistemas supervision\07 - sistemas supervision.csproj">
       <Project>{a38ee0c9-e589-4b88-a7ed-2f46c47756af}</Project>
       <Name>07 - sistemas supervision</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\08 - sistemas marketing\08 - sistemas marketing.csproj">
+      <Project>{69cf577e-d3ac-4c52-9dca-5cca5d8eb807}</Project>
+      <Name>08 - sistemas marketing</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
