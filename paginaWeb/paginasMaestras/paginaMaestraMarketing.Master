@@ -69,7 +69,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasMarketing/solicitud_franquicia.aspx">Solicitudes de Franquicia</a>
                     </li>
-                    
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="http://181.90.159.14:82" target="_blank">PREVIEW PAGINA</a>
+                    </li>
                 </ul>
                 <h1>
                     <asp:Label ID="label_tipo_usuario" Text="Gerente" runat="server" />
@@ -77,12 +79,12 @@
             </div>
         </div>
     </nav>
-     <form id="form1" runat="server" style="flex: 1; display: flex; flex-direction: column;">
-     <div class="conteiner">
-         <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-         </asp:ContentPlaceHolder>
-     </div>
- </form>
+    <form id="form1" runat="server" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="conteiner">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
     <footer>
         <hr />
         <script language="JavaScript" type="text/javascript">TrustLogo("https://micuenta.donweb.com/img/sectigo_positive_sm.png", "CL1", "none");</script>
