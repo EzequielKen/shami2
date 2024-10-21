@@ -215,7 +215,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadísticas de Pedidos de Cliente</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
+                    </li>
                     <%}%>
 
                     <% // MENU PROVEEDOR VILLA MAIPU - INSUMOS %>
@@ -296,7 +298,9 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Producción</a></li>
                         </ul>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
+                    </li>
                     <%}%>
 
                     <% // MENU PROVEEDOR VILLA MAIPU - ADMIN %>
@@ -380,6 +384,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasSupervision/visita_operativa.aspx">Visita Operativa</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
+                    </li>
                     <%}%>
                     <% // MENU PROVEEDOR VILLA MAIPU - OPERACIONES %>
                     <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Operaciones")
@@ -393,7 +400,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/historial_temperatura.aspx">Historial de temperatura</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
+                    </li>
                     <%}%>
 
                     <% // MENU PROVEEDOR VILLA MAIPU - AMIR %>
@@ -426,6 +435,9 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por Pagar a Proveedores</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deuda a Proveedores</a></li>
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
                     </li>
                     <%}%>
                 </ul>

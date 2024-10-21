@@ -53,6 +53,7 @@
     <Compile Include="cls_calculo_deuda_locales.cs" />
     <Compile Include="cls_confirmar_conteo_stock.cs" />
     <Compile Include="cls_conteo_de_stock.cs" />
+    <Compile Include="cls_crear_ticket.cs" />
     <Compile Include="cls_historial_temperatura.cs" />
     <Compile Include="cls_objetivo_de_produccion.cs" />
     <Compile Include="cls_analisis_de_ventas.cs" />

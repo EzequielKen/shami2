@@ -70,6 +70,9 @@
                         <a class="nav-link btn btn-primary" href="/paginasMarketing/solicitud_franquicia.aspx">Solicitudes de Franquicia</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasMarketing/crear_ticket_marketing.aspx">Crear Ticket</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="http://181.90.159.14:82" target="_blank">PREVIEW PAGINA</a>
                     </li>
                 </ul>
