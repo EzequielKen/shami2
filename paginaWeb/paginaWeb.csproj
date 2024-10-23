@@ -318,6 +318,7 @@
     <Content Include="paginasGerente\proveedores_fabrica_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_locales_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
+    <Content Include="paginasGerente\tickets.aspx" />
     <Content Include="paginasLanding\landing_local.aspx" />
     <Content Include="paginasMarketing\crear_ticket_marketing.aspx" />
     <Content Include="paginasMarketing\landing_page_local.aspx" />
@@ -1051,6 +1052,13 @@
     </Compile>
     <Compile Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx.designer.cs">
       <DependentUpon>resumen_deuda_proveedores_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\tickets.aspx.cs">
+      <DependentUpon>tickets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\tickets.aspx.designer.cs">
+      <DependentUpon>tickets.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasLanding\landing_local.aspx.cs">
       <DependentUpon>landing_local.aspx</DependentUpon>
