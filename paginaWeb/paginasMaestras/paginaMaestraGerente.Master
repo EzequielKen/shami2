@@ -97,6 +97,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasGerente/crear_ticket_gerente.aspx">Crear Ticket</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasGerente/tickets.aspx">Tickets</a>
+                    </li>
                 </ul>
                 <h1>
                     <asp:Label ID="label_sucursal" Text="Gerente" runat="server" />
