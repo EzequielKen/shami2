@@ -49,6 +49,9 @@ namespace _03___sistemas_fabrica
             //prioridad
             columnas = funciones.armar_query_columna(columnas, "prioridad", false);
             valores = funciones.armar_query_valores(valores, generar_ultima_posicion(), false);
+            //prioridad_area
+            columnas = funciones.armar_query_columna(columnas, "prioridad_area", false);
+            valores = funciones.armar_query_valores(valores, generar_ultima_posicion_area(ticket.Rows[0]["solicita"].ToString()), false);
             //fecha_solicitud
             columnas = funciones.armar_query_columna(columnas, "fecha_solicitud", false);
             valores = funciones.armar_query_valores(valores, ticket.Rows[0]["fecha_solicitud"].ToString(), false);
@@ -84,6 +87,19 @@ namespace _03___sistemas_fabrica
             }
             return retorno.ToString();
         }
+        private string generar_ultima_posicion_area(string solicita)
+        {
+            int retorno = 0;
+            consultar_tickets_por_area(solicita);
+            if (tickets.Rows.Count > 0)
+            {
+                tickets.DefaultView.Sort = "prioridad_area asc";
+                tickets = tickets.DefaultView.ToTable();
+
+                retorno = int.Parse(tickets.Rows[tickets.Rows.Count - 1]["prioridad_area"].ToString()) + 1;
+            }
+            return retorno.ToString();
+        }
         #endregion
 
         #region metodos consultas
@@ -91,7 +107,10 @@ namespace _03___sistemas_fabrica
         {
             tickets = consultas.consultar_tickets_abiertos();
         }
-
+        private void consultar_tickets_por_area(string solicita)
+        {
+            tickets = consultas.consultar_tickets_abiertos_por_solicitante(solicita);
+        }
         #endregion
     }
 }

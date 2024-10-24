@@ -2487,6 +2487,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_tickets_abiertos_por_solicitante(string solicita)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".tickets WHERE activa=1 and estado='abierto' and solicita='" + solicita + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_tickets_segun_fecha(string mes, string año,string tipo_ticket)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
