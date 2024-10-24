@@ -7,7 +7,7 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace paginaWeb.paginasGerente
+namespace paginaWeb.paginasFabrica
 {
 
 

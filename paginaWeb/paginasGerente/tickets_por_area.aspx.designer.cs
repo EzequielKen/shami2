@@ -11,7 +11,7 @@ namespace paginaWeb.paginasGerente
 {
 
 
-    public partial class tickets
+    public partial class tickets_por_area
     {
 
         /// <summary>
@@ -33,22 +33,13 @@ namespace paginaWeb.paginasGerente
         protected global::System.Web.UI.WebControls.DropDownList dropdown_año;
 
         /// <summary>
-        /// Control dropdown_tipo.
+        /// Control dropdown_solicitante.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropdown_tipo;
-
-        /// <summary>
-        /// Control boton_ordenar_area.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_ordenar_area;
+        protected global::System.Web.UI.WebControls.DropDownList dropdown_solicitante;
 
         /// <summary>
         /// Control gridView_tickets.

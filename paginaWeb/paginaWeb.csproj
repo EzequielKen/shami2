@@ -306,6 +306,8 @@
     <Content Include="paginasFabrica\stock_producto_terminado.aspx" />
     <Content Include="paginasFabrica\sucursales.aspx" />
     <Content Include="paginasFabrica\temperatura_de_equipos.aspx" />
+    <Content Include="paginasFabrica\tickets.aspx" />
+    <Content Include="paginasFabrica\tickets_por_area.aspx" />
     <Content Include="paginasGerente\administrar_tipo_movimiento_caja_chica.aspx" />
     <Content Include="paginasGerente\analisis_caja_chica.aspx" />
     <Content Include="paginasGerente\caja_chica.aspx" />
@@ -319,6 +321,7 @@
     <Content Include="paginasGerente\resumen_deuda_locales_gerente.aspx" />
     <Content Include="paginasGerente\resumen_deuda_proveedores_gerente.aspx" />
     <Content Include="paginasGerente\tickets.aspx" />
+    <Content Include="paginasGerente\tickets_por_area.aspx" />
     <Content Include="paginasLanding\landing_local.aspx" />
     <Content Include="paginasMarketing\crear_ticket_marketing.aspx" />
     <Content Include="paginasMarketing\landing_page_local.aspx" />
@@ -969,6 +972,20 @@
     <Compile Include="paginasFabrica\temperatura_de_equipos.aspx.designer.cs">
       <DependentUpon>temperatura_de_equipos.aspx</DependentUpon>
     </Compile>
+    <Compile Include="paginasFabrica\tickets.aspx.cs">
+      <DependentUpon>tickets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\tickets.aspx.designer.cs">
+      <DependentUpon>tickets.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\tickets_por_area.aspx.cs">
+      <DependentUpon>tickets_por_area.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\tickets_por_area.aspx.designer.cs">
+      <DependentUpon>tickets_por_area.aspx</DependentUpon>
+    </Compile>
     <Compile Include="paginasGerente\administrar_tipo_movimiento_caja_chica.aspx.cs">
       <DependentUpon>administrar_tipo_movimiento_caja_chica.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1059,6 +1076,13 @@
     </Compile>
     <Compile Include="paginasGerente\tickets.aspx.designer.cs">
       <DependentUpon>tickets.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\tickets_por_area.aspx.cs">
+      <DependentUpon>tickets_por_area.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\tickets_por_area.aspx.designer.cs">
+      <DependentUpon>tickets_por_area.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasLanding\landing_local.aspx.cs">
       <DependentUpon>landing_local.aspx</DependentUpon>

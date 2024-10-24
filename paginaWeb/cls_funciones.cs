@@ -183,6 +183,21 @@ namespace paginaWeb
             }
             return retorno;
         }
+        public bool verificar_si_cargo_por_columna(string dato,string columna, DataTable dt)
+        {
+            bool retorno = false;
+            int fila = 0;
+            while (fila <= dt.Rows.Count - 1)
+            {
+                if (dato == dt.Rows[fila][columna].ToString())
+                {
+                    retorno = true;
+                    break;
+                }
+                fila++;
+            }
+            return retorno;
+        }
         public bool buscar_alguna_coincidencia(string dato_usuario, string dato_MySQL)
         {
             int posicion_MySQL, posicion_dato, i;

@@ -387,6 +387,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/tickets.aspx">Tickets</a>
+                    </li>
                     <%}%>
                     <% // MENU PROVEEDOR VILLA MAIPU - OPERACIONES %>
                     <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Operaciones")
@@ -437,12 +440,12 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink20" role="button" data-bs-toggle="dropdown" aria-expanded="false">Expedicion
-    </a><% //EXPEDICIÓN %>
-    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-        <li><a class="dropdown-item" href="/paginasFabrica/dias_de_entrega.aspx">Calendario de Entrega</a></li>
-    </ul>
-</li>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink20" role="button" data-bs-toggle="dropdown" aria-expanded="false">Expedicion
+                        </a><% //EXPEDICIÓN %>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/dias_de_entrega.aspx">Calendario de Entrega</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
                     </li>

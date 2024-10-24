@@ -1,13 +1,13 @@
-﻿using System;
+﻿using _06___sistemas_gerente;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using _06___sistemas_gerente;
 
-namespace paginaWeb.paginasGerente
+namespace paginaWeb.paginasFabrica
 {
     public partial class tickets : System.Web.UI.Page
     {
@@ -52,7 +52,7 @@ namespace paginaWeb.paginasGerente
         {
             ticketsBD = sys_tickets.get_tickets(dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_tipo.SelectedItem.Text);
             Session.Add("ticketsBD", ticketsBD);
-            gridView_tickets.DataSource =ticketsBD;
+            gridView_tickets.DataSource = ticketsBD;
             gridView_tickets.DataBind();
         }
         #endregion
@@ -144,17 +144,17 @@ namespace paginaWeb.paginasGerente
             ticketsBD = (DataTable)Session["ticketsBD"];
             string id;
             int fila_ticket;
-            for (int fila = 0; fila <= gridView_tickets.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= gridView_tickets.Rows.Count - 1; fila++)
             {
                 id = gridView_tickets.Rows[fila].Cells[0].Text;
-                fila_ticket = funciones.buscar_fila_por_id(id,ticketsBD);
+                fila_ticket = funciones.buscar_fila_por_id(id, ticketsBD);
                 TextBox textbox_prioridad = (gridView_tickets.Rows[fila].Cells[2].FindControl("textbox_prioridad") as TextBox);
                 Button boton_resolver = (gridView_tickets.Rows[fila].Cells[9].FindControl("boton_resolver") as Button);
                 textbox_prioridad.Text = ticketsBD.Rows[fila_ticket]["prioridad"].ToString();
 
-                if (ticketsBD.Rows[fila_ticket]["estado"].ToString()=="abierto")
+                if (ticketsBD.Rows[fila_ticket]["estado"].ToString() == "abierto")
                 {
-                    gridView_tickets.Rows[fila].CssClass= "table table-warning text-center table-responsive";
+                    gridView_tickets.Rows[fila].CssClass = "table table-warning text-center table-responsive";
                 }
                 else if (ticketsBD.Rows[fila_ticket]["estado"].ToString() == "resuelto")
                 {
@@ -171,7 +171,7 @@ namespace paginaWeb.paginasGerente
 
         protected void boton_ordenar_area_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/paginasGerente/tickets_por_area.aspx",false);
+            Response.Redirect("~/paginasGerente/tickets_por_area.aspx", false);
         }
 
         protected void boton_resolver_Click(object sender, EventArgs e)

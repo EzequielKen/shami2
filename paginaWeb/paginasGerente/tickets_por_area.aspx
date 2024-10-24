@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="tickets.aspx.cs" Inherits="paginaWeb.paginasGerente.tickets" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="tickets_por_area.aspx.cs" Inherits="paginaWeb.paginasGerente.tickets_por_area" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -16,10 +16,8 @@
                             <label class="form-control">Año</label>
                             <asp:DropDownList ID="dropdown_año" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_año_SelectedIndexChanged" AutoPostBack="true">
                             </asp:DropDownList>
-                            <label class="form-control">Tipo de Ticket</label>
-                            <asp:DropDownList ID="dropdown_tipo" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_tipo_SelectedIndexChanged" AutoPostBack="true">
-                                <asp:ListItem Text="Informe de Error" />
-                                <asp:ListItem Text="Solicitud de Desarrollo" />
+                            <label class="form-control">Solicitante</label>
+                            <asp:DropDownList ID="dropdown_solicitante" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_solicitante_SelectedIndexChanged" AutoPostBack="true">
                             </asp:DropDownList>
                         </div>
                     </div>
@@ -47,7 +45,7 @@
                             }
                 </style>
 
-                <asp:Button ID="boton_ordenar_area" CssClass="btn btn-primary" Text="Ordenar Por Area" OnClick="boton_ordenar_area_Click" runat="server" />
+
 
                 <div class="row">
                     <div class="alert alert-light gridview-container" style="width: 100%;">
