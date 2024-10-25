@@ -86,6 +86,15 @@ namespace paginaWeb.paginasGerente
             return retorno;
         }
         #endregion
+        #region configurar controles
+        private void vaciar_controles()
+        {
+            dropdown_tipo_ticket.SelectedIndex = 0;
+            textbox_fecha.Text=string.Empty;
+            textbox_asunto.Text=string.Empty;
+            textbox_detalle.Text=string.Empty;
+        }
+        #endregion
         /// <summary>
         /// /////////////////////////////////////////////////////////////////////////////////////////////
         /// </summary>
@@ -111,7 +120,10 @@ namespace paginaWeb.paginasGerente
             {
                 cargar_tabla_ticket();
                 sys_ticket.crear_ticket(ticket);
-                Response.Redirect("~/paginasFabrica/landing_page_local.aspx", false);
+                vaciar_controles();
+                // Mostrar el modal al finalizar
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "mostrarModal", "mostrarModal();", true);
+
             }
         }
     }

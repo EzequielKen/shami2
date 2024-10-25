@@ -52,7 +52,7 @@ namespace paginaWeb.paginasGerente
         {
             ticketsBD = sys_tickets.get_tickets(dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_tipo.SelectedItem.Text);
             Session.Add("ticketsBD", ticketsBD);
-            gridView_tickets.DataSource =ticketsBD;
+            gridView_tickets.DataSource = ticketsBD;
             gridView_tickets.DataBind();
         }
         #endregion
@@ -78,6 +78,7 @@ namespace paginaWeb.paginasGerente
             }
             dropdown_año.SelectedValue = DateTime.Now.Year.ToString();
         }
+       
         #endregion
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////////
@@ -171,6 +172,8 @@ namespace paginaWeb.paginasGerente
 
         protected void boton_ordenar_area_Click(object sender, EventArgs e)
         {
+           
+
             Response.Redirect("~/paginasGerente/tickets_por_area.aspx",false);
         }
 

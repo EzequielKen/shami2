@@ -218,6 +218,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/tickets.aspx">Tickets</a>
+                    </li>
                     <%}%>
 
                     <% // MENU PROVEEDOR VILLA MAIPU - INSUMOS %>
@@ -300,6 +303,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/tickets.aspx">Tickets</a>
                     </li>
                     <%}%>
 
@@ -448,6 +454,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/tickets.aspx">Tickets</a>
                     </li>
                     <%}%>
                 </ul>

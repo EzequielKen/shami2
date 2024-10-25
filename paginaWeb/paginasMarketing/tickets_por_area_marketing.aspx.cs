@@ -7,9 +7,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace paginaWeb.paginasFabrica
+namespace paginaWeb.paginasMarketing
 {
-    public partial class tickets : System.Web.UI.Page
+    public partial class tickets_por_area_marketing : System.Web.UI.Page
     {
         #region reordenar tickets
         private void ReordenarPrioridades(int id, int nuevaPrioridad)
@@ -50,9 +50,9 @@ namespace paginaWeb.paginasFabrica
         #region carga tickets
         private void cargar_tickets()
         {
-            ticketsBD = sys_tickets.get_tickets(dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_tipo.SelectedItem.Text);
-            Session.Add("ticketsBD", ticketsBD);
-            gridView_tickets.DataSource = ticketsBD;
+            tickets_area = sys_tickets.get_tickets_area(dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_solicitante.SelectedItem.Text);
+            Session.Add("tickets_area", tickets_area);
+            gridView_tickets.DataSource = tickets_area;
             gridView_tickets.DataBind();
         }
         #endregion
@@ -78,6 +78,23 @@ namespace paginaWeb.paginasFabrica
             }
             dropdown_año.SelectedValue = DateTime.Now.Year.ToString();
         }
+        private void cargar_solicitantes()
+        {
+            ticketsBD = (DataTable)Session["ticketsBD"];
+            DataTable solicitantes = new DataTable();
+            solicitantes.Columns.Add("solicitante", typeof(string));
+            string solicitante;
+            for (int fila = 0; fila <= ticketsBD.Rows.Count - 1; fila++)
+            {
+                solicitante = ticketsBD.Rows[fila]["solicita"].ToString();
+                if (!funciones.verificar_si_cargo_por_columna(solicitante, "solicitante", solicitantes))
+                {
+                    solicitantes.Rows.Add();
+                    solicitantes.Rows[solicitantes.Rows.Count - 1]["solicitante"] = solicitante;
+                    dropdown_solicitante.Items.Add(solicitante);
+                }
+            }
+        }
         #endregion
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////////
@@ -88,16 +105,23 @@ namespace paginaWeb.paginasFabrica
         cls_funciones funciones = new cls_funciones();
         DataTable usuariosBD;
         DataTable tipo_usuario;
+
         DataTable ticketsBD;
+        DataTable tickets_area;
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
             tipo_usuario = (DataTable)Session["tipo_usuario"];
+
             sys_tickets = new cls_tickets(usuariosBD);
             if (!IsPostBack)
             {
                 configurar_controles();
+                ticketsBD = sys_tickets.get_todos_tickets_abiertos(dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text);
+                Session.Add("ticketsBD", ticketsBD);
+                cargar_solicitantes();
+
                 cargar_tickets();
             }
         }
@@ -114,10 +138,9 @@ namespace paginaWeb.paginasFabrica
 
         }
 
-        protected void dropdown_tipo_SelectedIndexChanged(object sender, EventArgs e)
+        protected void dropdown_solicitante_SelectedIndexChanged(object sender, EventArgs e)
         {
             cargar_tickets();
-
         }
 
 
@@ -134,7 +157,7 @@ namespace paginaWeb.paginasFabrica
             if (int.TryParse(txtPrioridad.Text, out nuevaPrioridad))
             {
                 // Lógica para reordenar las prioridades
-                sys_tickets.reordenar_tickets(id, nuevaPrioridad.ToString(), dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_tipo.SelectedItem.Text);
+                sys_tickets.reordenar_tickets_area(id, nuevaPrioridad.ToString(), dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_solicitante.SelectedItem.Text);
             }
             cargar_tickets();
         }
@@ -142,43 +165,37 @@ namespace paginaWeb.paginasFabrica
 
         protected void gridView_tickets_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            ticketsBD = (DataTable)Session["ticketsBD"];
+            tickets_area = (DataTable)Session["tickets_area"];
             string id;
             int fila_ticket;
             for (int fila = 0; fila <= gridView_tickets.Rows.Count - 1; fila++)
             {
                 id = gridView_tickets.Rows[fila].Cells[0].Text;
-                fila_ticket = funciones.buscar_fila_por_id(id, ticketsBD);
+                fila_ticket = funciones.buscar_fila_por_id(id, tickets_area);
                 TextBox textbox_prioridad = (gridView_tickets.Rows[fila].Cells[1].FindControl("textbox_prioridad") as TextBox);
                 Button boton_resolver = (gridView_tickets.Rows[fila].Cells[9].FindControl("boton_resolver") as Button);
-                textbox_prioridad.Text = ticketsBD.Rows[fila_ticket]["prioridad"].ToString();
+                textbox_prioridad.Text = tickets_area.Rows[fila_ticket]["prioridad_area"].ToString();
 
-                if (ticketsBD.Rows[fila_ticket]["estado"].ToString() == "abierto")
+                if (tickets_area.Rows[fila_ticket]["estado"].ToString() == "abierto")
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-warning text-center table-responsive";
                 }
-                else if (ticketsBD.Rows[fila_ticket]["estado"].ToString() == "resuelto")
+                else if (tickets_area.Rows[fila_ticket]["estado"].ToString() == "resuelto")
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-success text-center table-responsive";
                     boton_resolver.Visible = false;
                 }
-                else if (ticketsBD.Rows[fila_ticket]["estado"].ToString() == "cancelado")
+                else if (tickets_area.Rows[fila_ticket]["estado"].ToString() == "cancelado")
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-danger text-center table-responsive";
                     boton_resolver.Visible = false;
                 }
-                
             }
-            if (tipo_usuario.Rows[0]["rol"].ToString()!= "Shami Villa Maipu Admin")
+            if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Admin")
             {
                 gridView_tickets.Columns[1].Visible = false;
                 gridView_tickets.Columns[9].Visible = false;
             }
-        }
-
-        protected void boton_ordenar_area_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("~/paginasFabrica/tickets_por_area.aspx", false);
         }
 
         protected void boton_resolver_Click(object sender, EventArgs e)

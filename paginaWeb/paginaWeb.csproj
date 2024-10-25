@@ -327,6 +327,8 @@
     <Content Include="paginasMarketing\landing_page_local.aspx" />
     <Content Include="paginasMarketing\solicitud_abierta.aspx" />
     <Content Include="paginasMarketing\solicitud_franquicia.aspx" />
+    <Content Include="paginasMarketing\tickets_marketing.aspx" />
+    <Content Include="paginasMarketing\tickets_por_area_marketing.aspx" />
     <Content Include="paginasSupervision\evaluar_visita_operativa.aspx" />
     <Content Include="paginasSupervision\historial_visita_operativa.aspx" />
     <Content Include="paginasSupervision\subir_foto.aspx" />
@@ -1174,6 +1176,20 @@
     </Compile>
     <Compile Include="paginasMarketing\solicitud_franquicia.aspx.designer.cs">
       <DependentUpon>solicitud_franquicia.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMarketing\tickets_marketing.aspx.cs">
+      <DependentUpon>tickets_marketing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMarketing\tickets_marketing.aspx.designer.cs">
+      <DependentUpon>tickets_marketing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasMarketing\tickets_por_area_marketing.aspx.cs">
+      <DependentUpon>tickets_por_area_marketing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasMarketing\tickets_por_area_marketing.aspx.designer.cs">
+      <DependentUpon>tickets_por_area_marketing.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasSupervision\evaluar_visita_operativa.aspx.cs">
       <DependentUpon>evaluar_visita_operativa.aspx</DependentUpon>

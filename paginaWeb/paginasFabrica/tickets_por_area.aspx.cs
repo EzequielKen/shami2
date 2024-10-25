@@ -104,6 +104,7 @@ namespace paginaWeb.paginasFabrica
         cls_tickets sys_tickets;
         cls_funciones funciones = new cls_funciones();
         DataTable usuariosBD;
+        DataTable tipo_usuario;
 
         DataTable ticketsBD;
         DataTable tickets_area;
@@ -111,6 +112,8 @@ namespace paginaWeb.paginasFabrica
         protected void Page_Load(object sender, EventArgs e)
         {
             usuariosBD = (DataTable)Session["usuariosBD"];
+            tipo_usuario = (DataTable)Session["tipo_usuario"];
+
             sys_tickets = new cls_tickets(usuariosBD);
             if (!IsPostBack)
             {
@@ -169,7 +172,7 @@ namespace paginaWeb.paginasFabrica
             {
                 id = gridView_tickets.Rows[fila].Cells[0].Text;
                 fila_ticket = funciones.buscar_fila_por_id(id, tickets_area);
-                TextBox textbox_prioridad = (gridView_tickets.Rows[fila].Cells[2].FindControl("textbox_prioridad") as TextBox);
+                TextBox textbox_prioridad = (gridView_tickets.Rows[fila].Cells[1].FindControl("textbox_prioridad") as TextBox);
                 Button boton_resolver = (gridView_tickets.Rows[fila].Cells[9].FindControl("boton_resolver") as Button);
                 textbox_prioridad.Text = tickets_area.Rows[fila_ticket]["prioridad_area"].ToString();
 
@@ -187,6 +190,11 @@ namespace paginaWeb.paginasFabrica
                     gridView_tickets.Rows[fila].CssClass = "table table-danger text-center table-responsive";
                     boton_resolver.Visible = false;
                 }
+            }
+            if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Admin")
+            {
+                gridView_tickets.Columns[1].Visible = false;
+                gridView_tickets.Columns[9].Visible = false;
             }
         }
 

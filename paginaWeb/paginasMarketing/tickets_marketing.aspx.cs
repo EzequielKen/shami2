@@ -7,9 +7,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace paginaWeb.paginasFabrica
+namespace paginaWeb.paginasMarketing
 {
-    public partial class tickets : System.Web.UI.Page
+    public partial class tickets_marketing : System.Web.UI.Page
     {
         #region reordenar tickets
         private void ReordenarPrioridades(int id, int nuevaPrioridad)
@@ -167,9 +167,9 @@ namespace paginaWeb.paginasFabrica
                     gridView_tickets.Rows[fila].CssClass = "table table-danger text-center table-responsive";
                     boton_resolver.Visible = false;
                 }
-                
+
             }
-            if (tipo_usuario.Rows[0]["rol"].ToString()!= "Shami Villa Maipu Admin")
+            if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Admin")
             {
                 gridView_tickets.Columns[1].Visible = false;
                 gridView_tickets.Columns[9].Visible = false;
@@ -178,7 +178,7 @@ namespace paginaWeb.paginasFabrica
 
         protected void boton_ordenar_area_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/paginasFabrica/tickets_por_area.aspx", false);
+            Response.Redirect("~/paginasMarketing/tickets_por_area_marketing.aspx", false);
         }
 
         protected void boton_resolver_Click(object sender, EventArgs e)
