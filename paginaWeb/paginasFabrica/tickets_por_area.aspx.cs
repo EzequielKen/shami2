@@ -191,7 +191,8 @@ namespace paginaWeb.paginasFabrica
                     boton_resolver.Visible = false;
                 }
             }
-            if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Admin")
+            if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Admin" &&
+                            tipo_usuario.Rows[0]["rol"].ToString() != "Shami Sistemas")
             {
                 gridView_tickets.Columns[1].Visible = false;
                 gridView_tickets.Columns[9].Visible = false;

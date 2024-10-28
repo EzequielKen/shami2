@@ -459,6 +459,95 @@
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/tickets.aspx">Tickets</a>
                     </li>
                     <%}%>
+
+                    <% // MENU PROVEEDOR VILLA MAIPU - ADMIN %>
+                    <%if (proveedorBD.Rows[0]["nombre_en_BD"].ToString() == "proveedor_villaMaipu" && tipo_usuario.Rows[0]["rol"].ToString() == "Shami Sistemas")
+                        {%>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink21" role="button" data-bs-toggle="dropdown" aria-expanded="false">Produccion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/produccion.aspx">Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_produccion.aspx">Historial de Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/objetivo_de_produccion.aspx">Objetivo Produccion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/pedir_insumos.aspx">Pedir Insumo a Expedicion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_pedido_de_insumos.aspx">Historial de Pedido de Insumo a Expedicion</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdicio</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/orden_de_pedido.aspx">Orden de Pedido a Compras</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/plantillas.aspx">Plantillas</a></li>
+                        </ul>
+                    </li>
+
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink22" role="button" data-bs-toggle="dropdown" aria-expanded="false">Compras
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/proveedores_fabrica.aspx">Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">Solicitudes de Insumos de Fabrica</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/orden_de_compras.aspx">Crear Ordenes de Compra a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de Compras a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por Pagar a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deudas a Proveedores</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink23" role="button" data-bs-toggle="dropdown" aria-expanded="false">Expedicion
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/sucursales.aspx">Pedidos de Locales</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/remitos_de_carga.aspx">Remitos de carga</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/merma_y_desperdicio.aspx">Merma y Desperdcio</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/devolucion_de_productos.aspx">Devolucion de Producto</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock.aspx">Historial Stock</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock_insumos.aspx">Historial de Stock Insumos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_pedidos.aspx">historial de Solicitud a Fabrica</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/recepcion_de_fabrica_fatay.aspx">Recepcion de Fatay</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/movimiento_mercaderia_interna.aspx">Movimiento mercaderia interna</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink24" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ventas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_cobrar.aspx">Cuentas por Cobrar</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/actualizador_de_precios_insumos.aspx">Actualizador PVP Insumos/locales</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/actualizar_precio_stock.aspx">Actualizador PVP Producto Terminado</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/analisis_de_ventas.aspx">Analisis de Venta de Producto</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/estadisticas_de_pedidos.aspx">Estadisticas de Entrega a Cliente</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink25" role="button" data-bs-toggle="dropdown" aria-expanded="false">Fabrica de Fatay
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_stock_fabrica_fatay.aspx">Historial de Stock de Fabrica de Fatay</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/analisis_de_produccion_fabrica_fatay.aspx">Analisis de Produccion de Fabrica de Fatay</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/historial_de_despacho_fabrica_fatay.aspx">Historial de Despacho de Fabrica de Fatay</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/dias_de_entrega.aspx">Calendario de Entrega</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/administrar_actividades_lista_chequeo_locales.aspx">Administrar Actividades de Lista de Chequeo de Locales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/administrar_lista_chequeo_perfiles.aspx">Administrar Lista de Chequeo de Perfiles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasSupervision/visita_operativa.aspx">Visita Operativa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_ticket.aspx">Crear Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/tickets.aspx">Tickets</a>
+                    </li>
+                    <%}%>
                 </ul>
 
                 <h3>
