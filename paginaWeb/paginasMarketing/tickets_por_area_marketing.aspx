@@ -6,6 +6,7 @@
 <asp:UpdatePanel runat="server">
     <ContentTemplate>
         <div class="container-fluid">
+            <h1>Tickets</h1>
             <div class="row">
                 <div class="alert alert-light">
                     <div class="input-group">

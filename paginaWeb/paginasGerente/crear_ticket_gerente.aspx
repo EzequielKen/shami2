@@ -36,7 +36,7 @@
             <div class="container">
                 <div class="row">
                     <div class="alert alert-light">
-                        <h3>¿Como podemos ayudarte?</h3>
+                        <h3>¿Como podemos ayudarte? Seleccione tipo de Solicitud:</h3>
                         <asp:DropDownList ID="dropdown_tipo_ticket" CssClass="form-select" runat="server">
                             <asp:ListItem Text="Informe de Error" />
                             <asp:ListItem Text="Solicitud de Desarrollo" />
