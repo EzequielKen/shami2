@@ -47,12 +47,19 @@ namespace paginaWeb.paginasFabrica
         }
         private int cantidad_de_pedidos_pendientes(string sucursal)
         {
+            DataTable recuento = new DataTable();
+            recuento.Columns.Add("num_pedido", typeof(string));
             int retorno = 0;
             for (int fila = 0; fila <= pedidos_no_cargados.Rows.Count - 1; fila++)
             {
                 if (pedidos_no_cargados.Rows[fila]["sucursal"].ToString() == sucursal)
                 {
-                    retorno++;
+                    if (-1 == funciones.buscar_fila_por_dato(pedidos_no_cargados.Rows[fila]["num_pedido"].ToString(), "num_pedido", recuento))
+                    {
+                        recuento.Rows.Add();
+                        recuento.Rows[recuento.Rows.Count - 1]["num_pedido"] = pedidos_no_cargados.Rows[fila]["num_pedido"].ToString();
+                        retorno++;
+                    }
                 }
             }
             return retorno;
@@ -108,8 +115,8 @@ namespace paginaWeb.paginasFabrica
                 {
                     sucursalesBD = (DataTable)Session["sucursalesBD"];
                 }
-                
-                pedidos_no_cargados = pedidos_fabrica.get_pedidos_no_cargados(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString());
+
+                pedidos_no_cargados = pedidos_fabrica.get_pedidos_no_cargados_nuevo();
                 cargar_sucursales();
 
 
@@ -123,6 +130,7 @@ namespace paginaWeb.paginasFabrica
 
         protected void gridView_sucursales_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Session.Add("id_sucursal", gridView_sucursales.SelectedRow.Cells[0].Text);
             Session.Add("nombre_sucursal", gridView_sucursales.SelectedRow.Cells[1].Text);
             Response.Redirect("~/paginasFabrica/pedidos.aspx", false);
 

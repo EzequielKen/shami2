@@ -15,10 +15,10 @@
                         <div class="alert alert-light">
                             <h2>Produccion</h2>
                             <div class="row alert alert-light">
-                                <asp:Button Text="Resumir produccion diaria segun sucursal" ID="boton_resumir_produccion_diaria_segun_sucursal" runat="server" CssClass="btn btn-primary btn-sm" OnClick="boton_resumir_produccion_diaria_segun_sucursal_Click" />
+                                <asp:Button Visible="false" Text="Resumir produccion diaria segun sucursal" ID="boton_resumir_produccion_diaria_segun_sucursal" runat="server" CssClass="btn btn-primary btn-sm" OnClick="boton_resumir_produccion_diaria_segun_sucursal_Click" />
                             </div>
                             <div class="row alert alert-light">
-                                <asp:Button Text="Resumir toda produccion diaria" ID="boton_resumir_produccion_diaria" runat="server" CssClass="btn btn-primary btn-sm" OnClick="boton_resumir_produccion_diaria_Click" />
+                                <asp:Button Visible="false" Text="Resumir toda produccion diaria" ID="boton_resumir_produccion_diaria" runat="server" CssClass="btn btn-primary btn-sm" OnClick="boton_resumir_produccion_diaria_Click" />
                             </div>
                         </div>
                     </div>
@@ -26,10 +26,10 @@
                         <div class="alert alert-light">
                             <h2>Panificados</h2>
                             <div class="row alert alert-light">
-                                <asp:Button Text="Resumen de Pedido Sin Stock" ID="Boton_panificados" runat="server" CssClass="btn btn-primary btn-sm" OnClick="Boton_panificados_Click" />
+                                <asp:Button  Visible="false" Text="Resumen de Pedido Sin Stock" ID="Boton_panificados" runat="server" CssClass="btn btn-primary btn-sm" OnClick="Boton_panificados_Click" />
                             </div>
                             <div class="row alert alert-light">
-                                <asp:Button Text="Pedido a Saleh Con Stock Incluido" ID="Boton_pedir_panificados" runat="server" CssClass="btn btn-primary btn-sm" OnClick="Boton_pedir_panificados_Click" />
+                                <asp:Button  Visible="false" Text="Pedido a Saleh Con Stock Incluido" ID="Boton_pedir_panificados" runat="server" CssClass="btn btn-primary btn-sm" OnClick="Boton_pedir_panificados_Click" />
                             </div>
                         </div>
                     </div>

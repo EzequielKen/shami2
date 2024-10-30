@@ -196,15 +196,7 @@ namespace _02___sistemas
         }
         private void obtener_productos_proveedor(string id_sucursal)
         {
-            if (id_sucursal == "31")
-            {
                 productos_proveedor = pedidos.get_productos_proveedor("Fabrica villa maipu", id_sucursal);
-            }
-            else
-            {
-                productos_proveedor = pedidos.get_productos_proveedor("Fabrica villa maipu", id_sucursal);
-            }
-            insumos_proveedor = pedidos.get_productos_proveedor("Shami Insumos", id_sucursal);
         }
         private int obtener_condicion_bonificado()
         {
@@ -243,7 +235,6 @@ namespace _02___sistemas
                         resumen.Rows[fila_resumen]["tipo_producto"] = productos_proveedor.Rows[fila]["tipo_producto"].ToString();
                         resumen.Rows[fila_resumen]["precio"] = productos_proveedor.Rows[fila]["precio"].ToString();
                         resumen.Rows[fila_resumen]["unidad_medida_local"] = productos_proveedor.Rows[fila]["unidad_de_medida_local"].ToString();
-                        resumen.Rows[fila_resumen]["unidad_medida_fabrica"] = productos_proveedor.Rows[fila]["unidad_de_medida_fabrica"].ToString();
                         resumen.Rows[fila_resumen]["alimento"] = productos_proveedor.Rows[fila]["alimento"].ToString();
                         resumen.Rows[fila_resumen]["bebida"] = productos_proveedor.Rows[fila]["bebida"].ToString();
                         resumen.Rows[fila_resumen]["descartable"] = productos_proveedor.Rows[fila]["descartable"].ToString();
@@ -310,10 +301,15 @@ namespace _02___sistemas
         {
             obtener_productos_proveedor(id_sucursal);
             //crear lista resumen
-            llenar_lista_resumen();
+            //llenar_lista_resumen();
             //llenar lista con productos e insumos
             //retornar lista resumen
-            return resumen;
+            productos_proveedor.Columns.Add("orden",typeof(int));
+            for (int fila = 0; fila <= productos_proveedor.Rows.Count-1; fila++)
+            {
+                productos_proveedor.Rows[fila]["orden"] = int.Parse(funciones.obtener_dato(productos_proveedor.Rows[fila]["tipo_producto"].ToString(),1));
+            }
+            return productos_proveedor;
         }
         #endregion
     }

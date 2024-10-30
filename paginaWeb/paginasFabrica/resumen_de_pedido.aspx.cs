@@ -15,7 +15,7 @@ namespace paginaWeb.paginasFabrica
         {
             if (resumen_sucursales.Rows.Count > 0)
             {
-                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados, resumen_sucursales);
+                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados);
                 DateTime hora = DateTime.Now;
 
                 string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
@@ -24,7 +24,7 @@ namespace paginaWeb.paginasFabrica
                 string ruta_archivo = Server.MapPath(ruta);
 
                 byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
-                pedidos_fabrica.crear_pdf_resumen_pedido((DataTable)Session["proveedorBD"], resumen_sucursales, ruta_archivo, imgdata);
+                pedidos_fabrica.crear_pdf_resumen_pedido(pedidos_no_cargados, resumen_sucursales, ruta_archivo, imgdata);
 
                 //           Response.Redirect("~/archivo.pdf");
                 string strUrl = "/paginasFabrica/pdf/" + id_pedido;
@@ -37,7 +37,8 @@ namespace paginaWeb.paginasFabrica
         {
             if (resumen_sucursales.Rows.Count > 0)
             {
-                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados, resumen_sucursales);
+                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados);
+
                 DateTime hora = DateTime.Now;
 
                 string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
@@ -58,7 +59,8 @@ namespace paginaWeb.paginasFabrica
         {
             if (resumen_sucursales.Rows.Count > 0)
             {
-                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados, resumen_sucursales);
+                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados);
+
                 DateTime hora = DateTime.Now;
 
                 string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
@@ -108,7 +110,8 @@ namespace paginaWeb.paginasFabrica
         {
             if (resumen_sucursales.Rows.Count > 0)
             {
-                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados, resumen_sucursales);
+                pedidos_fabrica.actualizar_estado_de_pedido(pedidos_no_cargados);
+
                 DateTime hora = DateTime.Now;
 
                 string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
@@ -287,7 +290,7 @@ namespace paginaWeb.paginasFabrica
             pedidos_fabrica = new cls_sistema_pedidos_fabrica((DataTable)Session["usuariosBD"]);
 
 
-                sucursalesBD = pedidos_fabrica.get_sucursales();
+            sucursalesBD = pedidos_fabrica.get_sucursales();
 
 
 
@@ -300,12 +303,9 @@ namespace paginaWeb.paginasFabrica
                 Session.Add("resumen_sucursal", resumen_sucursales);
             }
             resumen_sucursales = (DataTable)Session["resumen_sucursal"];
-            pedidos_no_cargados = pedidos_fabrica.get_pedidos_no_cargados(proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString());
-            productos_proveedor = pedidos_fabrica.get_productos_proveedor(proveedorBD.Rows[0]["nombre_en_BD"].ToString());
+            pedidos_no_cargados = pedidos_fabrica.get_pedidos_no_cargados_nuevo();
+            productos_proveedor = pedidos_fabrica.get_productos_nuevo();
             cargar_sucursales();
-
-
-
         }
 
         protected void gridview_sucursales_SelectedIndexChanged(object sender, EventArgs e)
@@ -325,7 +325,7 @@ namespace paginaWeb.paginasFabrica
         }
 
         protected void boton_crear_pdf_Click(object sender, EventArgs e)
-        {
+        {//Generar PDF resumen segun sucursal
             crear_pdf();
 
 

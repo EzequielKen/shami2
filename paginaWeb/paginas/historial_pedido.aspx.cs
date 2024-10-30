@@ -74,7 +74,6 @@ namespace paginaWeb.paginas
             pedidos = new DataTable();
 
             pedidos.Columns.Add("id", typeof(string));
-            pedidos.Columns.Add("proveedor", typeof(string));
             pedidos.Columns.Add("num_pedido", typeof(string));
             pedidos.Columns.Add("fecha", typeof(string));
             pedidos.Columns.Add("estado", typeof(string));
@@ -90,13 +89,11 @@ namespace paginaWeb.paginas
             pedidosBD = pedidosBD.DefaultView.ToTable();
             for (int fila = 0; fila <= pedidosBD.Rows.Count - 1; fila++)
             {
-                proveedor = pedidosBD.Rows[fila]["proveedor"].ToString();
                 fecha = pedidosBD.Rows[fila]["fecha"].ToString();
-                if (sucursal == pedidosBD.Rows[fila]["sucursal"].ToString() && sistema_Administracion.verificar_proveedor(proveedor, proveedor_seleccionado, (DataTable)Session["lista_proveedores"]) && sistema_Administracion.verificar_fecha(fecha, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text))
+                if (sistema_Administracion.verificar_fecha(fecha, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text))
                 {
                     pedidos.Rows.Add();
                     pedidos.Rows[fila_tabla]["id"] = pedidosBD.Rows[fila]["id"].ToString();
-                    pedidos.Rows[fila_tabla]["proveedor"] = dropDown_proveedores.SelectedItem.Text;
                     pedidos.Rows[fila_tabla]["num_pedido"] = pedidosBD.Rows[fila]["num_pedido"].ToString();
                     pedidos.Rows[fila_tabla]["fecha"] = pedidosBD.Rows[fila]["fecha"].ToString();
                     if (pedidosBD.Rows[fila]["estado"].ToString() == "local")
@@ -116,8 +113,6 @@ namespace paginaWeb.paginas
         private void cargar_pedidos()
         {
             llenar_tabla_pedido();
-
-            
 
             gridView_pedidos.DataSource = pedidos;
             gridView_pedidos.DataBind();
@@ -164,21 +159,22 @@ namespace paginaWeb.paginas
 
                 if (!IsPostBack)
                 {
-                    Session.Add("lista_proveedores",sistema_Administracion.get_lista_proveedores());
+                    Session.Add("lista_proveedores", sistema_Administracion.get_lista_proveedores());
                     //calcular remitos nuevos
                     sistema_Administracion.actualizar_remitos();
                     configurar_controles();
                 }
 
 
+                string id_sucursal = sucusalBD.Rows[0]["id"].ToString();
                 sucursal = sucusalBD.Rows[0]["sucursal"].ToString();
 
-                pedidosBD = sistema_Administracion.get_pedidos();
+                pedidosBD = sistema_Administracion.get_pedidos(id_sucursal, sucursal, dropDown_mes.SelectedItem.Text, dropDown_año.SelectedItem.Text);
                 cargar_pedidos();
-               
+
             }
-         
-            
+
+
 
 
         }
@@ -187,49 +183,40 @@ namespace paginaWeb.paginas
         {
             cargar_pedidos();
 
-          
+
         }
 
         protected void dropDown_mes_SelectedIndexChanged(object sender, EventArgs e)
         {
             cargar_pedidos();
 
-           
+
         }
 
         protected void dropDown_año_SelectedIndexChanged(object sender, EventArgs e)
         {
             cargar_pedidos();
 
-           
+
         }
 
         protected void gridView_pedidos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             for (int fila = 0; fila <= gridView_pedidos.Rows.Count - 1; fila++)
             {
-                if ("pedido recibido" != gridView_pedidos.Rows[fila].Cells[6].Text)
+                if ("pedido recibido" != gridView_pedidos.Rows[fila].Cells[5].Text)
                 {
-                    gridView_pedidos.Rows[fila].Cells[5].Controls[0].Visible = false;
+                    gridView_pedidos.Rows[fila].Cells[4].Controls[0].Visible = false;
 
                 }
                 else
                 {
-                    gridView_pedidos.Rows[fila].Cells[5].Controls[0].Visible = true;
+                    gridView_pedidos.Rows[fila].Cells[4].Controls[0].Visible = true;
                 }
 
-                if ("Listo para despachar" != gridView_pedidos.Rows[fila].Cells[6].Text)
-                {
-                    gridView_pedidos.Rows[fila].Cells[7].Controls[0].Visible = false;
-
-                }
-                else
-                {
-                    gridView_pedidos.Rows[fila].Cells[7].Controls[0].Visible = true;
-                }
             }
-          
-           
+
+
 
         }
 
@@ -237,8 +224,10 @@ namespace paginaWeb.paginas
         {
             if (e.CommandName == "crear_pdf")
             {
+
+
                 string gridview_pedidos_index = e.CommandArgument.ToString();
-                id_pedido = gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[2].Text;
+                id_pedido = gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[1].Text;
                 DateTime hora = DateTime.Now;
                 string dato_hora = hora.DayOfYear.ToString() + hora.Hour.ToString() + hora.Minute.ToString() + hora.Second.ToString();
                 string id_remito = Session["sucursal"].ToString() + " pedido-" + gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[1].Text + "- id-" + dato_hora + ".pdf";
@@ -246,7 +235,16 @@ namespace paginaWeb.paginas
                 string ruta_archivo = Server.MapPath(ruta);
 
                 byte[] imgdata = System.IO.File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/imagenes/logo-completo.png"));
-                sistema_Administracion.crear_pdf_resumen_pedido_operativo(ruta_archivo, gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[2].Text, sucursal, dropDown_proveedores.SelectedItem.Text, imgdata);
+                int fila_pedido = funciones.buscar_fila_por_id(gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[0].Text, pedidosBD);
+
+                if (pedidosBD.Rows[fila_pedido]["legacy"].ToString() == "si")
+                {
+                    sistema_Administracion.crear_pdf_resumen_pedido_operativo_legacy(ruta_archivo, gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[1].Text, sucursal, dropDown_proveedores.SelectedItem.Text, imgdata);
+                }
+                else
+                {
+                    sistema_Administracion.crear_pdf_resumen_pedido_operativo(ruta_archivo, gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[1].Text, sucusalBD.Rows[0]["id"].ToString(), imgdata);
+                }
                 //           Response.Redirect("~/archivo.pdf");
                 string strUrl = "/paginas/pdf/" + id_remito;
                 try
@@ -265,12 +263,21 @@ namespace paginaWeb.paginas
                 //DAR DE BAJA LOGICA EN BASE DE DATOS
                 string gridview_pedidos_index = e.CommandArgument.ToString();
 
-                string estado = gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[6].Text;
+                string estado = gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[5].Text;
                 if ("cargado" != estado)
                 {
                     string id_pedido_seleccionado = gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[0].Text;
-                    string num_pedido_seleccionado = gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[2].Text;
-                    Response.Redirect(sistema_Administracion.cancelar_pedido(id_pedido_seleccionado, num_pedido_seleccionado, dropDown_proveedores.SelectedItem.Text, (DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]), false);
+                    string num_pedido_seleccionado = gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[1].Text;
+                    int fila_pedido = funciones.buscar_fila_por_id(gridView_pedidos.Rows[int.Parse(gridview_pedidos_index)].Cells[0].Text, pedidosBD);
+
+                    if (pedidosBD.Rows[fila_pedido]["legacy"].ToString() == "si")
+                    {
+                        Response.Redirect(sistema_Administracion.cancelar_pedido_legacy(id_pedido_seleccionado, num_pedido_seleccionado, dropDown_proveedores.SelectedItem.Text, (DataTable)Session["usuariosBD"], (DataTable)Session["sucursal"]), false);
+                    }
+                    else
+                    {
+                        Response.Redirect(sistema_Administracion.cancelar_pedido_nuevo(sucusalBD.Rows[0]["id"].ToString(), num_pedido_seleccionado, (DataTable)Session["sucursal"]), false);
+                    }
                 }
             }
             else if (e.CommandName == "iniciar_reclamo")
@@ -284,8 +291,8 @@ namespace paginaWeb.paginas
                 Session.Add("proveedor_seleccionado",sistema_Administracion.get_nombre_proveedor(dropDown_proveedores.SelectedItem.Text));
                 Response.Redirect("~/paginas/confirmar_recepcion.aspx",false);*/
             }
-          
-           
+
+
         }
 
 

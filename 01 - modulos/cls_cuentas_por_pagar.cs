@@ -52,7 +52,8 @@ namespace modulos
 
         DataTable remitos;
         DataTable lista_proveedores;
-        DataTable pedidos;
+        DataTable pedidos_legacy;
+        DataTable pedidos_nuevo;
         DataTable pedidos_no_calculados;
         DataTable acuerdo_de_precios;
         DataTable acuerdo_de_precios_segun_parametros;
@@ -126,9 +127,17 @@ namespace modulos
         {
             lista_proveedores = consultas.consultar_tabla(base_de_datos, "lista_proveedores");
         }
-        private void consultar_pedidos()
+        private void consultar_pedidos_legacy(string sucursal, string mes, string año)
         {
-            pedidos = consultas.consultar_tabla(base_de_datos, "pedidos");
+            pedidos_legacy = consultas.consultar_pedidos_legacy(sucursal, mes, año);
+        }
+        private void consultar_pedidos_nuevo(string id_sucursal, string mes, string año)
+        {
+            pedidos_nuevo = consultas.consultar_pedidos_nuevo(id_sucursal, mes, año);
+        }
+        private void consultar_pedido_nuevo(string id_sucursal, string num_pedido)
+        {
+            pedidos_nuevo = consultas.consultar_pedido_nuevo(id_sucursal, num_pedido);
         }
         private void consultar_pedidos_no_calculados()
         {
@@ -191,12 +200,21 @@ namespace modulos
             consultar_lista_proveedores();
             return lista_proveedores;
         }
-        public DataTable get_pedidos()
+        public DataTable get_pedidos_legacy(string sucursal, string mes, string año)
         {
-            consultar_pedidos();
-            return pedidos;
+            consultar_pedidos_legacy(sucursal, mes, año);
+            return pedidos_legacy;
         }
-
+        public DataTable get_pedidos_nuevos(string id_sucursal, string mes, string año)
+        {
+            consultar_pedidos_nuevo(id_sucursal, mes, año);
+            return pedidos_nuevo;
+        }
+        public DataTable get_pedido_nuevos(string id_sucursal, string num_pedido)
+        {
+            consultar_pedido_nuevo(id_sucursal, num_pedido);
+            return pedidos_nuevo;
+        }
         public DataTable get_pedidos_no_calculados()
         {
             consultar_pedidos_no_calculados();
@@ -221,17 +239,27 @@ namespace modulos
 
         public void eliminar_imputacion(string id_imputacion)
         {
-            string actualizar= "`activa` = '0'";
-            consultas.actualizar_tabla(base_de_datos, "imputaciones", actualizar,id_imputacion);
+            string actualizar = "`activa` = '0'";
+            consultas.actualizar_tabla(base_de_datos, "imputaciones", actualizar, id_imputacion);
         }
-        public string cancelar_pedido(string id_pedido, string num_pedido, string proveedor, DataTable usuariosBD, DataTable sucursalBD)
+        public string cancelar_pedido_legacy(string id_pedido, string num_pedido, string proveedor, DataTable usuariosBD, DataTable sucursalBD)
         {
             consultas.actualizar_tabla(base_de_datos, "pedidos", "`estado` = 'Cancelado'", id_pedido);
-            consultar_lista_proveedores();
             whatsapp = new cls_whatsapp();
-            return whatsapp.cancelar_pedido(num_pedido, lista_proveedores, sucursalBD);
+            return whatsapp.cancelar_pedido(num_pedido, sucursalBD);
         }
-        public void cargar_remito(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento,string impuesto)
+        public string cancelar_pedido_nuevo(DataTable pedido_cancelar, DataTable sucursalBD)
+        {
+            string id_pedido;
+            for (int fila = 0; fila <= pedido_cancelar.Rows.Count - 1; fila++)
+            {
+                id_pedido = pedido_cancelar.Rows[fila]["id"].ToString();
+                consultas.actualizar_tabla(base_de_datos, "pedido", "`estado` = 'Cancelado'", id_pedido);
+            }
+            whatsapp = new cls_whatsapp();
+            return whatsapp.cancelar_pedido(pedido_cancelar.Rows[0]["num_pedido"].ToString(), sucursalBD);
+        }
+        public void cargar_remito(string proveedor, string sucursal, string num_pedido, string tipo_de_acuerdoBD, string valor_remito, string fecha_remito, string descuento, string impuesto)
         {
             string columnas, valores;
             columnas = "";
@@ -261,11 +289,11 @@ namespace modulos
             valores = armar_query_valores(valores, fecha_remito, true);
 
 
-            actualizar_o_crear_remito(proveedor, sucursal, num_pedido, valor_remito,columnas,valores);
+            actualizar_o_crear_remito(proveedor, sucursal, num_pedido, valor_remito, columnas, valores);
 
-            actualizar_remito_fabrica(proveedor,sucursal,num_pedido,valor_remito);
+            actualizar_remito_fabrica(proveedor, sucursal, num_pedido, valor_remito);
         }
-        private void actualizar_o_crear_remito(string proveedor, string sucursal, string num_pedido, string valor_remito,string columnas,string valores)
+        private void actualizar_o_crear_remito(string proveedor, string sucursal, string num_pedido, string valor_remito, string columnas, string valores)
         {
             DataTable remito = consultas.consultar_remito_de_pedido(base_de_datos, proveedor, sucursal, num_pedido);
             if (remito.Rows.Count > 0)
@@ -285,8 +313,8 @@ namespace modulos
             if (remito_fabrica.Rows.Count > 0)
             {
                 string actualizar = "`valor_remito` = '" + valor_remito + "'";
-                string id_remito_fabrica= remito_fabrica.Rows[0]["id"].ToString();
-                consultas.actualizar_tabla(base_de_datos, "cuenta_por_pagar",actualizar,id_remito_fabrica);
+                string id_remito_fabrica = remito_fabrica.Rows[0]["id"].ToString();
+                consultas.actualizar_tabla(base_de_datos, "cuenta_por_pagar", actualizar, id_remito_fabrica);
             }
         }
         public void actualizar_lectura_de_pedido(string id_pedido)

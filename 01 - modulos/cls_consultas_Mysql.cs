@@ -528,7 +528,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_pedidos_no_cargados(string base_de_datos, string tabla, string nombre_proveedor)
+        public DataTable consultar_pedidos_no_cargados_legacy(string base_de_datos, string tabla, string nombre_proveedor)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -537,6 +537,25 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + "." + tabla + " where (estado='Pedido en proceso' or estado='local') and (activa=1    and proveedor='" + nombre_proveedor + "')";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_pedidos_no_cargados_nuevo()
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".pedido where (estado='Pedido en proceso' or estado='local') and (activa=1)";
                 retorno = base_datos.READ(query);
             }
             catch (Exception ex)
@@ -2559,6 +2578,132 @@ namespace modulos
             try
             {
                 query = "SELECT * FROM " + base_de_datos + ".tickets WHERE activa=1 and solicita='" + solicita + "' and YEAR(fecha_solicitud)='" + año + "' and MONTH(fecha_solicitud)='" + mes + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_precio_venta_segun_tipo_de_acuerdo(string tipo_de_acuerdo )
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".precio_venta WHERE activa=1 and tipo_de_acuerdo='" + tipo_de_acuerdo + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_pedidos_nuevo(string id_sucursal,string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".pedido WHERE activa=1 and id_sucursal='" + id_sucursal + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_pedido_nuevo(string id_sucursal, string num_pedido)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".pedido WHERE activa=1 and id_sucursal='" + id_sucursal + "' and num_pedido='" + num_pedido + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_pedidos_de_sucursal(string id_sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".pedido WHERE activa=1 and id_sucursal='" + id_sucursal + "' and (estado != 'carado' and estado != 'cancelado');";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_pedidos_de_sucursal_por_num_pedido(string id_sucursal,string num_pedido)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".pedido WHERE activa=1 and id_sucursal='" + id_sucursal + "' and num_pedido='" + num_pedido + "' ;";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
+        public DataTable consultar_pedidos_legacy(string sucursal, string mes, string año)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".pedidos WHERE activa=1 and sucursal='" + sucursal + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "';";
 
 
                 retorno = base_datos.READ(query);

@@ -65,7 +65,7 @@ namespace _03___sistemas_fabrica
         }
         private void consultar_pedidos_no_cargados(string nombre_prooveedor_en_BD)
         {
-            pedidos_no_cargados = consultas.consultar_pedidos_no_cargados(base_de_datos, "pedidos", nombre_prooveedor_en_BD);
+           // pedidos_no_cargados = consultas.consultar_pedidos_no_cargados_nuevo(base_de_datos, "pedidos", nombre_prooveedor_en_BD);
         }
         #endregion
 

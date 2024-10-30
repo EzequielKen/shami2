@@ -88,6 +88,10 @@ namespace modulos
         {
             productos_proveedor = consultas.consultar_tabla(base_de_datos, proveedor_seleccionado);
         }
+        private void consultar_productos()
+        {
+            productos_proveedor = consultas.consultar_tabla(base_de_datos, "productos");
+        }
         private void consultar_tipo_acuerdo()
         {
             tipo_acuerdo = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo");
@@ -97,9 +101,9 @@ namespace modulos
         {
             acuerdo_de_precio_activo = consultas.consultar_acuerdo_de_precio_activo(base_de_datos, nombre_proveedor);
         }
-        private void consultar_acuerdo_de_precios()
+        private void consultar_acuerdo_de_precios_segun_tipo_de_acuerdo(string tipo_acuerdo)
         {
-            acuerdo_de_precios = consultas.consultar_tabla_completa(base_de_datos, "acuerdo_de_precios");
+            acuerdo_de_precios = consultas.consultar_precio_venta_segun_tipo_de_acuerdo(tipo_acuerdo);
         }
         private void consultar_sucursales()
         {
@@ -118,13 +122,21 @@ namespace modulos
         {
             pedidos_sucursales = consultas.consultar_pedidos_no_cargados_segun_sucursal(base_de_datos, "pedidos", nombre_sucursal, nombre_proveedor);
         }
+        private void consultar_pedidos_sucursales_nuevo(string id_sucursal)
+        {
+            pedidos_sucursales = consultas.consultar_pedidos_de_sucursal(id_sucursal);
+        }
+        private void consultar_pedido_de_sucursal_por_num_pedido(string id_sucursal,string num_pedido)
+        {
+            pedidos_sucursales = consultas.consultar_pedidos_de_sucursal_por_num_pedido(id_sucursal,num_pedido);
+        }
         private void consultar_pedidos_sucursales_producto_terminado_e_insumo(string nombre_sucursal, string nombre_proveedor)
         {
             pedidos_sucursales = consultas.consultar_pedidos_no_cargados_segun_sucursal_producto_terminado_e_insumo(base_de_datos, "pedidos", nombre_sucursal, nombre_proveedor);
         }
-        private void consultar_pedidos_no_cargados(string nombre_proveedor)
+        private void consultar_pedidos_no_cargados_nuevo()
         {
-            pedidos_no_cargados = consultas.consultar_pedidos_no_cargados(base_de_datos, "pedidos", nombre_proveedor);
+            pedidos_no_cargados = consultas.consultar_pedidos_no_cargados_nuevo();
         }
         private void consultar_pedidos_no_cargados_producto_terminado_e_insumo(string nombre_proveedor)
         {
@@ -151,14 +163,29 @@ namespace modulos
             consultar_acuerdo_de_precio_activo(nombre_proveedor);
             return acuerdo_de_precio_activo;
         }
-        public DataTable get_acuerdo_de_precios()
+        public DataTable get_acuerdo_de_precios(string tipo_acuerdo)
         {
-            consultar_acuerdo_de_precios();
+            consultar_acuerdo_de_precios_segun_tipo_de_acuerdo(tipo_acuerdo);
             return acuerdo_de_precios;
+        }
+        public DataTable get_tipo_acuerdo()
+        {
+            DataTable tipo_acuerdo = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo");
+            return tipo_acuerdo;
         }
         public DataTable get_pedidos_sucursales(string nombre_sucursal, string nombre_proveedor)
         {
             consultar_pedidos_sucursales(nombre_sucursal, nombre_proveedor);
+            return pedidos_sucursales;
+        }
+        public DataTable get_pedidos_sucursales_nuevo(string id_sucursal)
+        {
+            consultar_pedidos_sucursales_nuevo(id_sucursal);
+            return pedidos_sucursales;
+        }
+        public DataTable get_pedidos_sucursale_por_num_pedido(string id_sucursal,string num_pedido)
+        {
+            consultar_pedido_de_sucursal_por_num_pedido(id_sucursal,num_pedido);
             return pedidos_sucursales;
         }
         public DataTable get_pedidos_sucursales_producto_terminado_e_insumo(string nombre_sucursal, string nombre_proveedor)
@@ -166,9 +193,9 @@ namespace modulos
             consultar_pedidos_sucursales_producto_terminado_e_insumo(nombre_sucursal, nombre_proveedor);
             return pedidos_sucursales;
         }
-        public DataTable get_pedidos_no_cargados(string nombre_proveedor)
+        public DataTable get_pedidos_no_cargados_nuevo()
         {
-            consultar_pedidos_no_cargados(nombre_proveedor);
+            consultar_pedidos_no_cargados_nuevo();
             return pedidos_no_cargados;
         }
         public DataTable get_pedidos_no_cargados_producto_terminado_e_insumo(string nombre_proveedor)
@@ -205,7 +232,7 @@ namespace modulos
             proveedor_seleccionado = proveedor;
             consultar_productos_proveedor(proveedor_seleccionado);
             consultar_tipo_acuerdo();
-            consultar_acuerdo_de_precios();
+            //consultar_acuerdo_de_precios();
 
             tipo_de_acuerdo = obtener_tipo_de_acuerdo(proveedor_seleccionado);
             tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor_seleccionado);
@@ -224,7 +251,7 @@ namespace modulos
             consultar_proveedores();
             consultar_productos_proveedor(proveedor);
             consultar_tipo_acuerdo();
-            consultar_acuerdo_de_precios();
+            //consultar_acuerdo_de_precios();
 
             tipo_de_acuerdo_proveedor_a_fabrica = obtener_tipo_acuerdo_fabrica_a_marca(proveedor);
             fila_acuerdo_de_precios = obtener_fila_de_acuerdo(tipo_de_acuerdo_proveedor_a_fabrica, proveedor);
@@ -236,7 +263,11 @@ namespace modulos
             return productos_proveedor;
         }
 
-
+        public DataTable get_productos_nuevo()
+        {
+            consultar_productos();
+            return productos_proveedor;
+        }
         public DataTable get_pedidos()
         {
             return pedidos;
@@ -576,7 +607,7 @@ namespace modulos
         }
         public void actualizar_acuerdo_en_pedidos_no_cargados(string nuevo_acuerdo, string proveedor)
         {
-            consultar_pedidos_no_cargados(proveedor);
+            //consultar_pedidos_no_cargados(proveedor);
             string id_pedido = "";
             for (int fila = 0; fila <= pedidos_no_cargados.Rows.Count - 1; fila++)
             {
@@ -588,9 +619,14 @@ namespace modulos
                 }
             }
         }
-        public void actualizar_estado_pedido(string id_pedido)
+        public void actualizar_estado_pedido(DataTable pedidos_no_cargados)
         {
-            consultas.actualizar_tabla(base_de_datos, "pedidos", "`estado` = 'Pedido en proceso'", id_pedido);
+            string id_pedido;
+            for (int fila = 0; fila <= pedidos_no_cargados.Rows.Count-1; fila++)
+            {
+                id_pedido = pedidos_no_cargados.Rows[fila]["id"].ToString();
+                consultas.actualizar_tabla(base_de_datos, "pedido", "`estado` = 'Pedido en proceso'", id_pedido);
+            }
         }
         public void actualizar_stock_fabrica(string proveedor_seleccionado, DataTable pedido)
         {
@@ -637,8 +673,8 @@ namespace modulos
                         pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 2) + "-";
                         pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 3) + "-";
                         pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 4);
-                        string presentacion_entrega_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString(),1);
-                        string presentacion_extraccion_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString(),1);
+                        string presentacion_entrega_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString(), 1);
+                        string presentacion_extraccion_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString(), 1);
                         dato = pedido_dato_parcial + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + presentacion_entrega_seleccionada + "-" + presentacion_extraccion_seleccionada + "-" + pedido.Rows[fila]["cantidad_pincho"].ToString();
                     }
 

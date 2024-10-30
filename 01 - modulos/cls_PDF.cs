@@ -194,7 +194,7 @@ namespace _01___modulos
                 });
             }).GeneratePdf(ruta_archivo);
         }
-        public void GenerarPDF_operativo(string ruta_archivo, byte[] logo, DataTable pedido, string proveedor_seleccionado, int fila_pedido, DataTable pedidos, DataTable usuario)
+        public void GenerarPDF_operativo_legacy(string ruta_archivo, byte[] logo, DataTable pedido, string proveedor_seleccionado, int fila_pedido, DataTable pedidos, DataTable usuario)
         {
             QuestPDF.Settings.License = LicenseType.Community;
             Document.Create(document =>
@@ -297,6 +297,132 @@ namespace _01___modulos
 
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
                                 .Text(pedido.Rows[fila]["unid.pedida"].ToString()).FontSize(10);
+
+
+
+                            }
+                        });
+
+
+                        col.Item().Background(Colors.Grey.Lighten3).Padding(10)
+                        .Column(column =>
+                        {
+                            column.Item().Text("Entrega conforme / firma:").FontSize(12);
+                            column.Item().Text("recibe conforme / firma:").FontSize(12);
+                            column.Spacing(20);
+                        });
+
+                        col.Spacing(10);
+                    });
+
+                    page.Footer().AlignRight().Text(txt =>
+                    {
+                        txt.Span("pagina ").FontSize(10);
+                        txt.CurrentPageNumber().FontSize(10);
+                        txt.Span(" de ").FontSize(10);
+                        txt.TotalPages().FontSize(10);
+                    });
+                });
+            }).GeneratePdf(ruta_archivo);
+        }
+        public void GenerarPDF_operativo_nuevo(string ruta_archivo, byte[] logo, DataTable pedido,DataTable usuario)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+            Document.Create(document =>
+            {
+                document.Page(page =>
+                {
+                    page.Margin(30);
+                    page.Header().ShowOnce().Row(row =>
+                    {
+
+                        row.ConstantItem(150).Image(logo);
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().AlignCenter().Text("Proveedor: Fabrica Villa Maipu").Bold().FontSize(14);
+                            //col.Item().AlignCenter().Text(direccion_seleccionado).FontSize(9);
+                            //col.Item().AlignCenter().Text(telefono_seleccionado).FontSize(9);
+
+                        });
+
+                        row.RelativeItem().Column(col =>
+                        {
+                            DateTime fecha_dato = DateTime.Parse(pedido.Rows[0]["fecha"].ToString());
+                            string fecha = fecha_dato.Day.ToString() + "/" + fecha_dato.Month.ToString() + "/" + fecha_dato.Year.ToString() + "Hora: " + fecha_dato.Hour.ToString() + ":" + fecha_dato.Minute.ToString() + ":" + fecha_dato.Second.ToString();
+
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("PEDIDO: " + pedido.Rows[0]["num_pedido"].ToString()).Bold().FontSize(14);
+                            col.Item().Background("#257272").Border(1).BorderColor("#257272").AlignCenter().Text("resumen de pedido").Bold().FontSize(14).FontColor("#fff");
+                            col.Item().Border(1).BorderColor("#257272").AlignCenter().Text("FECHA: " + fecha).Bold().FontSize(14);
+
+                        });
+                    });
+
+                    page.Content().PaddingVertical(10).Column(col =>
+                    {
+                        col.Item().Column(col_clientes =>
+                        {
+                            col_clientes.Item().Text("Datos del cliente").Underline().Bold();
+                            col_clientes.Item().Text(txt =>
+                            {
+                                txt.Span("Franquicia: ").SemiBold().FontSize(10);
+                                txt.Span(usuario.Rows[0]["franquicia"].ToString()).FontSize(10);
+
+                            });
+                            col_clientes.Item().Text(txt =>
+                            {
+                                txt.Span("Sucursal: ").SemiBold().FontSize(10);
+                                txt.Span(usuario.Rows[0]["sucursal"].ToString()).FontSize(10);
+
+                            });
+                            col_clientes.Item().Text(txt =>
+                            {
+                                txt.Span("Provincia: ").SemiBold().FontSize(10);
+                                txt.Span(usuario.Rows[0]["provincia"].ToString()).FontSize(10);
+
+                            });
+                            col_clientes.Item().Text(txt =>
+                            {
+                                txt.Span("Localidad: ").SemiBold().FontSize(10);
+                                txt.Span(usuario.Rows[0]["localidad"].ToString()).FontSize(10);
+
+                            });
+                            col_clientes.Item().Text(txt =>
+                            {
+                                txt.Span("Direccion: ").SemiBold().FontSize(10);
+                                txt.Span(usuario.Rows[0]["direccion"].ToString()).FontSize(10);
+
+                            });
+                        });
+
+                        col.Item().LineHorizontal(0.5f);
+
+                        col.Item().Table(tabla =>
+                        {
+                            tabla.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
+
+                            tabla.Header(header =>
+                            {
+                                header.Cell().Background("#257272").Padding(2).Text("producto").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("cantidad Pedida").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("unidad pedida").FontColor("#fff");
+                            });
+
+                            for (int fila = 0; fila <= pedido.Rows.Count - 1; fila++)
+                            {
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(pedido.Rows[fila]["producto"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(pedido.Rows[fila]["cantidad_pedida"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(pedido.Rows[fila]["presentacion"].ToString()).FontSize(10);
 
 
 

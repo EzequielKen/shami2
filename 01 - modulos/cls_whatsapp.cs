@@ -84,9 +84,8 @@ namespace _01___modulos
             }
             return enviar_pedido_proveedores(body);
         }
-        public string cancelar_pedido(string num_pedido, DataTable lista_de_proveedores, DataTable sucursal)
+        public string cancelar_pedido(string num_pedido, DataTable sucursal)
         {
-            lista_proveedores = lista_de_proveedores;
             string salto_de_linea = "%0A"; //
             string body = "";
 

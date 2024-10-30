@@ -1,4 +1,5 @@
 ﻿using _03___sistemas_fabrica;
+using Mysqlx.Cursor;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -47,9 +48,36 @@ namespace paginaWeb.paginasFabrica
             int fila_resumen = funciones.buscar_fila_por_id(id_pedido, resumen);
             resumen.Rows[fila_resumen].Delete();
         }
+        private void crear_pedidos_sucursal_resumen()
+        {
+            pedidos_sucursal_resumen = new DataTable();
+            pedidos_sucursal_resumen.Columns.Add("sucursal",typeof(string));
+            pedidos_sucursal_resumen.Columns.Add("num_pedido", typeof(string)); 
+            pedidos_sucursal_resumen.Columns.Add("fecha", typeof(string));
+            pedidos_sucursal_resumen.Columns.Add("nota", typeof(string)); 
+        }
+        private void llenar_pedidos_sucursal_resumen()
+        {
+            crear_pedidos_sucursal_resumen();
+            int ultima_fila;
+            for (int fila = 0; fila <= pedidos_sucursal.Rows.Count-1; fila++)
+            {
+                if (-1==funciones.buscar_fila_por_dato(pedidos_sucursal.Rows[fila]["num_pedido"].ToString(),"num_pedido", pedidos_sucursal_resumen))
+                {
+                    pedidos_sucursal_resumen.Rows.Add();
+                    ultima_fila = pedidos_sucursal_resumen.Rows.Count-1;
+
+                    pedidos_sucursal_resumen.Rows[ultima_fila]["sucursal"] = pedidos_sucursal.Rows[fila]["sucursal"].ToString();
+                    pedidos_sucursal_resumen.Rows[ultima_fila]["num_pedido"] = pedidos_sucursal.Rows[fila]["num_pedido"].ToString();
+                    pedidos_sucursal_resumen.Rows[ultima_fila]["fecha"] = pedidos_sucursal.Rows[fila]["fecha"].ToString();
+                    pedidos_sucursal_resumen.Rows[ultima_fila]["nota"] = pedidos_sucursal.Rows[fila]["nota"].ToString();
+                }
+            }
+        }
         private void cargar_pedidos()
         {
-            gridView_pedidos.DataSource = pedidos_sucursal;
+            llenar_pedidos_sucursal_resumen();
+            gridView_pedidos.DataSource = pedidos_sucursal_resumen;
             gridView_pedidos.DataBind();
             resumen = (DataTable)Session["resumen_de_pedidos"];
             gridView_resumen.DataSource = resumen;
@@ -74,6 +102,7 @@ namespace paginaWeb.paginasFabrica
         DataTable sucursalesBD;
         DataTable usuariosBD;
         DataTable pedidos_sucursal;
+        DataTable pedidos_sucursal_resumen;
         DataTable proveedorBD;
         DataTable resumen;
         protected void Page_Load(object sender, EventArgs e)
@@ -109,7 +138,7 @@ namespace paginaWeb.paginasFabrica
 
 
                 Session.Remove("pedidos_sucursal");
-                Session.Add("pedidos_sucursal", pedidos_fabrica.get_pedidos_sucursal(Session["nombre_sucursal"].ToString(), proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString()));
+                Session.Add("pedidos_sucursal", pedidos_fabrica.get_pedidos_sucursal_nuevo(Session["id_sucursal"].ToString()));
 
                 if (Session["pedido"] != null)
                 {
@@ -131,7 +160,9 @@ namespace paginaWeb.paginasFabrica
                 resumen = (DataTable)Session["resumen_de_pedidos"];
                 resumen.Rows.Clear();
                 Session.Add("resumen_de_pedidos", resumen);
-                cargar_pedido_en_resumen(gridView_pedidos.Rows[fila].Cells[0].Text);
+               // cargar_pedido_en_resumen(gridView_pedidos.Rows[fila].Cells[0].Text);
+               Session.Add("nombre_sucursal", gridView_pedidos.Rows[fila].Cells[0].Text);
+               Session.Add("num_pedido", gridView_pedidos.Rows[fila].Cells[1].Text);
                 Response.Redirect("~/paginasFabrica/cargar_pedido.aspx", false);
             }
             else if (e.CommandName == "boton_seleccionar")

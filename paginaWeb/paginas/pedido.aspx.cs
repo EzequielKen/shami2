@@ -88,22 +88,16 @@ namespace paginaWeb
             resumen_pedido.Columns.Add("id", typeof(string));
             resumen_pedido.Columns.Add("producto", typeof(string));
             resumen_pedido.Columns.Add("cantidad", typeof(string));
-            resumen_pedido.Columns.Add("unidad de medida", typeof(string));
-            resumen_pedido.Columns.Add("precio", typeof(string));
-            resumen_pedido.Columns.Add("multiplicador", typeof(string));
-            resumen_pedido.Columns.Add("bonificable", typeof(bool));
-            resumen_pedido.Columns.Add("tipo_producto", typeof(string));
-            resumen_pedido.Columns.Add("proveedor", typeof(string));
-            resumen_pedido.Columns.Add("alimento", typeof(string));
-            resumen_pedido.Columns.Add("bebida", typeof(string));
-            resumen_pedido.Columns.Add("descartable", typeof(string));
+            resumen_pedido.Columns.Add("presentacion", typeof(string)); 
+            resumen_pedido.Columns.Add("acuerdo_de_precios", typeof(string)); 
+            resumen_pedido.Columns.Add("tipo_de_acuerdo", typeof(string)); 
         }
         private void llenar_dropDownList(DataTable dt)
         {
             dropDown_tipo.Items.Clear();
             int num_item = 1;
             ListItem item;
-            dt.DefaultView.Sort = "orden_tipo asc";
+            dt.DefaultView.Sort = "orden asc";
             dt = dt.DefaultView.ToTable();
 
             //        item = new ListItem("Todos", num_item.ToString());
@@ -211,19 +205,10 @@ namespace paginaWeb
                     productos.Rows[fila_producto]["id"] = productos_proveedor.Rows[fila]["id"].ToString();
                     productos.Rows[fila_producto]["producto"] = productos_proveedor.Rows[fila]["producto"].ToString();
 
-                    productos.Rows[fila_producto]["unidad_medida"] = productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
+                    productos.Rows[fila_producto]["unidad_medida"] = productos_proveedor.Rows[fila]["unidad_de_medida_local"].ToString();
 
                     precio = double.Parse(productos_proveedor.Rows[fila]["precio"].ToString());
-                    multiplicador = double.Parse(productos_proveedor.Rows[fila]["multiplicador"].ToString());
-                    precio = precio * multiplicador;
-                    if (Session["nombre_proveedor"].ToString() == "Shami Insumos")
-                    {
-                        productos.Rows[fila_producto]["precio"] = formatCurrency(precio);
-                    }
-                    else
-                    {
-                        productos.Rows[fila_producto]["precio"] = formatCurrency(precio) + productos_proveedor.Rows[fila]["presentacion"].ToString();
-                    }
+                    productos.Rows[fila_producto]["precio"] = formatCurrency(precio);
 
                     fila_producto++;
                 }
@@ -417,38 +402,23 @@ namespace paginaWeb
             id_producto = gridview_productos.SelectedRow.Cells[0].Text;
             nombre_producto = gridview_productos.SelectedRow.Cells[1].Text;
 
-            double precio, multiplicador;
+            double precio;
             int fila = 0;
             while (fila <= productos_proveedor.Rows.Count - 1)
             {
                 if (id_producto == productos_proveedor.Rows[fila]["id"].ToString() &&
-                    nombre_producto == productos_proveedor.Rows[fila]["producto"].ToString() &&
                     !verificar_sicargo(id_producto))
                 {
                     resumen_pedido.Rows.Add();
                     int fila_resumen = resumen_pedido.Rows.Count - 1;
                     precio = double.Parse(productos_proveedor.Rows[fila]["precio"].ToString());
-                    multiplicador = double.Parse(productos_proveedor.Rows[fila]["multiplicador"].ToString());
-                    precio = precio * multiplicador;
                     resumen_pedido.Rows[fila_resumen]["id"] = productos_proveedor.Rows[fila]["id"].ToString();
                     resumen_pedido.Rows[fila_resumen]["producto"] = productos_proveedor.Rows[fila]["producto"].ToString();
-                    resumen_pedido.Rows[fila_resumen]["unidad de medida"] = productos_proveedor.Rows[fila]["unidad_medida_local"].ToString();
+                    resumen_pedido.Rows[fila_resumen]["presentacion"] = productos_proveedor.Rows[fila]["unidad_de_medida_local"].ToString();
+                    resumen_pedido.Rows[fila_resumen]["tipo_de_acuerdo"] = productos_proveedor.Rows[fila]["tipo_de_acuerdo"].ToString();
+                    resumen_pedido.Rows[fila_resumen]["acuerdo_de_precios"] = productos_proveedor.Rows[fila]["acuerdo_de_precios"].ToString();
                     resumen_pedido.Rows[fila_resumen]["cantidad"] = cantidad_dato;
-                    if (productos_proveedor.Rows[fila]["proveedor"].ToString() == "insumos_fabrica")
-                    {
-                        resumen_pedido.Rows[fila_resumen]["precio"] = formatCurrency(precio) + productos_proveedor.Rows[fila]["presentacion"].ToString();
-                    }
-                    else
-                    {
-                        resumen_pedido.Rows[fila_resumen]["precio"] = formatCurrency(precio) + productos_proveedor.Rows[fila]["presentacion"].ToString();
-                    }
-
-                    resumen_pedido.Rows[fila_resumen]["tipo_producto"] = productos_proveedor.Rows[fila]["tipo_producto"].ToString();
-                    resumen_pedido.Rows[fila_resumen]["proveedor"] = productos_proveedor.Rows[fila]["proveedor"].ToString();
-                    resumen_pedido.Rows[fila_resumen]["alimento"] = productos_proveedor.Rows[fila]["alimento"].ToString();
-                    resumen_pedido.Rows[fila_resumen]["bebida"] = productos_proveedor.Rows[fila]["bebida"].ToString();
-                    resumen_pedido.Rows[fila_resumen]["descartable"] = productos_proveedor.Rows[fila]["descartable"].ToString();
-
+      
                     break;
                 }
                 fila = fila + 1;
@@ -576,12 +546,6 @@ namespace paginaWeb
                 crear_dataTable_resumen();
                 Session.Add("resumen", resumen_pedido);
 
-                crear_datatable_bonificado();
-                Session.Remove("bonificados");
-                Session.Add("bonificados", resumen_bonificado);
-
-                Session.Add("modo_bonificado", false);
-
                 cargar_productos();
             }
             resumen_bonificado = (DataTable)Session["bonificados"];
@@ -657,16 +621,6 @@ namespace paginaWeb
             }
         }
 
-        protected void gridview_bonificado_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string id_seleccionada;
-            id_seleccionada = gridview_bonificado.SelectedRow.Cells[0].Text;
-
-            eliminar_producto_en_bonificado(id_seleccionada);
-            cargar_productos();
-
-
-        }
 
         /* protected void gridview_productos_SelectedIndexChanged1(object sender, EventArgs e)
          {

@@ -59,7 +59,7 @@ namespace modulos
         private DataTable productos_proveedor;
         private DataTable tipo_acuerdo;
         private DataTable tipo_acuerdo_fabrica;
-        private DataTable acuerdo_de_precios;
+        private DataTable precio_venta;
 
         private string condicion_bonificado;
         private string productos_bonificados;
@@ -90,32 +90,32 @@ namespace modulos
                     id_sucursal == "18" ||
                     id_sucursal == "22")
                 {
-                    productos_proveedor = consultas.consultar_insumos_fabrica_venta_vip(base_de_datos, proveedor_seleccionado);
+                    productos_proveedor = consultas.consultar_insumos_fabrica_venta_vip(base_de_datos, "productos");
                 }
                 else if (id_sucursal == "10")
                 {
-                    productos_proveedor = consultas.consultar_insumos_fabrica_venta_vip2(base_de_datos, "insumos_fabrica");
+                    productos_proveedor = consultas.consultar_insumos_fabrica_venta_vip2(base_de_datos, "productos");
 
                 }
                 else if (id_sucursal == "31")
                 {
-                    productos_proveedor = consultas.consultar_insumos_fabrica_fatay(base_de_datos, "insumos_fabrica");
+                    productos_proveedor = consultas.consultar_insumos_fabrica_fatay(base_de_datos, "productos");
 
                 }
                 else if (id_sucursal == "28" ||
                          id_sucursal == "19")
                 {
-                    productos_proveedor = consultas.consultar_insumos_fabrica_venta_nivel4(base_de_datos, "insumos_fabrica");
+                    productos_proveedor = consultas.consultar_insumos_fabrica_venta_nivel4(base_de_datos, "productos");
 
                 }
                 else if (id_sucursal == "2")
                 {
-                    productos_proveedor = consultas.consultar_insumos_caballito(base_de_datos, "insumos_fabrica");
+                    productos_proveedor = consultas.consultar_insumos_caballito(base_de_datos, "productos");
 
                 }
                 else
                 {
-                    productos_proveedor = consultas.consultar_insumos_fabrica_venta(base_de_datos, proveedor_seleccionado);
+                    productos_proveedor = consultas.consultar_insumos_fabrica_venta(base_de_datos, "productos");
                 }
 
             }
@@ -123,16 +123,16 @@ namespace modulos
             {
                 if (id_sucursal == "31")
                 {
-                    productos_proveedor = consultas.consultar_insumos_fabrica_fatay(base_de_datos, proveedor_seleccionado);
+                    productos_proveedor = consultas.consultar_insumos_fabrica_fatay(base_de_datos, "productos");
 
                 }
                 else
                 {
-                    productos_proveedor = consultas.consultar_tabla(base_de_datos, proveedor_seleccionado);
+                    productos_proveedor = consultas.consultar_tabla(base_de_datos, "productos");
                 }
 
             }
-
+            productos_proveedor.Columns.Add("precio", typeof(double));
         }
         private void consultar_insumos()
         {
@@ -145,11 +145,10 @@ namespace modulos
         private void consultar_tipo_acuerdo()
         {
             tipo_acuerdo = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo");
-            tipo_acuerdo_fabrica = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo_fabrica_a_marca");
         }
-        private void consultar_acuerdo_de_precios()
+        private void consultar_acuerdo_de_precios(string tipo_de_acuerdo)
         {
-            acuerdo_de_precios = consultas.consultar_tabla(base_de_datos, "acuerdo_de_precios");
+            precio_venta = consultas.consultar_precio_venta_segun_tipo_de_acuerdo(tipo_de_acuerdo);
         }
         private void consultar_sucursales()
         {
@@ -171,44 +170,19 @@ namespace modulos
 
         public DataTable get_productos_proveedor(string proveedor, string id_sucursal)
         {
-            int fila_acuerdo_de_precios;
 
-            consultar_lista_proveedores();
-            proveedor_seleccionado = obtener_nombre_proveedor(proveedor);
-            consultar_productos_proveedor(proveedor_seleccionado, id_sucursal);
+            consultar_productos_proveedor("productos", id_sucursal);
 
             consultar_tipo_acuerdo();
-            consultar_acuerdo_de_precios();
 
-            tipo_de_acuerdo = obtener_tipo_de_acuerdo(proveedor_seleccionado);
-            tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor_seleccionado);
-            fila_acuerdo_de_precios = obtener_fila_de_acuerdo(tipo_de_acuerdo, proveedor_seleccionado);
+            tipo_de_acuerdo = obtener_tipo_de_acuerdo("proveedor_villaMaipu");
 
-
-            acuerdo_de_precio = acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["acuerdo"].ToString();
-            actualizar_precio_productos(fila_acuerdo_de_precios);
+            consultar_acuerdo_de_precios(tipo_de_acuerdo);
+            
+            actualizar_precio_productos();
             return productos_proveedor;
         }
-        public DataTable get_productos_proveedor_sin_insumos(string proveedor)
-        {
 
-            int fila_acuerdo_de_precios;
-            consultar_lista_proveedores();
-            proveedor_seleccionado = obtener_nombre_proveedor(proveedor);
-            consultar_productos_proveedor_sin_insumos(proveedor_seleccionado);
-            consultar_tipo_acuerdo();
-            consultar_acuerdo_de_precios();
-
-            tipo_de_acuerdo = obtener_tipo_de_acuerdo(proveedor_seleccionado);
-            tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor_seleccionado);
-            fila_acuerdo_de_precios = obtener_fila_de_acuerdo(tipo_de_acuerdo, proveedor_seleccionado);
-
-
-            acuerdo_de_precio = acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["acuerdo"].ToString();
-            actualizar_precio_productos(fila_acuerdo_de_precios);
-
-            return productos_proveedor;
-        }
 
         public DataTable get_pedidos()
         {
@@ -240,17 +214,21 @@ namespace modulos
 
 
         #region metodos privados
-        private void actualizar_precio_productos(int fila_acuerdo_de_precios)
+        private void actualizar_precio_productos()
         {
             string id_producto;
-
+            int fila_precio;
+            productos_proveedor.Columns.Add("tipo_de_acuerdo", typeof(string)); 
+            productos_proveedor.Columns.Add("acuerdo_de_precios", typeof(string)); 
             for (int fila = 0; fila <= productos_proveedor.Rows.Count - 1; fila++)
             {
                 id_producto = productos_proveedor.Rows[fila]["id"].ToString();
-
-                if (!DBNull.Value.Equals(acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["producto_" + id_producto].ToString()))
+                fila_precio = funciones.buscar_fila_por_dato_en_columna(id_producto, "id_producto", precio_venta);
+                if (fila_precio != -1)
                 {
-                    productos_proveedor.Rows[fila]["precio"] = float.Parse(acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["producto_" + id_producto].ToString());
+                    productos_proveedor.Rows[fila]["precio"] = double.Parse(precio_venta.Rows[fila_precio]["precio"].ToString());
+                    productos_proveedor.Rows[fila]["acuerdo_de_precios"] = precio_venta.Rows[fila_precio]["acuerdo"].ToString();
+                    productos_proveedor.Rows[fila]["tipo_de_acuerdo"] = precio_venta.Rows[fila_precio]["tipo_de_acuerdo"].ToString();
                 }
                 else
                 {
@@ -262,9 +240,9 @@ namespace modulos
         }
         private void setear_conficion_bonificado(int fila_acuerdo_de_precios)
         {
-            if (!DBNull.Value.Equals(acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["condicion_bonificado"].ToString()))
+            if (!DBNull.Value.Equals(precio_venta.Rows[fila_acuerdo_de_precios]["condicion_bonificado"].ToString()))
             {
-                condicion_bonificado = acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["condicion_bonificado"].ToString();
+                condicion_bonificado = precio_venta.Rows[fila_acuerdo_de_precios]["condicion_bonificado"].ToString();
                 setear_productos_bonificados(fila_acuerdo_de_precios);
             }
             else
@@ -275,9 +253,9 @@ namespace modulos
         }
         private void setear_productos_bonificados(int fila_acuerdo_de_precios)
         {
-            if (!DBNull.Value.Equals(acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["bonificados"].ToString()))
+            if (!DBNull.Value.Equals(precio_venta.Rows[fila_acuerdo_de_precios]["bonificados"].ToString()))
             {
-                productos_bonificados = acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["bonificados"].ToString();
+                productos_bonificados = precio_venta.Rows[fila_acuerdo_de_precios]["bonificados"].ToString();
                 crear_lista_productos_bonificados();
             }
             else
@@ -285,10 +263,10 @@ namespace modulos
                 productos_bonificados = "0";
             }
 
-            if (!DBNull.Value.Equals(acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["bonificados_especiales"].ToString()))
+            if (!DBNull.Value.Equals(precio_venta.Rows[fila_acuerdo_de_precios]["bonificados_especiales"].ToString()))
             {
-                productos_bonificados_especiales = acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["bonificados_especiales"].ToString();
-                precio_bonificado_especial = acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["precio_bonificado"].ToString();
+                productos_bonificados_especiales = precio_venta.Rows[fila_acuerdo_de_precios]["bonificados_especiales"].ToString();
+                precio_bonificado_especial = precio_venta.Rows[fila_acuerdo_de_precios]["precio_bonificado"].ToString();
                 crear_lista_productos_bonificados_especiales();
             }
             else
@@ -348,14 +326,14 @@ namespace modulos
             int fila;
 
             fila = 0;
-            while (fila <= acuerdo_de_precios.Rows.Count - 1)
+            while (fila <= precio_venta.Rows.Count - 1)
             {
-                if (proveedor_seleccionado == acuerdo_de_precios.Rows[fila]["proveedor"].ToString()
-                    && tipo_de_acuerdo == acuerdo_de_precios.Rows[fila]["tipo_de_acuerdo"].ToString()
-                    && acuerdo_de_precios.Rows[fila]["activa"].ToString() == "1")
+                if (proveedor_seleccionado == precio_venta.Rows[fila]["proveedor"].ToString()
+                    && tipo_de_acuerdo == precio_venta.Rows[fila]["tipo_de_acuerdo"].ToString()
+                    && precio_venta.Rows[fila]["activa"].ToString() == "1")
                 {
                     retorno = fila;
-                    fila = acuerdo_de_precios.Rows.Count;
+                    fila = precio_venta.Rows.Count;
                 }
                 fila = fila + 1;
             }
@@ -473,166 +451,70 @@ namespace modulos
         }
         public void enviar_pedido(DataTable pedido_cargado, string nota)
         {
-            pedido_cargado.DefaultView.Sort = "proveedor ASC";
-            pedido_cargado = pedido_cargado.DefaultView.ToTable();
             string columnas = "";
             string valores = "";
-            string precio, id, producto, cantidad, valor_final;
-            //            List<string> proveedores = obtener_lista_cantidad_de_proveedores(pedido_cargado);
-            //          string proveedor_seleccionado = proveedores[0].ToString();
             string proveedor_seleccionado;
             int num_pedido;
             string id_usuario;
             string actualizar;
-            int producto_index;
-            DataTable proveedor_villaMaipu = crear_dataTable_resumen(pedido_cargado, "proveedor_villaMaipu");
-            if (proveedor_villaMaipu.Rows.Count > 0)
+            proveedor_seleccionado = "proveedor_villaMaipu";
+         
+            num_pedido = obtener_ultimo_num_pedido_enviado(sucursalBD) + 1;
+            id_usuario = sucursalBD.Rows[0]["id"].ToString();
+            actualizar = "`ultimo_pedido_enviado` = '" + num_pedido + "'";
+            consultas.actualizar_tabla("shami", "sucursal", actualizar, id_usuario);
+
+            string fecha = funciones.get_fecha();
+            for (int fila = 0; fila <= pedido_cargado.Rows.Count-1; fila++)
             {
-                proveedor_seleccionado = "proveedor_villaMaipu";
-                columnas = "";
-                valores = "";
-                //setear acuerdos de precios
-                setear_acuerdos_de_precios("proveedor_villaMaipu");
-                num_pedido = obtener_ultimo_num_pedido_enviado(sucursalBD) + 1;
-                id_usuario = sucursalBD.Rows[0]["id"].ToString();
-                actualizar = "`ultimo_pedido_enviado` = '" + num_pedido + "'";
-                consultas.actualizar_tabla("shami", "sucursal", actualizar, id_usuario);
 
-                //activa
-                columnas = armar_query_columna(columnas, "nota", false);
-                valores = armar_query_valores(valores, nota, false);
                 //fecha
-                columnas = armar_query_columna(columnas, "fecha", false);
-                valores = armar_query_valores(valores, funciones.get_fecha(), false);
+                columnas = funciones.armar_query_columna(columnas, "fecha", false);
+                valores = funciones.armar_query_valores(valores,fecha,false);
+                //id_sucursal
+                columnas = funciones.armar_query_columna(columnas, "id_sucursal", false);
+                valores = funciones.armar_query_valores(valores, sucursalBD.Rows[0]["id"].ToString(), false);
                 //sucursal
-                columnas = armar_query_columna(columnas, "sucursal", false);
-                valores = armar_query_valores(valores, sucursalBD.Rows[0]["sucursal"].ToString(), false);
+                columnas = funciones.armar_query_columna(columnas, "sucursal", false);
+                valores = funciones.armar_query_valores(valores, sucursalBD.Rows[0]["sucursal"].ToString(), false);
                 //num_pedido
-                columnas = armar_query_columna(columnas, "num_pedido", false);
-                valores = armar_query_valores(valores, num_pedido.ToString(), false);
-                //proveedor
-                columnas = armar_query_columna(columnas, "proveedor", false);
-                valores = armar_query_valores(valores, proveedor_seleccionado, false);
-                //acuerdo_de_precios
-                columnas = armar_query_columna(columnas, "acuerdo_de_precios", false);
-                valores = armar_query_valores(valores, acuerdo_de_precio, false);
+                columnas = funciones.armar_query_columna(columnas, "num_pedido", false);
+                valores = funciones.armar_query_valores(valores, num_pedido.ToString(), false);
+                //id_producto
+                columnas = funciones.armar_query_columna(columnas, "id_producto", false);
+                valores = funciones.armar_query_valores(valores, pedido_cargado.Rows[fila]["id"].ToString(), false);
+                //producto
+                columnas = funciones.armar_query_columna(columnas, "producto", false);
+                valores = funciones.armar_query_valores(valores, pedido_cargado.Rows[fila]["producto"].ToString(), false);
+                //cantidad_pedida
+                columnas = funciones.armar_query_columna(columnas, "cantidad_pedida", false);
+                valores = funciones.armar_query_valores(valores, pedido_cargado.Rows[fila]["cantidad"].ToString(), false);
+                //cantidad_entregada
+                columnas = funciones.armar_query_columna(columnas, "cantidad_entregada", false);
+                valores = funciones.armar_query_valores(valores, "N/A", false);
+                //presentacion
+                columnas = funciones.armar_query_columna(columnas, "presentacion", false);
+                valores = funciones.armar_query_valores(valores, pedido_cargado.Rows[fila]["presentacion"].ToString(), false);
                 //estado
-                columnas = armar_query_columna(columnas, "estado", false);
-                valores = armar_query_valores(valores, "local", false);
-                //tipo_de_acuerdo
-                columnas = armar_query_columna(columnas, "tipo_de_acuerdo", false);
-                valores = armar_query_valores(valores, tipo_de_acuerdo, false);
-                //calculado_local
-                columnas = armar_query_columna(columnas, "calculado_local", false);
-                valores = armar_query_valores(valores, "no", false);
-                //calculado_proveedor
-                columnas = armar_query_columna(columnas, "calculado_proveedor", false);
-                valores = armar_query_valores(valores, "no", false);
-                //tipo_de_acuerdo_fabrica
-                columnas = armar_query_columna(columnas, "tipo_de_acuerdo_fabrica", false);
-                valores = armar_query_valores(valores, tipo_de_acuerdo_fabrica, false);
-                //mensaje
-                //inicio
-                columnas = armar_query_columna(columnas, "inicio", false);
-                valores = armar_query_valores(valores, "inicio", false);
-                producto_index = 1;
-                for (int fila_resumen = 0; fila_resumen <= proveedor_villaMaipu.Rows.Count - 1; fila_resumen++)
-                {
-                    precio = proveedor_villaMaipu.Rows[fila_resumen]["precio"].ToString();
-                    id = proveedor_villaMaipu.Rows[fila_resumen]["id"].ToString();
-                    producto = proveedor_villaMaipu.Rows[fila_resumen]["producto"].ToString();
-                    cantidad = proveedor_villaMaipu.Rows[fila_resumen]["cantidad"].ToString().Replace(",", ".");
-                    valor_final = precio + "-" + id + "-" + producto + "-" + cantidad + "-N/A";
-
-                    if (fila_resumen == proveedor_villaMaipu.Rows.Count - 1)
-                    {
-                        columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
-                        valores = armar_query_valores(valores, valor_final, true);
-                    }
-                    else
-                    {
-                        columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
-                        valores = armar_query_valores(valores, valor_final, false);
-                    }
-                    producto_index = producto_index + 1;
-                }
-                consultas.insertar_en_tabla(base_de_datos, "pedidos", columnas, valores);
-            }
-
-            DataTable insumos_fabrica = crear_dataTable_resumen(pedido_cargado, "insumos_fabrica");
-            if (insumos_fabrica.Rows.Count > 0)
-            {
-                proveedor_seleccionado = "insumos_fabrica";
-                columnas = "";
-                valores = "";
-                //setear acuerdos de precios
-                setear_acuerdos_de_precios("insumos_fabrica");
-                num_pedido = obtener_ultimo_num_pedido_enviado(sucursalBD) + 1;
-                id_usuario = sucursalBD.Rows[0]["id"].ToString();
-                actualizar = "`ultimo_pedido_enviado` = '" + num_pedido + "'";
-                consultas.actualizar_tabla("shami", "sucursal", actualizar, id_usuario);
-
-                //activa
-                columnas = armar_query_columna(columnas, "nota", false);
-                valores = armar_query_valores(valores, nota, false);
-                //fecha
-                columnas = armar_query_columna(columnas, "fecha", false);
-                valores = armar_query_valores(valores, funciones.get_fecha(), false);
-                //sucursal
-                columnas = armar_query_columna(columnas, "sucursal", false);
-                valores = armar_query_valores(valores, sucursalBD.Rows[0]["sucursal"].ToString(), false);
-                //num_pedido
-                columnas = armar_query_columna(columnas, "num_pedido", false);
-                valores = armar_query_valores(valores, num_pedido.ToString(), false);
+                columnas = funciones.armar_query_columna(columnas, "estado", false);
+                valores = funciones.armar_query_valores(valores, "local", false);
                 //proveedor
-                columnas = armar_query_columna(columnas, "proveedor", false);
-                valores = armar_query_valores(valores, proveedor_seleccionado, false);
+                columnas = funciones.armar_query_columna(columnas, "proveedor", false);
+                valores = funciones.armar_query_valores(valores, proveedor_seleccionado, false);
                 //acuerdo_de_precios
-                columnas = armar_query_columna(columnas, "acuerdo_de_precios", false);
-                valores = armar_query_valores(valores, acuerdo_de_precio, false);
-                //estado
-                columnas = armar_query_columna(columnas, "estado", false);
-                valores = armar_query_valores(valores, "local", false);
+                columnas = funciones.armar_query_columna(columnas, "acuerdo_de_precios", false);
+                valores = funciones.armar_query_valores(valores, pedido_cargado.Rows[fila]["acuerdo_de_precios"].ToString(), false);
                 //tipo_de_acuerdo
-                columnas = armar_query_columna(columnas, "tipo_de_acuerdo", false);
-                valores = armar_query_valores(valores, tipo_de_acuerdo, false);
-                //calculado_local
-                columnas = armar_query_columna(columnas, "calculado_local", false);
-                valores = armar_query_valores(valores, "no", false);
-                //calculado_proveedor
-                columnas = armar_query_columna(columnas, "calculado_proveedor", false);
-                valores = armar_query_valores(valores, "no", false);
-                //tipo_de_acuerdo_fabrica
-                columnas = armar_query_columna(columnas, "tipo_de_acuerdo_fabrica", false);
-                valores = armar_query_valores(valores, tipo_de_acuerdo_fabrica, false);
-                //mensaje
-                //inicio
-                columnas = armar_query_columna(columnas, "inicio", false);
-                valores = armar_query_valores(valores, "inicio", false);
-                producto_index = 1;
-                for (int fila_resumen = 0; fila_resumen <= insumos_fabrica.Rows.Count - 1; fila_resumen++)
-                {
-                    precio = insumos_fabrica.Rows[fila_resumen]["precio"].ToString();
-                    id = insumos_fabrica.Rows[fila_resumen]["id"].ToString();
-                    producto = insumos_fabrica.Rows[fila_resumen]["producto"].ToString();
-                    cantidad = insumos_fabrica.Rows[fila_resumen]["cantidad"].ToString().Replace(",", ".");
-                    valor_final = precio + "-" + id + "-" + producto + "-" + cantidad + "-N/A";
+                columnas = funciones.armar_query_columna(columnas, "tipo_de_acuerdo", false);
+                valores = funciones.armar_query_valores(valores, pedido_cargado.Rows[fila]["tipo_de_acuerdo"].ToString(), false);
+                //nota
+                columnas = funciones.armar_query_columna(columnas, "nota", true);
+                valores = funciones.armar_query_valores(valores, nota, true);
 
-                    if (fila_resumen == insumos_fabrica.Rows.Count - 1)
-                    {
-                        columnas = armar_query_columna(columnas, "producto_" + producto_index, true);
-                        valores = armar_query_valores(valores, valor_final, true);
-                    }
-                    else
-                    {
-                        columnas = armar_query_columna(columnas, "producto_" + producto_index, false);
-                        valores = armar_query_valores(valores, valor_final, false);
-                    }
-                    producto_index = producto_index + 1;
-                }
-                consultas.insertar_en_tabla(base_de_datos, "pedidos", columnas, valores);
+                consultas.insertar_en_tabla(base_de_datos, "pedido", columnas, valores);
+                columnas=string.Empty;
+                valores=string.Empty;
             }
-
         }
         private void envio_automatico_de_pedido(DataTable pedido_cargado, string nota)
         {
@@ -706,7 +588,7 @@ namespace modulos
                     producto = proveedor_villaMaipu.Rows[fila_resumen]["producto"].ToString();
                     cantidad = proveedor_villaMaipu.Rows[fila_resumen]["cantidad"].ToString().Replace(",", ".");
                     string unidad_de_medida = proveedor_villaMaipu.Rows[fila_resumen]["unidad de medida"].ToString();
-                    valor_final = precio + "-" + id + "-" + producto + "-" + cantidad + "-" + cantidad+"-"+ unidad_de_medida + "-" + unidad_de_medida + "-N/A";
+                    valor_final = precio + "-" + id + "-" + producto + "-" + cantidad + "-" + cantidad + "-" + unidad_de_medida + "-" + unidad_de_medida + "-N/A";
 
                     if (fila_resumen == proveedor_villaMaipu.Rows.Count - 1)
                     {
@@ -800,11 +682,10 @@ namespace modulos
         }
         private void setear_acuerdos_de_precios(string proveedor)
         {
-            consultar_acuerdo_de_precios();
             consultar_tipo_acuerdo();
             tipo_de_acuerdo = obtener_tipo_de_acuerdo(proveedor);
             int fila_acuerdo = obtener_fila_de_acuerdo(tipo_de_acuerdo, proveedor);
-            acuerdo_de_precio = acuerdo_de_precios.Rows[fila_acuerdo]["acuerdo"].ToString();
+            acuerdo_de_precio = precio_venta.Rows[fila_acuerdo]["acuerdo"].ToString();
             tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor);
         }
         private int obtener_ultimo_num_pedido_enviado(DataTable sucursalBD)

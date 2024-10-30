@@ -49,13 +49,11 @@
                                 <asp:GridView ID="gridView_pedidos" runat="server" Caption="PEDIDOS" CaptionAlign="Top" AutoGenerateColumns="false" CssClass="table table-striped table table-dark table-striped" OnRowCommand="gridView_pedidos_RowCommand" OnRowDataBound="gridView_pedidos_RowDataBound">
                                     <Columns>
                                         <asp:BoundField HeaderText="id" DataField="id" />
-                                        <asp:BoundField HeaderText="proveedor" DataField="proveedor" />
                                         <asp:BoundField HeaderText="N° pedido" DataField="num_pedido" />
                                         <asp:BoundField HeaderText="fecha" DataField="fecha" />
                                         <asp:ButtonField HeaderText="PDF" Text="PDF" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="crear_pdf"/>
                                         <asp:ButtonField HeaderText="Cancelar" Text="Cancelar pedido" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="cancelar_pedido"/>
                                         <asp:BoundField HeaderText="estado" DataField="estado" />
-                                        <asp:ButtonField Visible="false" HeaderText="Iniciar reclamo" Text="Confirmar" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="iniciar_reclamo"/>
 
                                     </Columns>
                                 </asp:GridView>

@@ -15,12 +15,11 @@
                 </h1>
                 <asp:GridView OnRowCommand="gridView_pedidos_RowCommand" runat="server" ID="gridView_pedidos" AutoGenerateColumns="false" CssClass="table table-striped">
                     <Columns>
-                        <asp:BoundField HeaderText="id" DataField="id" />
                         <asp:BoundField HeaderText="cliente" DataField="sucursal" />
                         <asp:BoundField HeaderText="N° pedido" DataField="num_pedido" />
                         <asp:BoundField HeaderText="fecha pedido" DataField="fecha" />
                         <asp:ButtonField HeaderText="abrir" Text="abrir" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="boton_abrir" />
-                        <asp:ButtonField HeaderText="seleccionar" Text="seleccionar" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="boton_seleccionar" />
+                        <asp:ButtonField Visible="false" HeaderText="seleccionar" Text="seleccionar" ControlStyle-CssClass="btn btn-primary btn-sm" CommandName="boton_seleccionar" />
                         <asp:BoundField HeaderText="Nota" DataField="nota" />
                     </Columns>
                 </asp:GridView>

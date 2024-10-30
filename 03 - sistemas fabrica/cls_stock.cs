@@ -99,7 +99,7 @@ namespace _03___sistemas_fabrica
         #region metodos consultas
         private void consultar_pedidos_no_cargados(string nombre_proveedor)
         {
-            pedidos_no_cargados = consultas.consultar_pedidos_no_cargados(base_de_datos, "pedidos", nombre_proveedor);
+          //  pedidos_no_cargados = consultas.consultar_pedidos_no_cargados_nuevo(base_de_datos, "pedidos", nombre_proveedor);
         }
         private void consultar_productos_proveedor(string nombre_proveedor)
         {

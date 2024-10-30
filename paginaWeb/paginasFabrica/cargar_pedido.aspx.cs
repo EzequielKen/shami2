@@ -210,15 +210,15 @@ namespace paginaWeb.paginasFabrica
 
             if (Session["pedidos_sucursal"] == null)
             {
-                Session.Add("pedidos_sucursal", pedidos_fabrica.get_pedidos_sucursal(Session["nombre_sucursal"].ToString(), proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString()));
+               // Session.Add("pedidos_sucursal", pedidos_fabrica.get_pedidos_sucursal(Session["nombre_sucursal"].ToString(), proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString()));
             }
             pedidos_sucursal = (DataTable)Session["pedidos_sucursal"];
 
             if (Session["pedido"] == null)
             {
-                Session.Add("pedido", pedidos_fabrica.get_pedido(resumen_de_pedidos, pedidos_sucursal));
+                Session.Add("pedido", pedidos_fabrica.get_pedido(Session["id_sucursal"].ToString(), Session["num_pedido"].ToString()));
             }
-            label_titulo.Text = pedidos_fabrica.get_titulo_pedido(resumen_de_pedidos);
+            //label_titulo.Text = pedidos_fabrica.get_titulo_pedido(resumen_de_pedidos);
             //   proveedor_pedido = pedidos_fabrica.get_proveedor_pedido(Session["id_pedido"].ToString(), pedidos_sucursal);
             pedido = (DataTable)Session["pedido"];
             if (!IsPostBack)
@@ -275,8 +275,8 @@ namespace paginaWeb.paginasFabrica
                 {
 
                     cantidad_entrega = double.Parse(pedido.Rows[fila_producto]["cantidad_entrega"].ToString());
-                    stock = double.Parse(pedido.Rows[fila_producto]["stock"].ToString());
-                    stock_total = stock;
+                    //stock = double.Parse(pedido.Rows[fila_producto]["stock"].ToString());
+                   // stock_total = stock;
                     double precio = double.Parse(pedido.Rows[fila_producto]["precio"].ToString());
                     double sub_total;
                     if (pedido.Rows[fila_producto]["proveedor"].ToString() == "insumos_fabrica")
@@ -290,10 +290,10 @@ namespace paginaWeb.paginasFabrica
                         porcentaje = (sub_total * impuesto) / 100;
                         sub_total = sub_total + porcentaje;
                     }
-                    stock_total = stock_total - cantidad;
+                   // stock_total = stock_total - cantidad;
                     pedido.Rows[fila_producto]["cantidad_entrega"] = cantidad.ToString();
                     pedido.Rows[fila_producto]["sub_total"] = sub_total.ToString();
-                    pedido.Rows[fila_producto]["nuevo_stock"] = stock_total.ToString();
+                  //  pedido.Rows[fila_producto]["nuevo_stock"] = stock_total.ToString();
 
                     Session.Add("pedido", pedido);
                 }
@@ -438,9 +438,9 @@ namespace paginaWeb.paginasFabrica
             DropDownList dropdown_tipo_presentacion = (gridview_pedido.Rows[fila].Cells[columna_lista].FindControl(id_dropdown) as DropDownList);
 
             lista = (List<string>)pedido.Rows[fila_tabla][nombre_columna];
-            if (dropdown_tipo_presentacion.Items.Count == 0)
+            if (dropdown_tipo_presentacion.Items.Count == 0 && lista.Count>0)
             {
-                if (pedido.Rows[fila_tabla]["proveedor"].ToString() == "insumos_fabrica")
+                if (true)
                 {
                     //dropdown_tipo_presentacion.Items.Add("N/A");
                     for (int fila_lista = 0; fila_lista <= lista.Count - 1; fila_lista++)

@@ -77,25 +77,12 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 
-                        <asp:GridView Caption="RESUMEN BONIFICADOS" CaptionAlign="Top" OnSelectedIndexChanged="gridview_bonificado_SelectedIndexChanged" ID="gridview_bonificado" runat="server" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
-                            <Columns>
-                                <asp:BoundField HeaderText="id" DataField="id" />
-                                <asp:BoundField HeaderText="producto" DataField="producto" />
-                                <asp:BoundField HeaderText="cantidad" DataField="cantidad" />
-                                <asp:BoundField HeaderText="unidad de medida" DataField="unidad de medida" />
-                                <asp:BoundField HeaderText="precio" DataField="precio" />
-                                <asp:CommandField ShowSelectButton="true" SelectText="eliminar" HeaderText="eliminar" ControlStyle-CssClass="btn btn-primary btn-sm" />
-                            </Columns>
-                        </asp:GridView>
-
                         <asp:GridView Caption="RESUMEN PEDIDOS" CaptionAlign="Top" OnSelectedIndexChanged="gridview_resumen_SelectedIndexChanged" runat="server" ID="gridview_resumen" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
                             <Columns>
                                 <asp:BoundField HeaderText="id" DataField="id" />
                                 <asp:BoundField HeaderText="producto" DataField="producto" />
                                 <asp:BoundField HeaderText="cantidad" DataField="cantidad" />
-                                <asp:BoundField HeaderText="unidad de medida" DataField="unidad de medida" />
-                                <asp:BoundField HeaderText="precio" DataField="precio" />
-                                <asp:CheckBoxField Visible="false" HeaderText="bonificable" DataField="bonificable" />
+                                <asp:BoundField HeaderText="unidad de medida" DataField="presentacion" />
                                 <asp:CommandField ShowSelectButton="true" SelectText="eliminar" HeaderText="eliminar" ControlStyle-CssClass="btn btn-primary btn-sm" />
                             </Columns>
                         </asp:GridView>
