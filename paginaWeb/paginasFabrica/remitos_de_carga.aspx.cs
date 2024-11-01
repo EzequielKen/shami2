@@ -20,6 +20,7 @@ namespace paginaWeb.paginasFabrica
             remitos.Columns.Add("num_pedido", typeof(string));
             remitos.Columns.Add("fecha_remito", typeof(string));
             remitos.Columns.Add("proveedor", typeof(string));
+            remitos.Columns.Add("legacy", typeof(string));
 
         }
         private void crear_tabla_resumen()
@@ -31,6 +32,7 @@ namespace paginaWeb.paginasFabrica
             resumen.Columns.Add("num_pedido", typeof(string));
             resumen.Columns.Add("fecha_remito", typeof(string)); 
             resumen.Columns.Add("proveedor", typeof(string)); 
+            resumen.Columns.Add("legacy", typeof(string));
             Session.Add("resumen_de_PDF", resumen);
         }
         private void cargar_pedido_en_resumen(string id_pedido)
@@ -47,6 +49,7 @@ namespace paginaWeb.paginasFabrica
                 resumen.Rows[ultima_fila]["num_pedido"] = cuentas_por_pagar.Rows[fila_pedidos]["num_pedido"].ToString();
                 resumen.Rows[ultima_fila]["fecha_remito"] = cuentas_por_pagar.Rows[fila_pedidos]["fecha_remito"].ToString();
                 resumen.Rows[ultima_fila]["proveedor"] = cuentas_por_pagar.Rows[fila_pedidos]["proveedor"].ToString();
+                resumen.Rows[ultima_fila]["legacy"] = cuentas_por_pagar.Rows[fila_pedidos]["legacy"].ToString();
                 Session.Add("resumen_de_PDF", resumen);
             }
         }
@@ -65,6 +68,7 @@ namespace paginaWeb.paginasFabrica
                     remitos.Rows[fila_remito]["num_pedido"] = cuentas_por_pagar.Rows[fila]["num_pedido"].ToString();
                     remitos.Rows[fila_remito]["fecha_remito"] = cuentas_por_pagar.Rows[fila]["fecha_remito"].ToString(); 
                     remitos.Rows[fila_remito]["proveedor"] = cuentas_por_pagar.Rows[fila]["proveedor"].ToString(); 
+                    remitos.Rows[fila_remito]["legacy"] = cuentas_por_pagar.Rows[fila]["legacy"].ToString(); 
 
                     fila_remito++;
                 }
@@ -112,6 +116,9 @@ namespace paginaWeb.paginasFabrica
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup", "window.open('" + strUrl + "','_blank')", true);
             //GenerarPDF_Click();
         }
+        /// <summary>
+        /// ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
         #region atributos
         cls_remitos_de_carga remitos_carga;
         cls_sistema_cuentas_por_cobrar cuentas_Por_Cobrar;

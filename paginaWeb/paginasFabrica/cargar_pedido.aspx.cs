@@ -210,7 +210,7 @@ namespace paginaWeb.paginasFabrica
 
             if (Session["pedidos_sucursal"] == null)
             {
-               // Session.Add("pedidos_sucursal", pedidos_fabrica.get_pedidos_sucursal(Session["nombre_sucursal"].ToString(), proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString()));
+                // Session.Add("pedidos_sucursal", pedidos_fabrica.get_pedidos_sucursal(Session["nombre_sucursal"].ToString(), proveedorBD.Rows[0]["nombre_en_BD"].ToString(), usuariosBD.Rows[0]["proveedor"].ToString()));
             }
             pedidos_sucursal = (DataTable)Session["pedidos_sucursal"];
 
@@ -241,7 +241,7 @@ namespace paginaWeb.paginasFabrica
                 {
                     impuesto_carga = impuesto.ToString();
                 }
-                pedidos_fabrica.enviar_carga_de_pedido(pedidos_sucursal, pedido, resumen_de_pedidos, tipo_usuario.Rows[0]["rol"].ToString(), impuesto_carga);
+                pedidos_fabrica.enviar_carga_de_pedido(pedidos_sucursal, (DataTable)Session["pedido"], Session["id_sucursal"].ToString(), tipo_usuario.Rows[0]["rol"].ToString(), impuesto_carga);
                 Response.Redirect("/paginasFabrica/sucursales.aspx", false);
             }
 
@@ -276,7 +276,7 @@ namespace paginaWeb.paginasFabrica
 
                     cantidad_entrega = double.Parse(pedido.Rows[fila_producto]["cantidad_entrega"].ToString());
                     //stock = double.Parse(pedido.Rows[fila_producto]["stock"].ToString());
-                   // stock_total = stock;
+                    // stock_total = stock;
                     double precio = double.Parse(pedido.Rows[fila_producto]["precio"].ToString());
                     double sub_total;
                     if (pedido.Rows[fila_producto]["proveedor"].ToString() == "insumos_fabrica")
@@ -290,10 +290,10 @@ namespace paginaWeb.paginasFabrica
                         porcentaje = (sub_total * impuesto) / 100;
                         sub_total = sub_total + porcentaje;
                     }
-                   // stock_total = stock_total - cantidad;
+                    // stock_total = stock_total - cantidad;
                     pedido.Rows[fila_producto]["cantidad_entrega"] = cantidad.ToString();
                     pedido.Rows[fila_producto]["sub_total"] = sub_total.ToString();
-                  //  pedido.Rows[fila_producto]["nuevo_stock"] = stock_total.ToString();
+                    //  pedido.Rows[fila_producto]["nuevo_stock"] = stock_total.ToString();
 
                     Session.Add("pedido", pedido);
                 }
@@ -343,9 +343,8 @@ namespace paginaWeb.paginasFabrica
         }
         protected void boton_cancelar_Click(object sender, EventArgs e)
         {
-            pedido = (DataTable)Session["pedido"];
-            string id_pedido = pedido.Rows[0]["id_pedido"].ToString();
-            pedidos_fabrica.cancelar_pedido(id_pedido);
+
+            pedidos_fabrica.cancelar_pedido((DataTable)Session["pedido"]);
             Response.Redirect("/paginasFabrica/sucursales.aspx", false);
 
         }
@@ -367,13 +366,12 @@ namespace paginaWeb.paginasFabrica
                 double cantidad_entrega = double.Parse(pedido.Rows[fila_tabla]["cantidad_entrega"].ToString());
                 double precio = double.Parse(pedido.Rows[fila_tabla]["precio"].ToString());
                 double sub_total;
-                if (pedido.Rows[fila_tabla]["proveedor"].ToString() == "insumos_fabrica" &&
-                    funciones.obtener_dato(pedido.Rows[fila_tabla]["presentacion_entrega_seleccionada"].ToString(), 2) != "N/A")
+                if (funciones.obtener_dato(pedido.Rows[fila_tabla]["presentacion_entrega_seleccionada"].ToString(), 2) != "N/A")
                 {
                     double multiplicador = double.Parse(funciones.obtener_dato(pedido.Rows[fila_tabla]["presentacion_entrega_seleccionada"].ToString(), 2));
                     precio = precio * multiplicador;
                 }
-                else if (pedido.Rows[fila_tabla]["proveedor"].ToString() == "insumos_fabrica")
+                else
                 {
                     DropDownList dropdown_presentacion_entrega = (gridview_pedido.Rows[fila].Cells[5].FindControl("dropdown_presentacion_entrega") as DropDownList);
                     double multiplicador = double.Parse(funciones.obtener_dato(dropdown_presentacion_entrega.SelectedItem.Text, 2));
@@ -391,12 +389,9 @@ namespace paginaWeb.paginasFabrica
 
                 TextBox Textbox_pinchos = (gridview_pedido.Rows[fila].Cells[4].FindControl("Textbox_pinchos") as TextBox);
                 TextBox texbox_cantidad = (gridview_pedido.Rows[fila].Cells[4].FindControl("texbox_cantidad") as TextBox);
-                if (pedido.Rows[fila_tabla]["proveedor"].ToString() == "proveedor_villaMaipu")
+                if (pedido.Rows[fila_tabla]["pincho"].ToString() == "si")
                 {
-                    if (pedido.Rows[fila_tabla]["pincho"].ToString() == "no")
-                    {
-                        Textbox_pinchos.Visible = false;
-                    }
+                    Textbox_pinchos.Visible = true;
                 }
                 else
                 {
@@ -427,7 +422,7 @@ namespace paginaWeb.paginasFabrica
 
         protected void boton_carga_parcial_Click(object sender, EventArgs e)
         {
-            pedidos_fabrica.enviar_carga_parcial_de_pedido(pedidos_sucursal, pedido, resumen_de_pedidos, tipo_usuario.Rows[0]["rol"].ToString());
+            pedidos_fabrica.enviar_carga_parcial_de_pedido((DataTable)Session["pedido"]);
             Response.Redirect("/paginasFabrica/sucursales.aspx", false);
         }
 
@@ -438,7 +433,7 @@ namespace paginaWeb.paginasFabrica
             DropDownList dropdown_tipo_presentacion = (gridview_pedido.Rows[fila].Cells[columna_lista].FindControl(id_dropdown) as DropDownList);
 
             lista = (List<string>)pedido.Rows[fila_tabla][nombre_columna];
-            if (dropdown_tipo_presentacion.Items.Count == 0 && lista.Count>0)
+            if (dropdown_tipo_presentacion.Items.Count == 0 && lista.Count > 0)
             {
                 if (true)
                 {

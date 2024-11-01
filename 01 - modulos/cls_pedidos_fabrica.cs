@@ -109,6 +109,11 @@ namespace modulos
         {
             sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
         }
+
+        private void consultar_sucursal_por_id(string id_sucursal)
+        {
+            sucursales = consultas.consultar_sucursal_por_id(id_sucursal);
+        }
         private void consultar_proveedores()
         {
             lista_proveedores = consultas.consultar_tabla(base_de_datos, "lista_proveedores");
@@ -126,9 +131,9 @@ namespace modulos
         {
             pedidos_sucursales = consultas.consultar_pedidos_de_sucursal(id_sucursal);
         }
-        private void consultar_pedido_de_sucursal_por_num_pedido(string id_sucursal,string num_pedido)
+        private void consultar_pedido_de_sucursal_por_num_pedido(string id_sucursal, string num_pedido)
         {
-            pedidos_sucursales = consultas.consultar_pedidos_de_sucursal_por_num_pedido(id_sucursal,num_pedido);
+            pedidos_sucursales = consultas.consultar_pedidos_de_sucursal_por_num_pedido(id_sucursal, num_pedido);
         }
         private void consultar_pedidos_sucursales_producto_terminado_e_insumo(string nombre_sucursal, string nombre_proveedor)
         {
@@ -183,9 +188,9 @@ namespace modulos
             consultar_pedidos_sucursales_nuevo(id_sucursal);
             return pedidos_sucursales;
         }
-        public DataTable get_pedidos_sucursale_por_num_pedido(string id_sucursal,string num_pedido)
+        public DataTable get_pedidos_sucursale_por_num_pedido(string id_sucursal, string num_pedido)
         {
-            consultar_pedido_de_sucursal_por_num_pedido(id_sucursal,num_pedido);
+            consultar_pedido_de_sucursal_por_num_pedido(id_sucursal, num_pedido);
             return pedidos_sucursales;
         }
         public DataTable get_pedidos_sucursales_producto_terminado_e_insumo(string nombre_sucursal, string nombre_proveedor)
@@ -211,6 +216,12 @@ namespace modulos
         public DataTable get_sucursales()
         {
             consultar_sucursales();
+            return sucursales;
+        }
+
+        public DataTable get_sucursal_por_id(string id_sucursal)
+        {
+            consultar_sucursal_por_id(id_sucursal);
             return sucursales;
         }
         public DataTable get_proveedores_fabrica()
@@ -622,7 +633,7 @@ namespace modulos
         public void actualizar_estado_pedido(DataTable pedidos_no_cargados)
         {
             string id_pedido;
-            for (int fila = 0; fila <= pedidos_no_cargados.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= pedidos_no_cargados.Rows.Count - 1; fila++)
             {
                 id_pedido = pedidos_no_cargados.Rows[fila]["id"].ToString();
                 consultas.actualizar_tabla(base_de_datos, "pedido", "`estado` = 'Pedido en proceso'", id_pedido);
@@ -643,96 +654,47 @@ namespace modulos
 
 
         }
-        public void actualizar_pedido(string id_pedido, DataTable pedido, string proveedor, string impuesto)
+        public void actualizar_pedido(DataTable pedido)
         {
             cls_consultas_Mysql consultas_Mysql = new cls_consultas_Mysql(servidor, puerto, usuario, password, base_de_datos);
-            int columna = 1;
-            string dato = "";
-            string actualizar = "`aumento` = '" + impuesto + "'";
-            consultas.actualizar_tabla(base_de_datos, "pedidos", actualizar, id_pedido);
+           
+            string actualizar =string.Empty;
             actualizar = "`estado` = 'Listo para despachar',";
+            string id_pedido;
             for (int fila = 0; fila <= pedido.Rows.Count - 1; fila++)
             {
-                if (pedido.Rows[fila]["proveedor"].ToString() == proveedor && pedido.Rows[fila]["id_pedido"].ToString() == id_pedido)
-                {
+                id_pedido = pedido.Rows[fila]["id_pedido"].ToString();
+                actualizar = "`estado` = 'Listo para despachar'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
 
-                    if (proveedor == "insumos_fabrica")
-                    {
-                        if (pedido.Rows[fila]["estado"].ToString() == "Carga parcial") //
-                        {
-                            dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "-" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString();//
-                        }
-                        else
-                        {
-                            dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "-" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString();//
-                        }
-                    }
-                    else
-                    {
-                        string pedido_dato_parcial = funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 1) + "-";
-                        pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 2) + "-";
-                        pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 3) + "-";
-                        pedido_dato_parcial += funciones.obtener_dato(pedido.Rows[fila]["pedido_dato_parcial"].ToString(), 4);
-                        string presentacion_entrega_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString(), 1);
-                        string presentacion_extraccion_seleccionada = funciones.obtener_dato(pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString(), 1);
-                        dato = pedido_dato_parcial + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + presentacion_entrega_seleccionada + "-" + presentacion_extraccion_seleccionada + "-" + pedido.Rows[fila]["cantidad_pincho"].ToString();
-                    }
+                actualizar = "`presentacion_entrega` = '" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
 
-                    if (fila == pedido.Rows.Count - 1)
-                    {
-                        actualizar = actualizar + "`producto_" + columna.ToString() + "` = '" + dato + "'";
-                    }
-                    else
-                    {
-                        if (pedido.Rows[fila + 1]["proveedor"].ToString() == proveedor && pedido.Rows[fila + 1]["id_pedido"].ToString() == id_pedido)
-                        {
-                            actualizar = actualizar + "`producto_" + columna.ToString() + "` = '" + dato + "',";
+                actualizar = "`presentacion_extraccion` = '" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
 
-                        }
-                        else
-                        {
-                            actualizar = actualizar + "`producto_" + columna.ToString() + "` = '" + dato + "'";
-                        }
-                    }
-                    columna = columna + 1;
-                }
+                actualizar = "`cantidad_entregada` = '" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
+
             }
-            consultas.actualizar_tabla(base_de_datos, "pedidos", actualizar, id_pedido);
         }
-        public void actualizar_pedido_carga_parcial(string id_pedido, DataTable pedido, string proveedor)
+        public void actualizar_pedido_carga_parcial(DataTable pedido_sucursalSESSION)
         {
             cls_consultas_Mysql consultas_Mysql = new cls_consultas_Mysql(servidor, puerto, usuario, password, base_de_datos);
-            int columna = 1;
-            string dato = "";
-            string actualizar = "`estado` = 'Carga parcial',";
-            for (int fila = 0; fila <= pedido.Rows.Count - 1; fila++)
+            string id_pedido;
+            string actualizar = "`estado` = 'Carga parcial'";
+            for (int fila = 0; fila <= pedido_sucursalSESSION.Rows.Count - 1; fila++)
             {
-                if (pedido.Rows[fila]["proveedor"].ToString() == proveedor && pedido.Rows[fila]["id_pedido"].ToString() == id_pedido)
-                {
+                id_pedido = pedido_sucursalSESSION.Rows[fila]["id_pedido"].ToString();
+                actualizar = "`cantidad_entregada` = '" + pedido_sucursalSESSION.Rows[fila]["cantidad_entrega"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
 
-                    dato = pedido.Rows[fila]["pedido_dato_parcial"].ToString() + "-" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "-" + pedido.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "-" + pedido.Rows[fila]["presentacion_extraccion_seleccionada"].ToString();
+                actualizar = "`presentacion_entrega` = '" + pedido_sucursalSESSION.Rows[fila]["presentacion_entrega_seleccionada"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
 
-
-                    if (fila == pedido.Rows.Count - 1)
-                    {
-                        actualizar = actualizar + "`producto_" + columna.ToString() + "` = '" + dato + "'";
-                    }
-                    else
-                    {
-                        if (pedido.Rows[fila + 1]["proveedor"].ToString() == proveedor && pedido.Rows[fila + 1]["id_pedido"].ToString() == id_pedido)
-                        {
-                            actualizar = actualizar + "`producto_" + columna.ToString() + "` = '" + dato + "',";
-
-                        }
-                        else
-                        {
-                            actualizar = actualizar + "`producto_" + columna.ToString() + "` = '" + dato + "'";
-                        }
-                    }
-                    columna = columna + 1;
-                }
+                actualizar = "`presentacion_extraccion` = '" + pedido_sucursalSESSION.Rows[fila]["presentacion_extraccion_seleccionada"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
             }
-            consultas.actualizar_tabla(base_de_datos, "pedidos", actualizar, id_pedido);
         }
         public void actualizar_pedido_fabrica(string id_pedido, DataTable pedido)
         {
@@ -806,7 +768,7 @@ namespace modulos
 
 
         }
-        public void enviar_remito_fabrica(string id_pedido, string sucursal, string num_pedido, string nombre_remito, string valor_remito, string fecha_remito, string proveedor, string nota, string impuesto)
+        public void enviar_remito_fabrica(string sucursal, string num_pedido, string nombre_remito, string valor_remito, string fecha_remito, string proveedor, string nota, string impuesto)
         {
             cls_consultas_Mysql consultas_Mysql = new cls_consultas_Mysql(servidor, puerto, usuario, password, base_de_datos);
             string columnas = "";
@@ -834,13 +796,15 @@ namespace modulos
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             columnas = armar_query_columna(columnas, "fecha_remito", false);
             valores = armar_query_valores(valores, fecha, false);
+            //legacy
+            columnas = armar_query_columna(columnas, "legacy", false);
+            valores = armar_query_valores(valores, "no", false);
             //proveedor
             columnas = armar_query_columna(columnas, "proveedor", true);
             valores = armar_query_valores(valores, proveedor, true);
 
             consultas.insertar_en_tabla(base_de_datos, "cuenta_por_pagar", columnas, valores);
-            string actualizar = "`estado` = 'Listo para despachar', `calculado_proveedor` = 'si'";
-            consultas.actualizar_tabla(base_de_datos, "pedidos", actualizar, id_pedido);
+
 
         }
         public void enviar_remito_proveedor_a_fabrica(string id_pedido, string fabrica, string num_pedido, string nombre_remito, string valor_remito, string fecha_remito, string proveedor)
@@ -1237,10 +1201,15 @@ namespace modulos
         #endregion
 
         #region cancelar pedido
-        public void cancelar_pedido(string id_pedido)
+        public void cancelar_pedido(DataTable pedido)
         {
             string actualizar = "`estado` = 'Cancelado'";
-            consultas.actualizar_tabla(base_de_datos, "pedidos", actualizar, id_pedido);
+            string id_pedido;
+            for (int fila = 0; fila <= pedido.Rows.Count - 1; fila++)
+            {
+                id_pedido = pedido.Rows[fila]["id_pedido"].ToString();
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
+            }
         }
         #endregion
     }

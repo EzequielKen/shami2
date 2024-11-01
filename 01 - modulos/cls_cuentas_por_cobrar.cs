@@ -434,6 +434,10 @@ namespace _01___modulos
         {
             pedidos = consultas.consultar_pedido(base_de_datos, proveedor, sucursal, num_pedido);
         }
+        private void consultar_pedido_por_num_pedido_nuevo(string id_sucursal, string num_pedido)
+        {
+            pedidos = consultas.consultar_pedido_nuevo(id_sucursal,num_pedido);
+        }
         private void consultar_pedidos_no_calculados()
         {
             pedidos_no_calculados = consultas.consultar_pedidos_no_calculados_fabrica(base_de_datos, "pedidos");
@@ -562,10 +566,15 @@ namespace _01___modulos
             consultar_acuerdo_de_precios_segun_parametros(proveedor, acuerdo_de_precio, tipo_de_acuerdo);
             return acuerdo_de_precios_segun_parametros;
         }
-        public DataTable get_productos_proveedor(string proveedor_seleccionado)
+        public DataTable get_productos_proveedor_legacy(string proveedor_seleccionado)
         {
             consultar_productos_proveedor(proveedor_seleccionado);
             return productos_proveedor;
+        }
+        public DataTable get_pedido_por_num_pedido_nuevo(string id_sucursal,string num_pedido)
+        {
+            consultar_pedido_por_num_pedido_nuevo(id_sucursal,num_pedido);
+            return pedidos;
         }
         #endregion
 
