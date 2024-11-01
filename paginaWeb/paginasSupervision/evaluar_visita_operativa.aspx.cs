@@ -394,6 +394,13 @@ namespace paginaWeb.paginasSupervision
         private void modificar_chequeo(string id_actividad_historial, string punto_real)
         {
             Visita.actualizar_punto_real(id_actividad_historial, punto_real);
+            historial_evaluacion = Visita.get_historial(
+                 DateTime.Now,
+                 Session["perfil_seleccionado"].ToString(),
+                 empleado_lista_chequeo.Rows[0]["id"].ToString(),
+                 empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString()
+             );
+            Session["historial_evaluacion"] = historial_evaluacion;
         }
         private void registrar_todo()
         {
@@ -680,6 +687,7 @@ namespace paginaWeb.paginasSupervision
                 }
             }
             modificar_chequeo(id_actividad_historial, punto_real);
+           
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
 
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
