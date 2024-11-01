@@ -50,6 +50,15 @@ namespace _07_sistemas_supervision
         #region PDF
         public void crear_pdf_evaluacion(string ruta_archivo, byte[] logo, DataTable lista_de_evaluados, DataTable historial_evaluacion_chequeo, string sucursal, string fecha, string evaluacion_local,string observacion)
         {
+            DataTable lista_de_chequeo = consultas.consultar_tabla_completa(base_de_datos, "lista_de_chequeo");
+            string id_actividad;
+            int fila_actividad;
+            for (int fila = 0; fila <= historial_evaluacion_chequeo.Rows.Count-1; fila++)
+            {
+             id_actividad = historial_evaluacion_chequeo.Rows[fila]["actividad"].ToString();
+                fila_actividad = funciones.buscar_fila_por_id(id_actividad,lista_de_chequeo);
+                historial_evaluacion_chequeo.Rows[fila]["actividad"] = historial_evaluacion_chequeo.Rows[fila]["actividad"].ToString() + "-" + lista_de_chequeo.Rows[fila_actividad]["actividad"].ToString();
+            }
             PDF.GenerarPDF_evaluacion_de_chequeo(ruta_archivo, logo, lista_de_evaluados, historial_evaluacion_chequeo, sucursal, fecha, evaluacion_local, observacion);
         }
         #endregion
