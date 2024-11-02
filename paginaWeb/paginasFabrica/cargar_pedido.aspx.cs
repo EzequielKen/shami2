@@ -279,11 +279,8 @@ namespace paginaWeb.paginasFabrica
                     // stock_total = stock;
                     double precio = double.Parse(pedido.Rows[fila_producto]["precio"].ToString());
                     double sub_total;
-                    if (pedido.Rows[fila_producto]["proveedor"].ToString() == "insumos_fabrica")
-                    {
-                        double multiplicador = double.Parse(funciones.obtener_dato(presentacion_entrega, 2));
-                        precio = precio * multiplicador;
-                    }
+                    double multiplicador = double.Parse(funciones.obtener_dato(presentacion_entrega, 2));
+                    precio = precio * multiplicador;
                     sub_total = cantidad * precio;
                     if (double.TryParse(textbox_porcentaje.Text, out impuesto))
                     {

@@ -1411,7 +1411,7 @@ namespace _03___sistemas_fabrica
                 num_acuerdo = pedidos.Rows[fila_pedido]["acuerdo_de_precios"].ToString();
                 nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
 
-                string precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, tipo_paquete, unidad_insumo, tipo_unidad, dato;
+                string precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, tipo_paquete, unidad_insumo, tipo_unidad, dato,cantidad_pinchos;
 
                 for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
                 {
@@ -1424,6 +1424,7 @@ namespace _03___sistemas_fabrica
                     cantidad_pedida = pedidos.Rows[fila]["cantidad_pedida"].ToString();
                     //extraer cantidad entregada
                     cantidad_entregada = pedidos.Rows[fila]["cantidad_entregada"].ToString();//
+                    cantidad_pinchos = pedidos.Rows[fila]["pinchos_entregados"].ToString();//
                                                                                                     //extraer cantidad de kilos
                     cantidad_recibida = cantidad_entregada;//;
 
@@ -1442,7 +1443,7 @@ namespace _03___sistemas_fabrica
                     }
 
                     //cargar normal
-                    cargar_producto_nuevo(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, dato, unidad_insumo, sucursal_seleccionada, num_pedido, nombre_proveedor, fila_pedido, pedidos); // sucursal_seleccionada num_pedido nombre_proveedor
+                    cargar_producto_nuevo(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, dato, unidad_insumo, sucursal_seleccionada, num_pedido, nombre_proveedor, fila_pedido, pedidos, cantidad_pinchos); // sucursal_seleccionada num_pedido nombre_proveedor
                 }
 
             }
@@ -1582,7 +1583,7 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows[fila]["sub.total"] = sub_total;
         }
 
-        private void cargar_producto_nuevo(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor, int fila_pedido, DataTable pedido_local)
+        private void cargar_producto_nuevo(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor, int fila_pedido, DataTable pedido_local,string cantidad_pinchos)
         {
             resumen_pedido.Rows.Add();
             int fila = resumen_pedido.Rows.Count - 1;
@@ -1610,22 +1611,19 @@ namespace _03___sistemas_fabrica
             {
                 //PENDIENTE CANTIDAD DE PINCHOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                string cant_pinchos = "0";// obtener_dato_pedido(pedido_local.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 8) + " PINCHOS | ";//
+                double equivalencia_pincho = double.Parse(productos_proveedor.Rows[fila_producto]["equivalencia_pincho"].ToString());
+               // double cantidad_pinchos = Math.Ceiling(Math.Round(double.Parse(cantidad_entregada) / equivalencia_pincho, 2));
+                string cant_pinchos = cantidad_pinchos + " PINCHOS | ";//
 
                 resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada;
                 resumen_pedido.Rows[fila]["recibido"] = cant_pinchos + cantidad_entregada;
+
 
             }
             else
             {
                 if (productos_proveedor.Rows[fila_producto]["pincho"].ToString() == "si")
                 {
-                    double equivalencia_pincho = double.Parse(productos_proveedor.Rows[fila_producto]["equivalencia_pincho"].ToString());
-                    double cantidad_pinchos = Math.Ceiling(Math.Round(double.Parse(cantidad_entregada) / equivalencia_pincho, 2));
-                    string cant_pinchos = cantidad_pinchos + " PINCHOS | ";//
-
-                    resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada;
-                    resumen_pedido.Rows[fila]["recibido"] = cant_pinchos + cantidad_entregada;
                 }
             }
 

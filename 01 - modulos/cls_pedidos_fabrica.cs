@@ -676,6 +676,9 @@ namespace modulos
                 actualizar = "`cantidad_entregada` = '" + pedido.Rows[fila]["cantidad_entrega"].ToString() + "'";
                 consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
 
+                actualizar = "`pinchos_entregados` = '" + pedido.Rows[fila]["cantidad_pincho"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
+
             }
         }
         public void actualizar_pedido_carga_parcial(DataTable pedido_sucursalSESSION)
@@ -693,6 +696,9 @@ namespace modulos
                 consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
 
                 actualizar = "`presentacion_extraccion` = '" + pedido_sucursalSESSION.Rows[fila]["presentacion_extraccion_seleccionada"].ToString() + "'";
+                consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
+
+                actualizar = "`pinchos_entregados` = '" + pedido_sucursalSESSION.Rows[fila]["cantidad_pincho"].ToString() + "'";
                 consultas.actualizar_tabla(base_de_datos, "pedido", actualizar, id_pedido);
             }
         }
