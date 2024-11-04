@@ -638,7 +638,7 @@ namespace paginaWeb.paginasSupervision
             {
                 observacion = "";
             }
-
+            observacion = textbox_observaciones.Text;
             historial.crear_pdf_evaluacion(ruta_archivo, imgdata, (DataTable)Session["lista_de_evaluados"], (DataTable)Session["historial_evaluacion_chequeo"], sucursal.Rows[0]["sucursal"].ToString(), Session["fecha_pdf"].ToString(), Session["promedio_local"].ToString(), observacion);
             //           Response.Redirect("~/archivo.pdf");
             string strUrl = "/paginas/pdf/" + id_pedido;
