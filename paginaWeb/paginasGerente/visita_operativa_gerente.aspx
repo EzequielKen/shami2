@@ -6,22 +6,32 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            <h1>Visita Operativa.</h1>
+            <h1>Visitas Operativas.</h1>
 
-
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
                     <div class="col">
-                        <div class="alert alert-light">
-                            <div class="input-group">
-                                <asp:Label CssClass="form-control" Text="Sucursal" runat="server" />
-                                <asp:DropDownList ID="DropDown_sucursal" CssClass="form-control" runat="server" OnSelectedIndexChanged="DropDown_sucursal_SelectedIndexChanged" AutoPostBack="true">
-                                </asp:DropDownList>
-                            </div>
-                            <asp:Button ID="boton_historial" CssClass="btn btn-primary" Text="Historial Visita Operativa" OnClick="boton_historial_Click" runat="server" />
-                        </div>
-                        <hr />
-           
+                        <asp:Calendar ID="calendario" CssClass="table-bordered" OnSelectionChanged="calendario_SelectionChanged" runat="server">
+                            <OtherMonthDayStyle ForeColor="LightGray"></OtherMonthDayStyle>
+                            <TitleStyle BackColor="gray" ForeColor="White"></TitleStyle>
+                            <DayStyle BackColor="gray"></DayStyle>
+                            <SelectedDayStyle BackColor="LightGray" Font-Bold="True"></SelectedDayStyle>
+                        </asp:Calendar>
+                    </div>
+                    <div class="col">
+                        <asp:GridView Caption="LISTA DE SUCURSALES" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
+                            <Columns>
+                                <asp:BoundField HeaderText="id" DataField="id" />
+                                <asp:BoundField HeaderText="Sucursal" DataField="sucursal" />
+
+                                <asp:TemplateField HeaderText="Historial">
+                                    <ItemTemplate>
+                                        <asp:Button ID="boton_historial" CssClass="btn btn-primary" Text="Ver Historial" OnClick="boton_historial_Click" runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                            </Columns>
+                        </asp:GridView>
                     </div>
                 </div>
             </div>

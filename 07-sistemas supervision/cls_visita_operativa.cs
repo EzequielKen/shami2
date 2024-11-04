@@ -41,6 +41,7 @@ namespace _07_sistemas_supervision
         DataTable sucursal;
         DataTable lista_de_empleado;
         DataTable empleado;
+        DataTable historial_evaluacion_chequeo;
         #endregion
 
         #region carga a base de datos
@@ -211,6 +212,14 @@ namespace _07_sistemas_supervision
         {
             sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
         }
+        private void consultar_todas_las_sucursales()
+        {
+            sucursales = consultas.consultar_tabla_completa(base_de_datos, "sucursal");
+        }
+        private void consultar_historial_evaluacion_chequeo(DateTime fecha)
+        {
+            historial_evaluacion_chequeo = consultas.consultar_historial_evaluacion_chequeo_segun_fecha_solamente(fecha.Year.ToString(),fecha.Month.ToString(),fecha.Day.ToString());
+        }
         private void consultar_lista_de_empleado(string id_sucursal)
         {
             lista_de_empleado = consultas.consultar_empleados(id_sucursal);
@@ -304,6 +313,30 @@ namespace _07_sistemas_supervision
         {
             consultar_empleado(id_empleado);
             return empleado;
+        }
+
+        public DataTable get_historial_evaluacion_chequeo(DateTime fecha)
+        {
+            consultar_historial_evaluacion_chequeo(fecha);
+            consultar_todas_las_sucursales();
+
+            DataTable resumen = new DataTable();
+            resumen.Columns.Add("id",typeof(string));
+            resumen.Columns.Add("sucursal",typeof(string));
+            string id_sucursal;
+            int fila_sucursal;
+            for (int fila = 0; fila <= historial_evaluacion_chequeo.Rows.Count-1; fila++)
+            {
+                id_sucursal = historial_evaluacion_chequeo.Rows[fila]["id_sucursal"].ToString();
+                if (-1==funciones.buscar_fila_por_id(id_sucursal,resumen))
+                {
+                    fila_sucursal = funciones.buscar_fila_por_id(id_sucursal, sucursales);
+                    resumen.Rows.Add();
+                    resumen.Rows[resumen.Rows.Count - 1]["id"] = sucursales.Rows[fila_sucursal]["id"].ToString();
+                    resumen.Rows[resumen.Rows.Count - 1]["sucursal"] = sucursales.Rows[fila_sucursal]["sucursal"].ToString();
+                }
+            }
+            return resumen;
         }
         #endregion
     }

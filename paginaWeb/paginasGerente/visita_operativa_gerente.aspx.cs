@@ -176,11 +176,7 @@ namespace paginaWeb.paginasGerente
       
         private void cargar_sucursales()
         {
-            DropDown_sucursal.Items.Clear();
-            for (int fila = 0; fila <= sucursales.Rows.Count - 1; fila++)
-            {
-                DropDown_sucursal.Items.Add(sucursales.Rows[fila]["sucursal"].ToString());
-            }
+          
         }
       
         /// <summary>
@@ -214,85 +210,28 @@ namespace paginaWeb.paginasGerente
                 cargar_sucursales();
             }
             sucursales = (DataTable)Session["sucursales"];
-            if (!IsPostBack)
-            {
-                Session.Add("sucursal", visita.get_sucursal(DropDown_sucursal.SelectedItem.Text));
-               
-            }
-        }
-
-
-
-       
-
-       
-
-        protected void boton_encargado_Click(object sender, EventArgs e)
-        {
-            Session.Add("encargado", !(bool)Session["encargado"]);
-            configurar_cargos();
-
-
-        }
-
-        protected void boton_cajero_Click(object sender, EventArgs e)
-        {
-            Session.Add("cajero", !(bool)Session["cajero"]);
-            configurar_cargos();
-
-        }
-
-        protected void boton_shawarmero_Click(object sender, EventArgs e)
-        {
-            Session.Add("shawarmero", !(bool)Session["shawarmero"]);
-            configurar_cargos();
-
-        }
-
-        protected void boton_atencion_Click(object sender, EventArgs e)
-        {
-            Session.Add("atencion", !(bool)Session["atencion"]);
-            configurar_cargos();
-
-        }
-
-        protected void boton_cocina_Click(object sender, EventArgs e)
-        {
-            Session.Add("cocina", !(bool)Session["cocina"]);
-            configurar_cargos();
-
-        }
-
-        protected void boton_limpieza_Click(object sender, EventArgs e)
-        {
-            Session.Add("limpieza", !(bool)Session["limpieza"]);
-            configurar_cargos();
-
-        }
-
-
-
-
-
-        protected void DropDown_sucursal_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Session.Add("sucursal", visita.get_sucursal(DropDown_sucursal.SelectedItem.Text));
-            sucursal = (DataTable)Session["sucursal"];
-            lista_de_empleadoBD = visita.get_lista_de_empleado_origen(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
-            Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
            
         }
 
-        protected void boton_evaluar_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("/paginasSupervision/evaluar_visita_operativa.aspx");
-        }
 
-        
+        protected void calendario_SelectionChanged(object sender, EventArgs e)
+        {
+            DateTime fecha = calendario.SelectedDate;
+            gridview_chequeos.DataSource = visita.get_historial_evaluacion_chequeo(fecha);
+            gridview_chequeos.DataBind();
+        }
 
         protected void boton_historial_Click(object sender, EventArgs e)
         {
+            Button boton_historial = (Button)sender;
+            GridViewRow row = (GridViewRow)boton_historial.NamingContainer;
+            int fila = row.RowIndex;
+
+            string sucursal = gridview_chequeos.Rows[fila].Cells[1].Text;
+            Session.Add("sucursal", visita.get_sucursal(sucursal));
             Response.Redirect("~/paginasSupervision/historial_visita_operativa.aspx", false);
         }
+
+       
     }
 }

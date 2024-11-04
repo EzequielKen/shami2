@@ -15,21 +15,21 @@ namespace paginaWeb.paginasGerente
     {
 
         /// <summary>
-        /// Control DropDown_sucursal.
+        /// Control calendario.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDown_sucursal;
+        protected global::System.Web.UI.WebControls.Calendar calendario;
 
         /// <summary>
-        /// Control boton_historial.
+        /// Control gridview_chequeos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button boton_historial;
+        protected global::System.Web.UI.WebControls.GridView gridview_chequeos;
     }
 }
