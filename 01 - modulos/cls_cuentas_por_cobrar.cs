@@ -406,6 +406,10 @@ namespace _01___modulos
         {
             remitos = consultas.consultar_cuenta_por_pagar_segun_fecha(sucursal, mes, año);
         }
+        private void consultar_remito_por_id(string id_remito)
+        {
+            remitos = consultas.consultar_cuenta_por_pagar_por_id(id_remito);
+        }
         private void consultar_remitos_local(string proveedor, string sucursal, string num_pedido)
         {
             remitos_local = consultas.consultar_remito_de_pedido(base_de_datos, proveedor, sucursal, num_pedido);
@@ -575,6 +579,11 @@ namespace _01___modulos
         {
             consultar_pedido_por_num_pedido_nuevo(id_sucursal,num_pedido);
             return pedidos;
+        }
+        public DataTable get_remito_por_id(string id_remito)
+        {
+            consultar_remito_por_id(id_remito);
+            return remitos;
         }
         #endregion
 

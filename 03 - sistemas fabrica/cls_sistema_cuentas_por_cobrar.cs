@@ -612,29 +612,59 @@ namespace _03___sistemas_fabrica
             string acuerdo, num_acuerdo, nombre_proveedor, nota, impuesto;
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
-            consultar_sucursales();
-            consultar_remitos_todas_las_sucursales(mes, año);
-
-            consultar_acuerdo_de_precios_legacy();
-            fila_pedido = obtener_fila_de_pedido_mediante_idRemito(id_remito, sucursal_seleccionada);
-            acuerdo = pedidos.Rows[fila_pedido]["tipo_de_acuerdo"].ToString();
-            num_acuerdo = pedidos.Rows[fila_pedido]["acuerdo_de_precios"].ToString();
-
-            nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
-            nota = pedidos.Rows[fila_pedido]["nota"].ToString();
-            impuesto = pedidos.Rows[fila_pedido]["aumento"].ToString();
-            fila_acuerdo = obtener_fila_de_acuerdo(acuerdo, num_acuerdo, nombre_proveedor);
-            string id = buscar_id_sucursal(sucursal_seleccionada, sucursales);
-            consultar_sucursal(id);
-            consultar_productos_proveedor_legacy(nombre_proveedor);
-            abrir_pedido(fila_pedido, fila_acuerdo, nombre_proveedor);
-
-            fila_remito = obtener_fila_de_remito(id_remito);
-            if (seguridad < 2)
+            consultar_remito_por_id(id_remito);
+            if (remitos.Rows[0]["legacy"].ToString()=="si")
             {
-                PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota, impuesto); // resumen_pedido,resumen_bonificado
-            }
 
+                consultar_sucursales();
+                consultar_remitos_todas_las_sucursales(mes, año);
+
+                consultar_acuerdo_de_precios_legacy();
+                fila_pedido = obtener_fila_de_pedido_mediante_idRemito(id_remito, sucursal_seleccionada);
+                acuerdo = pedidos.Rows[fila_pedido]["tipo_de_acuerdo"].ToString();
+                num_acuerdo = pedidos.Rows[fila_pedido]["acuerdo_de_precios"].ToString();
+
+                nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
+                nota = pedidos.Rows[fila_pedido]["nota"].ToString();
+                impuesto = pedidos.Rows[fila_pedido]["aumento"].ToString();
+                fila_acuerdo = obtener_fila_de_acuerdo(acuerdo, num_acuerdo, nombre_proveedor);
+                string id = buscar_id_sucursal(sucursal_seleccionada, sucursales);
+                consultar_sucursal(id);
+                consultar_productos_proveedor_legacy(nombre_proveedor);
+                abrir_pedido(fila_pedido, fila_acuerdo, nombre_proveedor);
+
+                fila_remito = obtener_fila_de_remito(id_remito);
+                if (seguridad < 2)
+                {
+                    PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota, impuesto); // resumen_pedido,resumen_bonificado
+                }
+
+            }
+            else
+            {
+                consultar_sucursales();
+                consultar_remitos_todas_las_sucursales(mes, año);
+
+                consultar_acuerdo_de_precios_legacy();
+                fila_pedido = obtener_fila_de_pedido_mediante_idRemito(id_remito, sucursal_seleccionada);
+                acuerdo = pedidos.Rows[fila_pedido]["tipo_de_acuerdo"].ToString();
+                num_acuerdo = pedidos.Rows[fila_pedido]["acuerdo_de_precios"].ToString();
+
+                nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
+                nota = pedidos.Rows[fila_pedido]["nota"].ToString();
+                impuesto = pedidos.Rows[fila_pedido]["aumento"].ToString();
+                fila_acuerdo = obtener_fila_de_acuerdo(acuerdo, num_acuerdo, nombre_proveedor);
+                string id = buscar_id_sucursal(sucursal_seleccionada, sucursales);
+                consultar_sucursal(id);
+                consultar_productos_proveedor_legacy(nombre_proveedor);
+                abrir_pedido(fila_pedido, fila_acuerdo, nombre_proveedor);
+
+                fila_remito = obtener_fila_de_remito(id_remito);
+                if (seguridad < 2)
+                {
+                    PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota, impuesto); // resumen_pedido,resumen_bonificado
+                }
+            }
 
         }
         public void crear_pdf_fabrica(string ruta, byte[] logo, string id_remito, string nombre_fabrica, DataTable proveedor_BD) //
@@ -1411,7 +1441,7 @@ namespace _03___sistemas_fabrica
                 num_acuerdo = pedidos.Rows[fila_pedido]["acuerdo_de_precios"].ToString();
                 nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
 
-                string precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, tipo_paquete, unidad_insumo, tipo_unidad, dato,cantidad_pinchos;
+                string precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, tipo_paquete, unidad_insumo, tipo_unidad, dato, cantidad_pinchos;
 
                 for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
                 {
@@ -1425,12 +1455,12 @@ namespace _03___sistemas_fabrica
                     //extraer cantidad entregada
                     cantidad_entregada = pedidos.Rows[fila]["cantidad_entregada"].ToString();//
                     cantidad_pinchos = pedidos.Rows[fila]["pinchos_entregados"].ToString();//
-                                                                                                    //extraer cantidad de kilos
+                                                                                           //extraer cantidad de kilos
                     cantidad_recibida = cantidad_entregada;//;
 
-                    tipo_paquete = funciones.obtener_dato(pedidos.Rows[fila]["presentacion_entrega"].ToString(),1);//;
-                    unidad_insumo = funciones.obtener_dato(pedidos.Rows[fila]["presentacion_entrega"].ToString(),2);//;
-                    tipo_unidad = funciones.obtener_dato(pedidos.Rows[fila]["presentacion_entrega"].ToString(),3);//;
+                    tipo_paquete = funciones.obtener_dato(pedidos.Rows[fila]["presentacion_entrega"].ToString(), 1);//;
+                    unidad_insumo = funciones.obtener_dato(pedidos.Rows[fila]["presentacion_entrega"].ToString(), 2);//;
+                    tipo_unidad = funciones.obtener_dato(pedidos.Rows[fila]["presentacion_entrega"].ToString(), 3);//;
                     if (tipo_paquete == "Unidad" &&
                         unidad_insumo == "1" &&
                         tipo_unidad == "unid.")
@@ -1583,7 +1613,7 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows[fila]["sub.total"] = sub_total;
         }
 
-        private void cargar_producto_nuevo(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor, int fila_pedido, DataTable pedido_local,string cantidad_pinchos)
+        private void cargar_producto_nuevo(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor, int fila_pedido, DataTable pedido_local, string cantidad_pinchos)
         {
             resumen_pedido.Rows.Add();
             int fila = resumen_pedido.Rows.Count - 1;
@@ -1612,7 +1642,7 @@ namespace _03___sistemas_fabrica
                 //PENDIENTE CANTIDAD DE PINCHOS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
                 double equivalencia_pincho = double.Parse(productos_proveedor.Rows[fila_producto]["equivalencia_pincho"].ToString());
-               // double cantidad_pinchos = Math.Ceiling(Math.Round(double.Parse(cantidad_entregada) / equivalencia_pincho, 2));
+                // double cantidad_pinchos = Math.Ceiling(Math.Round(double.Parse(cantidad_entregada) / equivalencia_pincho, 2));
                 string cant_pinchos = cantidad_pinchos + " PINCHOS | ";//
 
                 resumen_pedido.Rows[fila]["entregado"] = cant_pinchos + cantidad_entregada;
@@ -1911,6 +1941,10 @@ namespace _03___sistemas_fabrica
         private void consultar_remitos(string sucursal, string mes, string año)
         {
             remitos = administracion.get_remitos(sucursal, mes, año);
+        }
+        private void consultar_remito_por_id(string id_remito)
+        {
+            remitos = administracion.get_remito_por_id(id_remito);
         }
         private void consultar_remitos_todas_las_sucursales(string mes, string año)
         {
