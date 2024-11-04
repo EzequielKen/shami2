@@ -26,6 +26,7 @@ namespace paginaWeb.paginasSupervision
             lista_de_evaluados.Columns.Add("telefono", typeof(string));
             lista_de_evaluados.Columns.Add("cargo", typeof(string));
             lista_de_evaluados.Columns.Add("promedio", typeof(string));
+            lista_de_evaluados.Columns.Add("cargos_evaluados", typeof(string));
         }
         private void llenar_tabla_evaluados()
         {
@@ -41,12 +42,37 @@ namespace paginaWeb.paginasSupervision
                     lista_de_evaluados.Rows[ultima_fila]["id_sucursal"] = lista_de_evaluadosBD.Rows[fila]["id_sucursal"].ToString();
                     lista_de_evaluados.Rows[ultima_fila]["nombre"] = lista_de_evaluadosBD.Rows[fila]["nombre"].ToString();
                     lista_de_evaluados.Rows[ultima_fila]["apellido"] = lista_de_evaluadosBD.Rows[fila]["apellido"].ToString();
+                    lista_de_evaluados.Rows[ultima_fila]["cargos_evaluados"] = obtener_cargos_evaluados(lista_de_evaluadosBD.Rows[fila]["id_empleado"].ToString());
                 }
             }
             for (int fila = 0; fila <= lista_de_evaluados.Rows.Count - 1; fila++)
             {
                 lista_de_evaluados.Rows[fila]["promedio"] = historial.get_promedio_de_puntaje(lista_de_evaluados.Rows[fila]["id"].ToString(), lista_de_evaluadosBD);
             }
+        }
+        private string obtener_cargos_evaluados(string id_empleado)
+        {
+            DataTable resumen = new DataTable();
+            resumen.Columns.Add("cargo", typeof(String));
+            string cargo;
+            for (int fila = 0; fila <= lista_de_evaluadosBD.Rows.Count - 1; fila++)
+            {
+                if (lista_de_evaluadosBD.Rows[fila]["id_empleado"].ToString()== id_empleado)
+                {
+                    cargo = lista_de_evaluadosBD.Rows[fila]["cargo"].ToString();
+                    if (-1 == funciones.buscar_fila_por_dato(cargo, "cargo", resumen))
+                    {
+                        resumen.Rows.Add();
+                        resumen.Rows[resumen.Rows.Count - 1]["cargo"] = cargo;
+                    }
+                }
+            }
+            string retorno = string.Empty;
+            for (int fila = 0; fila <= resumen.Rows.Count - 1; fila++)
+            {
+                retorno = retorno + funciones.obtener_dato(resumen.Rows[fila]["cargo"].ToString(), 2) + "-";
+            }
+            return retorno;
         }
         private bool verificar_si_cargo(string id_empleado)
         {
@@ -370,7 +396,7 @@ namespace paginaWeb.paginasSupervision
             }
 
 
-            
+
         }
 
         protected void gridview_chequeos_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -399,7 +425,7 @@ namespace paginaWeb.paginasSupervision
 
                 // Ruta base donde se almacenan los archivos
                 string folderPath = Server.MapPath("/FotosSubidas/visitas_operativas/");
-                
+
 
                 // Variable para guardar si se encontró algún archivo
                 bool fileExists = false;

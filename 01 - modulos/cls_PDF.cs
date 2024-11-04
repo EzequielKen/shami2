@@ -2487,6 +2487,7 @@ namespace _01___modulos
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
                                 columns.RelativeColumn();
+                                columns.RelativeColumn();
                             });
 
                             tabla.Header(header =>
@@ -2494,6 +2495,7 @@ namespace _01___modulos
                                 header.Cell().Background("#257272").Padding(2).Text("id").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Nombre").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Apellido").FontColor("#fff");
+                                header.Cell().Background("#257272").Padding(2).Text("Cargo Evaluado").FontColor("#fff");
                                 header.Cell().Background("#257272").Padding(2).Text("Promedio").FontColor("#fff");
                             });
 
@@ -2507,6 +2509,9 @@ namespace _01___modulos
 
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
                                 .Text(lista_de_evaluados.Rows[fila]["apellido"].ToString()).FontSize(10);
+
+                                tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                .Text(lista_de_evaluados.Rows[fila]["cargos_evaluados"].ToString()).FontSize(10);
 
                                 tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
                                 .Text(lista_de_evaluados.Rows[fila]["promedio"].ToString()).FontSize(10);

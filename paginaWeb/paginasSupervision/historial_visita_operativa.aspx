@@ -107,6 +107,7 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:BoundField HeaderText="Puntaje Promedio" DataField="promedio" />
+                            <asp:BoundField HeaderText="cargos evaluados" DataField="cargos_evaluados" />
                         </Columns>
                     </asp:GridView>
                 </div>
