@@ -2621,16 +2621,16 @@ namespace _01___modulos
                                 {
                                     tabla.ColumnsDefinition(columns =>
                                     {
-                                        columns.ConstantColumn(50);
+                                        //columns.ConstantColumn(30);
                                         columns.RelativeColumn();
                                         columns.RelativeColumn();
-                                        columns.RelativeColumn();
-                                        columns.RelativeColumn();
+                                        columns.ConstantColumn(40);
+                                        columns.ConstantColumn(40);
                                     });
 
                                     tabla.Header(header =>
                                     {
-                                        header.Cell().Background("#257272").Padding(2).Text("id").FontColor("#fff");
+                                       // header.Cell().Background("#257272").Padding(2).Text("id").FontColor("#fff");
                                         header.Cell().Background("#257272").Padding(2).Text("Actividad").FontColor("#fff");
                                         header.Cell().Background("#257272").Padding(2).Text("Nota").FontColor("#fff");
                                         header.Cell().Background("#257272").Padding(2).Text("Punto Teorico").FontColor("#fff");
@@ -2645,8 +2645,8 @@ namespace _01___modulos
                                         if (id_empleado == historial_evaluacion_chequeo.Rows[fila]["id_empleado"].ToString() &&
                                             cargo == historial_evaluacion_chequeo.Rows[fila]["cargo"].ToString())
                                         {
-                                            tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
-                                            .Text(historial_evaluacion_chequeo.Rows[fila]["id"].ToString()).FontSize(10);
+                                           // tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
+                                           // .Text(historial_evaluacion_chequeo.Rows[fila]["id"].ToString()).FontSize(10);
 
                                             tabla.Cell().BorderBottom(0.5f).BorderColor("#D9D9D9").Padding(2)
                                             .Text(historial_evaluacion_chequeo.Rows[fila]["actividad"].ToString()).FontSize(10);
