@@ -82,7 +82,7 @@
 
                                     <asp:TemplateField HeaderText="Evaluar">
                                         <ItemTemplate>
-                                            <asp:CheckBox ID="checkbox_evaluar" Text="Seleccionar" CssClass="form-control" OnCheckedChanged="checkbox_evaluar_CheckedChanged" runat="server" AutoPostBack="true"/>
+                                            <asp:CheckBox ID="checkbox_evaluar" Text="Seleccionar" CssClass="form-control" OnCheckedChanged="checkbox_evaluar_CheckedChanged" runat="server" AutoPostBack="true" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
 

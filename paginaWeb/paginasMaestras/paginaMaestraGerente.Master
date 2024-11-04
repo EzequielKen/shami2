@@ -95,6 +95,9 @@
                         <a class="nav-link btn btn-primary" href="/paginasGerente/movimiento_mercaderia_interna_gerente.aspx">Movimiento Mercaderia</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasGerente/visita_operativa_gerente.aspx">Visitas Operativas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasGerente/crear_ticket_gerente.aspx">Crear Ticket</a>
                     </li>
                     <li class="nav-item">
