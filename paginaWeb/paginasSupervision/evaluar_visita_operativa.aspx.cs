@@ -173,6 +173,7 @@ namespace paginaWeb.paginasSupervision
         }
         private void configurar_controles()
         {
+            resumenBD = (DataTable)Session["resumen_chequeo"];
 
             llenar_dropDownList(resumenBD);
             llenar_dropDownList_categiria(resumenBD, dropDown_tipo.SelectedItem.Text);
@@ -359,11 +360,11 @@ namespace paginaWeb.paginasSupervision
             }
         }
         #endregion
-        private void cargar_lista_chequeo()
+        private void cargar_lista_chequeo(string perfil_seleccionado)
         {
-           
+
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
-            historial_evaluacion = Visita.get_historial(DateTime.Now, Session["perfil_seleccionado"].ToString(), empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
+            historial_evaluacion = Visita.get_historial(DateTime.Now, perfil_seleccionado, empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
             //  historial_evaluacion = (DataTable)Session["historial_evaluacion"];
             Session.Add("historial_evaluacion", historial_evaluacion);
             if (historial_evaluacion.Rows.Count == 0)
@@ -371,7 +372,7 @@ namespace paginaWeb.paginasSupervision
                 crear_tabla_resumen();
                 llenar_tabla_resumen_local();
                 registrar_todo();
-                cargar_lista_chequeo();
+                cargar_lista_chequeo(perfil_seleccionado);
             }
             else
             {
@@ -463,17 +464,17 @@ namespace paginaWeb.paginasSupervision
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                Session.Add("usuariosBD_lista_chequeo", (DataTable)Session["usuariosBD"]);
-                Session.Add("sucursal_lista_chequeo", (DataTable)Session["sucursal"]);
-            }
+            Session.Add("perfil_seleccionado", "N/A");
+
+            Session.Add("usuariosBD_lista_chequeo", (DataTable)Session["usuariosBD"]);
+            Session.Add("sucursal_lista_chequeo", (DataTable)Session["sucursal"]);
+
 
             usuariosBD_lista_chequeo = (DataTable)Session["usuariosBD_lista_chequeo"];
             Visita = new cls_evaluar_visita_operativa(usuariosBD_lista_chequeo);
 
             int fila;
-            if (!IsPostBack)
+            if (!IsPostBack )
             {
                 configurar_control_empleados();
                 lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
@@ -492,10 +493,6 @@ namespace paginaWeb.paginasSupervision
 
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
             sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
-            if (Session["perfil_seleccionado"] == null)
-            {
-                Session.Add("perfil_seleccionado", "N/A");
-            }
             lista_de_chequeoBD = Visita.get_lista_de_chequeo();
 
             string nombre = empleado_lista_chequeo.Rows[0]["nombre"].ToString();
@@ -506,14 +503,14 @@ namespace paginaWeb.paginasSupervision
 
             configurar_botones_cargos(cargos);
 
-            if (Session["perfil_seleccionado"].ToString()!="N/A" &&
-                !IsPostBack)
+            if (Session["perfil_seleccionado"].ToString() != "N/A" &&
+                !IsPostBack )
             {
                 configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
                 configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
                 llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
                 configurar_controles();
-                cargar_lista_chequeo();
+                cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
             }
         }
 
@@ -644,12 +641,12 @@ namespace paginaWeb.paginasSupervision
 
             llenar_dropDownList_categiria(resumenBD, dropDown_tipo.SelectedItem.Text);
 
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
         }
 
         protected void dropDown_categoria_SelectedIndexChanged(object sender, EventArgs e)
         {
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
         }
 
         protected void boton_cargar_Click(object sender, EventArgs e)
@@ -687,11 +684,11 @@ namespace paginaWeb.paginasSupervision
                 }
             }
             modificar_chequeo(id_actividad_historial, punto_real);
-           
+
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
 
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
         }
 
         protected void boton_encargado_Click(object sender, EventArgs e)
@@ -702,7 +699,7 @@ namespace paginaWeb.paginasSupervision
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
             configurar_controles();
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(perfil);
         }
 
         protected void boton_cajero_Click(object sender, EventArgs e)
@@ -714,7 +711,7 @@ namespace paginaWeb.paginasSupervision
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
             configurar_controles();
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(perfil);
         }
 
         protected void boton_shawarmero_Click(object sender, EventArgs e)
@@ -726,7 +723,7 @@ namespace paginaWeb.paginasSupervision
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
             configurar_controles();
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(perfil);
         }
 
         protected void boton_atencion_Click(object sender, EventArgs e)
@@ -738,7 +735,7 @@ namespace paginaWeb.paginasSupervision
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
             configurar_controles();
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(perfil);
         }
 
         protected void boton_cocina_Click(object sender, EventArgs e)
@@ -750,7 +747,7 @@ namespace paginaWeb.paginasSupervision
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
             configurar_controles();
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(perfil);
         }
 
         protected void boton_limpieza_Click(object sender, EventArgs e)
@@ -762,7 +759,7 @@ namespace paginaWeb.paginasSupervision
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
             configurar_controles();
-            cargar_lista_chequeo();
+            cargar_lista_chequeo(perfil);
         }
 
         protected void textbox_nota_TextChanged(object sender, EventArgs e)
@@ -788,7 +785,7 @@ namespace paginaWeb.paginasSupervision
 
                 llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
 
-                cargar_lista_chequeo();
+                cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
             }
 
         }

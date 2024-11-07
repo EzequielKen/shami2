@@ -37,6 +37,9 @@ namespace paginaWeb.paginasSupervision
             {
                 lista_de_empleadoBD = visita.get_lista_de_empleado(usuariosBD.Rows[0]["sucursal"].ToString(), fecha_de_hoy);
             }
+
+            Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
+
         }
         private bool verificar_cargos_cargados(int fila_empleado)
         {
@@ -319,11 +322,8 @@ namespace paginaWeb.paginasSupervision
         {
             sucursal = (DataTable)Session["sucursal"];
 
-            if (!IsPostBack)
-            {
-                lista_de_empleadoBD = visita.get_lista_de_empleado_origen(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
-                Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
-            }
+            lista_de_empleadoBD = visita.get_lista_de_empleado_origen(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
+            Session.Add("lista_de_empleadoBD", lista_de_empleadoBD);
             lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
             configurar_cargos();
             configurar_controles();
@@ -680,7 +680,7 @@ namespace paginaWeb.paginasSupervision
 
         protected void boton_historial_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/paginasSupervision/historial_visita_operativa.aspx",false);
+            Response.Redirect("~/paginasSupervision/historial_visita_operativa.aspx", false);
         }
     }
 }

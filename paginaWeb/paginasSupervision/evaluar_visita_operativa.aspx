@@ -98,7 +98,7 @@
                         <h3>
                             <asp:Label Text="Seleccione empleado:" runat="server" />
                         </h3>
-                        <asp:DropDownList ID="dropdown_empleado" CssClass="form-control" OnSelectedIndexChanged="dropdown_empleado_SelectedIndexChanged" runat="server" AutoPostBack="true">
+                        <asp:DropDownList ID="dropdown_empleado" CssClass="form-control" OnSelectedIndexChanged="dropdown_empleado_SelectedIndexChanged" runat="server" AutoPostBack="true" CausesValidation="false">
                         </asp:DropDownList>
                         <h1>
                             <asp:Label ID="label_nombre" Text="Empleado:" runat="server" />
@@ -144,12 +144,12 @@
                             </div>
                             <div class="input-group">
                                 <asp:Label CssClass="form-control" Text="Area" runat="server" />
-                                <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
+                                <asp:DropDownList ID="dropDown_tipo" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true" CausesValidation="false">
                                 </asp:DropDownList>
                             </div>
                             <div class="input-group">
                                 <asp:Label CssClass="form-control" Text="Categoria" runat="server" />
-                                <asp:DropDownList ID="dropDown_categoria" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_categoria_SelectedIndexChanged" AutoPostBack="true">
+                                <asp:DropDownList ID="dropDown_categoria" CssClass="form-control" runat="server" OnSelectedIndexChanged="dropDown_categoria_SelectedIndexChanged" AutoPostBack="true" CausesValidation="false">
                                 </asp:DropDownList>
                             </div>
                             <asp:GridView Caption="LISTA DE CHEQUEO" CaptionAlign="Top" runat="server" ID="gridview_chequeos" AutoGenerateColumns="false" CssClass="table table-dark   table-striped" OnRowDataBound="gridview_chequeos_RowDataBound">
@@ -158,7 +158,7 @@
                                     <asp:BoundField HeaderText="actividad" DataField="actividad" />
                                     <asp:TemplateField HeaderText="Nota">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" OnTextChanged="textbox_nota_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" OnTextChanged="textbox_nota_TextChanged" AutoPostBack="true" CausesValidation="false" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Cargar">
