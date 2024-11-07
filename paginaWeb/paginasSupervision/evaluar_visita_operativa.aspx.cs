@@ -527,7 +527,7 @@ namespace paginaWeb.paginasSupervision
                     configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
                     llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
                     configurar_controles();
-                    cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
+                    //cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
                 }
             }
         }
@@ -1008,10 +1008,8 @@ namespace paginaWeb.paginasSupervision
 
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
             sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
-            if (Session["perfil_seleccionado"] == null)
-            {
-                Session.Add("perfil_seleccionado", "N/A");
-            }
+            Session.Add("perfil_seleccionado", "N/A");
+
             lista_de_chequeoBD = Visita.get_lista_de_chequeo();
 
             Session.Add("id_empleado_lista_chequeo", empleado_lista_chequeo.Rows[0]["id"].ToString());
