@@ -372,7 +372,19 @@ namespace paginaWeb.paginasSupervision
                 crear_tabla_resumen();
                 llenar_tabla_resumen_local();
                 registrar_todo();
-                cargar_lista_chequeo(perfil_seleccionado);
+                empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
+                historial_evaluacion = Visita.get_historial(DateTime.Now, perfil_seleccionado, empleado_lista_chequeo.Rows[0]["id"].ToString(), empleado_lista_chequeo.Rows[0]["id_sucursal"].ToString());
+                //  historial_evaluacion = (DataTable)Session["historial_evaluacion"];
+                Session.Add("historial_evaluacion", historial_evaluacion);
+                historial_evaluacion = (DataTable)Session["historial_evaluacion"];
+                crear_tabla_resumen();
+                llenar_tabla_resumen_local();
+                resumen.DefaultView.Sort = "orden asc";
+                resumen = resumen.DefaultView.ToTable();
+                gridview_chequeos.DataSource = resumen;
+                gridview_chequeos.DataBind();
+
+                calcular_puntaje();
             }
             else
             {
@@ -464,7 +476,10 @@ namespace paginaWeb.paginasSupervision
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session.Add("perfil_seleccionado", "N/A");
+            if (!IsPostBack && Session["perfil_seleccionado"] != null)
+            {
+                //Session.Add("perfil_seleccionado", "N/A");
+            }
 
             Session.Add("usuariosBD_lista_chequeo", (DataTable)Session["usuariosBD"]);
             Session.Add("sucursal_lista_chequeo", (DataTable)Session["sucursal"]);
@@ -474,7 +489,7 @@ namespace paginaWeb.paginasSupervision
             Visita = new cls_evaluar_visita_operativa(usuariosBD_lista_chequeo);
 
             int fila;
-            if (!IsPostBack )
+            if (!IsPostBack && Session["perfil_seleccionado"] == null)
             {
                 configurar_control_empleados();
                 lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
@@ -483,13 +498,14 @@ namespace paginaWeb.paginasSupervision
                 Session.Add("empleado_lista_chequeo", (DataTable)Session["empleado"]);
                 empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
                 Session.Add("id_empleado_lista_chequeo", empleado_lista_chequeo.Rows[0]["id"].ToString());
-            }
-            lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
-            fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
-            Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
+                lista_de_empleadoBD = (DataTable)Session["lista_de_empleadoBD"];
+                fila = funciones.buscar_fila_empleado_por_nombre(dropdown_empleado.SelectedItem.Text, lista_de_empleadoBD);
+                Session.Add("empleado", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
+                Session.Remove("empleado_lista_chequeo");
+                Session.Add("empleado_lista_chequeo", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
 
-            Session.Remove("empleado_lista_chequeo");
-            Session.Add("empleado_lista_chequeo", Visita.get_empleado(lista_de_empleadoBD.Rows[fila]["id"].ToString()));
+            }
+
 
             empleado_lista_chequeo = (DataTable)Session["empleado_lista_chequeo"];
             sucursal_lista_chequeo = (DataTable)Session["sucursal_lista_chequeo"];
@@ -503,14 +519,16 @@ namespace paginaWeb.paginasSupervision
 
             configurar_botones_cargos(cargos);
 
-            if (Session["perfil_seleccionado"].ToString() != "N/A" &&
-                !IsPostBack )
+            if (!IsPostBack && Session["perfil_seleccionado"] != null)
             {
-                configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
-                configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
-                llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
-                configurar_controles();
-                cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
+                if (Session["perfil_seleccionado"].ToString()!="N/A")
+                {
+                    configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
+                    configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
+                    llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
+                    configurar_controles();
+                    cargar_lista_chequeo(Session["perfil_seleccionado"].ToString());
+                }
             }
         }
 
@@ -651,6 +669,7 @@ namespace paginaWeb.paginasSupervision
 
         protected void boton_cargar_Click(object sender, EventArgs e)
         {
+
             Button boton_cargar = (Button)sender;
             GridViewRow row = (GridViewRow)boton_cargar.NamingContainer;
             int fila = row.RowIndex;
@@ -695,6 +714,8 @@ namespace paginaWeb.paginasSupervision
         {
             string perfil = "Encargado";
             Session.Add("perfil_seleccionado", perfil);
+            string perfil_seleccionado_evaluado = Session["perfil_seleccionado"].ToString();
+            Session.Add("perfil_seleccionado_evaluado", perfil_seleccionado_evaluado);
             configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
@@ -706,7 +727,8 @@ namespace paginaWeb.paginasSupervision
         {
             string perfil = "Cajero";
             Session.Add("perfil_seleccionado", perfil);
-
+            string perfil_seleccionado_evaluado = Session["perfil_seleccionado"].ToString();
+            Session.Add("perfil_seleccionado_evaluado", perfil_seleccionado_evaluado);
             configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
@@ -718,7 +740,8 @@ namespace paginaWeb.paginasSupervision
         {
             string perfil = "Shawarmero";
             Session.Add("perfil_seleccionado", perfil);
-
+            string perfil_seleccionado_evaluado = Session["perfil_seleccionado"].ToString();
+            Session.Add("perfil_seleccionado_evaluado", perfil_seleccionado_evaluado);
             configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
@@ -730,7 +753,8 @@ namespace paginaWeb.paginasSupervision
         {
             string perfil = "Atencion al Cliente";
             Session.Add("perfil_seleccionado", perfil);
-
+            string perfil_seleccionado_evaluado = Session["perfil_seleccionado"].ToString();
+            Session.Add("perfil_seleccionado_evaluado", perfil_seleccionado_evaluado);
             configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
@@ -742,7 +766,8 @@ namespace paginaWeb.paginasSupervision
         {
             string perfil = "Cocina";
             Session.Add("perfil_seleccionado", perfil);
-
+            string perfil_seleccionado_evaluado = Session["perfil_seleccionado"].ToString();
+            Session.Add("perfil_seleccionado_evaluado", perfil_seleccionado_evaluado);
             configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
@@ -754,7 +779,8 @@ namespace paginaWeb.paginasSupervision
         {
             string perfil = "Limpieza";
             Session.Add("perfil_seleccionado", perfil);
-
+            string perfil_seleccionado_evaluado = Session["perfil_seleccionado"].ToString();
+            Session.Add("perfil_seleccionado_evaluado", perfil_seleccionado_evaluado);
             configurar_botones_cargos_activos(Session["perfil_seleccionado"].ToString());
             configuracion = Visita.get_configuracion_de_chequeo(Session["perfil_seleccionado"].ToString());
             llenar_resumen_con_configuracion(Session["perfil_seleccionado"].ToString());
