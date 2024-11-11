@@ -64,6 +64,7 @@ namespace _01___modulos
 
         DataTable totalidad_remitos;
         DataTable totalidad_imputaciones;
+        DataTable precio_venta;
         #endregion
         #region cargar iva
         public void cargar_iva(string id_remito, string proveedor, string sucursal, string num_pedido, string valor_remito)
@@ -392,7 +393,7 @@ namespace _01___modulos
         }
         private void consultar_sucursales()
         {
-            sucursales = consultas.consultar_tabla(base_de_datos, "sucursal");
+            sucursales = consultas.consultar_tabla_completa(base_de_datos, "sucursal");
         }
         private void consultar_imputaciones(string sucursal, string mes, string año)
         {
@@ -440,7 +441,7 @@ namespace _01___modulos
         }
         private void consultar_pedido_por_num_pedido_nuevo(string id_sucursal, string num_pedido)
         {
-            pedidos = consultas.consultar_pedido_nuevo(id_sucursal,num_pedido);
+            pedidos = consultas.consultar_pedido_nuevo(id_sucursal, num_pedido);
         }
         private void consultar_pedidos_no_calculados()
         {
@@ -454,9 +455,17 @@ namespace _01___modulos
         {
             acuerdo_de_precios_segun_parametros = consultas.consultar_acuerdo_de_precios_segun_parametros(base_de_datos, "acuerdo_de_precios", proveedor, acuerdo_de_precios, tipo_de_acuerdo);
         }
-        private void consultar_productos_proveedor(string proveedor_seleccionado)
+        private void consultar_productos_proveedor_legacy(string proveedor_seleccionado)
         {
             productos_proveedor = consultas.consultar_tabla_completa(base_de_datos, proveedor_seleccionado);
+        }
+        private void consultar_productos_proveedor_nuevo()
+        {
+            productos_proveedor = consultas.consultar_tabla_completa(base_de_datos, "productos");
+        }
+        private void consultar_precio_venta(string proveedor, string acuerdo, string tipo_de_acuerdo)
+        {
+            precio_venta = consultas.consultar_precio_venta(proveedor, acuerdo, tipo_de_acuerdo);
         }
         #endregion
 
@@ -572,18 +581,28 @@ namespace _01___modulos
         }
         public DataTable get_productos_proveedor_legacy(string proveedor_seleccionado)
         {
-            consultar_productos_proveedor(proveedor_seleccionado);
+            consultar_productos_proveedor_legacy(proveedor_seleccionado);
             return productos_proveedor;
         }
-        public DataTable get_pedido_por_num_pedido_nuevo(string id_sucursal,string num_pedido)
+        public DataTable get_productos_proveedor_nuevo()
         {
-            consultar_pedido_por_num_pedido_nuevo(id_sucursal,num_pedido);
+            consultar_productos_proveedor_nuevo();
+            return productos_proveedor;
+        }
+        public DataTable get_pedido_por_num_pedido_nuevo(string id_sucursal, string num_pedido)
+        {
+            consultar_pedido_por_num_pedido_nuevo(id_sucursal, num_pedido);
             return pedidos;
         }
         public DataTable get_remito_por_id(string id_remito)
         {
             consultar_remito_por_id(id_remito);
             return remitos;
+        }
+        public DataTable get_precio_venta(string proveedor, string acuerdo, string tipo_acuerdo)
+        {
+            consultar_precio_venta(proveedor, acuerdo, tipo_acuerdo);
+            return precio_venta;
         }
         #endregion
 

@@ -54,6 +54,10 @@ namespace _03___sistemas_fabrica
         {
             insumos_fabrica = consultas.consultar_tabla(base_de_datos, "insumos_fabrica");
         }
+        private void consultar_productos_nuevo()
+        {
+            insumos_fabrica = consultas.consultar_tabla(base_de_datos, "productos");
+        }
         private void consultar_insumos_fabrica_optimizado()
         {
             insumos_fabrica = consultas.consultar_insumos_fabricas_optimizado();
@@ -68,17 +72,10 @@ namespace _03___sistemas_fabrica
             id_proveedores_seleccionados = new List<string>();
             for (int fila = 0; fila <= acuerdo_de_precios_fabrica_a_proveedores.Rows.Count - 1; fila++)
             {
-                for (int columna = acuerdo_de_precios_fabrica_a_proveedores.Columns["producto_1"].Ordinal; columna <= acuerdo_de_precios_fabrica_a_proveedores.Columns.Count - 1; columna++)
+                if (acuerdo_de_precios_fabrica_a_proveedores.Rows[fila]["id_producto"].ToString() == id_producto)
                 {
-                    if (acuerdo_de_precios_fabrica_a_proveedores.Rows[fila][columna].ToString() == "N/A")
-                    {
-                        break;
-                    }
-                    else if (funciones.obtener_dato(acuerdo_de_precios_fabrica_a_proveedores.Rows[fila][columna].ToString(), 1) == id_producto)
-                    {
-                        id_proveedores_seleccionados.Add(acuerdo_de_precios_fabrica_a_proveedores.Rows[fila]["id_proveedor"].ToString());
-                        break;
-                    }
+                    id_proveedores_seleccionados.Add(acuerdo_de_precios_fabrica_a_proveedores.Rows[fila]["id_proveedor"].ToString());
+                    break;
                 }
             }
         }
@@ -86,7 +83,7 @@ namespace _03___sistemas_fabrica
         public DataTable get_proveedores_de_fabrica()
         {
             consultar_proveedores_fabrica();
-            proveedores_de_fabrica.DefaultView.Sort= "proveedor ASC";
+            proveedores_de_fabrica.DefaultView.Sort = "proveedor ASC";
             proveedores_de_fabrica = proveedores_de_fabrica.DefaultView.ToTable();
             return proveedores_de_fabrica;
         }
@@ -95,9 +92,9 @@ namespace _03___sistemas_fabrica
             consultar_insumos_fabrica();
             return insumos_fabrica;
         }
-        public DataTable get_insumos_fabrica_optimizado() 
-        { 
-            consultar_insumos_fabrica_optimizado(); 
+        public DataTable get_insumos_fabrica_optimizado()
+        {
+            consultar_productos_nuevo();
             return insumos_fabrica;
         }
         public List<string> get_proveedores_seleccionados(string id_producto)

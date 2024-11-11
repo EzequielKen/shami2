@@ -613,7 +613,7 @@ namespace _03___sistemas_fabrica
             int fila_pedido, fila_acuerdo, fila_remito;
             int seguridad = int.Parse(nivel_seguridad);
             consultar_remito_por_id(id_remito);
-            if (remitos.Rows[0]["legacy"].ToString()=="si")
+            if (remitos.Rows[0]["legacy"].ToString() == "si")
             {
 
                 consultar_sucursales();
@@ -631,7 +631,7 @@ namespace _03___sistemas_fabrica
                 string id = buscar_id_sucursal(sucursal_seleccionada, sucursales);
                 consultar_sucursal(id);
                 consultar_productos_proveedor_legacy(nombre_proveedor);
-                abrir_pedido(fila_pedido, fila_acuerdo, nombre_proveedor);
+                abrir_pedido_legacy(fila_pedido, fila_acuerdo, nombre_proveedor);
 
                 fila_remito = obtener_fila_de_remito(id_remito);
                 if (seguridad < 2)
@@ -643,26 +643,29 @@ namespace _03___sistemas_fabrica
             else
             {
                 consultar_sucursales();
-                consultar_remitos_todas_las_sucursales(mes, año);
+                string sucursal_remito = remitos.Rows[0]["sucursal"].ToString();
+                int fila_sucursal = funciones.buscar_fila_por_dato_en_columna(sucursal_remito, "sucursal", sucursales);
+                string id_sucursal = sucursales.Rows[fila_sucursal]["id"].ToString();
+                string num_pedido = remitos.Rows[0]["num_pedido"].ToString();
+                //consultar pedido por id_sucursal y num_pedido
+                DataTable pedido_nuevo = administracion.get_pedido_por_num_pedido_nuevo(id_sucursal, num_pedido);
+                //consultar precios de venta
+                string proveedor = pedido_nuevo.Rows[0]["proveedor"].ToString();
+                acuerdo = pedido_nuevo.Rows[0]["acuerdo_de_precios"].ToString();
+                string tipo_de_acuerdo = pedido_nuevo.Rows[0]["tipo_de_acuerdo"].ToString();
+                DataTable precio_venta = administracion.get_precio_venta(proveedor, acuerdo, tipo_de_acuerdo);
 
-                consultar_acuerdo_de_precios_legacy();
-                fila_pedido = obtener_fila_de_pedido_mediante_idRemito(id_remito, sucursal_seleccionada);
-                acuerdo = pedidos.Rows[fila_pedido]["tipo_de_acuerdo"].ToString();
-                num_acuerdo = pedidos.Rows[fila_pedido]["acuerdo_de_precios"].ToString();
-
-                nombre_proveedor = pedidos.Rows[fila_pedido]["proveedor"].ToString();
-                nota = pedidos.Rows[fila_pedido]["nota"].ToString();
-                impuesto = pedidos.Rows[fila_pedido]["aumento"].ToString();
-                fila_acuerdo = obtener_fila_de_acuerdo(acuerdo, num_acuerdo, nombre_proveedor);
-                string id = buscar_id_sucursal(sucursal_seleccionada, sucursales);
-                consultar_sucursal(id);
-                consultar_productos_proveedor_legacy(nombre_proveedor);
-                abrir_pedido(fila_pedido, fila_acuerdo, nombre_proveedor);
+                nota = pedido_nuevo.Rows[0]["nota"].ToString();
+                consultar_sucursal(id_sucursal);
+                //consultar productos proveedor
+                productos_proveedor = administracion.get_productos_proveedor_nuevo();
+                abrir_pedido_nuevo(id_remito,id_sucursal,sucursal_seleccionada,num_pedido,pedido_nuevo,precio_venta);
+                
 
                 fila_remito = obtener_fila_de_remito(id_remito);
                 if (seguridad < 2)
                 {
-                    PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota, impuesto); // resumen_pedido,resumen_bonificado
+                    PDF.GenerarPDF(ruta, logo, resumen_pedido, proveedor_seleccionado, fila_remito, remitos, sucursalBD, nota, "0"); // resumen_pedido,resumen_bonificado
                 }
             }
 
@@ -1269,7 +1272,7 @@ namespace _03___sistemas_fabrica
             }
             return retorno;
         }
-        private void abrir_pedido(int fila_pedido, int fila_acuerdo, string nombre_proveedor)
+        private void abrir_pedido_legacy(int fila_pedido, int fila_acuerdo, string nombre_proveedor)
         {
             string precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, tipo_paquete, unidad_insumo, tipo_unidad, dato;
             crear_tabla_resumen();
@@ -1326,6 +1329,66 @@ namespace _03___sistemas_fabrica
                 i++;
             }
         }
+        private void abrir_pedido_nuevo(string id_remito, string id_sucursal, string sucursal_seleccionada, string num_pedido,DataTable pedido_nuevo,DataTable precio_venta)
+        {
+            string acuerdo, num_acuerdo, nombre_proveedor;
+            
+
+            consultar_sucursales();
+
+            //   consultar_remitos(sucursal, mes, año);
+            crear_tabla_resumen();
+
+             
+
+            consultar_sucursal(id_sucursal);
+            consultar_productos_proveedor_legacy("productos");
+            pedidos = administracion.get_pedido_por_num_pedido_nuevo(id_sucursal, num_pedido);
+            ////////////////////////////////////////////////////////////////
+            acuerdo = pedido_nuevo.Rows[0]["tipo_de_acuerdo"].ToString();
+            num_pedido = pedido_nuevo.Rows[0]["num_pedido"].ToString();
+            num_acuerdo = pedido_nuevo.Rows[0]["acuerdo_de_precios"].ToString();
+            nombre_proveedor = pedido_nuevo.Rows[0]["proveedor"].ToString();
+
+            string precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, tipo_paquete, unidad_insumo, tipo_unidad, dato, cantidad_pinchos;
+            int fila_precio;
+            for (int fila = 0; fila <= pedido_nuevo.Rows.Count - 1; fila++)
+            {
+                //extraer id
+                id = pedido_nuevo.Rows[fila]["id_producto"].ToString();
+                fila_precio = funciones.buscar_fila_por_id(id,precio_venta);
+                precio = precio_venta.Rows[fila_precio]["precio"].ToString();
+                //extraer producto
+                producto = pedido_nuevo.Rows[fila]["producto"].ToString();
+                //extraer cantidad pedida
+                cantidad_pedida = pedido_nuevo.Rows[fila]["cantidad_pedida"].ToString();
+                //extraer cantidad entregada
+                cantidad_entregada = pedido_nuevo.Rows[fila]["cantidad_entregada"].ToString();//
+                cantidad_pinchos = pedido_nuevo.Rows[fila]["pinchos_entregados"].ToString();//
+                                                                                       //extraer cantidad de kilos
+                cantidad_recibida = cantidad_entregada;//;
+
+                tipo_paquete = funciones.obtener_dato(pedido_nuevo.Rows[fila]["presentacion_entrega"].ToString(), 1);//;
+                unidad_insumo = funciones.obtener_dato(pedido_nuevo.Rows[fila]["presentacion_entrega"].ToString(), 2);//;
+                tipo_unidad = funciones.obtener_dato(pedido_nuevo.Rows[fila]["presentacion_entrega"].ToString(), 3);//;
+                if (tipo_paquete == "Unidad" &&
+                    unidad_insumo == "1" &&
+                    tipo_unidad == "unid.")
+                {
+                    dato = "Unidad";
+                }
+                else
+                {
+                    dato = tipo_paquete + " " + unidad_insumo + " " + tipo_unidad;
+                }
+
+                //cargar normal
+                cargar_producto_nuevo(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, dato, unidad_insumo, sucursal_seleccionada, num_pedido, nombre_proveedor, pedidos, cantidad_pinchos); // sucursal_seleccionada num_pedido nombre_proveedor
+            }
+
+
+        }
+
         private void abrir_pedido_remito_de_carga_legacy(DataTable resumen)
         {
             string acuerdo, num_acuerdo, nombre_proveedor, num_pedido;
@@ -1473,7 +1536,7 @@ namespace _03___sistemas_fabrica
                     }
 
                     //cargar normal
-                    cargar_producto_nuevo(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, dato, unidad_insumo, sucursal_seleccionada, num_pedido, nombre_proveedor, fila_pedido, pedidos, cantidad_pinchos); // sucursal_seleccionada num_pedido nombre_proveedor
+                    cargar_producto_nuevo(precio, id, producto, cantidad_pedida, cantidad_entregada, cantidad_recibida, dato, unidad_insumo, sucursal_seleccionada, num_pedido, nombre_proveedor, pedidos, cantidad_pinchos); // sucursal_seleccionada num_pedido nombre_proveedor
                 }
 
             }
@@ -1613,7 +1676,7 @@ namespace _03___sistemas_fabrica
             resumen_pedido.Rows[fila]["sub.total"] = sub_total;
         }
 
-        private void cargar_producto_nuevo(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor, int fila_pedido, DataTable pedido_local, string cantidad_pinchos)
+        private void cargar_producto_nuevo(string precio, string id, string producto, string cantidad_pedida, string cantidad_entregada, string cantidad_recibida, string unidad_insumo, string multiplicador, string sucursal_seleccionada, string num_pedido, string nombre_proveedor, DataTable pedido_local, string cantidad_pinchos)
         {
             resumen_pedido.Rows.Add();
             int fila = resumen_pedido.Rows.Count - 1;
@@ -1658,8 +1721,12 @@ namespace _03___sistemas_fabrica
             }
 
             //PENDIENTE DE CREAR FUNCION PARA BUSCAR PRECIO DEL PRODUCTO
-            precio = "0";// acuerdo_de_precios_parametreados.Rows[fila_acuerdo]["producto_" + id].ToString();
+            //precio = "0";// acuerdo_de_precios_parametreados.Rows[fila_acuerdo]["producto_" + id].ToString();
             //  precio = precio.Replace(",", ".");
+            if (precio=="")
+            {
+                precio="0";
+            }
             decimal sub_total = 0;
             if (cantidad_recibida == "")
             {

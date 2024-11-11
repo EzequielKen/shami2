@@ -42,28 +42,35 @@ namespace _03___sistemas_fabrica
         #endregion
 
         #region carga a base de datos
-        public void linkear_insumos_a_proveedor(DataTable acuerdo_de_precios_fabrica_a_proveedoresBD, string id_proveedor, DataTable insumos_proveedor)
+        public void linkear_insumos_a_proveedor(DataTable acuerdo_de_precios_fabrica_a_proveedoresBD, string id_proveedor,string proveedor, DataTable insumos_proveedor)
         {
             desactivar_acuerdo_de_precios_vigente(acuerdo_de_precios_fabrica_a_proveedoresBD);
             string acuerdo = obtener_numero_de_acuerdo(acuerdo_de_precios_fabrica_a_proveedoresBD);
 
             string columna = "";
             string valor = "";
-
-            //id_proveedor
-            columna = armar_query_columna(columna, "id_proveedor", false);
-            valor = armar_query_valores(valor, id_proveedor, false);
-            //acuerdo
-            columna = armar_query_columna(columna, "acuerdo", false);
-            valor = armar_query_valores(valor, acuerdo, false);
-            //fecha
+            
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            columna = armar_query_columna(columna, "fecha", false);
-            valor = armar_query_valores(valor, fecha, false);
-            int id = 1;
-            string dato, id_insumo, producto, tipo_paquete, cantidad_de_unidad, unidad, precio;
-            for (int fila = 0; fila < insumos_proveedor.Rows.Count - 1; fila++)
+
+            for (int fila = 0; fila <= insumos_proveedor.Rows.Count - 1; fila++)
             {
+
+                //id_proveedor
+                columna = armar_query_columna(columna, "id_proveedor", false);
+                valor = armar_query_valores(valor, id_proveedor, false);
+                //id_proveedor
+                columna = armar_query_columna(columna, "proveedor", false);
+                valor = armar_query_valores(valor, proveedor, false);
+                //acuerdo
+                columna = armar_query_columna(columna, "acuerdo", false);
+                valor = armar_query_valores(valor, acuerdo, false);
+                //fecha
+                columna = armar_query_columna(columna, "fecha", false);
+                valor = armar_query_valores(valor, fecha, false);
+                int id = 1;
+                string dato, id_insumo, producto, tipo_paquete, cantidad_de_unidad, unidad, precio;
+
+                int ultima_fila = insumos_proveedor.Rows.Count - 1;
                 id_insumo = insumos_proveedor.Rows[fila]["id"].ToString();
                 producto = insumos_proveedor.Rows[fila]["producto"].ToString();
                 tipo_paquete = insumos_proveedor.Rows[fila]["tipo_paquete"].ToString();
@@ -71,25 +78,28 @@ namespace _03___sistemas_fabrica
                 unidad = insumos_proveedor.Rows[fila]["unidad_medida"].ToString();
                 precio = insumos_proveedor.Rows[fila]["precio_unidad"].ToString();
 
-                dato = id_insumo + "-" + producto + "-" + tipo_paquete + "-" + cantidad_de_unidad + "-" + unidad + "-" + precio;
-                columna = armar_query_columna(columna, "producto_" + id.ToString(), false);
+                dato =  tipo_paquete + "-" + cantidad_de_unidad + "-" + unidad;
+
+                //id_producto
+                columna = armar_query_columna(columna, "id_producto", false);
+                valor = armar_query_valores(valor, id_insumo, false);
+
+                //producto
+                columna = armar_query_columna(columna, "producto", false);
+                valor = armar_query_valores(valor, producto, false);
+
+                //presentacion
+                columna = armar_query_columna(columna, "presentacion", false);
                 valor = armar_query_valores(valor, dato, false);
-                id++;
+
+                //precio
+                columna = armar_query_columna(columna, "precio", true);
+                valor = armar_query_valores(valor, precio, true);
+
+                consultas.insertar_en_tabla(base_de_datos, "linkeo_de_insumos", columna, valor);
+                columna = string.Empty;
+                valor = string.Empty;
             }
-            int ultima_fila = insumos_proveedor.Rows.Count - 1;
-            id_insumo = insumos_proveedor.Rows[ultima_fila]["id"].ToString();
-            producto = insumos_proveedor.Rows[ultima_fila]["producto"].ToString();
-            tipo_paquete = insumos_proveedor.Rows[ultima_fila]["tipo_paquete"].ToString();
-            cantidad_de_unidad = insumos_proveedor.Rows[ultima_fila]["cantidad_unidades"].ToString();
-            unidad = insumos_proveedor.Rows[ultima_fila]["unidad_medida"].ToString();
-            precio = insumos_proveedor.Rows[ultima_fila]["precio_unidad"].ToString();
-
-            dato = id_insumo + "-" + producto + "-" + tipo_paquete + "-" + cantidad_de_unidad + "-" + unidad + "-" + precio;
-
-            columna = armar_query_columna(columna, "producto_" + id.ToString(), true);
-            valor = armar_query_valores(valor, dato, true);
-
-            consultas.insertar_en_tabla(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", columna, valor);
         }
 
         private string obtener_numero_de_acuerdo(DataTable acuerdo_de_precios_fabrica_a_proveedoresBD)
@@ -105,10 +115,12 @@ namespace _03___sistemas_fabrica
         {
             if (acuerdo_de_precios_fabrica_a_proveedoresBD.Rows.Count > 0)
             {
-                string id = acuerdo_de_precios_fabrica_a_proveedoresBD.Rows[0]["id"].ToString();
-                string actualizar = "`activa` = '0'";
-                consultas.actualizar_tabla(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", actualizar, id);
-
+                for (int fila = 0; fila <= acuerdo_de_precios_fabrica_a_proveedoresBD.Rows.Count - 1; fila++)
+                {
+                    string id = acuerdo_de_precios_fabrica_a_proveedoresBD.Rows[fila]["id"].ToString();
+                    string actualizar = "`activa` = '0'";
+                    consultas.actualizar_tabla(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", actualizar, id);
+                }
             }
         }
         public void actualizar_datos_proveedor(string id, string proveedor, string provincia, string localidad, string direccion, string telefono, string CBU_1, string CBU_2, string CBU_3, string CBU_4, string CBU_5, string condicion_pago)
@@ -143,7 +155,7 @@ namespace _03___sistemas_fabrica
         #region metodos consultas
         private void consultar_insumos()
         {
-            insumos = consultas.consultar_tabla(base_de_datos, "insumos_fabrica");
+            insumos = consultas.consultar_tabla(base_de_datos, "productos");
         }
         private void consultar_proveedor_fabrica_seleccionado(string id_proveedor)
         {
@@ -151,7 +163,7 @@ namespace _03___sistemas_fabrica
         }
         private void consultar_acuerdo_de_precios_fabrica_a_proveedores(string id_proveedor)
         {
-            acuerdo_de_precios_fabrica_a_proveedores = consultas.consultar_acuerdo_de_precios_fabrica_a_proveedores_activo(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", id_proveedor);
+            acuerdo_de_precios_fabrica_a_proveedores = consultas.consultar_acuerdo_de_precios_fabrica_a_proveedores_activo(base_de_datos, "linkeo_de_insumos", id_proveedor);
         }
         #endregion
 

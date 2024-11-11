@@ -37,13 +37,13 @@ namespace _03___sistemas_fabrica
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
         cls_funciones funciones = new cls_funciones();
-        DataTable acuerdo_de_precio_fabrica_proveedor;
+        DataTable linkeo_de_insumos;
         DataTable insumos_fabrica;
         DataTable insumos_proveedor;
         DataTable proveedor;
         DataTable ordenes_de_compra;
         DataTable orden_de_pedido;
-        DataTable acuerdo_de_precios_fabrica_a_proveedores_activo;
+        DataTable linkeo_de_insumos_activo;
         #endregion
 
         #region metodos PDF
@@ -77,7 +77,7 @@ namespace _03___sistemas_fabrica
                     id_producto = resumen_orden_pedido.Rows[fila]["id"].ToString();
                     fila_resumen = funciones.buscar_fila_por_id(id_producto, resumen);
                     columna = orden_de_pedido.Columns["producto_1"].Ordinal;
-                    if (fila_resumen!=-1)
+                    if (fila_resumen != -1)
                     {
                         while (columna <= orden_de_pedido.Columns.Count - 1)
                         {
@@ -120,7 +120,7 @@ namespace _03___sistemas_fabrica
             valores = funciones.armar_query_valores(valores, proveedor.Rows[0]["proveedor"].ToString(), false);
             //acuerdo_de_precios
             columnas = funciones.armar_query_columna(columnas, "acuerdo_de_precios", false);
-            valores = funciones.armar_query_valores(valores, acuerdo_de_precio_fabrica_proveedor.Rows[0]["acuerdo"].ToString(), false);
+            valores = funciones.armar_query_valores(valores, linkeo_de_insumos.Rows[0]["acuerdo"].ToString(), false);
             //fecha
             columnas = funciones.armar_query_columna(columnas, "fecha", false);
             valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
@@ -133,6 +133,9 @@ namespace _03___sistemas_fabrica
             //cantidad_a_pagar tipo_de_pago
             columnas = funciones.armar_query_columna(columnas, "cantidad_a_pagar", false);
             valores = funciones.armar_query_valores(valores, cantidad_a_pagar, false);
+            //legacy
+            columnas = funciones.armar_query_columna(columnas, "legacy", false);
+            valores = funciones.armar_query_valores(valores, "no", false);
             //producto_1
             int index = 1;
             string dato, id, producto, precio, tipo_paquete, cantidad_unidades, unidad_medida, cantidad_pedida;
@@ -212,61 +215,81 @@ namespace _03___sistemas_fabrica
         }
         private int actualizar_acuerdo_de_precio(string id_proveedor, DataTable orden_de_compra)
         {
-            acuerdo_de_precios_fabrica_a_proveedores_activo = consultas.consultar_acuerdo_de_precios_fabrica_a_proveedores_activo(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", id_proveedor);
-            desactivar_acuerdo_de_precios_fabrica_a_proveedores_activo(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0]["id"].ToString());
+            linkeo_de_insumos_activo = consultas.consultar_acuerdo_de_precios_fabrica_a_proveedores_activo(base_de_datos, "linkeo_de_insumos", id_proveedor);
+            for (int fila = 0; fila <= linkeo_de_insumos_activo.Rows.Count-1; fila++)
+            {
+                desactivar_acuerdo_de_precios_fabrica_a_proveedores_activo(linkeo_de_insumos_activo.Rows[fila]["id"].ToString());
+            }
             string columnas = "";
             string valores = "";
             string dato, id_producto, producto, paquete, cant_unidad, unidad, precio;
             int fila_producto;
             int index = 1;
-            //id_proveedor
-            columnas = funciones.armar_query_columna(columnas, "id_proveedor", false);
-            valores = funciones.armar_query_valores(valores, acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0]["id_proveedor"].ToString(), false);
-            //acuerdo
-            int acuerdo = int.Parse(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0]["acuerdo"].ToString()) + 1;
-
-            columnas = funciones.armar_query_columna(columnas, "acuerdo", false);
-            valores = funciones.armar_query_valores(valores, acuerdo.ToString(), false);
-            //fecha
-            columnas = funciones.armar_query_columna(columnas, "fecha", false);
-            valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
-            for (int columna = acuerdo_de_precios_fabrica_a_proveedores_activo.Columns["producto_1"].Ordinal; columna <= acuerdo_de_precios_fabrica_a_proveedores_activo.Columns.Count - 1; columna++)
+            int acuerdo=1;
+            for (int fila = 0; fila <= linkeo_de_insumos.Rows.Count - 1; fila++)
             {
-                if (acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0][columna].ToString() != "N/A")
+
+                //id_proveedor
+                columnas = funciones.armar_query_columna(columnas, "id_proveedor", false);
+                valores = funciones.armar_query_valores(valores, linkeo_de_insumos_activo.Rows[fila]["id_proveedor"].ToString(), false);
+
+                //proveedor
+                columnas = funciones.armar_query_columna(columnas, "proveedor", false);
+                valores = funciones.armar_query_valores(valores, linkeo_de_insumos_activo.Rows[fila]["proveedor"].ToString(), false);
+                //acuerdo
+                acuerdo = int.Parse(linkeo_de_insumos_activo.Rows[fila]["acuerdo"].ToString()) + 1;
+
+                columnas = funciones.armar_query_columna(columnas, "acuerdo", false);
+                valores = funciones.armar_query_valores(valores, acuerdo.ToString(), false);
+                //fecha
+                columnas = funciones.armar_query_columna(columnas, "fecha", false);
+                valores = funciones.armar_query_valores(valores, funciones.get_fecha(), false);
+
+                //id_producto
+                columnas = funciones.armar_query_columna(columnas, "id_producto", false);
+                valores = funciones.armar_query_valores(valores, linkeo_de_insumos_activo.Rows[fila]["id_producto"].ToString(), false);
+
+                //producto
+                columnas = funciones.armar_query_columna(columnas, "producto", false);
+                valores = funciones.armar_query_valores(valores, linkeo_de_insumos_activo.Rows[fila]["producto"].ToString(), false);
+
+                //presentacion
+                columnas = funciones.armar_query_columna(columnas, "presentacion", false);
+                valores = funciones.armar_query_valores(valores, linkeo_de_insumos_activo.Rows[fila]["presentacion"].ToString(), false);
+
+
+                fila_producto = funciones.buscar_fila_por_id(linkeo_de_insumos_activo.Rows[fila]["id_producto"].ToString(), orden_de_compra);
+                if (fila_producto != -1)
                 {
-                    id_producto = funciones.obtener_dato(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0][columna].ToString(), 1);
-                    producto = funciones.obtener_dato(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0][columna].ToString(), 2);
-                    paquete = funciones.obtener_dato(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0][columna].ToString(), 3);
-                    cant_unidad = funciones.obtener_dato(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0][columna].ToString(), 4);
-                    unidad = funciones.obtener_dato(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0][columna].ToString(), 5);
-                    precio = funciones.obtener_dato(acuerdo_de_precios_fabrica_a_proveedores_activo.Rows[0][columna].ToString(), 6);
 
-                    fila_producto = funciones.buscar_fila_por_id(id_producto, orden_de_compra);
-                    if (fila_producto != -1)
+                    if (orden_de_compra.Rows[fila_producto]["precio_unidad_nuevo"].ToString() != "N/A")
                     {
+                        precio = orden_de_compra.Rows[fila_producto]["precio_unidad_nuevo"].ToString();
+                        //precio
+                        columnas = funciones.armar_query_columna(columnas, "precio", true);
+                        valores = funciones.armar_query_valores(valores, precio, true);
 
-                        if (orden_de_compra.Rows[fila_producto]["precio_unidad_nuevo"].ToString() != "N/A")
-                        {
-                            precio = orden_de_compra.Rows[fila_producto]["precio_unidad_nuevo"].ToString();
-                        }
                     }
+                    else
+                    {
+                        //precio
+                        columnas = funciones.armar_query_columna(columnas, "precio", true);
+                        valores = funciones.armar_query_valores(valores, linkeo_de_insumos_activo.Rows[fila]["precio"].ToString(), true);
 
-                    dato = id_producto + "-" + producto + "-" + paquete + "-" + cant_unidad + "-" + unidad + "-" + precio;
-
-                    columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), false);
-                    valores = funciones.armar_query_valores(valores, dato, false);
-
+                    }
                 }
                 else
                 {
-                    columnas = funciones.armar_query_columna(columnas, "producto_" + index.ToString(), true);
-                    valores = funciones.armar_query_valores(valores, "N/A", true);
-                    break;
+                    //precio
+                    columnas = funciones.armar_query_columna(columnas, "precio", true);
+                    valores = funciones.armar_query_valores(valores, linkeo_de_insumos_activo.Rows[fila]["precio"].ToString(), true);
                 }
-                index++;
+
+                consultas.insertar_en_tabla(base_de_datos, "linkeo_de_insumos", columnas, valores);
+                columnas = string.Empty;
+                valores = string.Empty;
             }
 
-            consultas.insertar_en_tabla(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", columnas, valores);
             return acuerdo;
         }
 
@@ -302,45 +325,40 @@ namespace _03___sistemas_fabrica
             crear_tabla_insumos();
             string id_insumo, tipo_paquete, cantidad_unidades, unidad_medida, precio;
             int fila_insumo;
-            int fila = 0;
-            if (acuerdo_de_precio_fabrica_proveedor.Rows.Count > 0)
+            if (linkeo_de_insumos.Rows.Count > 0)
             {
-                for (int columna = acuerdo_de_precio_fabrica_proveedor.Columns["producto_1"].Ordinal; columna <= acuerdo_de_precio_fabrica_proveedor.Columns.Count - 1; columna++)
+                for (int fila = 0; fila <= linkeo_de_insumos.Rows.Count - 1; fila++)
                 {
-                    if (acuerdo_de_precio_fabrica_proveedor.Rows[0][columna].ToString() != "N/A")
+
+                    id_insumo = linkeo_de_insumos.Rows[fila]["id_producto"].ToString();
+                    tipo_paquete = funciones.obtener_dato(linkeo_de_insumos.Rows[fila]["presentacion"].ToString(), 1);
+                    cantidad_unidades = funciones.obtener_dato(linkeo_de_insumos.Rows[fila]["presentacion"].ToString(), 2);
+                    unidad_medida = funciones.obtener_dato(linkeo_de_insumos.Rows[fila]["presentacion"].ToString(), 3);
+                    precio = linkeo_de_insumos.Rows[fila]["precio"].ToString();
+
+                    fila_insumo = funciones.buscar_fila_por_id(id_insumo, insumos_fabrica);
+                    if (fila_insumo != -1)
                     {
-                        id_insumo = funciones.obtener_dato(acuerdo_de_precio_fabrica_proveedor.Rows[0][columna].ToString(), 1);
-                        tipo_paquete = funciones.obtener_dato(acuerdo_de_precio_fabrica_proveedor.Rows[0][columna].ToString(), 3);
-                        cantidad_unidades = funciones.obtener_dato(acuerdo_de_precio_fabrica_proveedor.Rows[0][columna].ToString(), 4);
-                        unidad_medida = funciones.obtener_dato(acuerdo_de_precio_fabrica_proveedor.Rows[0][columna].ToString(), 5);
-                        precio = funciones.obtener_dato(acuerdo_de_precio_fabrica_proveedor.Rows[0][columna].ToString(), 6);
 
-                        fila_insumo = funciones.buscar_fila_por_id(id_insumo, insumos_fabrica);
-                        if (fila_insumo != -1)
+                        insumos_proveedor.Rows.Add();
+                        int ultima_fila = insumos_proveedor.Rows.Count - 1;
+                        insumos_proveedor.Rows[ultima_fila]["id"] = insumos_fabrica.Rows[fila_insumo]["id"].ToString();
+                        insumos_proveedor.Rows[ultima_fila]["producto"] = insumos_fabrica.Rows[fila_insumo]["producto"].ToString();
+                        insumos_proveedor.Rows[ultima_fila]["tipo_producto"] = insumos_fabrica.Rows[fila_insumo]["tipo_producto"].ToString();
+                        insumos_proveedor.Rows[ultima_fila]["tipo_paquete"] = tipo_paquete;
+                        insumos_proveedor.Rows[ultima_fila]["cantidad_unidades"] = cantidad_unidades;
+                        insumos_proveedor.Rows[ultima_fila]["unidad_medida"] = unidad_medida;
+                        if (tipo_paquete == "Unidad")
                         {
-
-                            insumos_proveedor.Rows.Add();
-
-                            insumos_proveedor.Rows[fila]["id"] = insumos_fabrica.Rows[fila_insumo]["id"].ToString();
-                            insumos_proveedor.Rows[fila]["producto"] = insumos_fabrica.Rows[fila_insumo]["producto"].ToString();
-                            insumos_proveedor.Rows[fila]["tipo_producto"] = insumos_fabrica.Rows[fila_insumo]["tipo_producto"].ToString();
-                            insumos_proveedor.Rows[fila]["tipo_paquete"] = tipo_paquete;
-                            insumos_proveedor.Rows[fila]["cantidad_unidades"] = cantidad_unidades;
-                            insumos_proveedor.Rows[fila]["unidad_medida"] = unidad_medida;
-                            if (tipo_paquete == "Unidad")
-                            {
-                                insumos_proveedor.Rows[fila]["presentacion"] = cantidad_unidades + " x " + unidad_medida;
-                            }
-                            else
-                            {
-                                insumos_proveedor.Rows[fila]["presentacion"] = tipo_paquete + " x " + cantidad_unidades + " " + unidad_medida;
-                            }
-                            insumos_proveedor.Rows[fila]["precio"] = precio;
-                            insumos_proveedor.Rows[fila]["nuevo_precio"] = "N/A";
-                            insumos_proveedor.Rows[fila]["precio_unidad_nuevo"] = "N/A";
-
-                            fila++;
+                            insumos_proveedor.Rows[ultima_fila]["presentacion"] = cantidad_unidades + " x " + unidad_medida;
                         }
+                        else
+                        {
+                            insumos_proveedor.Rows[ultima_fila]["presentacion"] = tipo_paquete + " x " + cantidad_unidades + " " + unidad_medida;
+                        }
+                        insumos_proveedor.Rows[ultima_fila]["precio"] = precio;
+                        insumos_proveedor.Rows[ultima_fila]["nuevo_precio"] = "N/A";
+                        insumos_proveedor.Rows[ultima_fila]["precio_unidad_nuevo"] = "N/A";
 
                     }
                 }
@@ -368,7 +386,7 @@ namespace _03___sistemas_fabrica
         }
         private void consular_acuerdo_de_precio_fabrica_proveedor(string id_proveedor)
         {
-            acuerdo_de_precio_fabrica_proveedor = consultas.consultar_acuerdo_de_precio_fabrica_proveedor(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", id_proveedor);
+            linkeo_de_insumos = consultas.consultar_acuerdo_de_precio_fabrica_proveedor(base_de_datos, "linkeo_de_insumos", id_proveedor);
         }
         #endregion
 
