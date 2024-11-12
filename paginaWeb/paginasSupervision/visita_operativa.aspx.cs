@@ -377,6 +377,11 @@ namespace paginaWeb.paginasSupervision
             usuariosBD = (DataTable)Session["usuariosBD"];
 
             visita = new cls_visita_operativa(usuariosBD);
+
+            if (!IsPostBack)
+            {
+                Session.Remove("lista_de_empleadoBD");
+            }
             if (!IsPostBack)
             {
                 sucursales = visita.get_sucursales();
