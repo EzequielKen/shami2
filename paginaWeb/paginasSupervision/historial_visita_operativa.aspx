@@ -9,7 +9,7 @@
    
     <script type="text/javascript">
         function openModal(id) {
-            var extensions = [".jpg", ".png", ".gif", ".mp4"];
+            var extensions = [".jpg", ".jpeg", ".png", ".gif", ".mp4"];
             var found = false;
 
             for (var i = 0; i < extensions.length; i++) {

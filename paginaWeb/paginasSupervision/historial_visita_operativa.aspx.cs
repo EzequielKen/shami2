@@ -421,7 +421,7 @@ namespace paginaWeb.paginasSupervision
                 idHistorial = id;
 
                 // Definir las extensiones de archivo que deseas verificar
-                string[] fileExtensions = { ".jpg", ".png", ".gif", ".mp4", ".pdf" };
+                string[] fileExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".pdf" };
 
                 // Ruta base donde se almacenan los archivos
                 string folderPath = Server.MapPath("/FotosSubidas/visitas_operativas/");
