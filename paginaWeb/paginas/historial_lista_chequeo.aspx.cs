@@ -525,7 +525,7 @@ namespace paginaWeb.paginas
                     idHistorial = historial_chequeo.Rows[fila_historial]["id_historial"].ToString();
 
                     // Definir las extensiones de archivo que deseas verificar
-                    string[] fileExtensions = { ".jpg", ".png", ".gif", ".mp4", ".pdf" };
+                    string[] fileExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".pdf" };
 
                     // Ruta base donde se almacenan los archivos
                     string folderPath = Server.MapPath("/FotosSubidas/lista_chequeo/");
@@ -537,6 +537,10 @@ namespace paginaWeb.paginas
                     // Verificar si existe un archivo con alguna de las extensiones
                     foreach (string extension in fileExtensions)
                     {
+                        if (idHistorial== "125132")
+                        {
+                            string stop= extension;
+                        }
                         string filePath = Path.Combine(folderPath, idHistorial + extension);
                         if (File.Exists(filePath))
                         {
