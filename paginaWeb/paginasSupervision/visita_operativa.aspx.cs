@@ -650,6 +650,7 @@ namespace paginaWeb.paginasSupervision
 
         protected void DropDown_sucursal_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Session.Remove("lista_de_empleadoBD");
             Session.Add("sucursal", visita.get_sucursal(DropDown_sucursal.SelectedItem.Text));
             sucursal = (DataTable)Session["sucursal"];
             lista_de_empleadoBD = visita.get_lista_de_empleado_origen(sucursal.Rows[0]["id"].ToString(), fecha_de_hoy);
