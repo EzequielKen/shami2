@@ -238,11 +238,11 @@ namespace paginaWeb.paginas
 
             registro_venta_localBD = tabla_produccion.get_ventas(sucursal.Rows[0]["id"].ToString());
             sumar_ventas();
-            lista_productosBD = tabla_produccion.get_lista_productos();
-            Session.Add("lista_productosBD", lista_productosBD);
+           
             if (!IsPostBack)
             {
-                
+                lista_productosBD = tabla_produccion.get_lista_productos();
+                Session.Add("lista_productosBD", lista_productosBD);
                 configurar_controles();
                 configurar_estados_de_dias();
                 cargar_lista_producto();
@@ -354,7 +354,16 @@ namespace paginaWeb.paginas
                 fila_producto = funciones.buscar_fila_por_id(id, lista_productosBD);
                 TextBox textbox_venta_alta = (gridview_productos.Rows[fila].Cells[2].FindControl("textbox_venta_alta") as TextBox);
                 TextBox textbox_venta_baja = (gridview_productos.Rows[fila].Cells[3].FindControl("textbox_venta_baja") as TextBox);
-
+                if (id=="3")
+                {
+                    string alta = lista_productosBD.Rows[fila_producto]["venta_alta"].ToString();
+                    string baja = lista_productosBD.Rows[fila_producto]["venta_baja"].ToString();
+                }
+                if (id == "4")
+                {
+                    string alta2 = lista_productosBD.Rows[fila_producto]["venta_alta"].ToString();
+                    string baja2 = lista_productosBD.Rows[fila_producto]["venta_baja"].ToString();
+                }
                 textbox_venta_alta.Text = lista_productosBD.Rows[fila_producto]["venta_alta"].ToString();
                 textbox_venta_baja.Text = lista_productosBD.Rows[fila_producto]["venta_baja"].ToString();
 
