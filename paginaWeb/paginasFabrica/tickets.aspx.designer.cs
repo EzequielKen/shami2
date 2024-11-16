@@ -51,6 +51,15 @@ namespace paginaWeb.paginasFabrica
         protected global::System.Web.UI.WebControls.Button boton_ordenar_area;
 
         /// <summary>
+        /// Control boton_solo_abiertos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_solo_abiertos;
+
+        /// <summary>
         /// Control gridView_tickets.
         /// </summary>
         /// <remarks>

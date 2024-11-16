@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraGerente.Master" AutoEventWireup="true" CodeBehind="tickets.aspx.cs" Inherits="paginaWeb.paginasGerente.tickets" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="tickets_abiertos.aspx.cs" Inherits="paginaWeb.paginasFabrica.tickets_abiertos" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -6,18 +6,11 @@
     <asp:ScriptManager runat="server" />
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
-            
             <div class="container-fluid">
                 <h1>Tickets</h1>
                 <div class="row">
                     <div class="alert alert-light">
                         <div class="input-group">
-                            <label class="form-control">Mes</label>
-                            <asp:DropDownList ID="dropdown_mes" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_mes_SelectedIndexChanged" AutoPostBack="true">
-                            </asp:DropDownList>
-                            <label class="form-control">Año</label>
-                            <asp:DropDownList ID="dropdown_año" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_año_SelectedIndexChanged" AutoPostBack="true">
-                            </asp:DropDownList>
                             <label class="form-control">Tipo de Ticket</label>
                             <asp:DropDownList ID="dropdown_tipo" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_tipo_SelectedIndexChanged" AutoPostBack="true">
                                 <asp:ListItem Text="Informe de Error" />
@@ -49,8 +42,8 @@
                             }
                 </style>
 
+                <asp:Button ID="boton_volver" CssClass="btn btn-primary" Text="Volver" OnClick="boton_volver_Click" runat="server" />
                 <asp:Button ID="boton_ordenar_area" CssClass="btn btn-primary" Text="Ordenar Por Area" OnClick="boton_ordenar_area_Click" runat="server" />
-                <asp:Button ID="boton_solo_abiertos" CssClass="btn btn-primary" Text="Tickets Abiertos" OnClick="boton_solo_abiertos_Click" runat="server" />
 
                 <div class="row">
                     <div class="alert alert-light gridview-container" style="width: 100%;">

@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace paginaWeb.paginasFabrica
 {
-    public partial class tickets : System.Web.UI.Page
+    public partial class tickets_abiertos : System.Web.UI.Page
     {
         #region reordenar tickets
         private void ReordenarPrioridades(int id, int nuevaPrioridad)
@@ -50,41 +50,15 @@ namespace paginaWeb.paginasFabrica
         #region carga tickets
         private void cargar_tickets()
         {
-            ticketsBD = sys_tickets.get_tickets(dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_tipo.SelectedItem.Text);
-            Session.Add("ticketsBD", ticketsBD);
-            gridView_tickets.DataSource = ticketsBD;
-            gridView_tickets.DataBind();
-        }
-        private void cargar_tickets_abiertos()
-        {
             ticketsBD = sys_tickets.get_tickets_abiertos(dropdown_tipo.SelectedItem.Text);
             Session.Add("ticketsBD", ticketsBD);
             gridView_tickets.DataSource = ticketsBD;
             gridView_tickets.DataBind();
         }
+       
         #endregion
         #region configurar controles
-        private void configurar_controles()
-        {
-            cargar_meses();
-            cargar_año();
-        }
-        private void cargar_meses()
-        {
-            for (int mes = 1; mes <= 12; mes++)
-            {
-                dropdown_mes.Items.Add(mes.ToString());
-            }
-            dropdown_mes.SelectedValue = DateTime.Now.Month.ToString();
-        }
-        private void cargar_año()
-        {
-            for (int año = 2024; año <= DateTime.Now.Year; año++)
-            {
-                dropdown_año.Items.Add(año.ToString());
-            }
-            dropdown_año.SelectedValue = DateTime.Now.Year.ToString();
-        }
+       
         #endregion
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////////
@@ -104,23 +78,11 @@ namespace paginaWeb.paginasFabrica
             sys_tickets = new cls_tickets(usuariosBD);
             if (!IsPostBack)
             {
-                configurar_controles();
                 cargar_tickets();
             }
         }
 
-        protected void dropdown_mes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            cargar_tickets();
-
-        }
-
-        protected void dropdown_año_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            cargar_tickets();
-
-        }
-
+       
         protected void dropdown_tipo_SelectedIndexChanged(object sender, EventArgs e)
         {
             cargar_tickets();
@@ -141,7 +103,7 @@ namespace paginaWeb.paginasFabrica
             if (int.TryParse(txtPrioridad.Text, out nuevaPrioridad))
             {
                 // Lógica para reordenar las prioridades
-                sys_tickets.reordenar_tickets(id, nuevaPrioridad.ToString(), dropdown_mes.SelectedItem.Text, dropdown_año.SelectedItem.Text, dropdown_tipo.SelectedItem.Text);
+                sys_tickets.reordenar_tickets_abiertos(id, nuevaPrioridad.ToString(),dropdown_tipo.SelectedItem.Text);
             }
             cargar_tickets();
         }
@@ -174,7 +136,7 @@ namespace paginaWeb.paginasFabrica
                     gridView_tickets.Rows[fila].CssClass = "table table-danger text-center table-responsive";
                     boton_resolver.Visible = false;
                 }
-                
+
             }
             if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Admin" &&
                 tipo_usuario.Rows[0]["rol"].ToString() != "Shami Sistemas")
@@ -203,9 +165,10 @@ namespace paginaWeb.paginasFabrica
             cargar_tickets();
         }
 
-        protected void boton_solo_abiertos_Click(object sender, EventArgs e)
+        protected void boton_volver_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/paginasFabrica/tickets_abiertos.aspx", false);
+            Response.Redirect("~/paginasFabrica/tickets.aspx", false);
+
         }
     }
 }

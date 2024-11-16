@@ -11,35 +11,17 @@ namespace paginaWeb.paginasFabrica
 {
 
 
-    public partial class tickets_por_area
+    public partial class tickets_abiertos
     {
 
         /// <summary>
-        /// Control dropdown_mes.
+        /// Control dropdown_tipo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropdown_mes;
-
-        /// <summary>
-        /// Control dropdown_año.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropdown_año;
-
-        /// <summary>
-        /// Control dropdown_solicitante.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropdown_solicitante;
+        protected global::System.Web.UI.WebControls.DropDownList dropdown_tipo;
 
         /// <summary>
         /// Control boton_volver.
@@ -49,6 +31,15 @@ namespace paginaWeb.paginasFabrica
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button boton_volver;
+
+        /// <summary>
+        /// Control boton_ordenar_area.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_ordenar_area;
 
         /// <summary>
         /// Control gridView_tickets.

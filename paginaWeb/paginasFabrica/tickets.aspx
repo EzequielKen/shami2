@@ -49,7 +49,8 @@
                 </style>
 
                 <asp:Button ID="boton_ordenar_area" CssClass="btn btn-primary" Text="Ordenar Por Area" OnClick="boton_ordenar_area_Click" runat="server" />
-
+                <asp:Button ID="boton_solo_abiertos" CssClass="btn btn-primary" Text="Tickets Abiertos" OnClick="boton_solo_abiertos_Click" runat="server" />
+                
                 <div class="row">
                     <div class="alert alert-light gridview-container" style="width: 100%;">
                         <asp:GridView ID="gridView_tickets" runat="server" Caption="TICKETS" CaptionAlign="Top" AutoGenerateColumns="false"

@@ -190,5 +190,10 @@ namespace paginaWeb.paginasGerente
             sys_tickets.cerrar_ticket(id);
             cargar_tickets();
         }
+
+        protected void boton_solo_abiertos_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/paginasGerente/tickets_abiertos.aspx", false);
+        }
     }
 }
