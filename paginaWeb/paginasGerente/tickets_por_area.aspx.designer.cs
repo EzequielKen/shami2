@@ -42,6 +42,15 @@ namespace paginaWeb.paginasGerente
         protected global::System.Web.UI.WebControls.DropDownList dropdown_solicitante;
 
         /// <summary>
+        /// Control boton_volver.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button boton_volver;
+
+        /// <summary>
         /// Control gridView_tickets.
         /// </summary>
         /// <remarks>

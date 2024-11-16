@@ -46,6 +46,7 @@
                             }
                 </style>
 
+                <asp:Button ID="boton_volver" CssClass="btn btn-primary" Text="Volver" OnClick="boton_volver_Click" runat="server" />
 
 
                 <div class="row">
