@@ -2671,7 +2671,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_precio_venta_activo(string proveedor, string tipo_de_acuerdo)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
 
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".precio_venta WHERE activa=1 and proveedor='" + proveedor + "' and tipo_de_acuerdo='" + tipo_de_acuerdo + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_pedidos_nuevo(string id_sucursal,string mes, string año)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);

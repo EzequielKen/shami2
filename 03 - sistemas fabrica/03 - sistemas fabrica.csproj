@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cls_acctualizador_precio_venta.cs" />
     <Compile Include="cls_administrador_actividades.cs" />
     <Compile Include="cls_actualizador_de_precios_insumos.cs" />
     <Compile Include="cls_administracion_de_equipos.cs" />
