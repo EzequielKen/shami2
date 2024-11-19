@@ -240,6 +240,7 @@
     <Content Include="paginasFabricaFatay\plantilla_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\produccion_fabrica_fatay.aspx" />
     <Content Include="paginasFabricaFatay\stock_insumos_fabrica_fatay.aspx" />
+    <Content Include="paginasFabrica\acctualizador_precio_venta.aspx" />
     <Content Include="paginasFabrica\actualizador_de_precios_insumos.aspx" />
     <Content Include="paginasFabrica\actualizador_precio_vegetales.aspx" />
     <Content Include="paginasFabrica\actualizar_precio_stock.aspx" />
@@ -511,6 +512,13 @@
     </Compile>
     <Compile Include="paginasFabricaFatay\stock_insumos_fabrica_fatay.aspx.designer.cs">
       <DependentUpon>stock_insumos_fabrica_fatay.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\acctualizador_precio_venta.aspx.cs">
+      <DependentUpon>acctualizador_precio_venta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\acctualizador_precio_venta.aspx.designer.cs">
+      <DependentUpon>acctualizador_precio_venta.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\actualizador_de_precios_insumos.aspx.cs">
       <DependentUpon>actualizador_de_precios_insumos.aspx</DependentUpon>
