@@ -158,7 +158,7 @@ namespace paginaWeb.paginasFabrica
                 fila_ticket = funciones.buscar_fila_por_id(id, ticketsBD);
                 TextBox textbox_prioridad = (gridView_tickets.Rows[fila].Cells[1].FindControl("textbox_prioridad") as TextBox);
                 Button boton_resolver = (gridView_tickets.Rows[fila].Cells[9].FindControl("boton_resolver") as Button);
-                textbox_prioridad.Text = ticketsBD.Rows[fila_ticket]["prioridad"].ToString();
+                textbox_prioridad.Text = ticketsBD.Rows[fila_ticket]["prioridad_mensual"].ToString();
 
                 if (ticketsBD.Rows[fila_ticket]["estado"].ToString() == "abierto")
                 {
@@ -168,6 +168,7 @@ namespace paginaWeb.paginasFabrica
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-success text-center table-responsive";
                     boton_resolver.Visible = false;
+                    textbox_prioridad.Visible=false;
                 }
                 else if (ticketsBD.Rows[fila_ticket]["estado"].ToString() == "cancelado")
                 {

@@ -49,7 +49,7 @@ namespace _06___sistemas_gerente
 
             // Buscar la fila y obtener la prioridad actual del ticket que se va a reordenar
             int fila_ticket = funciones.buscar_fila_por_id(id, tickets);
-            int prioridad_actual = int.Parse(tickets.Rows[fila_ticket]["prioridad"].ToString());
+            int prioridad_actual = int.Parse(tickets.Rows[fila_ticket]["prioridad_mensual"].ToString());
 
             // Convertir el nuevo orden a entero
             int nuevo_orden_int = int.Parse(nuevo_orden);
@@ -67,7 +67,7 @@ namespace _06___sistemas_gerente
             {
                 for (int fila = 0; fila < tickets.Rows.Count; fila++)
                 {
-                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad"].ToString());
+                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad_mensual"].ToString());
                     id_ticket = tickets.Rows[fila]["id"].ToString();
 
                     if (prioridad_area >= nuevo_orden_int && prioridad_area < prioridad_actual)
@@ -92,7 +92,7 @@ namespace _06___sistemas_gerente
             {
                 for (int fila = 0; fila < tickets.Rows.Count; fila++)
                 {
-                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad"].ToString());
+                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad_mensual"].ToString());
                     id_ticket = tickets.Rows[fila]["id"].ToString();
 
                     if (prioridad_area <= nuevo_orden_int && prioridad_area > prioridad_actual)
@@ -119,7 +119,7 @@ namespace _06___sistemas_gerente
                 string id_ordenado = tabla_ordenada.Rows[fila]["id"].ToString();
                 prioridad_area = int.Parse(tabla_ordenada.Rows[fila]["prioridad"].ToString());
 
-                string actualizar = "`prioridad` = '" + prioridad_area + "'";
+                string actualizar = "`prioridad_mensual` = '" + prioridad_area + "'";
                 consultas.actualizar_tabla(base_de_datos, "tickets", actualizar, id_ordenado);
             }
         }
@@ -130,7 +130,7 @@ namespace _06___sistemas_gerente
 
             // Buscar la fila y obtener la prioridad actual del ticket que se va a reordenar
             int fila_ticket = funciones.buscar_fila_por_id(id, tickets);
-            int prioridad_actual = int.Parse(tickets.Rows[fila_ticket]["prioridad"].ToString());
+            int prioridad_actual = int.Parse(tickets.Rows[fila_ticket]["prioridad_general"].ToString());
 
             // Convertir el nuevo orden a entero
             int nuevo_orden_int = int.Parse(nuevo_orden);
@@ -148,7 +148,7 @@ namespace _06___sistemas_gerente
             {
                 for (int fila = 0; fila < tickets.Rows.Count; fila++)
                 {
-                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad"].ToString());
+                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad_general"].ToString());
                     id_ticket = tickets.Rows[fila]["id"].ToString();
 
                     if (prioridad_area >= nuevo_orden_int && prioridad_area < prioridad_actual)
@@ -173,7 +173,7 @@ namespace _06___sistemas_gerente
             {
                 for (int fila = 0; fila < tickets.Rows.Count; fila++)
                 {
-                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad"].ToString());
+                    prioridad_area = int.Parse(tickets.Rows[fila]["prioridad_general"].ToString());
                     id_ticket = tickets.Rows[fila]["id"].ToString();
 
                     if (prioridad_area <= nuevo_orden_int && prioridad_area > prioridad_actual)
@@ -200,7 +200,7 @@ namespace _06___sistemas_gerente
                 string id_ordenado = tabla_ordenada.Rows[fila]["id"].ToString();
                 prioridad_area = int.Parse(tabla_ordenada.Rows[fila]["prioridad"].ToString());
 
-                string actualizar = "`prioridad` = '" + prioridad_area + "'";
+                string actualizar = "`prioridad_general` = '" + prioridad_area + "'";
                 consultas.actualizar_tabla(base_de_datos, "tickets", actualizar, id_ordenado);
             }
         }
@@ -321,14 +321,14 @@ namespace _06___sistemas_gerente
         public DataTable get_tickets(string mes, string año, string tipo_ticket)
         {
             consultar_tickets(mes, año, tipo_ticket);
-            tickets.DefaultView.Sort = "prioridad asc";
+            tickets.DefaultView.Sort = "prioridad_mensual asc";
             tickets = tickets.DefaultView.ToTable();
             return tickets;
         }
         public DataTable get_tickets_abiertos(string tipo_ticket)
         {
             consultar_tickets_abiertos(tipo_ticket);
-            tickets.DefaultView.Sort = "prioridad asc";
+            tickets.DefaultView.Sort = "prioridad_general asc";
             tickets = tickets.DefaultView.ToTable();
             return tickets;
         }

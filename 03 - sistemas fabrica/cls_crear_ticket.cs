@@ -47,8 +47,11 @@ namespace _03___sistemas_fabrica
             string valores = string.Empty;
 
             //prioridad
-            columnas = funciones.armar_query_columna(columnas, "prioridad", false);
-            valores = funciones.armar_query_valores(valores, generar_ultima_posicion(), false);
+            columnas = funciones.armar_query_columna(columnas, "prioridad_general", false);
+            valores = funciones.armar_query_valores(valores, generar_ultima_posicion_general(), false);
+            //prioridad
+            columnas = funciones.armar_query_columna(columnas, "prioridad_mensual", false);
+            valores = funciones.armar_query_valores(valores, generar_ultima_posicion_mensual(), false);
             //prioridad_area
             columnas = funciones.armar_query_columna(columnas, "prioridad_area", false);
             valores = funciones.armar_query_valores(valores, generar_ultima_posicion_area(ticket.Rows[0]["solicita"].ToString()), false);
@@ -74,23 +77,36 @@ namespace _03___sistemas_fabrica
             consultas.insertar_en_tabla(base_de_datos, "tickets", columnas, valores);
         }
 
-        private string generar_ultima_posicion()
+        private string generar_ultima_posicion_general()
         {
             int retorno = 0;
             consultar_tickets();
             if (tickets.Rows.Count > 0)
             {
-                tickets.DefaultView.Sort = "prioridad asc";
+                tickets.DefaultView.Sort = "prioridad_general asc";
                 tickets = tickets.DefaultView.ToTable();
 
-                retorno = int.Parse(tickets.Rows[tickets.Rows.Count-1]["prioridad"].ToString()) + 1;
+                retorno = int.Parse(tickets.Rows[tickets.Rows.Count - 1]["prioridad_general"].ToString()) + 1;
+            }
+            return retorno.ToString();
+        }
+        private string generar_ultima_posicion_mensual()
+        {
+            int retorno = 0;
+            consultar_tickets();
+            if (tickets.Rows.Count > 0)
+            {
+                tickets.DefaultView.Sort = "prioridad_mensual asc";
+                tickets = tickets.DefaultView.ToTable();
+
+                retorno = int.Parse(tickets.Rows[tickets.Rows.Count-1]["prioridad_mensual"].ToString()) + 1;
             }
             return retorno.ToString();
         }
         private string generar_ultima_posicion_area(string solicita)
         {
             int retorno = 0;
-            consultar_tickets_por_area(solicita);
+            consultar_tickets();
             if (tickets.Rows.Count > 0)
             {
                 tickets.DefaultView.Sort = "prioridad_area asc";
@@ -105,7 +121,7 @@ namespace _03___sistemas_fabrica
         #region metodos consultas
         private void consultar_tickets()
         {
-            tickets = consultas.consultar_tickets_abiertos();
+            tickets = consultas.consultar_tabla(base_de_datos, "tickets");
         }
         private void consultar_tickets_por_area(string solicita)
         {
