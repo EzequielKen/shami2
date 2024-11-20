@@ -1441,6 +1441,25 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_precios_compra_activo()
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".linkeo_de_insumos where activa='1'";
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_pedidos_segun_rango_de_fecha(string sucursal, string fecha_inicio, string fecha_fin)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
