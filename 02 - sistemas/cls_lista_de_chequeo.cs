@@ -55,8 +55,8 @@ namespace _02___sistemas
         {
             DataTable categoria = new DataTable();
             categoria.Columns.Add("id", typeof(string));
-            categoria.Columns.Add("categoria", typeof(string)); 
-            categoria.Columns.Add("area", typeof(string)); 
+            categoria.Columns.Add("categoria", typeof(string));
+            categoria.Columns.Add("area", typeof(string));
             lista.DefaultView.Sort = "categoria ASC, orden ASC";
             lista = lista.DefaultView.ToTable();
             string categoria_dato;
@@ -67,23 +67,23 @@ namespace _02___sistemas
                 {
                     categoria.Rows.Add();
                     categoria.Rows[categoria.Rows.Count - 1]["id"] = categoria_dato;
-                    categoria.Rows[categoria.Rows.Count - 1]["categoria"] = lista.Rows[fila]["categoria"].ToString(); 
-                    categoria.Rows[categoria.Rows.Count - 1]["area"] = lista.Rows[fila]["area"].ToString(); 
+                    categoria.Rows[categoria.Rows.Count - 1]["categoria"] = lista.Rows[fila]["categoria"].ToString();
+                    categoria.Rows[categoria.Rows.Count - 1]["area"] = lista.Rows[fila]["area"].ToString();
                 }
             }
             PDF.GenerarPDF_lista_de_chequeo(ruta_archivo, logo, categoria, lista);
         }
 
-        public void crear_pdf_segun_categoria(string ruta_archivo, byte[] logo, DataTable lista,string categoria_dato,string area)
+        public void crear_pdf_segun_categoria(string ruta_archivo, byte[] logo, DataTable lista, string categoria_dato, string area)
         {
             DataTable categoria = new DataTable();
-            categoria.Columns.Add("categoria", typeof(string)); 
-            categoria.Columns.Add("area", typeof(string)); 
-            lista.DefaultView.Sort = "categoria ASC, orden ASC"; 
+            categoria.Columns.Add("categoria", typeof(string));
+            categoria.Columns.Add("area", typeof(string));
+            lista.DefaultView.Sort = "categoria ASC, orden ASC";
             lista = lista.DefaultView.ToTable();
             categoria.Rows.Add();
-            categoria.Rows[categoria.Rows.Count - 1]["categoria"] = categoria_dato; 
-            categoria.Rows[categoria.Rows.Count - 1]["area"] = area; 
+            categoria.Rows[categoria.Rows.Count - 1]["categoria"] = categoria_dato;
+            categoria.Rows[categoria.Rows.Count - 1]["area"] = area;
             PDF.GenerarPDF_lista_de_chequeo(ruta_archivo, logo, categoria, lista);
         }
         #endregion
@@ -245,12 +245,12 @@ namespace _02___sistemas
             {
                 retorno = "rango 2";
             }
-          /*  DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 00, 0, 0); // 8:00 AM
-            DateTime horaFin_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 04, 0, 0); // 12:00 PM
-            if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
-            {
-                retorno = "rango 3";
-            }*/
+            /*  DateTime horaInicio_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 00, 0, 0); // 8:00 AM
+              DateTime horaFin_rango3 = new DateTime(miFecha.Year, miFecha.Month, miFecha.Day, 04, 0, 0); // 12:00 PM
+              if (miFecha >= horaInicio_rango3 && miFecha <= horaFin_rango3)
+              {
+                  retorno = "rango 3";
+              }*/
             return retorno;
         }
         public bool verificar_brecha_turno(DateTime miFecha, string turno)
@@ -340,6 +340,55 @@ namespace _02___sistemas
                 }
             }
         }
+        private void consultar_historial_turno2_lista_cheqeo(DateTime fecha, string id_empleado, string id_sucursal, string turno)
+        {
+            DateTime fecha_nueva;
+            DataTable historial_turno2 = new DataTable();
+            int ultima_fila;
+            string hora_inicio, hora_fin;
+            fecha_nueva = fecha;
+            fecha_nueva = fecha_nueva.AddDays(1);
+            hora_inicio = "17:00";
+            hora_fin = "23:59";
+            historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
+            hora_inicio = "00:00";
+            hora_fin = "04:59";
+            historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
+
+            if (historial_turno2.Rows.Count > 0)
+            {
+                for (int fila = 0; fila <= historial_turno2.Rows.Count - 1; fila++)
+                {
+                    historial.Rows.Add();
+                    ultima_fila = historial.Rows.Count - 1;
+                    //activa
+                    historial.Rows[ultima_fila]["activa"] = historial_turno2.Rows[fila]["activa"].ToString();
+                    //id
+                    historial.Rows[ultima_fila]["id"] = historial_turno2.Rows[fila]["id"].ToString();
+
+                    //id_sucursal
+                    historial.Rows[ultima_fila]["id_sucursal"] = historial_turno2.Rows[fila]["id_sucursal"].ToString();
+
+                    //id_empleado
+                    historial.Rows[ultima_fila]["id_empleado"] = historial_turno2.Rows[fila]["id_empleado"].ToString();
+
+                    //nombre
+                    historial.Rows[ultima_fila]["nombre"] = historial_turno2.Rows[fila]["nombre"].ToString();
+
+                    //apellido
+                    historial.Rows[ultima_fila]["apellido"] = historial_turno2.Rows[fila]["apellido"].ToString();
+
+                    //fecha
+                    historial.Rows[ultima_fila]["fecha"] = historial_turno2.Rows[fila]["fecha"].ToString();
+
+                    //actividad
+                    historial.Rows[ultima_fila]["actividad"] = historial_turno2.Rows[fila]["actividad"].ToString();
+                    //cargo
+                    historial.Rows[ultima_fila]["cargo"] = historial_turno2.Rows[fila]["cargo"].ToString();
+
+                }
+            }
+        }
         private void consultar_configuracion_de_chequeo(string perfil)
         {
             configuracion_de_chequeo = consultas.consultar_configuracion_chequeo(perfil);
@@ -380,8 +429,46 @@ namespace _02___sistemas
                                                         fecha.Month,
                                                         fecha.Day,
                                                         18, 0, 0);
-                        
+
                     consultar_historial_turno2(nueva_fecha, id_empleado, id_sucursal, turno);
+                }
+
+            }
+
+            llenar_historial_resumen();
+            return historial_resumen;
+        }
+        public DataTable get_historial_lista_chequeo(DateTime fecha, string turno, string id_empleado, string id_sucursal)
+        {
+            string hora_inicio = "07:00";
+            string hora_fin = "18:59";
+            if (turno == "N/A")
+            {
+                if ("rango 1" == verificar_horario(fecha))// 
+                {
+                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
+                }
+                else if ("rango 2" == verificar_horario(fecha) || "rango 3" == verificar_horario(fecha))// 
+                {
+
+                    consultar_historial_turno2(fecha, id_empleado, id_sucursal, turno);
+                }
+
+            }
+            else
+            {
+                if (turno == "Turno 1")// "rango 1" == verificar_horario(fecha)
+                {
+                    consultar_historial(fecha, hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
+                }
+                else if (turno == "Turno 2")// "rango 2" == verificar_horario(fecha) ||"rango 3" == verificar_horario(fecha)
+                {
+                    DateTime nueva_fecha = new DateTime(fecha.Year,
+                                                        fecha.Month,
+                                                        fecha.Day,
+                                                        18, 0, 0);
+
+                    consultar_historial_turno2_lista_cheqeo(nueva_fecha, id_empleado, id_sucursal, turno);
                 }
 
             }

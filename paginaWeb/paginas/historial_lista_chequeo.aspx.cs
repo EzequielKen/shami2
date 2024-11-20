@@ -588,14 +588,15 @@ namespace paginaWeb.paginas
             DateTime fecha = (DateTime)Session["fecha_historial_chequeo"];
             if (dropdown_turno.SelectedItem.Text != "Todos")
             {
-                historial_chequeo = lista_chequeo.get_historial(fecha, dropdown_turno.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+
+                historial_chequeo = lista_chequeo.get_historial_lista_chequeo(fecha, dropdown_turno.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
 
             }
             else
             {
                 DropDownList dropdown_turno_empleado = (gridview_empleados.Rows[fila].Cells[4].FindControl("dropdown_turno_empleado") as DropDownList);
 
-                historial_chequeo = lista_chequeo.get_historial(fecha, dropdown_turno_empleado.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
+                historial_chequeo = lista_chequeo.get_historial_lista_chequeo(fecha, dropdown_turno_empleado.SelectedItem.Text, empleado.Rows[0]["id"].ToString(), empleado.Rows[0]["id_sucursal"].ToString());
 
             }
             Session.Add("historial_chequeo", historial_chequeo);
