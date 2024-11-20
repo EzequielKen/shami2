@@ -99,11 +99,11 @@ namespace _03___sistemas_fabrica
                     presentacion = precio_compra.Rows[fila_precio]["presentacion"].ToString();
                     productos.Rows[fila]["presentacion_compra"] = presentacion;
                     unidad_multiplicador = double.Parse(funciones.obtener_dato(presentacion, 2));
-                    productos.Rows[fila]["precio_venta"] = double.Parse(precio_compra.Rows[fila_precio]["precio"].ToString()) * unidad_multiplicador;
+                    productos.Rows[fila]["precio_compra"] = double.Parse(precio_compra.Rows[fila_precio]["precio"].ToString()) * unidad_multiplicador;
                 }
                 else
                 {
-                    productos.Rows[fila]["precio_venta"] = "N/A";
+                    productos.Rows[fila]["precio_compra"] = "N/A";
                     productos.Rows[fila]["presentacion_compra"] = "N/A";
                 }
 
@@ -129,6 +129,12 @@ namespace _03___sistemas_fabrica
             cargar_precio_compra_en_productos();
             cargar_precio_venta_en_productos();
             ordenar_productos();
+
+            productos.Columns.Add("precio_nuevo", typeof(string));
+            for (int fila = 0; fila <= productos.Rows.Count-1; fila++)
+            {
+                productos.Rows[fila]["precio_nuevo"] = "N/A";
+            }
             return productos;
         }
         public DataTable get_tipo_acuerdo()

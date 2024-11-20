@@ -14,10 +14,10 @@
                             <asp:DropDownList ID="dropdown_acuerdo" CssClass="form-select" runat="server">
                             </asp:DropDownList>
                             <label>Tipo Producto</label>
-                            <asp:DropDownList ID="dropDown_tipo" CssClass="form-select" runat="server">
+                            <asp:DropDownList ID="dropDown_tipo" CssClass="form-select" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true" runat="server">
                             </asp:DropDownList>
                         </div>
-                        <asp:TextBox ID="textbox_buscar" CssClass="form-control" placeholder="Buscar..." runat="server" />
+                        <asp:TextBox ID="textbox_buscar" CssClass="form-control" placeholder="Buscar..." OnTextChanged="textbox_buscar_TextChanged" AutoPostBack="true" runat="server" />
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                             <asp:BoundField HeaderText="precio compra" DataField="precio_compra" />
                             <asp:BoundField HeaderText="presentacion compra" DataField="presentacion_compra" />
                             <asp:BoundField HeaderText="precio venta actual" DataField="precio_venta" />
-                            <asp:BoundField HeaderText="precio venta actual" DataField="unidad_de_medida_local" />
+                            <asp:BoundField HeaderText="presentacion venta" DataField="unidad_de_medida_local" />
 
                             <asp:TemplateField HeaderText="Ingrese Precio Venta">
                                 <ItemTemplate>
@@ -41,6 +41,7 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
+                            <asp:BoundField HeaderText="precio nuevo" DataField="precio_nuevo" />
                         </Columns>
                     </asp:GridView>
                 </div>
