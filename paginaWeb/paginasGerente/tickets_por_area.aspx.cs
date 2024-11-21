@@ -177,11 +177,14 @@ namespace paginaWeb.paginasGerente
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-success text-center table-responsive";
                     boton_resolver.Visible = false;
+                    textbox_prioridad.Visible = false;
                 }
                 else if (tickets_area.Rows[fila_ticket]["estado"].ToString() == "cancelado")
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-danger text-center table-responsive";
                     boton_resolver.Visible = false;
+                    textbox_prioridad.Visible = false;
+
                 }
             }
         }
