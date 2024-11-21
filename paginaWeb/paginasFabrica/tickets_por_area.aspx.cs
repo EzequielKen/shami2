@@ -184,11 +184,14 @@ namespace paginaWeb.paginasFabrica
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-success text-center table-responsive";
                     boton_resolver.Visible = false;
+                    textbox_prioridad.Visible=false;
                 }
                 else if (tickets_area.Rows[fila_ticket]["estado"].ToString() == "cancelado")
                 {
                     gridView_tickets.Rows[fila].CssClass = "table table-danger text-center table-responsive";
                     boton_resolver.Visible = false;
+                    textbox_prioridad.Visible = false;
+
                 }
             }
             if (tipo_usuario.Rows[0]["rol"].ToString() != "Shami Villa Maipu Admin" &&
