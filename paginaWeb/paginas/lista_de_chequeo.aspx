@@ -84,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <div class=" container">
+            <div class="container-fluid">
                 <div class=" row">
                     <div class="col">
                         <h1>
@@ -153,12 +153,12 @@
                                     <asp:BoundField HeaderText="actividad" DataField="actividad" />
                                     <asp:TemplateField HeaderText="Cargar">
                                         <ItemTemplate>
-                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" OnTextChanged="textbox_nota_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Cargar">
+                                    <asp:TemplateField HeaderText="Cargar Nota">
                                         <ItemTemplate>
-                                            <asp:Button ID="boton_cargar" Text="Cargar" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" CommandArgument='<%# Container.DataItemIndex %>' />
+                                            <asp:TextBox ID="textbox_nota" placeholder="Ingrese Nota" CssClass="form-control" runat="server" OnTextChanged="textbox_nota_TextChanged" AutoPostBack="true" CommandArgument='<%# Container.DataItemIndex %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:BoundField HeaderText="Nota" DataField="nota" />

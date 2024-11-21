@@ -409,6 +409,7 @@ namespace paginaWeb.paginas
             {
                 LinkButton btnSubirFoto = (gridview_chequeos.Rows[fila].Cells[6].FindControl("btnSubirFoto") as LinkButton);
                 Button boton_ver_foto = (gridview_chequeos.Rows[fila].Cells[7].FindControl("boton_ver_foto") as Button);
+                TextBox textbox_nota = (gridview_chequeos.Rows[fila].Cells[3].FindControl("textbox_nota") as TextBox);
 
                 id = gridview_chequeos.Rows[fila].Cells[0].Text;
                 fila_historial = funciones.buscar_fila_por_id(id, historial);
@@ -424,12 +425,14 @@ namespace paginaWeb.paginas
 
                     // Asignar la URL de destino con el id_historial
                     btnSubirFoto.PostBackUrl = $"subir_foto_local.aspx?id={idHistorial}&returnUrl={HttpUtility.UrlEncode(Request.RawUrl)}";
+                    textbox_nota.Visible = true;
 
                 }
                 else
                 {
                     btnSubirFoto.Visible=false;
                     boton_ver_foto.Visible=false;
+                    textbox_nota.Visible=false; 
                 }
             }
         }

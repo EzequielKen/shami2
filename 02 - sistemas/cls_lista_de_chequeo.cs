@@ -291,7 +291,7 @@ namespace _02___sistemas
                 hora_fin = "23:59";
                 historial = consultas.consultar_historial_chequeo_segun_fecha(fecha.Year.ToString(), fecha.Month.ToString(), fecha.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
                 hora_inicio = "00:00";
-                hora_fin = "04:59";
+                hora_fin = "06:59";
                 historial_turno2 = consultas.consultar_historial_chequeo_segun_fecha(fecha_nueva.Year.ToString(), fecha_nueva.Month.ToString(), fecha_nueva.Day.ToString(), hora_inicio, hora_fin, id_empleado, id_sucursal, turno);
             }
             else if ("rango 2" == verificar_horario_turno2(DateTime.Now))//
