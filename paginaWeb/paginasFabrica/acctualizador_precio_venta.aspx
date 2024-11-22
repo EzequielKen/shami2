@@ -24,7 +24,7 @@
                 <hr />
 
                 <div class="alert-light">
-                    <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped">
+                    <asp:GridView Caption="LISTA DE PRODUCTOS" CaptionAlign="Top" runat="server" ID="gridview_productos" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_productos_RowDataBound">
 
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
@@ -33,6 +33,14 @@
                             <asp:BoundField HeaderText="presentacion compra" DataField="presentacion_compra" />
                             <asp:BoundField HeaderText="precio venta actual" DataField="precio_venta" />
                             <asp:BoundField HeaderText="presentacion venta" DataField="unidad_de_medida_local" />
+                            <asp:BoundField HeaderText="% Ganancia" DataField="porcentaje_ganancia" />
+
+                            <asp:TemplateField HeaderText="% de aumento">
+                                <ItemTemplate>
+                                    <asp:TextBox ID="texbox_porcentaje_de_aumento" CssClass="input-group-text" runat="server" OnTextChanged="texbox_porcentaje_de_aumento_TextChanged" AutoPostBack="true">
+                                    </asp:TextBox>
+                                </ItemTemplate>
+                            </asp:TemplateField>
 
                             <asp:TemplateField HeaderText="Ingrese Precio Venta">
                                 <ItemTemplate>

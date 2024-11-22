@@ -119,6 +119,45 @@ namespace _03___sistemas_fabrica
             productos.DefaultView.Sort = "orden asc";
             productos = productos.DefaultView.ToTable();
         }
+        private void calcular_porcentaje_ganancia()
+        {
+            // Agregar una nueva columna para el porcentaje de ganancia
+            productos.Columns.Add("porcentaje_ganancia", typeof(string));
+            double porcentaje_ganancia, diferencia;
+            double precio_compra, precio_venta;
+
+            // Iterar sobre las filas del DataTable
+            for (int fila = 0; fila < productos.Rows.Count; fila++)
+            {
+                // Obtener los valores de precio_compra y precio_venta
+                if (productos.Rows[fila]["precio_compra"].ToString() != "N/A")
+                {
+                    precio_compra = double.Parse(productos.Rows[fila]["precio_compra"].ToString());
+                }
+                else
+                {
+                    precio_compra = 0;
+                }
+                if (productos.Rows[fila]["precio_venta"].ToString() != "N/A")
+                {
+                    precio_venta = double.Parse(productos.Rows[fila]["precio_venta"].ToString());
+                }
+                else
+                {
+                    precio_venta = 0;
+                }
+
+                // Calcular la diferencia
+                diferencia = precio_venta - precio_compra;
+
+                // Calcular el porcentaje de ganancia
+                porcentaje_ganancia = (diferencia / precio_compra) * 100;
+
+                // Asignar el valor calculado a la nueva columna
+                productos.Rows[fila]["porcentaje_ganancia"] = porcentaje_ganancia.ToString("F2") + " %"; // Formato con dos decimales y símbolo de porcentaje
+            }
+        }
+
         #endregion
         #region metodos get/set
         public DataTable get_productos(string tipo_de_acuerdo)
@@ -128,10 +167,12 @@ namespace _03___sistemas_fabrica
             consultar_precio_venta("proveedor_villaMaipu", tipo_de_acuerdo);
             cargar_precio_compra_en_productos();
             cargar_precio_venta_en_productos();
+            calcular_porcentaje_ganancia();
+
             ordenar_productos();
 
             productos.Columns.Add("precio_nuevo", typeof(string));
-            for (int fila = 0; fila <= productos.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= productos.Rows.Count - 1; fila++)
             {
                 productos.Rows[fila]["precio_nuevo"] = "N/A";
             }

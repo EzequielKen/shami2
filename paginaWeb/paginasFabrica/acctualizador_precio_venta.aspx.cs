@@ -11,7 +11,76 @@ namespace paginaWeb.paginasFabrica
 {
     public partial class acctualizador_precio_venta : System.Web.UI.Page
     {
+        #region calculo de porcentajes
+        private void aumentar_segun_porcentaje(string id_producto, double porcentaje)
+        {
+            // Obtener la tabla de productos desde la sesión
+            productosBD = (DataTable)Session["productosBD"];
 
+            // Buscar la fila correspondiente al producto por su ID
+            int fila_producto = funciones.buscar_fila_por_id(id_producto, productosBD);
+
+            if (fila_producto != -1) // Verificar si se encontró el producto
+            {
+                // Obtener los valores actuales de precio_compra y precio_venta
+                double precio_compra = double.Parse(productosBD.Rows[fila_producto]["precio_compra"].ToString());
+
+                // Calcular el nuevo precio_venta
+                double nuevo_precio_venta = precio_compra * (1 + (porcentaje / 100));
+
+                // Actualizar el precio_venta en la tabla
+                productosBD.Rows[fila_producto]["precio_nuevo"] = nuevo_precio_venta.ToString("F2"); // Formato con 2 decimales
+
+                // Guardar nuevamente la tabla actualizada en la sesión
+                Session.Add("productosBD", productosBD);
+            }
+            else
+            {
+                // Manejo del caso en que no se encuentre el producto
+                throw new Exception("Producto no encontrado.");
+            }
+        }
+        private void calcular_porcentaje_ganancia()
+        {
+            // Agregar una nueva columna para el porcentaje de ganancia
+            productosBD = (DataTable)Session["productosBD"];
+            double porcentaje_ganancia, diferencia;
+            double precio_compra, precio_venta;
+
+            // Iterar sobre las filas del DataTable
+            for (int fila = 0; fila < productosBD.Rows.Count; fila++)
+            {
+                // Obtener los valores de precio_compra y precio_venta
+                if (productosBD.Rows[fila]["precio_compra"].ToString() != "N/A")
+                {
+                    precio_compra = double.Parse(productosBD.Rows[fila]["precio_compra"].ToString());
+                }
+                else
+                {
+                    precio_compra = 0;
+                }
+                if (productosBD.Rows[fila]["precio_venta"].ToString() != "N/A")
+                {
+                    precio_venta = double.Parse(productosBD.Rows[fila]["precio_venta"].ToString());
+                }
+                else
+                {
+                    precio_venta = 0;
+                }
+
+                // Calcular la diferencia
+                diferencia = precio_venta - precio_compra;
+
+                // Calcular el porcentaje de ganancia
+                porcentaje_ganancia = (diferencia / precio_compra) * 100;
+
+                // Asignar el valor calculado a la nueva columna
+                productosBD.Rows[fila]["porcentaje_ganancia"] = porcentaje_ganancia.ToString("F2") + " %"; // Formato con dos decimales y símbolo de porcentaje
+                Session.Add("productosBD", productosBD);
+
+            }
+        }
+        #endregion
         #region carga productos
         private void crear_tabla_resumen()
         {
@@ -23,6 +92,7 @@ namespace paginaWeb.paginasFabrica
             resumen.Columns.Add("precio_venta", typeof(string));
             resumen.Columns.Add("unidad_de_medida_local", typeof(string));
             resumen.Columns.Add("precio_nuevo", typeof(string));
+            resumen.Columns.Add("porcentaje_ganancia", typeof(string));
         }
         private void llenar_tabla_resumen()
         {
@@ -69,6 +139,7 @@ namespace paginaWeb.paginasFabrica
                     }
 
                     resumen.Rows[resumen.Rows.Count - 1]["unidad_de_medida_local"] = productosBD.Rows[fila]["unidad_de_medida_local"].ToString();
+                    resumen.Rows[resumen.Rows.Count - 1]["porcentaje_ganancia"] = productosBD.Rows[fila]["porcentaje_ganancia"].ToString();
                 }
             }
         }
@@ -129,7 +200,7 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_productos_busqueda()
         {
-            if (textbox_buscar.Text!=string.Empty)
+            if (textbox_buscar.Text != string.Empty)
             {
                 productosBD = (DataTable)Session["productosBD"];
                 llenar_tabla_resumen_busqueda();
@@ -210,6 +281,18 @@ namespace paginaWeb.paginasFabrica
             }
         }
 
+        protected void gridview_productos_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            for (int fila = 0; fila <= gridview_productos.Rows.Count - 1; fila++)
+            {
+                if (gridview_productos.Rows[fila].Cells[2].Text == "N/A")
+                {
+                    TextBox texbox_porcentaje_de_aumento = (gridview_productos.Rows[fila].Cells[7].FindControl("texbox_porcentaje_de_aumento") as TextBox);
+                    texbox_porcentaje_de_aumento.Visible = false;
+                }
+            }
+        }
+
         protected void texbox_precio_TextChanged(object sender, EventArgs e)
         {
         }
@@ -223,5 +306,33 @@ namespace paginaWeb.paginasFabrica
         {
             cargar_productos_busqueda();
         }
+
+        protected void texbox_porcentaje_de_aumento_TextChanged(object sender, EventArgs e)
+        {
+            TextBox texbox_porcentaje_de_aumento = (TextBox)sender;
+            GridViewRow row = (GridViewRow)texbox_porcentaje_de_aumento.NamingContainer;
+            int fila = row.RowIndex;
+
+            string id_producto = gridview_productos.Rows[fila].Cells[0].Text;
+
+            if (double.TryParse(texbox_porcentaje_de_aumento.Text, out double porcentaje))
+            {
+                aumentar_segun_porcentaje(id_producto, porcentaje);
+                if (textbox_buscar.Text != string.Empty)
+                {
+                    cargar_productos();
+                }
+                else
+                {
+                    cargar_productos_busqueda();
+                }
+            }
+            else
+            {
+                texbox_porcentaje_de_aumento.Text = string.Empty;
+            }
+        }
+
+
     }
 }
