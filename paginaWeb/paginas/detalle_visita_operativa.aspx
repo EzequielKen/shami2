@@ -1,9 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraFabrica.Master" AutoEventWireup="true" CodeBehind="historial_visita_operativa.aspx.cs" Inherits="paginaWeb.paginasSupervision.historial_visita_operativa" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/paginasMaestras/paginaMaestraSistema.Master" AutoEventWireup="true" CodeBehind="detalle_visita_operativa.aspx.cs" Inherits="paginaWeb.paginas.detalle_visita_operativa" EnableEventValidation="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
     <asp:ScriptManager runat="server" />
     <asp:HiddenField ID="hiddenFolderPath" runat="server" />
 
@@ -78,12 +77,6 @@
                 <div class="alert alert-light">
                     <div class="row">
                         <div class="col">
-                            <asp:Calendar ID="calendario" CssClass="table-bordered" OnSelectionChanged="calendario_SelectionChanged" runat="server">
-                                <OtherMonthDayStyle ForeColor="LightGray"></OtherMonthDayStyle>
-                                <TitleStyle BackColor="gray" ForeColor="White"></TitleStyle>
-                                <DayStyle BackColor="gray"></DayStyle>
-                                <SelectedDayStyle BackColor="LightGray" Font-Bold="True"></SelectedDayStyle>
-                            </asp:Calendar>
                         </div>
                         <div class="col">
                             <h2>
@@ -95,7 +88,7 @@
                             <asp:Button ID="boton_pdf" Text="PDF" CssClass="btn btn-success" OnClick="boton_pdf_Click" runat="server" />
                         </div>
                     </div>
-                    <asp:TextBox ID="textbox_observaciones" CssClass="form-control" TextMode="MultiLine" runat="server" OnTextChanged="textbox_observaciones_TextChanged" />
+                    <asp:Label ID="label_observacion" Text="" runat="server" />
                     <asp:GridView Caption="LISTA DE EVALUADOS" CaptionAlign="Top" runat="server" ID="gridview_empleados" AutoGenerateColumns="false" CssClass="table table-dark table-striped" OnRowDataBound="gridview_empleados_RowDataBound">
                         <Columns>
                             <asp:BoundField HeaderText="id" DataField="id" />
