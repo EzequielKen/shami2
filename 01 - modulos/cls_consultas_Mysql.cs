@@ -1682,7 +1682,7 @@ namespace modulos
 
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado WHERE activa=1 and id='" + id + "';";
+                query = "SELECT * FROM " + base_de_datos + ".lista_de_empleado WHERE id='" + id + "';";
 
 
                 retorno = base_datos.READ(query);
