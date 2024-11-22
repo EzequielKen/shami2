@@ -345,11 +345,13 @@
     <Content Include="paginas\comida_empleados.aspx" />
     <Content Include="paginas\cuentas_por_pagar.aspx" />
     <Content Include="paginas\desperdicio_merma.aspx" />
+    <Content Include="paginas\detalle_visita_operativa.aspx" />
     <Content Include="paginas\estadisticas_de_pedido.aspx" />
     <Content Include="paginas\historial_consumo_personal.aspx" />
     <Content Include="paginas\historial_desperdicio_merma.aspx" />
     <Content Include="paginas\historial_lista_chequeo.aspx" />
     <Content Include="paginas\historial_pedido.aspx" />
+    <Content Include="paginas\historial_visita_operativa.aspx" />
     <Content Include="paginas\horario_de_empleado.aspx" />
     <Content Include="paginas\landing_page_local.aspx" />
     <Content Include="paginas\lista_de_chequeo.aspx" />
@@ -1306,6 +1308,13 @@
     <Compile Include="paginas\desperdicio_merma.aspx.designer.cs">
       <DependentUpon>desperdicio_merma.aspx</DependentUpon>
     </Compile>
+    <Compile Include="paginas\detalle_visita_operativa.aspx.cs">
+      <DependentUpon>detalle_visita_operativa.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\detalle_visita_operativa.aspx.designer.cs">
+      <DependentUpon>detalle_visita_operativa.aspx</DependentUpon>
+    </Compile>
     <Compile Include="paginas\estadisticas_de_pedido.aspx.cs">
       <DependentUpon>estadisticas_de_pedido.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1340,6 +1349,13 @@
     </Compile>
     <Compile Include="paginas\historial_pedido.aspx.designer.cs">
       <DependentUpon>historial_pedido.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginas\historial_visita_operativa.aspx.cs">
+      <DependentUpon>historial_visita_operativa.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginas\historial_visita_operativa.aspx.designer.cs">
+      <DependentUpon>historial_visita_operativa.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginas\horario_de_empleado.aspx.cs">
       <DependentUpon>horario_de_empleado.aspx</DependentUpon>

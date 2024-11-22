@@ -206,6 +206,7 @@
                             <li><a class="dropdown-item" href="/paginas/historial_lista_chequeo.aspx">Historial de Lista de Chequeo</a></li>
                             <li><a class="dropdown-item" href="/paginas/administrar_tabla_produccion.aspx">Administrar Tabla de Produccion</a></li>
                             <li><a class="dropdown-item" href="/paginas/lista_de_faltantes.aspx">Lista de Faltantes</a></li>
+                            <li><a class="dropdown-item" href="/paginas/historial_visita_operativa.aspx">Historial Visita Operativa</a></li>
                         </ul>
                     </li>
                     <%    } %>

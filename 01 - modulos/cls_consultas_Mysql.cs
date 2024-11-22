@@ -1779,6 +1779,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_historial_evaluacion_chequeo_segun_mes_y_año(string año, string mes,string id_sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".historial_evaluacion_chequeo WHERE activa=1 and id_sucursal='" + id_sucursal + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_registro_venta_local_segun_fecha(string id_sucursal, string fecha_inicio, string fecha_fin)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
