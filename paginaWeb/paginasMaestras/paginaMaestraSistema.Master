@@ -148,6 +148,10 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/desperdicio_merma.aspx">Desperdicio y Merma</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginas/comida_empleados.aspx">Comida de Empleados</a>
+                    </li>
+
                     <%}%>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginas/tabla_produccion.aspx">Tabla de Produccion</a>
