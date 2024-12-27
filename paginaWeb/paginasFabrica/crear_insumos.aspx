@@ -22,20 +22,21 @@
                                 </asp:DropDownList>
                                 <asp:TextBox ID="textbox_nuevo_tipo" CssClass="form-control" placeholder="Nuevo tipo..." runat="server" />
                             </div>
-                        <label class="col-form-label">Categoria Producto</label>
-                        <asp:DropDownList ID="dropdown_categoria_producto_nuevo" CssClass="form-select" runat="server">
-                            <asp:ListItem Text="Alimento" />
-                            <asp:ListItem Text="Bebida" />
-                            <asp:ListItem Text="Descartable" />
-                        </asp:DropDownList>
-                        <label class="col-form-label">Tipo Producto Local</label>
-                        <asp:DropDownList ID="dropdown_tipo_producto_local_nuevo" CssClass="form-select" runat="server">
-                        </asp:DropDownList>
-                        <label class="col-form-label">Unidad tabla produccion</label>
-                        <asp:DropDownList ID="dropdown_unidad_tabla_produccion_nuevo" CssClass="form-select" runat="server">
-                        </asp:DropDownList>
+                            <label class="col-form-label">Categoria Producto</label>
+                            <asp:DropDownList ID="dropdown_categoria_producto_nuevo" CssClass="form-select" runat="server">
+                                <asp:ListItem Text="Alimento" />
+                                <asp:ListItem Text="Bebida" />
+                                <asp:ListItem Text="Descartable" />
+                            </asp:DropDownList>
+ <!--                           <label class="col-form-label">Tipo Producto Local</label>
+                            <asp:DropDownList ID="dropdown_tipo_producto_local_nuevo" CssClass="form-select" runat="server">
+                            </asp:DropDownList>
+                            <label class="col-form-label">Unidad tabla produccion</label>
+                            <asp:DropDownList ID="dropdown_unidad_tabla_produccion_nuevo" CssClass="form-select" runat="server">
+                            </asp:DropDownList> -->
+                        </div>
                     </div>
-                    </div>
+
                     <div class="alert alert-light">
 
                         <div class="input-group">
@@ -77,21 +78,24 @@
                                 <asp:ListItem Text="Kg" />
                             </asp:DropDownList>
 
-                            <label class="col-form-label">Tabla produccion</label>
+<!--                            <label class="col-form-label">Tabla produccion</label>
                             <asp:DropDownList ID="dropdown_tabla_produccion_nuevo" CssClass="form-select" runat="server">
                                 <asp:ListItem Text="Si" />
                                 <asp:ListItem Text="No" />
-                            </asp:DropDownList>
+                            </asp:DropDownList> -->
                         </div>
                     </div>
                     <asp:Button ID="boton_cargar" Text="Cargar Producto" CssClass="btn btn-primary" runat="server" OnClick="boton_cargar_Click" />
                 </div>
+                <hr />
                 <div class="row">
 
                     <h1>Editar Insumos</h1>
 
                     <div class="alert alert-light">
                         <div class="input-group">
+                            <label class="col-form-label">Buscar:</label>
+                            <asp:TextBox ID="textbox_buscar" CssClass="form-control" placeholder="Buscar..." runat="server" OnTextChanged="textbox_buscar_TextChanged" AutoPostBack="true" />
                             <label class="col-form-label">Tipo Producto:</label>
                             <asp:DropDownList ID="dropDown_tipo" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropDown_tipo_SelectedIndexChanged" AutoPostBack="true">
                             </asp:DropDownList>
@@ -138,22 +142,6 @@
                                             <asp:ListItem Text="Alimento" />
                                             <asp:ListItem Text="Bebida" />
                                             <asp:ListItem Text="Descartable" />
-                                        </asp:DropDownList>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-
-                                <asp:TemplateField HeaderText="Tipo Producto Local">
-                                    <ItemTemplate>
-                                        <label>Tipo Producto Local</label>
-                                        <asp:DropDownList ID="dropdown_tipo_producto_local" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_tipo_producto_local_SelectedIndexChanged" AutoPostBack="true">
-                                        </asp:DropDownList>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-
-                                <asp:TemplateField HeaderText="Unidad tabla produccion">
-                                    <ItemTemplate>
-                                        <label>Unidad tabla produccion</label>
-                                        <asp:DropDownList ID="dropdown_unidad_tabla_produccion" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_unidad_tabla_produccion_SelectedIndexChanged" AutoPostBack="true">
                                         </asp:DropDownList>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -209,15 +197,7 @@
                                     </ItemTemplate>
                                 </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Tabla produccion">
-                                    <ItemTemplate>
-                                        <label>Tabla produccion</label>
-                                        <asp:DropDownList ID="dropdown_tabla_produccion" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_tabla_produccion_SelectedIndexChanged" AutoPostBack="true">
-                                            <asp:ListItem Text="Si" />
-                                            <asp:ListItem Text="No" />
-                                        </asp:DropDownList>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
+
 
                             </Columns>
                         </asp:GridView>

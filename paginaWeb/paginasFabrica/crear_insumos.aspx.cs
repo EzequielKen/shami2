@@ -36,7 +36,7 @@ namespace paginaWeb.paginasFabrica
             insumo.Rows.Clear();
             insumo.Rows.Add();
 
-            insumo.Rows[0]["producto"] = texbox_producto_nuevo.Text.Replace("-", "");
+            insumo.Rows[0]["producto"] = texbox_producto_nuevo.Text.Replace("-", "/");
 
             if (textbox_nuevo_tipo.Text == string.Empty)
             {
@@ -45,7 +45,7 @@ namespace paginaWeb.paginasFabrica
             else
             {
                 int ultimo_num_categoria = int.Parse(creador_insumos.get_ultimo_num_categoria()) + 1;
-                string nuevo_tipo = textbox_nuevo_tipo.Text.Replace("-", "");
+                string nuevo_tipo = textbox_nuevo_tipo.Text.Replace("-", "/");
                 insumo.Rows[0]["tipo_producto"] = ultimo_num_categoria.ToString() + "-" + nuevo_tipo;
             }
 
@@ -77,8 +77,8 @@ namespace paginaWeb.paginasFabrica
 
             }
 
-            insumo.Rows[0]["tipo_producto_local"] = dropdown_tipo_producto_local_nuevo.SelectedItem.Text;
-            insumo.Rows[0]["unidad_tabla_produccion"] = dropdown_unidad_tabla_produccion_nuevo.SelectedItem.Text;
+            insumo.Rows[0]["tipo_producto_local"] = "N/A";
+            insumo.Rows[0]["unidad_tabla_produccion"] = "N/A";
 
             if (dropdown_venta_nuevo.SelectedItem.Text == "Si")
             {
@@ -115,14 +115,7 @@ namespace paginaWeb.paginasFabrica
             insumo.Rows[0]["equivalencia"] = unidad_de_medida_local;
             insumo.Rows[0]["unidad_medida"] = dropdown_tipo_unidad.SelectedItem.Text;
 
-            if (dropdown_tabla_produccion_nuevo.SelectedItem.Text == "Si")
-            {
-                insumo.Rows[0]["tabla_produccion"] = "1";
-            }
-            else
-            {
-                insumo.Rows[0]["tabla_produccion"] = "0";
-            }
+            insumo.Rows[0]["tabla_produccion"] = "0";
         }
         private bool verificar_carga()
         {
@@ -130,6 +123,7 @@ namespace paginaWeb.paginasFabrica
             if (texbox_producto_nuevo.Text == string.Empty)
             {
                 texbox_producto_nuevo.CssClass = "form-control bg-danger";
+                retorno = false;
             }
             else
             {
@@ -139,6 +133,7 @@ namespace paginaWeb.paginasFabrica
             if (textbox_unidad_nuevo.Text == string.Empty)
             {
                 textbox_unidad_nuevo.CssClass = "form-control bg-danger";
+                retorno = false;
             }
             else
             {
@@ -172,7 +167,8 @@ namespace paginaWeb.paginasFabrica
             int fila_insumo = 0;
             for (int fila = 0; fila <= insumosBD.Rows.Count - 1; fila++)
             {
-                if (funciones.verificar_tipo_producto(dropDown_tipo.SelectedItem.Text, insumosBD.Rows[fila]["tipo_producto"].ToString()))
+                if (funciones.buscar_alguna_coincidencia(textbox_buscar.Text, insumosBD.Rows[fila]["producto"].ToString()) &&
+                    funciones.verificar_tipo_producto(dropDown_tipo.SelectedItem.Text, insumosBD.Rows[fila]["tipo_producto"].ToString()))
                 {
                     insumos.Rows.Add();
                     insumos.Rows[fila_insumo]["id"] = insumosBD.Rows[fila]["id"].ToString();
@@ -195,8 +191,6 @@ namespace paginaWeb.paginasFabrica
         }
         private void cargar_insumos()
         {
-            insumosBD = creador_insumos.get_insumos_fabrica();
-            Session.Add("insumoBD", insumosBD);
             llenar_tabla_insumo();
             gridview_productos.DataSource = insumos;
             gridview_productos.DataBind();
@@ -425,59 +419,10 @@ namespace paginaWeb.paginasFabrica
                 {
                     dropdown_categoria_producto.SelectedValue = "Descartable";
                 }
-                //TIPO PRODUCTO LOCAL
-                DropDownList dropdown_tipo_producto_local = (gridview_productos.Rows[fila].Cells[5].FindControl("dropdown_tipo_producto_local") as DropDownList);
-                dropdown_tipo_producto_local.Items.Clear();
-                insumosBD.DefaultView.Sort = "tipo_producto_local ASC";
-                insumosBD = insumosBD.DefaultView.ToTable();
-                tipo_seleccionado = insumosBD.Rows[0]["tipo_producto_local"].ToString();
-                dropdown_tipo_producto_local.Items.Add(insumosBD.Rows[0]["tipo_producto_local"].ToString());
-                num_item = 1;
-                num_item = num_item + 1;
-                for (int fila_insumos = 0; fila_insumos <= insumosBD.Rows.Count - 1; fila_insumos++)
-                {
-
-
-                    if (dropdown_tipo_producto_local.Items[num_item - 2].Text != insumosBD.Rows[fila_insumos]["tipo_producto_local"].ToString())
-                    {
-
-                        dropdown_tipo_producto_local.Items.Add(insumosBD.Rows[fila_insumos]["tipo_producto_local"].ToString());
-                        num_item = num_item + 1;
-                    }
-
-                }
-                fila_producto = funciones.buscar_fila_por_id(id, insumosBD);
-                string tipo = insumosBD.Rows[fila_producto]["tipo_producto_local"].ToString();
-                dropdown_tipo_producto_local.SelectedValue = tipo;
-
-                //UNIDAD TABLA PRODUCCION
-                DropDownList dropdown_unidad_tabla_produccion = (gridview_productos.Rows[fila].Cells[6].FindControl("dropdown_unidad_tabla_produccion") as DropDownList);
-                dropdown_unidad_tabla_produccion.Items.Clear();
-                insumosBD.DefaultView.Sort = "unidad_tabla_produccion ASC";
-                insumosBD = insumosBD.DefaultView.ToTable();
-                tipo_seleccionado = insumosBD.Rows[0]["unidad_tabla_produccion"].ToString();
-                dropdown_unidad_tabla_produccion.Items.Add(insumosBD.Rows[0]["unidad_tabla_produccion"].ToString());
-                num_item = 1;
-                num_item = num_item + 1;
-                for (int fila_insumos = 0; fila_insumos <= insumosBD.Rows.Count - 1; fila_insumos++)
-                {
-
-
-                    if (dropdown_unidad_tabla_produccion.Items[num_item - 2].Text != insumosBD.Rows[fila_insumos]["unidad_tabla_produccion"].ToString())
-                    {
-
-                        dropdown_unidad_tabla_produccion.Items.Add(insumosBD.Rows[fila_insumos]["unidad_tabla_produccion"].ToString());
-                        num_item = num_item + 1;
-                    }
-
-                }
-                fila_producto = funciones.buscar_fila_por_id(id, insumosBD);
-                tipo = insumosBD.Rows[fila_producto]["unidad_tabla_produccion"].ToString();
-                dropdown_unidad_tabla_produccion.SelectedValue = tipo;
 
                 //VENTA
 
-                DropDownList dropdown_venta = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_venta") as DropDownList);
+                DropDownList dropdown_venta = (gridview_productos.Rows[fila].Cells[5].FindControl("dropdown_venta") as DropDownList);
                 fila_producto = funciones.buscar_fila_por_id(id, insumosBD);
                 int venta = int.Parse(insumosBD.Rows[fila_producto]["venta"].ToString());
                 if (venta != 0)
@@ -490,7 +435,7 @@ namespace paginaWeb.paginasFabrica
                 }
 
                 //PRODUCTO FABRICA FATAY
-                DropDownList dropdown_fabrica_fatay = (gridview_productos.Rows[fila].Cells[8].FindControl("dropdown_fabrica_fatay") as DropDownList);
+                DropDownList dropdown_fabrica_fatay = (gridview_productos.Rows[fila].Cells[6].FindControl("dropdown_fabrica_fatay") as DropDownList);
                 fila_producto = funciones.buscar_fila_por_id(id, insumosBD);
                 int productos_fabrica_fatay = int.Parse(insumosBD.Rows[fila_producto]["productos_fabrica_fatay"].ToString());
                 if (productos_fabrica_fatay != 0)
@@ -503,7 +448,7 @@ namespace paginaWeb.paginasFabrica
                 }
 
                 //PRODUCTO CABALLITO
-                DropDownList dropdown_caballito = (gridview_productos.Rows[fila].Cells[9].FindControl("dropdown_caballito") as DropDownList);
+                DropDownList dropdown_caballito = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_caballito") as DropDownList);
                 fila_producto = funciones.buscar_fila_por_id(id, insumosBD);
                 int productos_caballito = int.Parse(insumosBD.Rows[fila_producto]["productos_caballito"].ToString());
                 if (productos_caballito != 0)
@@ -516,9 +461,9 @@ namespace paginaWeb.paginasFabrica
                 }
 
                 //PRESENTACION VENTA
-                DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_paquete") as DropDownList);
-                TextBox textbox_unidad = (gridview_productos.Rows[fila].Cells[10].FindControl("textbox_unidad") as TextBox);
-                DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_tipo_unidad") as DropDownList);
+                DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[8].FindControl("dropdown_paquete") as DropDownList);
+                TextBox textbox_unidad = (gridview_productos.Rows[fila].Cells[8].FindControl("textbox_unidad") as TextBox);
+                DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[8].FindControl("dropdown_tipo_unidad") as DropDownList);
                 fila_producto = funciones.buscar_fila_por_id(id, insumosBD);
 
                 string paquete = funciones.obtener_dato(insumosBD.Rows[fila_producto]["unidad_de_medida_local"].ToString(), 1);
@@ -529,18 +474,6 @@ namespace paginaWeb.paginasFabrica
                 textbox_unidad.Text = unidad;
                 dropdown_tipo_unidad.SelectedValue = tipo_unidad;
 
-                //PRODUCTO CABALLITO
-                DropDownList dropdown_tabla_produccion = (gridview_productos.Rows[fila].Cells[11].FindControl("dropdown_tabla_produccion") as DropDownList);
-                fila_producto = funciones.buscar_fila_por_id(id, insumosBD);
-                int tabla_produccion = int.Parse(insumosBD.Rows[fila_producto]["tabla_produccion"].ToString());
-                if (tabla_produccion != 0)
-                {
-                    dropdown_tabla_produccion.SelectedValue = "Si";
-                }
-                else
-                {
-                    dropdown_tabla_produccion.SelectedValue = "No";
-                }
             }
         }
 
@@ -557,6 +490,8 @@ namespace paginaWeb.paginasFabrica
                 texbox_producto_nuevo.Text = string.Empty;
                 textbox_unidad_nuevo.Text = string.Empty;
                 textbox_nuevo_tipo.Text = string.Empty;
+                insumosBD = creador_insumos.get_insumos_fabrica();
+                Session.Add("insumoBD", insumosBD);
                 configurar_controles();
                 cargar_insumos();
             }
@@ -747,8 +682,8 @@ namespace paginaWeb.paginasFabrica
             string tipo_unidad = dropdown_tipo_unidad.SelectedItem.Text;
 
             string dato = paquete + "-" + unidad + "-" + tipo_unidad;
-            creador_insumos.actualizar_dato(id, "unidad_de_medida_local", dato); 
-            creador_insumos.actualizar_dato(id, "equivalencia", dato); 
+            creador_insumos.actualizar_dato(id, "unidad_de_medida_local", dato);
+            creador_insumos.actualizar_dato(id, "equivalencia", dato);
             cargar_insumos();
         }
 
@@ -761,7 +696,7 @@ namespace paginaWeb.paginasFabrica
 
             string id = gridview_productos.Rows[fila].Cells[0].Text;
 
-            if (textbox_unidad.Text!=string.Empty && int.Parse(textbox_unidad.Text)>0)
+            if (textbox_unidad.Text != string.Empty && int.Parse(textbox_unidad.Text) > 0)
             {
                 DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_paquete") as DropDownList);
                 DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_tipo_unidad") as DropDownList);
@@ -820,5 +755,9 @@ namespace paginaWeb.paginasFabrica
 
         #endregion
 
+        protected void textbox_buscar_TextChanged(object sender, EventArgs e)
+        {
+            cargar_insumos();
+        }
     }
 }

@@ -814,7 +814,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_historial_despacho_proveedor_receptor(string base_de_datos, string tabla,string receptor)
+        public DataTable consultar_historial_despacho_proveedor_receptor(string base_de_datos, string tabla, string receptor)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -1779,7 +1779,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_historial_evaluacion_chequeo_segun_mes_y_año(string año, string mes,string id_sucursal)
+        public DataTable consultar_historial_evaluacion_chequeo_segun_mes_y_año(string año, string mes, string id_sucursal)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -2279,7 +2279,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_stock_insumos_segun_producto(string id_producto,string presentacion)
+        public DataTable consultar_stock_insumos_segun_producto(string id_producto, string presentacion)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -2550,7 +2550,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_tickets_segun_fecha(string mes, string año,string tipo_ticket)
+        public DataTable consultar_tickets_segun_fecha(string mes, string año, string tipo_ticket)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -2820,7 +2820,7 @@ namespace modulos
 
             return retorno;
         }
-        public DataTable consultar_conteo_stock_segun_fecha_e_id(string id_producto,string dia, string mes, string año)
+        public DataTable consultar_conteo_stock_segun_fecha_e_id(string id_producto, string dia, string mes, string año)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             DataTable retorno;
@@ -2828,7 +2828,7 @@ namespace modulos
 
             try
             {
-                query = "SELECT * FROM " + base_de_datos + ".conteo_stock WHERE activa=1 and id_producto='"+id_producto+"' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "';";
+                query = "SELECT * FROM " + base_de_datos + ".conteo_stock WHERE activa=1 and id_producto='" + id_producto + "' and YEAR(fecha)='" + año + "' and MONTH(fecha)='" + mes + "' and DAY(fecha)='" + dia + "';";
 
 
                 retorno = base_datos.READ(query);
@@ -2845,29 +2845,15 @@ namespace modulos
 
         #region alterar tablas
 
-        public void agregar_columna(string base_de_datos, string tabla, string nombreColumna, string tipoDato,string valorDefault)
+        public void agregar_columna(string base_de_datos, string tabla, string nombreColumna, string tipoDato, string valorDefault)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
             string query;
 
             try
             {
-                // Verificar si la columna ya existe
-                query = $@"
-            SELECT COUNT(*)
-            FROM information_schema.COLUMNS
-            WHERE TABLE_SCHEMA = '{base_de_datos}' 
-              AND TABLE_NAME = '{tabla}' 
-              AND COLUMN_NAME = '{nombreColumna}';";
-
-                DataTable resultado = base_datos.READ(query);
-
-                // Si la columna no existe, la agregamos
-                if (resultado.Rows.Count > 0 && Convert.ToInt32(resultado.Rows[0][0]) == 0)
-                {
-                    query = $"ALTER TABLE {base_de_datos}.{tabla} ADD COLUMN {nombreColumna} DOUBLE DEFAULT 0;";
-                    base_datos.EXECUTE(query);
-                }
+                query = $"ALTER TABLE {base_de_datos}.{tabla} ADD COLUMN {nombreColumna} DOUBLE DEFAULT 0;";
+                base_datos.EXECUTE(query);
             }
             catch (Exception ex)
             {
