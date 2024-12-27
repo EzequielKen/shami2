@@ -2842,6 +2842,40 @@ namespace modulos
             return retorno;
         }
         #endregion
+
+        #region alterar tablas
+
+        public void agregar_columna(string base_de_datos, string tabla, string nombreColumna, string tipoDato,string valorDefault)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            string query;
+
+            try
+            {
+                // Verificar si la columna ya existe
+                query = $@"
+            SELECT COUNT(*)
+            FROM information_schema.COLUMNS
+            WHERE TABLE_SCHEMA = '{base_de_datos}' 
+              AND TABLE_NAME = '{tabla}' 
+              AND COLUMN_NAME = '{nombreColumna}';";
+
+                DataTable resultado = base_datos.READ(query);
+
+                // Si la columna no existe, la agregamos
+                if (resultado.Rows.Count > 0 && Convert.ToInt32(resultado.Rows[0][0]) == 0)
+                {
+                    query = $"ALTER TABLE {base_de_datos}.{tabla} ADD COLUMN {nombreColumna} DOUBLE DEFAULT 0;";
+                    base_datos.EXECUTE(query);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al agregar la columna a la tabla: {ex.Message}", ex);
+            }
+        }
+
+        #endregion
     }
 
 

@@ -136,7 +136,7 @@ namespace _02___sistemas
                 resumen.Rows[fila]["incremento"] = Math.Ceiling(incremento);
                 semanas_del_mes = ObtenerSemanasDelMesActual();
                 objetivo = incremento / semanas_del_mes;
-                resumen.Rows[fila]["objetivo"] = Math.Ceiling(objetivo); 
+                resumen.Rows[fila]["objetivo"] = Math.Ceiling(objetivo);
                 resumen.Rows[fila]["objetivo"] = Math.Ceiling(objetivo);
 
                 produccion_semanal = double.Parse(resumen.Rows[fila]["produccion_semanal"].ToString());
@@ -234,14 +234,14 @@ namespace _02___sistemas
         private string obtener_produccion_semanal(string id)
         {
             double produccion_diaria;
-            double produccion_total=0;
+            double produccion_total = 0;
             for (int fila = 0; fila <= produccion_semanal.Rows.Count - 1; fila++)
             {
                 for (int columna = produccion_semanal.Columns["producto_1"].Ordinal; columna <= produccion_semanal.Columns.Count - 1; columna++)
                 {
                     if (funciones.IsNotDBNull(produccion_semanal.Rows[fila][columna]))
                     {
-                        if (id == funciones.obtener_dato(produccion_semanal.Rows[fila][columna].ToString(),1))
+                        if (id == funciones.obtener_dato(produccion_semanal.Rows[fila][columna].ToString(), 1))
                         {
                             produccion_diaria = double.Parse(funciones.obtener_dato(produccion_semanal.Rows[fila][columna].ToString(), 4));
                             produccion_total = produccion_total + produccion_diaria;
@@ -371,7 +371,7 @@ namespace _02___sistemas
                 columna = pedidos.Columns["producto_1"].Ordinal;
                 for (int fila = 0; fila <= pedidos.Rows.Count - 1; fila++)
                 {
-                    
+
                     legado = pedidos.Rows[fila]["legado"].ToString();
                     tipo_de_acuerdo = pedidos.Rows[fila]["tipo_de_acuerdo"].ToString();
                     acuerdo_de_precios_dato = pedidos.Rows[fila]["acuerdo_de_precios"].ToString();
@@ -655,7 +655,12 @@ namespace _02___sistemas
                                     }
                                     else
                                     {
-                                        double pinchos_entregados = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8));
+                                        string idpedido = pedidos.Rows[fila]["id"].ToString();
+                                        double pinchos_entregados = 0;
+                                        if (funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8) != "N/A")
+                                        {
+                                            pinchos_entregados = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8));
+                                        }
                                         cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
                                         cantidad_pincho = cantidad_pincho + pinchos_entregados;
                                         resumen.Rows[fila_resumen]["pincho"] = "si";

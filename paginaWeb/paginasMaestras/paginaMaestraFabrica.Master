@@ -199,6 +199,9 @@
                         {%>
 
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_insumos.aspx">Crear Productos</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/proveedores_fabrica.aspx">Proveedores</a>
                     </li>
                     <li class="nav-item">

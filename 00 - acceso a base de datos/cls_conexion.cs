@@ -130,8 +130,33 @@ namespace acceso_a_base_de_datos
                 }
                 return retorno;
             }
-        
-     
+
+
+        #endregion
+
+        #region execute
+        public bool EXECUTE(string query)
+        {
+            bool retorno = false;
+            try
+            {
+                abrir_conexion(); // Abre la conexión a la base de datos
+                comando = new MySqlCommand(query, conexion);
+                comando.ExecuteNonQuery(); // Ejecuta la consulta sin esperar un resultado
+                retorno = true; // Indica que la ejecución fue exitosa
+            }
+            catch (Exception ex)
+            {
+                retorno = false; // Indica que ocurrió un error
+                throw new Exception($"Error al ejecutar la consulta: {ex.Message}", ex);
+            }
+            finally
+            {
+                cerrar_conexion(); // Cierra la conexión en cualquier caso
+            }
+            return retorno;
+        }
+
         #endregion
     }
 }
