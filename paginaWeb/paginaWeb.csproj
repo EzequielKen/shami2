@@ -251,6 +251,7 @@
     <Content Include="paginasFabrica\confirmar_conteo_stock.aspx" />
     <Content Include="paginasFabrica\conteo_de_stock.aspx" />
     <Content Include="paginasFabrica\crear_insumos.aspx" />
+    <Content Include="paginasFabrica\crear_producto_terminado.aspx" />
     <Content Include="paginasFabrica\crear_ticket.aspx" />
     <Content Include="paginasFabrica\historial_de_despacho_fabrica_fatay.aspx" />
     <Content Include="paginasFabrica\historial_de_stock_fabrica_fatay.aspx" />
@@ -594,6 +595,13 @@
     </Compile>
     <Compile Include="paginasFabrica\crear_insumos.aspx.designer.cs">
       <DependentUpon>crear_insumos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_producto_terminado.aspx.cs">
+      <DependentUpon>crear_producto_terminado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_producto_terminado.aspx.designer.cs">
+      <DependentUpon>crear_producto_terminado.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\crear_ticket.aspx.cs">
       <DependentUpon>crear_ticket.aspx</DependentUpon>

@@ -40,6 +40,7 @@ namespace _03___sistemas_fabrica
         string servidor, puerto, usuario_dato, contraseña_BD, base_de_datos;
 
         DataTable insumos_fabrica;
+        DataTable productos_terminado;
         #endregion
 
         #region carga a base de datos
@@ -100,10 +101,10 @@ namespace _03___sistemas_fabrica
             consultas.agregar_columna(base_de_datos, "acuerdo_de_precios", nueva_columna, "DOUBLE", "0");
         }
 
-        public void actualizar_dato(string id, string columna,string dato)
+        public void actualizar_dato(string id, string columna, string dato)
         {
-            string actualizar = "`"+columna+"` = '"+dato+"'";
-            consultas.actualizar_tabla(base_de_datos, "insumos_fabrica",actualizar,id);
+            string actualizar = "`" + columna + "` = '" + dato + "'";
+            consultas.actualizar_tabla(base_de_datos, "insumos_fabrica", actualizar, id);
         }
         #endregion
 
@@ -111,6 +112,10 @@ namespace _03___sistemas_fabrica
         private void consultar_insumos_fabrica()
         {
             insumos_fabrica = consultas.consultar_tabla_completa(base_de_datos, "insumos_fabrica");
+        }
+        private void consultar_productos_terminados()
+        {
+            productos_terminado = consultas.consultar_tabla_completa(base_de_datos, "proveedor_villamaipu");
         }
         #endregion
 
@@ -131,14 +136,18 @@ namespace _03___sistemas_fabrica
         public string get_ultimo_num_categoria()
         {
             consultar_insumos_fabrica();
-            insumos_fabrica.Columns.Add("orden", typeof(int));
+            DataTable tipo_producto = new DataTable();
+            tipo_producto.Columns.Add("orden", typeof(int));
+            int ultima_fila;
             for (int fila = 0; fila <= insumos_fabrica.Rows.Count - 1; fila++)
             {
-                insumos_fabrica.Rows[fila]["orden"] = int.Parse(funciones.obtener_dato(insumos_fabrica.Rows[fila]["tipo_producto"].ToString(), 1));
+                tipo_producto.Rows.Add();
+                ultima_fila = tipo_producto.Rows.Count - 1;
+                tipo_producto.Rows[ultima_fila]["orden"] = int.Parse(funciones.obtener_dato(insumos_fabrica.Rows[fila]["tipo_producto"].ToString(), 1));
             }
-            insumos_fabrica.DefaultView.Sort = "orden asc";
-            insumos_fabrica = insumos_fabrica.DefaultView.ToTable();
-            return insumos_fabrica.Rows[insumos_fabrica.Rows.Count - 1]["orden"].ToString();
+            tipo_producto.DefaultView.Sort = "orden asc";
+            tipo_producto = tipo_producto.DefaultView.ToTable();
+            return tipo_producto.Rows[tipo_producto.Rows.Count - 1]["orden"].ToString();
         }
         #endregion
     }
