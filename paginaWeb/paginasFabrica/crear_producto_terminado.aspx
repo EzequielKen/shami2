@@ -60,22 +60,6 @@
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="Tipo Producto Local">
-                            <ItemTemplate>
-                                <label>Tipo Producto Local</label>
-                                <asp:DropDownList ID="dropdown_tipo_producto_local" CssClass="form-select" runat="server"  AutoPostBack="true">
-                                </asp:DropDownList>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-
-                        <asp:TemplateField HeaderText="Unidad tabla produccion">
-                            <ItemTemplate>
-                                <label>Unidad tabla produccion</label>
-                                <asp:DropDownList ID="dropdown_unidad_tabla_produccion" CssClass="form-select" runat="server"  AutoPostBack="true">
-                                </asp:DropDownList>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-
                         <asp:TemplateField HeaderText="Venta">
                             <ItemTemplate>
                                 <label>Venta</label>
@@ -86,25 +70,6 @@
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="Producto Fabrica Fatay">
-                            <ItemTemplate>
-                                <label>Producto Fabrica Fatay</label>
-                                <asp:DropDownList ID="dropdown_fabrica_fatay" CssClass="form-select" runat="server"  AutoPostBack="true">
-                                    <asp:ListItem Text="Si" />
-                                    <asp:ListItem Text="No" />
-                                </asp:DropDownList>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-
-                        <asp:TemplateField HeaderText="Producto Caballito">
-                            <ItemTemplate>
-                                <label>Producto Caballito</label>
-                                <asp:DropDownList ID="dropdown_caballito" CssClass="form-select" runat="server"  AutoPostBack="true">
-                                    <asp:ListItem Text="Si" />
-                                    <asp:ListItem Text="No" />
-                                </asp:DropDownList>
-                            </ItemTemplate>
-                        </asp:TemplateField>
 
                         <asp:TemplateField HeaderText="Peresentacion venta">
                             <ItemTemplate>
@@ -127,21 +92,11 @@
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="Tabla produccion">
-                            <ItemTemplate>
-                                <label>Tabla produccion</label>
-                                <asp:DropDownList ID="dropdown_tabla_produccion" CssClass="form-select" runat="server" AutoPostBack="true">
-                                    <asp:ListItem Text="Si" />
-                                    <asp:ListItem Text="No" />
-                                </asp:DropDownList>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-
                     </Columns>
                 </asp:GridView>
 
             </div>
         </div>
-        >
+        
     </div>
 </asp:Content>

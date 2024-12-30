@@ -517,6 +517,8 @@ namespace paginaWeb.paginasFabrica
             {
                 creador_insumos.actualizar_dato(id, "activa", "0");
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
 
         }
@@ -533,6 +535,8 @@ namespace paginaWeb.paginasFabrica
             {
                 creador_insumos.actualizar_dato(id, "producto", texbox_producto.Text);
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -546,7 +550,8 @@ namespace paginaWeb.paginasFabrica
             string id = gridview_productos.Rows[fila].Cells[0].Text;
 
             creador_insumos.actualizar_dato(id, "tipo_producto", dropdown_tipo_producto.SelectedItem.Text);
-
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -577,6 +582,8 @@ namespace paginaWeb.paginasFabrica
                 creador_insumos.actualizar_dato(id, "bebida", "0");
                 creador_insumos.actualizar_dato(id, "descartable", "1");
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -590,7 +597,8 @@ namespace paginaWeb.paginasFabrica
             string id = gridview_productos.Rows[fila].Cells[0].Text;
 
             creador_insumos.actualizar_dato(id, "tipo_producto_local", dropdown_tipo_producto_local.SelectedItem.Text);
-
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -604,7 +612,8 @@ namespace paginaWeb.paginasFabrica
             string id = gridview_productos.Rows[fila].Cells[0].Text;
 
             creador_insumos.actualizar_dato(id, "unidad_tabla_produccion", dropdown_unidad_tabla_produccion.SelectedItem.Text);
-
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -625,6 +634,8 @@ namespace paginaWeb.paginasFabrica
             {
                 creador_insumos.actualizar_dato(id, "venta", "0");
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -644,6 +655,8 @@ namespace paginaWeb.paginasFabrica
             {
                 creador_insumos.actualizar_dato(id, "productos_fabrica_fatay", "0");
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -663,6 +676,8 @@ namespace paginaWeb.paginasFabrica
             {
                 creador_insumos.actualizar_dato(id, "productos_caballito", "0");
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -684,6 +699,8 @@ namespace paginaWeb.paginasFabrica
             string dato = paquete + "-" + unidad + "-" + tipo_unidad;
             creador_insumos.actualizar_dato(id, "unidad_de_medida_local", dato);
             creador_insumos.actualizar_dato(id, "equivalencia", dato);
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -709,6 +726,8 @@ namespace paginaWeb.paginasFabrica
                 creador_insumos.actualizar_dato(id, "unidad_de_medida_local", dato);
                 creador_insumos.actualizar_dato(id, "equivalencia", dato);
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -730,6 +749,8 @@ namespace paginaWeb.paginasFabrica
             string dato = paquete + "-" + unidad + "-" + tipo_unidad;
             creador_insumos.actualizar_dato(id, "unidad_de_medida_local", dato);
             creador_insumos.actualizar_dato(id, "equivalencia", dato);
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
@@ -750,6 +771,8 @@ namespace paginaWeb.paginasFabrica
             {
                 creador_insumos.actualizar_dato(id, "tabla_produccion", "0");
             }
+            insumosBD = creador_insumos.get_insumos_fabrica();
+            Session.Add("insumoBD", insumosBD);
             cargar_insumos();
         }
 
