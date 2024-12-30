@@ -394,6 +394,7 @@ namespace paginaWeb.paginasFabrica
                 string id = gridView_ordenes.Rows[int.Parse(index)].Cells[0].Text;
 
                 string proveedores_de_fabrica_seleccionado = gridView_ordenes.Rows[int.Parse(index)].Cells[1].Text;
+                 proveedores_de_fabrica_seleccionado = HttpUtility.HtmlDecode(proveedores_de_fabrica_seleccionado);
                 Session.Add("proveedores_de_fabrica_seleccionado", proveedores_de_fabrica_seleccionado);
                 Session.Add("estado_pedido", gridView_ordenes.Rows[int.Parse(index)].Cells[7].Text);
                 Session.Add("num_orden_de_compra_seleccionada", id);
