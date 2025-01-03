@@ -539,6 +539,8 @@ namespace paginaWeb.paginasFabrica
                 Session.Add("categoriasBD", creador.get_categorias());
                 configurar_controles();
                 cargar_productos();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "mostrarModal", "mostrarModal();", true);
+
             }
         }
 

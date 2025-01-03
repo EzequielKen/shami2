@@ -4,7 +4,14 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:ScriptManager runat="server" />
+     <script type="text/javascript">
+         function mostrarModal() {
+             alert("Producto Creado Exitosamente.");
+             $('#ticketModal').modal('show');
+         }
+     </script>
     <asp:UpdatePanel runat="server">
+       
         <ContentTemplate>
             <div class="container-fluid">
                 <div class="row">
