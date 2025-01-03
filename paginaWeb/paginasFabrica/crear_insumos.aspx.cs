@@ -201,7 +201,7 @@ namespace paginaWeb.paginasFabrica
         {
             insumosBD = (DataTable)Session["insumoBD"];
             llenar_dropDownList(insumosBD);
-            llenar_TipoProducto(insumosBD);
+            llenar_TipoProducto((DataTable)Session["categoriasBD"]);
             llenar_TipoProducto_local(insumosBD);
             llenar_unidad_tabla_produccion(insumosBD);
         }
@@ -240,9 +240,6 @@ namespace paginaWeb.paginasFabrica
             int num_item = 1;
             ListItem item;
 
-            //        item = new ListItem("Todos", num_item.ToString());
-            //        dropDown_tipo.Items.Add(item);
-            //        num_item = num_item + 1;
 
             tipo_seleccionado = dt.Rows[0]["tipo_producto"].ToString();
             item = new ListItem(dt.Rows[0]["tipo_producto"].ToString(), num_item.ToString());
@@ -268,31 +265,27 @@ namespace paginaWeb.paginasFabrica
             dropdown_tipo_producto_local_nuevo.Items.Clear();
             int num_item = 1;
             ListItem item;
-            dt.DefaultView.Sort = "tipo_producto_local asc";
-            dt = dt.DefaultView.ToTable();
-            //        item = new ListItem("Todos", num_item.ToString());
-            //        dropDown_tipo.Items.Add(item);
-            //        num_item = num_item + 1;
-
-            tipo_seleccionado = dt.Rows[0]["tipo_producto_local"].ToString();
-            item = new ListItem(dt.Rows[0]["tipo_producto_local"].ToString(), num_item.ToString());
-            dropdown_tipo_producto_local_nuevo.Items.Add(dt.Rows[0]["tipo_producto_local"].ToString());
+            // dt.DefaultView.Sort = "tipo_producto asc";
+            // dt = dt.DefaultView.ToTable();
+            tipo_seleccionado = dt.Rows[0]["tipo_producto"].ToString();
+            item = new ListItem(dt.Rows[0]["tipo_producto"].ToString(), num_item.ToString());
+            dropdown_tipo_producto_local_nuevo.Items.Add(dt.Rows[0]["tipo_producto"].ToString());
             num_item = num_item + 1;
             for (int fila = 1; fila <= dt.Rows.Count - 1; fila++)
             {
 
-
-                if (dropdown_tipo_producto_local_nuevo.Items[num_item - 2].Text != dt.Rows[fila]["tipo_producto_local"].ToString())
+                if (dropdown_tipo_producto_local_nuevo.Items[num_item - 2].Text != dt.Rows[fila]["tipo_producto"].ToString())
                 {
 
-                    item = new ListItem(dt.Rows[fila]["tipo_producto_local"].ToString(), num_item.ToString());
-                    dropdown_tipo_producto_local_nuevo.Items.Add(dt.Rows[fila]["tipo_producto_local"].ToString());
+                    string dato = dt.Rows[fila]["tipo_producto"].ToString();
+                    item = new ListItem(dt.Rows[fila]["tipo_producto"].ToString(), num_item.ToString());
+                    dropdown_tipo_producto_local_nuevo.Items.Add(dt.Rows[fila]["tipo_producto"].ToString());
                     num_item = num_item + 1;
 
                 }
 
             }
-            dropdown_tipo_producto_local_nuevo.SelectedValue = "N/A";
+
         }
         private void llenar_unidad_tabla_produccion(DataTable dt)
         {
@@ -348,6 +341,7 @@ namespace paginaWeb.paginasFabrica
             {
                 insumosBD = creador_insumos.get_insumos_fabrica();
                 Session.Add("insumoBD", insumosBD);
+                Session.Add("categoriasBD", creador_insumos.get_categorias());
                 configurar_controles();
                 cargar_insumos();
             }
@@ -492,6 +486,7 @@ namespace paginaWeb.paginasFabrica
                 textbox_nuevo_tipo.Text = string.Empty;
                 insumosBD = creador_insumos.get_insumos_fabrica();
                 Session.Add("insumoBD", insumosBD);
+                Session.Add("categoriasBD", creador_insumos.get_categorias());
                 configurar_controles();
                 cargar_insumos();
             }

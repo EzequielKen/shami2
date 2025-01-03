@@ -202,6 +202,9 @@
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_insumos.aspx">Crear Insumos</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="/paginasFabrica/crear_producto_terminado.aspx">Crear producto terminado</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasFabrica/proveedores_fabrica.aspx">Proveedores</a>
                     </li>
                     <li class="nav-item">
@@ -342,6 +345,8 @@
                             <li><a class="dropdown-item" href="/paginasFabrica/historial_orden_de_compras.aspx">Historial de Compras a Proveedores</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/cuentas_por_pagar.aspx">Cuentas por Pagar a Proveedores</a></li>
                             <li><a class="dropdown-item" href="/paginasFabrica/resumen_deuda_proveedores.aspx">Resumen de Deudas a Proveedores</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/crear_insumos.aspx">Crear Insumos</a></li>
+                            <li><a class="dropdown-item" href="/paginasFabrica/crear_producto_terminado.aspx">Crear Producto Terminado</a></li>
                         </ul>
                     </li>
 

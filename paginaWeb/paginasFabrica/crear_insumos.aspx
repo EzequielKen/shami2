@@ -28,7 +28,7 @@
                                 <asp:ListItem Text="Bebida" />
                                 <asp:ListItem Text="Descartable" />
                             </asp:DropDownList>
- <!--                           <label class="col-form-label">Tipo Producto Local</label>
+                            <!--                           <label class="col-form-label">Tipo Producto Local</label>
                             <asp:DropDownList ID="dropdown_tipo_producto_local_nuevo" CssClass="form-select" runat="server">
                             </asp:DropDownList>
                             <label class="col-form-label">Unidad tabla produccion</label>
@@ -78,7 +78,7 @@
                                 <asp:ListItem Text="Kg" />
                             </asp:DropDownList>
 
-<!--                            <label class="col-form-label">Tabla produccion</label>
+                            <!--                            <label class="col-form-label">Tabla produccion</label>
                             <asp:DropDownList ID="dropdown_tabla_produccion_nuevo" CssClass="form-select" runat="server">
                                 <asp:ListItem Text="Si" />
                                 <asp:ListItem Text="No" />

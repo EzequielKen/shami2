@@ -132,22 +132,71 @@ namespace _03___sistemas_fabrica
             insumos_fabrica = insumos_fabrica.DefaultView.ToTable();
             return insumos_fabrica;
         }
+        public DataTable get_categorias()
+        {
+            consultar_insumos_fabrica();
+            consultar_productos_terminados();
+            DataTable categorias = new DataTable();
+            categorias.Columns.Add("tipo_producto", typeof(string));
 
+            for (int fila = 0; fila <= insumos_fabrica.Rows.Count - 1; fila++)
+            {
+                if (int.TryParse(funciones.obtener_dato(insumos_fabrica.Rows[fila]["tipo_producto"].ToString(), 1), out int orden))
+                {
+                    categorias.Rows.Add();
+                    categorias.Rows[categorias.Rows.Count - 1]["tipo_producto"] = insumos_fabrica.Rows[fila]["tipo_producto"].ToString();
+                }
+            }
+            for (int fila = 0; fila <= productos_terminado.Rows.Count - 1; fila++)
+            {
+                if (int.TryParse(funciones.obtener_dato(productos_terminado.Rows[fila]["tipo_producto"].ToString(), 1), out int orden))
+                {
+                    categorias.Rows.Add();
+                    categorias.Rows[categorias.Rows.Count - 1]["tipo_producto"] = productos_terminado.Rows[fila]["tipo_producto"].ToString();
+                }
+            }
+            categorias.Columns.Add("orden", typeof(int));
+            for (int fila = 0; fila <= categorias.Rows.Count - 1; fila++)
+            {
+                string dato = categorias.Rows[fila]["tipo_producto"].ToString();
+                categorias.Rows[fila]["orden"] = int.Parse(funciones.obtener_dato(categorias.Rows[fila]["tipo_producto"].ToString(), 1));
+            }
+            categorias.DefaultView.Sort = "orden asc";
+            categorias = categorias.DefaultView.ToTable();
+            return categorias;
+        }
         public string get_ultimo_num_categoria()
         {
             consultar_insumos_fabrica();
-            DataTable tipo_producto = new DataTable();
-            tipo_producto.Columns.Add("orden", typeof(int));
-            int ultima_fila;
+            consultar_productos_terminados();
+            DataTable categorias = new DataTable();
+            categorias.Columns.Add("tipo_producto", typeof(string));
+
             for (int fila = 0; fila <= insumos_fabrica.Rows.Count - 1; fila++)
             {
-                tipo_producto.Rows.Add();
-                ultima_fila = tipo_producto.Rows.Count - 1;
-                tipo_producto.Rows[ultima_fila]["orden"] = int.Parse(funciones.obtener_dato(insumos_fabrica.Rows[fila]["tipo_producto"].ToString(), 1));
+                if (int.TryParse(funciones.obtener_dato(insumos_fabrica.Rows[fila]["tipo_producto"].ToString(), 1), out int orden))
+                {
+                    categorias.Rows.Add();
+                    categorias.Rows[categorias.Rows.Count - 1]["tipo_producto"] = insumos_fabrica.Rows[fila]["tipo_producto"].ToString();
+                }
             }
-            tipo_producto.DefaultView.Sort = "orden asc";
-            tipo_producto = tipo_producto.DefaultView.ToTable();
-            return tipo_producto.Rows[tipo_producto.Rows.Count - 1]["orden"].ToString();
+            for (int fila = 0; fila <= productos_terminado.Rows.Count - 1; fila++)
+            {
+                if (int.TryParse(funciones.obtener_dato(productos_terminado.Rows[fila]["tipo_producto"].ToString(), 1), out int orden))
+                {
+                    categorias.Rows.Add();
+                    categorias.Rows[categorias.Rows.Count - 1]["tipo_producto"] = productos_terminado.Rows[fila]["tipo_producto"].ToString();
+                }
+            }
+            categorias.Columns.Add("orden", typeof(int));
+            for (int fila = 0; fila <= categorias.Rows.Count - 1; fila++)
+            {
+                string dato = categorias.Rows[fila]["tipo_producto"].ToString();
+                categorias.Rows[fila]["orden"] = int.Parse(funciones.obtener_dato(categorias.Rows[fila]["tipo_producto"].ToString(), 1));
+            }
+            categorias.DefaultView.Sort = "orden asc";
+            categorias = categorias.DefaultView.ToTable();
+            return categorias.Rows[categorias.Rows.Count - 1]["orden"].ToString();
         }
         #endregion
     }

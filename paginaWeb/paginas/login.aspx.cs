@@ -134,6 +134,11 @@ namespace paginaWeb
                     }
                     else
                     {
+                        if (usuarioBD.Rows[0]["sucursal"].ToString()=="31")
+                        {
+                            Session.Add("proveedorBD", login_sistema.get_proveedor_seleccionado("1"));
+                            proveedorBD = (DataTable)Session["proveedorBD"];
+                        }
                         //Response.Redirect("~/paginas/proveedores.aspx", false);
                         Response.Redirect("~/paginas/landing_page_local.aspx", false);
                     }
