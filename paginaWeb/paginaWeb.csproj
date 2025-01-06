@@ -246,10 +246,12 @@
     <Content Include="paginasFabrica\administracion_de_equipos.aspx" />
     <Content Include="paginasFabrica\administrar_lista_chequeo_perfiles.aspx" />
     <Content Include="paginasFabrica\administrar_actividades_lista_chequeo_locales.aspx" />
+    <Content Include="paginasFabrica\crear_usuarios_sucursal.aspx" />
     <Content Include="paginasFabrica\analisis_de_produccion.aspx" />
     <Content Include="paginasFabrica\analisis_de_produccion_fabrica_fatay.aspx" />
     <Content Include="paginasFabrica\confirmar_conteo_stock.aspx" />
     <Content Include="paginasFabrica\conteo_de_stock.aspx" />
+    <Content Include="paginasFabrica\crear_clientes.aspx" />
     <Content Include="paginasFabrica\crear_insumos.aspx" />
     <Content Include="paginasFabrica\crear_producto_terminado.aspx" />
     <Content Include="paginasFabrica\crear_ticket.aspx" />
@@ -561,6 +563,13 @@
     <Compile Include="paginasFabrica\administrar_actividades_lista_chequeo_locales.aspx.designer.cs">
       <DependentUpon>administrar_actividades_lista_chequeo_locales.aspx</DependentUpon>
     </Compile>
+    <Compile Include="paginasFabrica\crear_usuarios_sucursal.aspx.cs">
+      <DependentUpon>crear_usuarios_sucursal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_usuarios_sucursal.aspx.designer.cs">
+      <DependentUpon>crear_usuarios_sucursal.aspx</DependentUpon>
+    </Compile>
     <Compile Include="paginasFabrica\analisis_de_produccion.aspx.cs">
       <DependentUpon>analisis_de_produccion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -588,6 +597,13 @@
     </Compile>
     <Compile Include="paginasFabrica\conteo_de_stock.aspx.designer.cs">
       <DependentUpon>conteo_de_stock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_clientes.aspx.cs">
+      <DependentUpon>crear_clientes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasFabrica\crear_clientes.aspx.designer.cs">
+      <DependentUpon>crear_clientes.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasFabrica\crear_insumos.aspx.cs">
       <DependentUpon>crear_insumos.aspx</DependentUpon>

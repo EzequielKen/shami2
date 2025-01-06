@@ -1716,6 +1716,27 @@ namespace modulos
 
             return retorno;
         }
+        public DataTable consultar_todos_usuario_segun_sucural(string id_sucursal)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            DataTable retorno;
+            string query;
+
+            try
+            {
+                query = "SELECT * FROM " + base_de_datos + ".usuario WHERE sucursal='" + id_sucursal + "';";
+
+
+                retorno = base_datos.READ(query);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return retorno;
+        }
         public DataTable consultar_historial_chequeo_segun_fecha(string año, string mes, string dia, string hora_inicio, string hora_fin, string id_empleado, string id_sucursal, string turno)
         {
             cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
@@ -2852,7 +2873,7 @@ namespace modulos
 
             try
             {
-                query = $"ALTER TABLE {base_de_datos}.{tabla} ADD COLUMN {nombreColumna} DOUBLE DEFAULT 0;";
+                query = $"ALTER TABLE `{base_de_datos}`.`{tabla}` ADD COLUMN `{nombreColumna}` DOUBLE DEFAULT '0';";
                 base_datos.EXECUTE(query);
             }
             catch (Exception ex)
@@ -2860,7 +2881,21 @@ namespace modulos
                 throw new Exception($"Error al agregar la columna a la tabla: {ex.Message}", ex);
             }
         }
+        public void agregar_columna_tipo_acuerdo_fabrica(string base_de_datos, string tabla, string nombreColumna)
+        {
+            cls_conexion base_datos = new cls_conexion(servidor, puerto, usuario, password, base_de_datos);
+            string query;
 
+            try
+            {
+                query = $"ALTER TABLE `{base_de_datos}`.`{tabla}` ADD COLUMN `{nombreColumna}` CHAR(100) DEFAULT 'fabrica_a_local';";
+                base_datos.EXECUTE(query);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al agregar la columna a la tabla: {ex.Message}", ex);
+            }
+        }
         #endregion
     }
 
