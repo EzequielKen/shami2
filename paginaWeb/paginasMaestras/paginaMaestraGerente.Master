@@ -97,6 +97,9 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasGerente/visita_operativa_gerente.aspx">Visitas Operativas</a>
                     </li>
+                          <li class="nav-item">
+          <a class="nav-link btn btn-primary" href="/paginasGerente/crear_clientes_gerente.aspx">Crear Clientes</a>
+      </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="/paginasGerente/crear_ticket_gerente.aspx">Crear Ticket</a>
                     </li>

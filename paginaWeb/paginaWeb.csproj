@@ -316,7 +316,9 @@
     <Content Include="paginasGerente\administrar_tipo_movimiento_caja_chica.aspx" />
     <Content Include="paginasGerente\analisis_caja_chica.aspx" />
     <Content Include="paginasGerente\caja_chica.aspx" />
+    <Content Include="paginasGerente\crear_clientes_gerente.aspx" />
     <Content Include="paginasGerente\crear_ticket_gerente.aspx" />
+    <Content Include="paginasGerente\crear_usuarios_sucursal_gerente.aspx" />
     <Content Include="paginasGerente\cuentas_por_cobrar_gerente.aspx" />
     <Content Include="paginasGerente\cuentas_por_pagar_gerente.aspx" />
     <Content Include="paginasGerente\estadisticas_de_pedido_gerente.aspx" />
@@ -1053,12 +1055,26 @@
     <Compile Include="paginasGerente\caja_chica.aspx.designer.cs">
       <DependentUpon>caja_chica.aspx</DependentUpon>
     </Compile>
+    <Compile Include="paginasGerente\crear_clientes_gerente.aspx.cs">
+      <DependentUpon>crear_clientes_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\crear_clientes_gerente.aspx.designer.cs">
+      <DependentUpon>crear_clientes_gerente.aspx</DependentUpon>
+    </Compile>
     <Compile Include="paginasGerente\crear_ticket_gerente.aspx.cs">
       <DependentUpon>crear_ticket_gerente.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="paginasGerente\crear_ticket_gerente.aspx.designer.cs">
       <DependentUpon>crear_ticket_gerente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="paginasGerente\crear_usuarios_sucursal_gerente.aspx.cs">
+      <DependentUpon>crear_usuarios_sucursal_gerente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="paginasGerente\crear_usuarios_sucursal_gerente.aspx.designer.cs">
+      <DependentUpon>crear_usuarios_sucursal_gerente.aspx</DependentUpon>
     </Compile>
     <Compile Include="paginasGerente\cuentas_por_cobrar_gerente.aspx.cs">
       <DependentUpon>cuentas_por_cobrar_gerente.aspx</DependentUpon>

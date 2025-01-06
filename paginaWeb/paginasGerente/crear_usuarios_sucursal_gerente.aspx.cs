@@ -7,9 +7,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace paginaWeb.paginasFabrica
+namespace paginaWeb.paginasGerente
 {
-    public partial class administrar_usuarios_sucursal : System.Web.UI.Page
+    public partial class crear_usuarios_sucursal_gerente : System.Web.UI.Page
     {
         #region crear cliente
         private void crear_tabla_usuario()
@@ -19,7 +19,7 @@ namespace paginaWeb.paginasFabrica
             usuario.Columns.Add("contraseña", typeof(string));
 
             usuario.Columns.Add("id_sucursal_seleccionada", typeof(string));
-           
+
         }
         private void llenar_tabla_usuario()
         {
@@ -30,7 +30,7 @@ namespace paginaWeb.paginasFabrica
             usuario.Rows[usuario.Rows.Count - 1]["contraseña"] = textbox_contraseña_nuevo.Text;
             usuario.Rows[usuario.Rows.Count - 1]["id_sucursal_seleccionada"] = Session["id_sucursal_seleccionada"].ToString();
 
-           
+
 
         }
         private bool verificar_carga()
@@ -210,7 +210,7 @@ namespace paginaWeb.paginasFabrica
                 llenar_tabla_usuario();
                 creador.crear_usuario(usuario);
                 textbox_usuario_nuevo.Text = string.Empty;
-                textbox_contraseña_nuevo.Text =string.Empty;
+                textbox_contraseña_nuevo.Text = string.Empty;
                 usuarios_BD = creador.get_usuarios(Session["id_sucursal_seleccionada"].ToString());
                 Session.Add("usuarios_BD", usuarios_BD);
                 cargar_usuarios();
