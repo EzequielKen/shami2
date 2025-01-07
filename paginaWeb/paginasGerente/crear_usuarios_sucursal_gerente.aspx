@@ -14,6 +14,7 @@
         <ContentTemplate>
             <div class="container-fluid">
                 <div class="row">
+                    <h1>Crear Usuario</h1>
                     <div class="alert alert-light">
                         <div class="input-group">
                             <label class="align-content-center">Usuario</label>
