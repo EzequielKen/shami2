@@ -93,22 +93,22 @@ namespace _03___sistemas_fabrica
 
             consultas.insertar_en_tabla(base_de_datos, "insumos_fabrica", columnas, valores);
 
-            consultar_insumos_fabrica();
+            // consultar_insumos_fabrica();
 
-            DataTable acuerdo_de_precios = consultas.consultar_tabla(base_de_datos, "acuerdo_de_precios");
-            int ultima_columna = acuerdo_de_precios.Columns.Count - 1;
-            string nombre_ultima_columna = acuerdo_de_precios.Columns[ultima_columna].ColumnName;
-
-            int ultima_columna_tabla = int.Parse(nombre_ultima_columna.Replace("producto_", ""));
-            int id_insumo = int.Parse(insumos_fabrica.Rows[insumos_fabrica.Rows.Count - 1]["id"].ToString());
-            int nueva_columna_tabla = 0;
-            while (ultima_columna_tabla <= id_insumo)
-            {
-                nueva_columna_tabla = ultima_columna_tabla + 1;
-                string nueva_columna = "producto_" + nueva_columna_tabla.ToString();
-                consultas.agregar_columna(base_de_datos, "acuerdo_de_precios", nueva_columna, "DOUBLE", "0");
-                ultima_columna_tabla++;
-            }
+            //  DataTable acuerdo_de_precios = consultas.consultar_tabla(base_de_datos, "acuerdo_de_precios");
+            //  int ultima_columna = acuerdo_de_precios.Columns.Count - 1;
+            //  string nombre_ultima_columna = acuerdo_de_precios.Columns[ultima_columna].ColumnName;
+            //
+            //  int ultima_columna_tabla = int.Parse(nombre_ultima_columna.Replace("producto_", ""));
+            //  int id_insumo = int.Parse(insumos_fabrica.Rows[insumos_fabrica.Rows.Count - 1]["id"].ToString());
+            //  int nueva_columna_tabla = 0;
+            //   while (ultima_columna_tabla <= id_insumo)
+            //   {
+            //       nueva_columna_tabla = ultima_columna_tabla + 1;
+            //       string nueva_columna = "producto_" + nueva_columna_tabla.ToString();
+            //       consultas.agregar_columna(base_de_datos, "acuerdo_de_precios", nueva_columna, "DOUBLE", "0");
+            //       ultima_columna_tabla++;
+            //   }
         }
 
         public void actualizar_dato(string id, string columna, string dato)
