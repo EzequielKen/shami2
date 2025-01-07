@@ -481,6 +481,7 @@ namespace paginaWeb.paginasFabrica
             {
                 cargar_datos_insumo();
                 creador_insumos.crear_insumo(insumo);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "mostrarModal", "mostrarModal();", true);
 
                 texbox_producto_nuevo.Text = string.Empty;
                 textbox_unidad_nuevo.Text = string.Empty;
@@ -490,7 +491,6 @@ namespace paginaWeb.paginasFabrica
                 Session.Add("categoriasBD", creador_insumos.get_categorias());
                 configurar_controles();
                 cargar_insumos();
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "mostrarModal", "mostrarModal();", true);
             }
         }
         #endregion
