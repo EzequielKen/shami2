@@ -686,8 +686,8 @@ namespace paginaWeb.paginasFabrica
 
             string id = gridview_productos.Rows[fila].Cells[0].Text;
 
-            TextBox textbox_unidad = (gridview_productos.Rows[fila].Cells[10].FindControl("textbox_unidad") as TextBox);
-            DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_tipo_unidad") as DropDownList);
+            TextBox textbox_unidad = (gridview_productos.Rows[fila].Cells[7].FindControl("textbox_unidad") as TextBox);
+            DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_tipo_unidad") as DropDownList);
 
             string paquete = dropdown_paquete.SelectedItem.Text;
             string unidad = textbox_unidad.Text;
@@ -712,8 +712,8 @@ namespace paginaWeb.paginasFabrica
 
             if (textbox_unidad.Text != string.Empty && int.Parse(textbox_unidad.Text) > 0)
             {
-                DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_paquete") as DropDownList);
-                DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_tipo_unidad") as DropDownList);
+                DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_paquete") as DropDownList);
+                DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_tipo_unidad") as DropDownList);
 
                 string paquete = dropdown_paquete.SelectedItem.Text;
                 string unidad = textbox_unidad.Text;
@@ -736,8 +736,8 @@ namespace paginaWeb.paginasFabrica
 
             string id = gridview_productos.Rows[fila].Cells[0].Text;
 
-            DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[10].FindControl("dropdown_paquete") as DropDownList);
-            TextBox textbox_unidad = (gridview_productos.Rows[fila].Cells[10].FindControl("textbox_unidad") as TextBox);
+            DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_paquete") as DropDownList);
+            TextBox textbox_unidad = (gridview_productos.Rows[fila].Cells[7].FindControl("textbox_unidad") as TextBox);
 
             string paquete = dropdown_paquete.SelectedItem.Text;
             string unidad = textbox_unidad.Text;
