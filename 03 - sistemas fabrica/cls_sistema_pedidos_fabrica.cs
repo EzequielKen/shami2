@@ -1016,7 +1016,8 @@ namespace _03___sistemas_fabrica
 
             resumen_pedido.Rows[fila]["proveedor"] = proveedor;
 
-            resumen_pedido.Rows[fila]["precio"] = acuerdo_de_precios.Rows[fila_acuerdo]["producto_" + id].ToString();
+            //resumen_pedido.Rows[fila]["precio"] = acuerdo_de_precios.Rows[fila_acuerdo]["producto_" + id].ToString();
+            resumen_pedido.Rows[fila]["precio"] = productos_proveedor.Rows[fila_producto]["precio"].ToString();
 
             resumen_pedido.Rows[fila]["pedido_dato"] = pedido_dato; //factura_por_kilo 
 
