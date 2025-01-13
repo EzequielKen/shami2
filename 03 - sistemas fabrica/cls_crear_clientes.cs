@@ -72,7 +72,7 @@ namespace _03___sistemas_fabrica
 
             crear_tipo_acuerdo(sucursal.Rows[0]["sucursal"].ToString());
 
-            consultas.agregar_columna_tipo_acuerdo_fabrica(base_de_datos, "tipo_acuerdo_fabrica_a_marca", sucursal.Rows[0]["sucursal"].ToString());
+           // consultas.agregar_columna_tipo_acuerdo_fabrica(base_de_datos, "tipo_acuerdo_fabrica_a_marca", sucursal.Rows[0]["sucursal"].ToString());
         }
         private void crear_tipo_acuerdo(string sucursal)
         {

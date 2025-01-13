@@ -91,7 +91,7 @@ namespace modulos
         private void consultar_tipo_acuerdo()
         {
             tipo_acuerdo = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo");
-            tipo_acuerdo_fabrica = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo_fabrica_a_marca");
+          //  tipo_acuerdo_fabrica = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo_fabrica_a_marca");
         }
         private void consultar_acuerdo_de_precio_activo(string nombre_proveedor)
         {
@@ -208,7 +208,7 @@ namespace modulos
             consultar_acuerdo_de_precios();
 
             tipo_de_acuerdo = obtener_tipo_de_acuerdo(proveedor_seleccionado);
-            tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor_seleccionado);
+            //tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor_seleccionado);
             fila_acuerdo_de_precios = obtener_fila_de_acuerdo(tipo_de_acuerdo, proveedor_seleccionado);
 
 

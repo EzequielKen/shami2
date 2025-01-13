@@ -145,7 +145,7 @@ namespace modulos
         private void consultar_tipo_acuerdo()
         {
             tipo_acuerdo = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo");
-            tipo_acuerdo_fabrica = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo_fabrica_a_marca");
+          //  tipo_acuerdo_fabrica = consultas.consultar_tabla(base_de_datos, "tipo_acuerdo_fabrica_a_marca");
         }
         private void consultar_acuerdo_de_precios()
         {
@@ -181,7 +181,7 @@ namespace modulos
             consultar_acuerdo_de_precios();
 
             tipo_de_acuerdo = obtener_tipo_de_acuerdo(proveedor_seleccionado);
-            tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor_seleccionado);
+           // tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor_seleccionado);
             fila_acuerdo_de_precios = obtener_fila_de_acuerdo(tipo_de_acuerdo, proveedor_seleccionado);
 
 
@@ -529,8 +529,8 @@ namespace modulos
                 columnas = armar_query_columna(columnas, "calculado_proveedor", false);
                 valores = armar_query_valores(valores, "no", false);
                 //tipo_de_acuerdo_fabrica
-                columnas = armar_query_columna(columnas, "tipo_de_acuerdo_fabrica", false);
-                valores = armar_query_valores(valores, tipo_de_acuerdo_fabrica, false);
+               //columnas = armar_query_columna(columnas, "tipo_de_acuerdo_fabrica", false);
+               //valores = armar_query_valores(valores, tipo_de_acuerdo_fabrica, false);
                 //mensaje
                 //inicio
                 columnas = armar_query_columna(columnas, "inicio", false);
@@ -805,7 +805,7 @@ namespace modulos
             tipo_de_acuerdo = obtener_tipo_de_acuerdo(proveedor);
             int fila_acuerdo = obtener_fila_de_acuerdo(tipo_de_acuerdo, proveedor);
             acuerdo_de_precio = acuerdo_de_precios.Rows[fila_acuerdo]["acuerdo"].ToString();
-            tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor);
+           // tipo_de_acuerdo_fabrica = obtener_tipo_de_acuerdo_fabrica(proveedor);
         }
         private int obtener_ultimo_num_pedido_enviado(DataTable sucursalBD)
         {
