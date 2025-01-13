@@ -226,8 +226,10 @@ namespace modulos
             consultar_tipo_acuerdo();
             consultar_acuerdo_de_precios();
 
-            tipo_de_acuerdo_proveedor_a_fabrica = obtener_tipo_acuerdo_fabrica_a_marca(proveedor);
-            fila_acuerdo_de_precios = obtener_fila_de_acuerdo(tipo_de_acuerdo_proveedor_a_fabrica, proveedor);
+           // tipo_de_acuerdo_proveedor_a_fabrica = obtener_tipo_acuerdo_fabrica_a_marca(proveedor);
+            //tipo_de_acuerdo = obtener_tipo_acuerdo_fabrica_a_marca(proveedor);
+            tipo_de_acuerdo = "fabrica_a_local";
+            fila_acuerdo_de_precios = obtener_fila_de_acuerdo(tipo_de_acuerdo, proveedor);
 
 
             acuerdo_de_precio = acuerdo_de_precios.Rows[fila_acuerdo_de_precios]["acuerdo"].ToString();
@@ -285,7 +287,7 @@ namespace modulos
                 }
             }
 
-            setear_conficion_bonificado(fila_acuerdo_de_precios);
+           // setear_conficion_bonificado(fila_acuerdo_de_precios);
         }
         private void setear_conficion_bonificado(int fila_acuerdo_de_precios)
         {
@@ -381,6 +383,7 @@ namespace modulos
                     && tipo_de_acuerdo == acuerdo_de_precios.Rows[fila]["tipo_de_acuerdo"].ToString()
                     && acuerdo_de_precios.Rows[fila]["activa"].ToString() == "1")
                 {
+                    string dato = acuerdo_de_precios.Rows[fila]["id"].ToString();
                     retorno = fila;
                     fila = acuerdo_de_precios.Rows.Count;
                 }
