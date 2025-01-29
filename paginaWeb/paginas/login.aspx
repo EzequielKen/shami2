@@ -23,7 +23,7 @@
     <main class="form-signin w-100 m-auto ">
         
         <img class="mb-4" src="/imagenes/logo-completo.png" alt="" width="200">
-        <h1 class="h3 mb-3 fw-normal text-white">Por favor, ingrese.</h1>
+        <h1 class="h3 mb-3 fw-normal text-white">Por favor, ingrese..</h1>
 
         <div class="form-floating ">
             <asp:TextBox ID="textbox_usuario" CssClass="form-control" runat="server" />

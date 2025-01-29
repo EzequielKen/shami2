@@ -324,7 +324,8 @@ namespace _03___sistemas_fabrica
         #region consultas
         private void consultar_insumos()
         {
-            insumos = consultas.consultar_insumos_fabrica_venta_para_actualizar(base_de_datos, "insumos_fabrica");
+           // insumos = consultas.consultar_insumos_fabrica_venta_para_actualizar(base_de_datos, "insumos_fabrica");
+          insumos = consultas.consultar_tabla_completa(base_de_datos, "insumos_fabrica");
 
         }
         private void consultar_insumos_fabrica_fatay()

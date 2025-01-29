@@ -423,7 +423,7 @@ namespace paginaWeb
             {
                 if (id_producto == productos_proveedor.Rows[fila]["id"].ToString() &&
                     nombre_producto == productos_proveedor.Rows[fila]["producto"].ToString() &&
-                    !verificar_sicargo(id_producto))
+                    !verificar_sicargo(id_producto, nombre_producto))
                 {
                     resumen_pedido.Rows.Add();
                     int fila_resumen = resumen_pedido.Rows.Count - 1;
@@ -461,13 +461,14 @@ namespace paginaWeb
             textbox_busqueda.Text = "";
             label_productoSelecionado.Text = mensaje_default;
         }
-        private bool verificar_sicargo(string id_producto)
+        private bool verificar_sicargo(string id_producto, string nombre_producto)
         {
             bool retorno = false;
             int fila = 0;
             while (fila <= resumen_pedido.Rows.Count - 1)
             {
-                if (id_producto == resumen_pedido.Rows[fila]["id"].ToString())
+                if (id_producto == resumen_pedido.Rows[fila]["id"].ToString() &&
+                    nombre_producto == resumen_pedido.Rows[fila]["producto"].ToString())
                 {
                     retorno = true;
                     break;
@@ -477,13 +478,14 @@ namespace paginaWeb
             return retorno;
         }
 
-        private void eliminar_producto_en_resumen(string id_seleccionada)
+        private void eliminar_producto_en_resumen(string id_seleccionada,string nombre_producto)
         {
             resumen_pedido = (DataTable)Session["resumen"];
             int fila = 0;
             while (fila <= resumen_pedido.Rows.Count - 1)
             {
-                if (id_seleccionada == resumen_pedido.Rows[fila]["id"].ToString())
+                if (id_seleccionada == resumen_pedido.Rows[fila]["id"].ToString() &&
+                    nombre_producto == resumen_pedido.Rows[fila]["producto"].ToString())
                 {
                     resumen_pedido.Rows[fila].Delete();
                     break;
@@ -597,9 +599,10 @@ namespace paginaWeb
             string id_seleccionada;
 
             id_seleccionada = gridview_resumen.SelectedRow.Cells[0].Text;
+            string nombre_producto = gridview_resumen.SelectedRow.Cells[1].Text;
 
 
-            eliminar_producto_en_resumen(id_seleccionada);
+            eliminar_producto_en_resumen(id_seleccionada, nombre_producto);
             cargar_productos();
 
 

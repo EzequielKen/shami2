@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -107,13 +108,13 @@ namespace _03___sistemas_fabrica
                 index++;
 
                 id_insumo = orden_de_compra.Rows[fila]["id"].ToString();
-                string nota = "Orden de compra Num: " + id_orden;                
-                actualizar_stock_en_insumo(id_insumo, orden_de_compra.Rows[fila]["stock"].ToString(), tipo_paquete, cantidad_unidades, unidad_medida, cantidad_entrega,rol_usuario,nota);
+                string nota = "Orden de compra Num: " + id_orden;
+                actualizar_stock_en_insumo(id_insumo, orden_de_compra.Rows[fila]["stock"].ToString(), tipo_paquete, cantidad_unidades, unidad_medida, cantidad_entrega, rol_usuario, nota);
 
             }
             if (estado_pedido != "Recibido")
             {
-               // stock_Insumos.guardar_registro_compra(rol_usuario, insumos_fabrica, insumos_fabrica_copia);
+                // stock_Insumos.guardar_registro_compra(rol_usuario, insumos_fabrica, insumos_fabrica_copia);
             }
             if (verificar_si_hay_nuevo_precio(orden_de_compra))
             {
@@ -124,7 +125,7 @@ namespace _03___sistemas_fabrica
         {
             actualizar_valor_de_orden_de_compra(id_orden, id_proveedor, valor_orden, nombre_fabrica, nombre_proveedor, total_impuestos, condicion_pago, "N/A", estado_entrega);
             consultar_orden_de_compra(id_orden);
-            crear_nueva_orden_de_compra(orden_de_compraBD,orden_de_compra);
+            crear_nueva_orden_de_compra(orden_de_compraBD, orden_de_compra);
 
             consultar_insumos_fabrica();
             DataTable insumos_fabrica_copia = insumos_fabrica;
@@ -234,7 +235,7 @@ namespace _03___sistemas_fabrica
             valores = funciones.armar_query_valores(valores, orden_de_compra_original.Rows[0]["cantidad_a_pagar"].ToString(), false);
             for (int colum = orden_de_compra_original.Columns["producto_1"].Ordinal; colum <= orden_de_compra_original.Columns.Count - 1; colum++)
             {
-                if (orden_de_compra_original.Rows[0][colum].ToString()!="N/A")
+                if (orden_de_compra_original.Rows[0][colum].ToString() != "N/A")
                 {
                     id = funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 1);
                     fila_pedido = funciones.buscar_fila_por_id(id, orden_de_compra);
@@ -456,14 +457,15 @@ namespace _03___sistemas_fabrica
             string actualizar = "`activa` = '0'";
             consultas.actualizar_tabla(base_de_datos, "acuerdo_de_precios_fabrica_a_proveedores", actualizar, id_acuerdo);
         }
-        private void actualizar_stock_en_insumo(string id_insumo, string nuevo_stock_insumo, string tipo_paquete, string cantidad_unidades, string unidad_medida, string cantidad_entrega,string rol_usuario,string nota)
+        private void actualizar_stock_en_insumo(string id_insumo, string nuevo_stock_insumo, string tipo_paquete, string cantidad_unidades, string unidad_medida, string cantidad_entrega, string rol_usuario, string nota)
         {
             int fila_insumo = funciones.buscar_fila_por_id(id_insumo, insumos_fabrica);
             double nuevo_real = 0;
             string dato, stock_real;
             bool encontro = false;
             string presentacion = tipo_paquete + "-" + cantidad_unidades + "-" + unidad_medida;
-           /* for (int columna = insumos_fabrica.Columns["producto_1"].Ordinal; columna <= insumos_fabrica.Columns.Count - 1; columna++)
+            string actualizar;
+            for (int columna = insumos_fabrica.Columns["producto_1"].Ordinal; columna <= insumos_fabrica.Columns.Count - 1; columna++)
             {
                 if (insumos_fabrica.Rows[fila_insumo][columna].ToString() == "N/A")
                 {
@@ -472,6 +474,9 @@ namespace _03___sistemas_fabrica
 
                         insumos_fabrica.Rows[fila_insumo][columna] = tipo_paquete + "-" + cantidad_unidades + "-" + unidad_medida + "-" + cantidad_entrega + "-" + cantidad_entrega;
                         insumos_fabrica.Rows[fila_insumo]["nuevo_stock"] = "si";
+                        dato = tipo_paquete + "-" + cantidad_unidades + "-" + unidad_medida + "-" + cantidad_entrega + "-" + cantidad_entrega;
+                        actualizar = "`" + insumos_fabrica.Columns[columna].ColumnName + "` = '" + dato + "'";
+                        consultas.actualizar_tabla(base_de_datos, "insumos_fabrica", actualizar, id_insumo);
                     }
 
                     break;
@@ -487,7 +492,7 @@ namespace _03___sistemas_fabrica
                     insumos_fabrica.Rows[fila_insumo][columna] = dato;
                     encontro = true;
                 }
-            }*/
+            }
             stock_Insumos.cargar_historial_stock(rol_usuario, id_insumo, "compra", cantidad_entrega, nota, presentacion);
         }
 
@@ -619,7 +624,7 @@ namespace _03___sistemas_fabrica
 
                     fila_producto = funciones.buscar_fila_por_id(id, insumos_fabrica);
                     string presentacion = tipo_paquete + "-" + cantidad_unidades + "-" + unidad_medida;
-                    stock = stock_Insumos.get_ultimo_stock_insumo_fabrica(id,presentacion); //buscar stock
+                    stock = stock_Insumos.get_ultimo_stock_insumo_fabrica(id, presentacion); //buscar stock
                     orden_de_compra.Rows.Add();
                     //id
                     orden_de_compra.Rows[fila_orden]["id"] = id;
@@ -737,8 +742,8 @@ namespace _03___sistemas_fabrica
         {
             //consultar_orden_de_compra(id_orden);
 
-           // return orden_de_compraBD.Rows[0]["estado"].ToString();
-           return estado_orden_de_compra;
+            // return orden_de_compraBD.Rows[0]["estado"].ToString();
+            return estado_orden_de_compra;
         }
         #endregion
     }
