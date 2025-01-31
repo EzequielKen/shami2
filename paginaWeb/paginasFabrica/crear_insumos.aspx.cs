@@ -709,20 +709,24 @@ namespace paginaWeb.paginasFabrica
             int fila = row.RowIndex;
 
             string id = gridview_productos.Rows[fila].Cells[0].Text;
-
-            if (textbox_unidad.Text != string.Empty && int.Parse(textbox_unidad.Text) > 0)
+            if (double.TryParse(textbox_unidad.Text.Replace(",", "."), out double cant_unidad))
             {
-                DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_paquete") as DropDownList);
-                DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_tipo_unidad") as DropDownList);
 
-                string paquete = dropdown_paquete.SelectedItem.Text;
-                string unidad = textbox_unidad.Text;
-                string tipo_unidad = dropdown_tipo_unidad.SelectedItem.Text;
+                if (textbox_unidad.Text != string.Empty && cant_unidad > 0)
+                {
+                    DropDownList dropdown_paquete = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_paquete") as DropDownList);
+                    DropDownList dropdown_tipo_unidad = (gridview_productos.Rows[fila].Cells[7].FindControl("dropdown_tipo_unidad") as DropDownList);
 
-                string dato = paquete + "-" + unidad + "-" + tipo_unidad;
-                creador_insumos.actualizar_dato(id, "unidad_de_medida_local", dato);
-                creador_insumos.actualizar_dato(id, "equivalencia", dato);
+                    string paquete = dropdown_paquete.SelectedItem.Text;
+                    string unidad = cant_unidad.ToString();
+                    string tipo_unidad = dropdown_tipo_unidad.SelectedItem.Text;
+
+                    string dato = paquete + "-" + unidad + "-" + tipo_unidad;
+                    creador_insumos.actualizar_dato(id, "unidad_de_medida_local", dato);
+                    creador_insumos.actualizar_dato(id, "equivalencia", dato);
+                }
             }
+
             insumosBD = creador_insumos.get_insumos_fabrica();
             Session.Add("insumoBD", insumosBD);
             cargar_insumos();
@@ -778,6 +782,16 @@ namespace paginaWeb.paginasFabrica
         protected void textbox_buscar_TextChanged(object sender, EventArgs e)
         {
             cargar_insumos();
+        }
+
+        protected void textbox_unidad_nuevo_TextChanged(object sender, EventArgs e)
+        {
+            TextBox textbox_unidad_nuevo = (TextBox)sender;
+
+            if (!double.TryParse(textbox_unidad_nuevo.Text.Replace(",", "."), out double unidad_nuevo))
+            {
+                textbox_unidad_nuevo.Text = string.Empty;
+            }
         }
     }
 }

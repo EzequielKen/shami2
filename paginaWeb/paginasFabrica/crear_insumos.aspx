@@ -77,7 +77,7 @@
                                 <asp:ListItem Text="Pack" />
                             </asp:DropDownList>
                             <label class="col-form-label">Unidad</label>
-                            <asp:TextBox ID="textbox_unidad_nuevo" TextMode="Number" CssClass="form-control" runat="server" />
+                            <asp:TextBox ID="textbox_unidad_nuevo" CssClass="form-control" runat="server" OnTextChanged="textbox_unidad_nuevo_TextChanged" AutoPostBack="true" />
                             <label class="col-form-label">Tipo Unidad</label>
                             <asp:DropDownList ID="dropdown_tipo_unidad" CssClass="form-select" runat="server">
                                 <asp:ListItem Text="unid." />
@@ -194,7 +194,7 @@
                                             <asp:ListItem Text="Pack" />
                                         </asp:DropDownList>
                                         <label>Unidad</label>
-                                        <asp:TextBox ID="textbox_unidad" TextMode="Number" CssClass="form-control" runat="server" OnTextChanged="textbox_unidad_TextChanged" AutoPostBack="true" />
+                                        <asp:TextBox ID="textbox_unidad"  CssClass="form-control" runat="server" OnTextChanged="textbox_unidad_TextChanged" AutoPostBack="true" />
                                         <label>Tipo Unidad</label>
                                         <asp:DropDownList ID="dropdown_tipo_unidad" CssClass="form-select" runat="server" OnSelectedIndexChanged="dropdown_tipo_unidad_SelectedIndexChanged" AutoPostBack="true">
                                             <asp:ListItem Text="unid." />
