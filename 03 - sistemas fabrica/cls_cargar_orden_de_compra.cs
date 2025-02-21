@@ -159,7 +159,14 @@ namespace _03___sistemas_fabrica
 
 
                 cantidad_pedida = orden_de_compra.Rows[fila]["cantidad_pedida"].ToString();
-                cantidad_entrega = orden_de_compra.Rows[fila]["total_entrega"].ToString();
+                if (orden_de_compra.Rows[fila]["total_entrega"].ToString() == "N/A")
+                {
+                    cantidad_entrega = "0";
+                }
+                else
+                {
+                    cantidad_entrega = orden_de_compra.Rows[fila]["total_entrega"].ToString();
+                }
 
                 dato = id + "-" + producto + "-" + precio + "-" + tipo_paquete + "-" + cantidad_unidades + "-" + unidad_medida + "-" + cantidad_pedida + "-" + cantidad_entrega;
 
@@ -241,7 +248,16 @@ namespace _03___sistemas_fabrica
                     fila_pedido = funciones.buscar_fila_por_id(id, orden_de_compra);
                     if (fila_pedido != -1)
                     {
-                        cantidad_recibida = double.Parse(orden_de_compra.Rows[fila_pedido]["total_entrega"].ToString());
+                        if (orden_de_compra.Rows[fila_pedido]["total_entrega"].ToString() == "N/A")
+                        {
+                            cantidad_recibida = 0;
+
+                        }
+                        else
+                        {
+                            cantidad_recibida = double.Parse(orden_de_compra.Rows[fila_pedido]["total_entrega"].ToString());
+
+                        }
                         cantidad_original = double.Parse(funciones.obtener_dato(orden_de_compra_original.Rows[0][colum].ToString(), 7));
                         diferencia = cantidad_original - cantidad_recibida;
                         if (diferencia > 0)

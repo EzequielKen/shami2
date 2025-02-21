@@ -610,11 +610,11 @@ namespace _03___sistemas_fabrica
 
                     if (proveedor != "insumos_fabrica")
                     {
-                        cargar_historial_stock(pedido, rol_usuario, nota, "proveedor_villaMaipu");
+                        cargar_historial_stock(pedido, rol_usuario, nota, "proveedor_villaMaipu", id_pedido);
                     }
                     else if (proveedor == "insumos_fabrica")
                     {
-                        cargar_historial_stock(pedido, rol_usuario, nota, "insumos_fabrica");
+                        cargar_historial_stock(pedido, rol_usuario, nota, "insumos_fabrica", id_pedido);
 
                     }
 
@@ -653,13 +653,14 @@ namespace _03___sistemas_fabrica
             }
         }
 
-        private void cargar_historial_stock(DataTable pedido, string rol_usuario, string nota, string proveedor)
+        private void cargar_historial_stock(DataTable pedido, string rol_usuario, string nota, string proveedor,string id_pedido)
         {
             string id;
             double cantidad_despachada;
             for (int fila = 0; fila <= pedido.Rows.Count - 1; fila++)
             {
-                if (pedido.Rows[fila]["proveedor"].ToString() == proveedor)
+                if (pedido.Rows[fila]["proveedor"].ToString() == proveedor &&
+                    pedido.Rows[fila]["id_pedido"].ToString() == id_pedido)
                 {
                     string dato = pedido.Rows[fila]["cantidad_entrega"].ToString();
                     if (pedido.Rows[fila]["cantidad_entrega"].ToString() != "0")
