@@ -604,11 +604,17 @@ namespace _02___sistemas
                                     else
                                     {
                                         string dato = pedidos.Rows[fila]["id"].ToString();
-                                        double pinchos_entregados = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8));
-                                        double cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
-                                        cantidad_pincho = cantidad_pincho + pinchos_entregados;
-                                        resumen.Rows[fila_resumen]["pincho"] = "si";
-                                        resumen.Rows[fila_resumen]["cantidad_pincho"] = cantidad_pincho.ToString();
+                                        if (funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8) != "N/A")
+                                        {
+                                            double pinchos_entregados = double.Parse(funciones.obtener_dato(pedido.Rows[fila][columna].ToString(), 8));
+
+
+                                            double cantidad_pincho = double.Parse(resumen.Rows[fila_resumen]["cantidad_pincho"].ToString());
+                                            cantidad_pincho = cantidad_pincho + pinchos_entregados;
+
+                                            resumen.Rows[fila_resumen]["pincho"] = "si";
+                                            resumen.Rows[fila_resumen]["cantidad_pincho"] = cantidad_pincho.ToString();
+                                        }
                                     }
                                 }
                             }

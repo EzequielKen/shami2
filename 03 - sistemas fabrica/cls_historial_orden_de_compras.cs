@@ -52,15 +52,15 @@ namespace _03___sistemas_fabrica
         #region cargar nota
         public void cargar_nota(string id_orden, string nota)
         {
-            string actualizar = "`nota` = '"+ nota + "' ";
+            string actualizar = "`nota` = '" + nota + "' ";
             consultas.actualizar_tabla(base_de_datos, "ordenes_de_compra", actualizar, id_orden);
         }
         #endregion
         #region cancelar orden de compra
         public void cancelar_orden_de_compra(string id_orden)
         {
-            string actualizar= "`estado` = 'Cancelada' ";
-            consultas.actualizar_tabla(base_de_datos, "ordenes_de_compra",actualizar, id_orden);
+            string actualizar = "`estado` = 'Cancelada' ";
+            consultas.actualizar_tabla(base_de_datos, "ordenes_de_compra", actualizar, id_orden);
         }
         #endregion
         #region PDF
@@ -81,7 +81,7 @@ namespace _03___sistemas_fabrica
         private string calcular_total_orden()
         {
             double total = 0;
-            for (int fila = 0; fila <= resumen_orden.Rows.Count-1; fila++)
+            for (int fila = 0; fila <= resumen_orden.Rows.Count - 1; fila++)
             {
                 total = total + double.Parse(resumen_orden.Rows[fila]["sub_total_dato"].ToString());
             }
@@ -89,7 +89,7 @@ namespace _03___sistemas_fabrica
         }
         public void crear_PDF_orden_de_compra(string ruta_archivo, byte[] logo, string id_orden)//
         {
-           consultar_orden_de_compra_por_id(id_orden);
+            consultar_orden_de_compra_por_id(id_orden);
 
             consultar_proveedores_de_fabrica_seleccionado(orden_compra.Rows[0]["id_proveedor"].ToString());
 
@@ -110,17 +110,17 @@ namespace _03___sistemas_fabrica
             resumen_orden = new DataTable();
             resumen_orden.Columns.Add("id", typeof(string));
             resumen_orden.Columns.Add("producto", typeof(string));
-            resumen_orden.Columns.Add("cantidad_pedida", typeof(string)); 
-            resumen_orden.Columns.Add("cantidad", typeof(string)); 
+            resumen_orden.Columns.Add("cantidad_pedida", typeof(string));
+            resumen_orden.Columns.Add("cantidad", typeof(string));
             resumen_orden.Columns.Add("unidad de medida", typeof(string));
-            resumen_orden.Columns.Add("precio", typeof(string)); 
-            resumen_orden.Columns.Add("sub_total", typeof(string)); 
-            resumen_orden.Columns.Add("sub_total_dato", typeof(string)); 
+            resumen_orden.Columns.Add("precio", typeof(string));
+            resumen_orden.Columns.Add("sub_total", typeof(string));
+            resumen_orden.Columns.Add("sub_total_dato", typeof(string));
         }
         private void abrir_orden()
         {
             crear_tabla_resumen();
-            string id, producto, cantidad_pedida, cantidad, tipo_paquete, cantidad_unidades, unidad_medida, unidad_de_medida,precio;
+            string id, producto, cantidad_pedida, cantidad, tipo_paquete, cantidad_unidades, unidad_medida, unidad_de_medida, precio;
 
             for (int columna = orden_compra.Columns["producto_1"].Ordinal; columna <= orden_compra.Columns.Count - 1; columna++)
             {
@@ -132,7 +132,7 @@ namespace _03___sistemas_fabrica
 
                     tipo_paquete = funciones.obtener_dato(orden_compra.Rows[0][columna].ToString(), 4);
                     cantidad_unidades = funciones.obtener_dato(orden_compra.Rows[0][columna].ToString(), 5);
-                    unidad_medida = funciones.obtener_dato(orden_compra.Rows[0][columna].ToString(),6);
+                    unidad_medida = funciones.obtener_dato(orden_compra.Rows[0][columna].ToString(), 6);
 
                     if (tipo_paquete == "Unidad")
                     {
@@ -144,9 +144,9 @@ namespace _03___sistemas_fabrica
                     }
                     cantidad_pedida = funciones.obtener_dato(orden_compra.Rows[0][columna].ToString(), 7);
                     cantidad = funciones.obtener_dato(orden_compra.Rows[0][columna].ToString(), 8);
-                    if (cantidad=="N/A")
+                    if (cantidad == "N/A")
                     {
-                        cantidad="0";
+                        cantidad = "0";
                     }
                     cargar_producto(id, producto, cantidad_pedida, cantidad, unidad_de_medida, precio);
                 }
@@ -174,16 +174,19 @@ namespace _03___sistemas_fabrica
         private string buscar_id_de_proveedor(string nombre_proveedor)
         {
             string retorno = "";
-            int fila = 0;
-            while (fila <= proveedores_de_fabrica.Rows.Count - 1)
+            string dato;
+            for (int fila = 0; fila <= proveedores_de_fabrica.Rows.Count - 1; fila++)
             {
-                string dato = proveedores_de_fabrica.Rows[fila]["proveedor"].ToString();
-                if (nombre_proveedor == proveedores_de_fabrica.Rows[fila]["proveedor"].ToString())
+                if (proveedores_de_fabrica.Rows[fila]["id"].ToString() == "106")
+                {
+                    dato = proveedores_de_fabrica.Rows[fila]["proveedor"].ToString();
+                }
+                dato = proveedores_de_fabrica.Rows[fila]["proveedor"].ToString();
+                if (nombre_proveedor == dato)
                 {
                     retorno = proveedores_de_fabrica.Rows[fila]["id"].ToString();
                     break;
                 }
-                fila++;
             }
             return retorno;
         }
@@ -191,7 +194,7 @@ namespace _03___sistemas_fabrica
         #region metodos consultas
         private void consultar_ordenes_de_compra(string mes, string año)
         {
-            ordenes_de_compra = consultas.consultar_orden_de_compras_incompletas_segun_mes(mes,año);
+            ordenes_de_compra = consultas.consultar_orden_de_compras_incompletas_segun_mes(mes, año);
         }
         private void consultar_ordenes_de_compra_abiertas()
         {
@@ -221,9 +224,9 @@ namespace _03___sistemas_fabrica
             consultar_lista_proveedores_fabrica();
             return proveedores_de_fabrica;
         }
-        public DataTable get_ordenes_de_compra(string mes,string año)
+        public DataTable get_ordenes_de_compra(string mes, string año)
         {
-            consultar_ordenes_de_compra(mes,año);
+            consultar_ordenes_de_compra(mes, año);
             return ordenes_de_compra;
         }
         public DataTable get_ordenes_de_compra_abiertas()

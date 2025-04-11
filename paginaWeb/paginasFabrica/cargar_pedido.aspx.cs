@@ -438,7 +438,7 @@ namespace paginaWeb.paginasFabrica
             DropDownList dropdown_tipo_presentacion = (gridview_pedido.Rows[fila].Cells[columna_lista].FindControl(id_dropdown) as DropDownList);
 
             lista = (List<string>)pedido.Rows[fila_tabla][nombre_columna];
-            if (dropdown_tipo_presentacion.Items.Count == 0)
+            if (dropdown_tipo_presentacion.Items.Count == 0)//&& lista.Count>0
             {
                 if (pedido.Rows[fila_tabla]["proveedor"].ToString() == "insumos_fabrica")
                 {
