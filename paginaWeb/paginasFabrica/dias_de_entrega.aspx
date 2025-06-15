@@ -66,7 +66,8 @@
                                 </Columns>
                             </asp:GridView>
 
-                            <%if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin")
+                            <%if (tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Admin" ||
+                                   tipo_usuario.Rows[0]["rol"].ToString() == "Shami Villa Maipu Administrativo" ) 
                                 {%>
                             <div class="row">
                                 <div class="col">

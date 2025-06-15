@@ -845,7 +845,7 @@ namespace _02___sistemas
                         }
                         else
                         {
-                            dato = "N/A";
+                            dato = obtener_dato_pedido(pedidos.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 7);
                             unidad_insumo = "N/A";
                         }
 

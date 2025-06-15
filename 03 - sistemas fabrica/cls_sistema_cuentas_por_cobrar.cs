@@ -1270,7 +1270,7 @@ namespace _03___sistemas_fabrica
                         }
                         else
                         {
-                            dato = "N/A";
+                            dato = obtener_dato_pedido(pedidos.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 7);
                             unidad_insumo = "N/A";
                         }
                         if (cantidad_recibida == "")
@@ -1352,7 +1352,7 @@ namespace _03___sistemas_fabrica
                             }
                             else
                             {
-                                dato = "N/A";
+                                dato = obtener_dato_pedido(pedidos.Rows[fila_pedido]["producto_" + i.ToString()].ToString().Replace(",", "."), 7);
                                 unidad_insumo = "N/A";
                             }
                             if (cantidad_recibida == "")
