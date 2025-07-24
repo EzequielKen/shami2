@@ -87,7 +87,7 @@
                                             <asp:Button ID="boton_cobrado" CssClass="btn btn-primary" Text="Cobrado" runat="server" OnClick="boton_cobrado_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Aplicar IVA">
+                                    <asp:TemplateField HeaderText="Aplicar IVA" Visible="false">
                                         <ItemTemplate>
                                             <asp:Button ID="boton_iva" CssClass="btn btn-primary" Text="Aplicar IVA" runat="server" OnClick="boton_iva_Click" />
                                         </ItemTemplate>
