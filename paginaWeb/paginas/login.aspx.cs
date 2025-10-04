@@ -50,7 +50,7 @@ namespace paginaWeb
                 sucursal = login_sistema.get_sucursal();
                 if ("1" == ConfigurationManager.AppSettings["desarrollo"])
                 {
-                    usuarioBD.Rows[0]["servidor"] = "181.170.133.247";
+                    usuarioBD.Rows[0]["servidor"] = ConfigurationManager.AppSettings["ip"];
                 }
                 Session.Add("sucursal", sucursal);
                 Session.Add("usuariosBD", usuarioBD);
@@ -149,7 +149,7 @@ namespace paginaWeb
                 usuarioBD = login_sistema.get_usuarios();
                 if ("1" == ConfigurationManager.AppSettings["desarrollo"])
                 {
-                    usuarioBD.Rows[0]["servidor"] = "181.170.133.247";
+                    usuarioBD.Rows[0]["servidor"] = ConfigurationManager.AppSettings["ip"];
                 }
                 Session.Add("sucursal", login_sistema.get_sucursal());
                 Session.Add("empleado", login_sistema.get_empleado());
